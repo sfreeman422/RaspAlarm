@@ -1,0 +1,20 @@
+{
+  "name": "raspalarm",
+  "version": "1.0.0",
+  "description": "A Raspberry Pi Controlled Alarm Clock with Alexa Integrations",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sfreeman422/RaspAlarm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sfreeman422/RaspAlarm/issues"
+  },
+  "homepage": "https://github.com/sfreeman422/RaspAlarm#readme"
+}
