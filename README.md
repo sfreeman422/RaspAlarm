@@ -1,12 +1,6 @@
 # RaspAlarm
 A Raspberry Pi Controlled Alarm Clock with Alexa Integrations
 
-# Status
-Still incomplete. Began work on 1/7/17. 
-- Raspberry Pi and touch screen are functional and running Raspbian. 
-![Putting it together](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160214.jpg)
-![It's alive](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160419.jpg)
-
 # Purpose
 A full feature alarm clock that can be used in the bedroom to tell the time, set alarms, show the weather and a whole slew of other, yet to be built features. 
 
@@ -26,3 +20,9 @@ This application is still under development.
 
 # What I Learned
 Raspberry Pi's are cool, fun and cheap. This is my first Raspberry Pi project but will likely not be my last. 
+
+# Status
+Still incomplete. Began work on 1/7/17. 
+- Raspberry Pi and touch screen are functional and running Raspbian. 
+![Putting it together](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160214.jpg)
+![It's alive](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160419.jpg)
