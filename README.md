@@ -1,6 +1,10 @@
 # RaspAlarm
 A Raspberry Pi Controlled Alarm Clock with Alexa Integrations
 
+# Status
+Still incomplete. Began work on 1/7/17. 
+- Raspberry Pi and touch screen are functional and running Raspbian. 
+
 # Purpose
 A full feature alarm clock that can be used in the bedroom to tell the time, set alarms, show the weather and a whole slew of other, yet to be built features. 
 

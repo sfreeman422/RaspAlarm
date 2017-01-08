@@ -2,6 +2,7 @@ var React = require('react');
 
 //Require the children
 var Clock = require("./Children/Clock.js");
+var Today = require("./Children/Today.js");
 var Weather = require("./Children/Weather.js");
 
 //Require the helper functions
@@ -49,7 +50,10 @@ var Main = React.createClass({
 					<Clock time={this.state.time}/>
 				</div>
 				<div className="row">
-					<Date date={this.state.date}/>
+					<Today date={this.state.date}/>
+				</div>
+				<div className="weather">
+					<Weather today={this.state.WeatherToday} one={this.state.weatherHourOne} two={this.state.weatherHourTwo} three={this.state.weatherHourThree} four={this.state.weatherHourFour} five={this.state.weatherHourFive}/>
 				</div>
 			</div>)
 	}
