@@ -6,7 +6,7 @@ var app = express();
 var PORT = process.env.PORT || 3000; 
 
 app.use(logger('dev'));
-app.use(express.static('./public');
+app.use(express.static('./public'));
 
 //Initial route to load the page for the Timer, weather information, etc. 
 app.get('/', function(req, res){
