@@ -21560,21 +21560,108 @@
 
 /***/ },
 /* 179 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Clock = React.createClass({
+		displayName: "Clock",
+
+		getInitialState: function getInitialState() {
+			return {
+
+				time: undefined
+			};
+		},
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "clock" },
+				React.createElement(
+					"h1",
+					{ className: "time" },
+					this.state.time
+				)
+			);
+		}
+	});
+
+	module.exports = Clock;
 
 /***/ },
 /* 180 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Today = React.createClass({
+		displayName: "Today",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "today" },
+				this.props.date
+			);
+		}
+	});
+
+	module.exports = Today;
 
 /***/ },
 /* 181 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Weather = React.createClass({
+		displayName: "Weather",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "allWeather" },
+				React.createElement(
+					"div",
+					{ className: "weatherToday" },
+					this.props.weatherToday
+				),
+				React.createElement(
+					"div",
+					{ className: "weatherOne" },
+					this.props.weatherOne
+				),
+				React.createElement(
+					"div",
+					{ className: "weatherTwo" },
+					this.props.weatherTwo
+				),
+				React.createElement(
+					"div",
+					{ className: "weatherThree" },
+					this.props.weatherThree
+				),
+				React.createElement(
+					"div",
+					{ className: "weatherFour" },
+					this.props.weatherFour
+				),
+				React.createElement(
+					"div",
+					{ className: "weatherFive" },
+					this.props.weatherFive
+				)
+			);
+		}
+	});
+
+	module.exports = Weather;
 
 /***/ },
 /* 182 */

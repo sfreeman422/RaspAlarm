@@ -38,6 +38,7 @@ var Main = React.createClass({
 			console.log("Something has changed...");
 
 			//Code will go here to get the time and other fun stuff. 
+			
 		}
 	},
 	componentDidMount: function(){
