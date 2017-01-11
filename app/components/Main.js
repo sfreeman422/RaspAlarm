@@ -1,4 +1,5 @@
 var React = require('react');
+var moment = require('moment');
 
 //Require the children
 var Clock = require("./Children/Clock.js");
@@ -13,6 +14,7 @@ var Main = React.createClass({
 		return{
 			time: undefined,
 			date: undefined,
+			today: undefined,
 			weatherToday: undefined,
 			weatherHourOne: undefined, 
 			weatherHourTwo: undefined,
@@ -21,10 +23,11 @@ var Main = React.createClass({
 			weatherHourFive: undefined
 		}
 	},
-	_setInfo: function(time, date, weatherToday, weatherOne, weatherTwo, weatherThree, weatherFour, weatherFive){
+	_setInfo: function(time, date, today, weatherToday, weatherOne, weatherTwo, weatherThree, weatherFour, weatherFive){
 		this.setState({
 			time: time,
 			date: date,
+			today: today, 
 			weatherToday: weatherToday,
 			weatherHourOne: weatherOne,
 			weatherHourTwo: weatherTwo,
@@ -43,6 +46,12 @@ var Main = React.createClass({
 	},
 	componentDidMount: function(){
 		//Code to get time, date and weather data. 
+		var time = moment().format("h:mm a");
+		var date = moment().format("MMMM Do YYYY");
+		var today = moment().format("dddd");
+		console.log(time);
+		console.log(date);
+		console.log(today);
 	},
 	render: function(){
 		return(

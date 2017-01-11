@@ -3,7 +3,6 @@ var React = require('react');
 var Clock = React.createClass({
 	getInitialState: function(){
 		return{
-
 			time: undefined
 		}
 	},
