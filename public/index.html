@@ -7,16 +7,15 @@
 	<div id="geo"></div>
 	<script src="bundle.js"></script>
 	<script>
-	var x = document.getElementById("geo");
 		function getLocation(){
 			if(navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(showPosition);
 			}else{
-				x.innerHTML = "Geoloc not supported. Unable to get location."
+				console.log("Geoloc not supported. Unable to get location.");
 			}
 		}
 		function showPosition(position){
-			x.innerHTML = "Latitude "+position.coords.latitude+"<br> Longitude: "+position.coords.longitude; 
+			console.log("Latitude "+position.coords.latitude+" Longitude: "+position.coords.longitude); 
 		}
 		getLocation();
 	</script>

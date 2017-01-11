@@ -21825,12 +21825,26 @@
 		},
 		componentDidMount: function componentDidMount() {
 			//Code to get time, date and weather data. 
-			var time = moment().format("h:mm a");
+			var time = moment().format("hh:mm" + "a");
 			var date = moment().format("MMMM Do YYYY");
 			var today = moment().format("dddd");
-			console.log(time);
-			console.log(date);
-			console.log(today);
+			var weatherToday = "Weather Today";
+			var weatherOne = "WeatherOne";
+			var weatherTwo = "WeatherTwo";
+			var weatherThree = "WeatherThree";
+			var weatherFour = "WeatherFour";
+			var weatherFive = "WeatherFive";
+			this.setState({
+				time: time,
+				date: date,
+				today: today,
+				weatherToday: weatherToday,
+				weatherOne: weatherOne,
+				weatherTwo: weatherTwo,
+				weatherThree: weatherThree,
+				weatherFour: weatherFour,
+				weatherFive: weatherFive
+			});
 		},
 		render: function render() {
 			return React.createElement(
@@ -36768,11 +36782,6 @@
 	var Clock = React.createClass({
 		displayName: "Clock",
 
-		getInitialState: function getInitialState() {
-			return {
-				time: undefined
-			};
-		},
 		render: function render() {
 			return React.createElement(
 				"div",
@@ -36780,7 +36789,7 @@
 				React.createElement(
 					"h1",
 					{ className: "time" },
-					this.state.time
+					this.props.time
 				)
 			);
 		}
@@ -36828,32 +36837,32 @@
 				React.createElement(
 					"div",
 					{ className: "weatherToday" },
-					this.props.weatherToday
+					this.props.today
 				),
 				React.createElement(
 					"div",
 					{ className: "weatherOne" },
-					this.props.weatherOne
+					this.props.one
 				),
 				React.createElement(
 					"div",
 					{ className: "weatherTwo" },
-					this.props.weatherTwo
+					this.props.two
 				),
 				React.createElement(
 					"div",
 					{ className: "weatherThree" },
-					this.props.weatherThree
+					this.props.three
 				),
 				React.createElement(
 					"div",
 					{ className: "weatherFour" },
-					this.props.weatherFour
+					this.props.four
 				),
 				React.createElement(
 					"div",
 					{ className: "weatherFive" },
-					this.props.weatherFive
+					this.props.five
 				)
 			);
 		}

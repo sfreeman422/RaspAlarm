@@ -46,12 +46,26 @@ var Main = React.createClass({
 	},
 	componentDidMount: function(){
 		//Code to get time, date and weather data. 
-		var time = moment().format("h:mm a");
+		var time = moment().format("hh:mm"+"a");
 		var date = moment().format("MMMM Do YYYY");
 		var today = moment().format("dddd");
-		console.log(time);
-		console.log(date);
-		console.log(today);
+		var weatherToday = "Weather Today";
+		var weatherOne = "WeatherOne";
+		var weatherTwo = "WeatherTwo";
+		var weatherThree = "WeatherThree";
+		var weatherFour = "WeatherFour";
+		var weatherFive = "WeatherFive";
+		this.setState({
+			time: time,
+			date: date,
+			today: today,
+			weatherToday: weatherToday,
+			weatherOne: weatherOne,
+			weatherTwo: weatherTwo,
+			weatherThree: weatherThree,
+			weatherFour: weatherFour,
+			weatherFive: weatherFive
+		});
 	},
 	render: function(){
 		return(
