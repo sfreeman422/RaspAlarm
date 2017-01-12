@@ -21820,7 +21820,7 @@
 			if (prevState != this.state) {
 				console.log("Something has changed...");
 
-				//Code will go here to get the time and other fun stuff. 
+				//Code will go here to get the time and other fun stuff on a recurring basis to ensure that we have the latest information. 
 			}
 		},
 		componentDidMount: function componentDidMount() {
@@ -21839,11 +21839,11 @@
 				date: date,
 				today: today,
 				weatherToday: weatherToday,
-				weatherOne: weatherOne,
-				weatherTwo: weatherTwo,
-				weatherThree: weatherThree,
-				weatherFour: weatherFour,
-				weatherFive: weatherFive
+				weatherHourOne: weatherOne,
+				weatherHourTwo: weatherTwo,
+				weatherHourThree: weatherThree,
+				weatherHourFour: weatherFour,
+				weatherHourFive: weatherFive
 			});
 		},
 		render: function render() {
@@ -21862,8 +21862,8 @@
 				),
 				React.createElement(
 					'div',
-					{ className: 'weather' },
-					React.createElement(Weather, { today: this.state.WeatherToday, one: this.state.weatherHourOne, two: this.state.weatherHourTwo, three: this.state.weatherHourThree, four: this.state.weatherHourFour, five: this.state.weatherHourFive })
+					{ className: 'row' },
+					React.createElement(Weather, { today: this.state.weatherToday, one: this.state.weatherHourOne, two: this.state.weatherHourTwo, three: this.state.weatherHourThree, four: this.state.weatherHourFour, five: this.state.weatherHourFive })
 				)
 			);
 		}
@@ -36836,33 +36836,57 @@
 				{ className: "allWeather" },
 				React.createElement(
 					"div",
-					{ className: "weatherToday" },
-					this.props.today
+					{ className: "col-xs-2 weatherToday" },
+					React.createElement(
+						"p",
+						null,
+						this.props.today
+					)
 				),
 				React.createElement(
 					"div",
-					{ className: "weatherOne" },
-					this.props.one
+					{ className: "col-xs-2 weatherOne" },
+					React.createElement(
+						"p",
+						null,
+						this.props.one
+					)
 				),
 				React.createElement(
 					"div",
-					{ className: "weatherTwo" },
-					this.props.two
+					{ className: "col-xs-2 weatherTwo" },
+					React.createElement(
+						"p",
+						null,
+						this.props.two
+					)
 				),
 				React.createElement(
 					"div",
-					{ className: "weatherThree" },
-					this.props.three
+					{ className: "col-xs-2 weatherThree" },
+					React.createElement(
+						"p",
+						null,
+						this.props.three
+					)
 				),
 				React.createElement(
 					"div",
-					{ className: "weatherFour" },
-					this.props.four
+					{ className: "col-xs-2 weatherFour" },
+					React.createElement(
+						"p",
+						null,
+						this.props.four
+					)
 				),
 				React.createElement(
 					"div",
-					{ className: "weatherFive" },
-					this.props.five
+					{ className: "col-xs-2 weatherFive" },
+					React.createElement(
+						"p",
+						null,
+						this.props.five
+					)
 				)
 			);
 		}

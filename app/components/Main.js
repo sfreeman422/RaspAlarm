@@ -40,7 +40,7 @@ var Main = React.createClass({
 		if(prevState != this.state){
 			console.log("Something has changed...");
 
-			//Code will go here to get the time and other fun stuff. 
+			//Code will go here to get the time and other fun stuff on a recurring basis to ensure that we have the latest information. 
 			
 		}
 	},
@@ -60,11 +60,11 @@ var Main = React.createClass({
 			date: date,
 			today: today,
 			weatherToday: weatherToday,
-			weatherOne: weatherOne,
-			weatherTwo: weatherTwo,
-			weatherThree: weatherThree,
-			weatherFour: weatherFour,
-			weatherFive: weatherFive
+			weatherHourOne: weatherOne,
+			weatherHourTwo: weatherTwo,
+			weatherHourThree: weatherThree,
+			weatherHourFour: weatherFour,
+			weatherHourFive: weatherFive
 		});
 	},
 	render: function(){
@@ -76,8 +76,8 @@ var Main = React.createClass({
 				<div className="row">
 					<Today date={this.state.date}/>
 				</div>
-				<div className="weather">
-					<Weather today={this.state.WeatherToday} one={this.state.weatherHourOne} two={this.state.weatherHourTwo} three={this.state.weatherHourThree} four={this.state.weatherHourFour} five={this.state.weatherHourFive}/>
+				<div className="row">
+					<Weather today={this.state.weatherToday} one={this.state.weatherHourOne} two={this.state.weatherHourTwo} three={this.state.weatherHourThree} four={this.state.weatherHourFour} five={this.state.weatherHourFive}/>
 				</div>
 			</div>)
 	}
