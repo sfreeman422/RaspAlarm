@@ -3,7 +3,7 @@ var React = require('react');
 var Today = React.createClass({
 	render: function(){
 		return(
-			<div className="today">
+			<div className="col-xs-12 today">
 				{this.props.date}
 			</div>
 		)

@@ -3,7 +3,7 @@ var React = require('react');
 var Weather = React.createClass({
 	render: function(){
 		return(
-			<div className="allWeather">
+			<div className="col-xs-12 allWeather">
 				<div className="col-xs-2 weatherToday">
 					<p>{this.props.today}</p>
 				</div>
