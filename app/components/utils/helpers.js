@@ -3,7 +3,7 @@ var axios = require('axios');
 
 var weatherKey = "a1fdaf6002affae9c9357ffa9a25e0df"
 var Helpers = {
-getWeather: function (){
+getWeatherToday: function (){
 	var lat = 40.3542329; 
 	var long = -74.6127537;
 	axios.get("http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&APPID="+weatherKey)

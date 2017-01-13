@@ -21488,14 +21488,15 @@
 
 	var React = __webpack_require__(1);
 	var moment = __webpack_require__(179);
+	var axios = __webpack_require__(290);
 
 	//Require the children
-	var Clock = __webpack_require__(290);
-	var Today = __webpack_require__(291);
-	var Weather = __webpack_require__(292);
+	var Clock = __webpack_require__(315);
+	var Today = __webpack_require__(316);
+	var Weather = __webpack_require__(317);
 
 	//Require the helper functions
-	var helpers = __webpack_require__(293);
+	var helpers = __webpack_require__(318);
 
 	var Main = React.createClass({
 		displayName: 'Main',
@@ -21526,6 +21527,14 @@
 				weatherHourFive: weatherFive
 			});
 		},
+		_getWeatherToday: function _getWeatherToday() {
+			var lat = 40.3542329;
+			var long = -74.6127537;
+			var weatherKey = "33494fea3f5a2f1c30b4a639ca7cea6f";
+			return axios.get("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=" + weatherKey).then(function (response) {
+				this.setState({ weatherToday: response.data.weather[0].main });
+			});
+		},
 		componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
 			if (prevState != this.state) {
 				console.log("Something has changed...");
@@ -21538,7 +21547,7 @@
 			var time = moment().format("hh:mm" + "a");
 			var date = moment().format("MMMM Do YYYY");
 			var today = moment().format("dddd");
-			var weatherToday = helpers.getWeather();
+			this._getWeatherToday();
 			var weatherOne = "WeatherOne";
 			var weatherTwo = "WeatherTwo";
 			var weatherThree = "WeatherThree";
@@ -21548,7 +21557,6 @@
 				time: time,
 				date: date,
 				today: today,
-				weatherToday: weatherToday,
 				weatherHourOne: weatherOne,
 				weatherHourTwo: weatherTwo,
 				weatherHourThree: weatherThree,
@@ -36485,165 +36493,18 @@
 /* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Clock = React.createClass({
-		displayName: "Clock",
-
-		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "col-xs-12 clock" },
-				React.createElement(
-					"h1",
-					{ className: "time" },
-					this.props.time
-				)
-			);
-		}
-	});
-
-	module.exports = Clock;
+	module.exports = __webpack_require__(291);
 
 /***/ },
 /* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Today = React.createClass({
-		displayName: "Today",
-
-		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "col-xs-12 today" },
-				this.props.date
-			);
-		}
-	});
-
-	module.exports = Today;
-
-/***/ },
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Weather = React.createClass({
-		displayName: "Weather",
-
-		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "col-xs-12 allWeather" },
-				React.createElement(
-					"div",
-					{ className: "col-xs-2 weatherToday" },
-					React.createElement(
-						"p",
-						null,
-						this.props.today
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-2 weatherOne" },
-					React.createElement(
-						"p",
-						null,
-						this.props.one
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-2 weatherTwo" },
-					React.createElement(
-						"p",
-						null,
-						this.props.two
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-2 weatherThree" },
-					React.createElement(
-						"p",
-						null,
-						this.props.three
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-2 weatherFour" },
-					React.createElement(
-						"p",
-						null,
-						this.props.four
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-2 weatherFive" },
-					React.createElement(
-						"p",
-						null,
-						this.props.five
-					)
-				)
-			);
-		}
-	});
-
-	module.exports = Weather;
-
-/***/ },
-/* 293 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	//Server-side Ajax Calls
-	var axios = __webpack_require__(294);
-
-	var weatherKey = "a1fdaf6002affae9c9357ffa9a25e0df";
-	var Helpers = {
-		getWeather: function getWeather() {
-			var lat = 40.3542329;
-			var long = -74.6127537;
-			axios.get("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=" + weatherKey).then(function (response) {
-				console.log(response);
-				console.log("What I wanna See: " + response.data.weather[0].main);
-				return response.data.weather[0].main;
-			});
-		}
-	};
-
-	module.exports = Helpers;
-
-/***/ },
-/* 294 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(295);
-
-/***/ },
-/* 295 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
-	var utils = __webpack_require__(296);
-	var bind = __webpack_require__(297);
-	var Axios = __webpack_require__(298);
-	var defaults = __webpack_require__(299);
+	var utils = __webpack_require__(292);
+	var bind = __webpack_require__(293);
+	var Axios = __webpack_require__(294);
+	var defaults = __webpack_require__(295);
 
 	/**
 	 * Create an instance of Axios
@@ -36676,15 +36537,15 @@
 	};
 
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(316);
-	axios.CancelToken = __webpack_require__(317);
-	axios.isCancel = __webpack_require__(313);
+	axios.Cancel = __webpack_require__(312);
+	axios.CancelToken = __webpack_require__(313);
+	axios.isCancel = __webpack_require__(309);
 
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(318);
+	axios.spread = __webpack_require__(314);
 
 	module.exports = axios;
 
@@ -36693,12 +36554,12 @@
 
 
 /***/ },
-/* 296 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var bind = __webpack_require__(297);
+	var bind = __webpack_require__(293);
 
 	/*global toString:true*/
 
@@ -36998,7 +36859,7 @@
 
 
 /***/ },
-/* 297 */
+/* 293 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37015,17 +36876,17 @@
 
 
 /***/ },
-/* 298 */
+/* 294 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaults = __webpack_require__(299);
-	var utils = __webpack_require__(296);
-	var InterceptorManager = __webpack_require__(310);
-	var dispatchRequest = __webpack_require__(311);
-	var isAbsoluteURL = __webpack_require__(314);
-	var combineURLs = __webpack_require__(315);
+	var defaults = __webpack_require__(295);
+	var utils = __webpack_require__(292);
+	var InterceptorManager = __webpack_require__(306);
+	var dispatchRequest = __webpack_require__(307);
+	var isAbsoluteURL = __webpack_require__(310);
+	var combineURLs = __webpack_require__(311);
 
 	/**
 	 * Create a new instance of Axios
@@ -37106,13 +36967,13 @@
 
 
 /***/ },
-/* 299 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(296);
-	var normalizeHeaderName = __webpack_require__(300);
+	var utils = __webpack_require__(292);
+	var normalizeHeaderName = __webpack_require__(296);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -37129,10 +36990,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(301);
+	    adapter = __webpack_require__(297);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(301);
+	    adapter = __webpack_require__(297);
 	  }
 	  return adapter;
 	}
@@ -37206,12 +37067,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 300 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -37224,18 +37085,18 @@
 
 
 /***/ },
-/* 301 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(296);
-	var settle = __webpack_require__(302);
-	var buildURL = __webpack_require__(305);
-	var parseHeaders = __webpack_require__(306);
-	var isURLSameOrigin = __webpack_require__(307);
-	var createError = __webpack_require__(303);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(308);
+	var utils = __webpack_require__(292);
+	var settle = __webpack_require__(298);
+	var buildURL = __webpack_require__(301);
+	var parseHeaders = __webpack_require__(302);
+	var isURLSameOrigin = __webpack_require__(303);
+	var createError = __webpack_require__(299);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(304);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -37331,7 +37192,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(309);
+	      var cookies = __webpack_require__(305);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -37408,12 +37269,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 302 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var createError = __webpack_require__(303);
+	var createError = __webpack_require__(299);
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -37439,12 +37300,12 @@
 
 
 /***/ },
-/* 303 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(304);
+	var enhanceError = __webpack_require__(300);
 
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -37462,7 +37323,7 @@
 
 
 /***/ },
-/* 304 */
+/* 300 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37487,12 +37348,12 @@
 
 
 /***/ },
-/* 305 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -37561,12 +37422,12 @@
 
 
 /***/ },
-/* 306 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	/**
 	 * Parse headers into an object
@@ -37604,12 +37465,12 @@
 
 
 /***/ },
-/* 307 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -37678,7 +37539,7 @@
 
 
 /***/ },
-/* 308 */
+/* 304 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37720,12 +37581,12 @@
 
 
 /***/ },
-/* 309 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -37779,12 +37640,12 @@
 
 
 /***/ },
-/* 310 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -37837,15 +37698,15 @@
 
 
 /***/ },
-/* 311 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
-	var transformData = __webpack_require__(312);
-	var isCancel = __webpack_require__(313);
-	var defaults = __webpack_require__(299);
+	var utils = __webpack_require__(292);
+	var transformData = __webpack_require__(308);
+	var isCancel = __webpack_require__(309);
+	var defaults = __webpack_require__(295);
 
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -37922,12 +37783,12 @@
 
 
 /***/ },
-/* 312 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(296);
+	var utils = __webpack_require__(292);
 
 	/**
 	 * Transform the data for a request or a response
@@ -37948,7 +37809,7 @@
 
 
 /***/ },
-/* 313 */
+/* 309 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37959,7 +37820,7 @@
 
 
 /***/ },
-/* 314 */
+/* 310 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37979,7 +37840,7 @@
 
 
 /***/ },
-/* 315 */
+/* 311 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37997,7 +37858,7 @@
 
 
 /***/ },
-/* 316 */
+/* 312 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -38022,12 +37883,12 @@
 
 
 /***/ },
-/* 317 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Cancel = __webpack_require__(316);
+	var Cancel = __webpack_require__(312);
 
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -38085,7 +37946,7 @@
 
 
 /***/ },
-/* 318 */
+/* 314 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -38116,6 +37977,153 @@
 	  };
 	};
 
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Clock = React.createClass({
+		displayName: "Clock",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "col-xs-12 clock" },
+				React.createElement(
+					"h1",
+					{ className: "time" },
+					this.props.time
+				)
+			);
+		}
+	});
+
+	module.exports = Clock;
+
+/***/ },
+/* 316 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Today = React.createClass({
+		displayName: "Today",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "col-xs-12 today" },
+				this.props.date
+			);
+		}
+	});
+
+	module.exports = Today;
+
+/***/ },
+/* 317 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Weather = React.createClass({
+		displayName: "Weather",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "col-xs-12 allWeather" },
+				React.createElement(
+					"div",
+					{ className: "col-xs-2 weatherToday" },
+					React.createElement(
+						"p",
+						null,
+						this.props.today
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "col-xs-2 weatherOne" },
+					React.createElement(
+						"p",
+						null,
+						this.props.one
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "col-xs-2 weatherTwo" },
+					React.createElement(
+						"p",
+						null,
+						this.props.two
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "col-xs-2 weatherThree" },
+					React.createElement(
+						"p",
+						null,
+						this.props.three
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "col-xs-2 weatherFour" },
+					React.createElement(
+						"p",
+						null,
+						this.props.four
+					)
+				),
+				React.createElement(
+					"div",
+					{ className: "col-xs-2 weatherFive" },
+					React.createElement(
+						"p",
+						null,
+						this.props.five
+					)
+				)
+			);
+		}
+	});
+
+	module.exports = Weather;
+
+/***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	//Server-side Ajax Calls
+	var axios = __webpack_require__(290);
+
+	var weatherKey = "a1fdaf6002affae9c9357ffa9a25e0df";
+	var Helpers = {
+		getWeatherToday: function getWeatherToday() {
+			var lat = 40.3542329;
+			var long = -74.6127537;
+			axios.get("http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=" + weatherKey).then(function (response) {
+				console.log(response);
+				console.log("What I wanna See: " + response.data.weather[0].main);
+				return response.data.weather[0].main;
+			});
+		}
+	};
+
+	module.exports = Helpers;
 
 /***/ }
 /******/ ]);

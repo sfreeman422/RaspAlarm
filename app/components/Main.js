@@ -1,5 +1,6 @@
 var React = require('react');
 var moment = require('moment');
+var axios = require('axios');
 
 //Require the children
 var Clock = require("./Children/Clock.js");
@@ -36,12 +37,20 @@ var Main = React.createClass({
 			weatherHourFive: weatherFive
 		})
 	},
+	_getWeatherToday: function(){
+		var lat = 40.3542329; 
+		var long = -74.6127537;
+		var weatherKey = "a1fdaf6002affae9c9357ffa9a25e0df";
+		return axios.get("http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&APPID="+weatherKey)
+			.then(function(response){
+			 this.setState({weatherToday: response.data.weather[0].main});
+	})
+	},
 	componentDidUpdate: function(prevProps, prevState){
 		if(prevState != this.state){
 			console.log("Something has changed...");
 
 			//Code will go here to get the time and other fun stuff on a recurring basis to ensure that we have the latest information. 
-			
 		}
 	},
 	componentDidMount: function(){
@@ -49,7 +58,7 @@ var Main = React.createClass({
 		var time = moment().format("hh:mm"+"a");
 		var date = moment().format("MMMM Do YYYY");
 		var today = moment().format("dddd");
-		var weatherToday = helpers.getWeather();
+		this._getWeatherToday();
 		var weatherOne = "WeatherOne";
 		var weatherTwo = "WeatherTwo";
 		var weatherThree = "WeatherThree";
@@ -59,7 +68,6 @@ var Main = React.createClass({
 			time: time,
 			date: date,
 			today: today,
-			weatherToday: weatherToday,
 			weatherHourOne: weatherOne,
 			weatherHourTwo: weatherTwo,
 			weatherHourThree: weatherThree,
