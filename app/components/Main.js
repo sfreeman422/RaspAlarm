@@ -12,9 +12,17 @@ var helpers = require('./utils/helpers.js');
 
 //Gloabal variable to will hold the weather results to updatte the state. 
 var weatherResults; 
-//Global Variables to hold the lat and longitude for use getting the weather. 
 var lat;
 var long;
+//Global variables to hold the values of our day. 
+var time; 
+var date;
+var today;
+var weatherOne;
+var weatherTwo;
+var weatherThree;
+var weatherFour;
+var weatherFive;
 
 var Main = React.createClass({
 	getInitialState: function(){
@@ -52,14 +60,8 @@ var Main = React.createClass({
 			 console.log(weatherResults);
 	})
 	},
-	componentDidUpdate: function(prevProps, prevState){
-		if(prevState != this.state){
-			console.log("Something has changed...");
-			this.render();
-			//Code will go here to get the time and other fun stuff on a recurring basis to ensure that we have the latest information. 
-		}
-	},
-	componentDidMount: function(){
+	componentWillMount: function(){
+		//Function to get the location of our user based on HTML5 Geolocation. 
 		function getLocation(){
 			if(navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(setPosition);
@@ -67,6 +69,7 @@ var Main = React.createClass({
 				console.log("Geoloc not supported. Unable to get location.");
 			}
 		}
+		//Function to assign our location to the lat and long variables. 
 		function setPosition(position){
 			lat = position.coords.latitude;
 			long = position.coords.longitude; 
@@ -74,9 +77,22 @@ var Main = React.createClass({
 			console.log("Lat: "+lat);
 			console.log("Long: "+long);
 		}
-		getLocation()
-			.then(this._getWeatherToday());
-
+		getLocation();
+		this.setState({
+			time: moment().format("hh:mm"+"a"),
+			lat: lat,
+			long: long,
+			date: moment().format("MMMM Do YYYY"),
+			today: moment().format("dddd"),
+			weatherToday: this._getWeatherToday,
+			weatherHourOne: weatherOne,
+			weatherHourTwo: weatherTwo,
+			weatherHourThree: weatherThree,
+			weatherHourFour: weatherFour,
+			weatherHourFive: weatherFive
+		});
+	},
+	componentDidMount: function(){
 			//PRETTY SURE THAT WE WILL NEED A PROMISE HERE. We want to:
 			//A. Run getLocation(), so that we have the proper lat and long
 			//B. Then, run this._getWeatherToday() so that we can make the API call based on the lat/long.
@@ -84,28 +100,28 @@ var Main = React.createClass({
 			//If we can chain all of this together within a promise, I believe this should allow us to update the page
 			//And avoid async issues. This is your #1 issue right now that needs to be resolved asap, but its late on a Sunday
 		//Code to get time, date and weather data. 
-		var time = moment().format("hh:mm"+"a");
-		var date = moment().format("MMMM Do YYYY");
-		var today = moment().format("dddd");
-		this._getWeatherToday();
-		var weatherOne = "WeatherOne";
-		var weatherTwo = "WeatherTwo";
-		var weatherThree = "WeatherThree";
-		var weatherFour = "WeatherFour";
-		var weatherFive = "WeatherFive";
-		this.setState({
-			time: time,
-			lat: lat,
-			long: long,
-			date: date,
-			today: today,
-			weatherToday: weatherResults,
-			weatherHourOne: weatherOne,
-			weatherHourTwo: weatherTwo,
-			weatherHourThree: weatherThree,
-			weatherHourFour: weatherFour,
-			weatherHourFive: weatherFive
-		});
+		// time = moment().format("hh:mm"+"a");
+		// date = moment().format("MMMM Do YYYY");
+		// today = moment().format("dddd");
+		// weatherToday = _getWeatherToday;
+		// weatherOne = "WeatherOne";
+		// weatherTwo = "WeatherTwo";
+		// weatherThree = "WeatherThree";
+		// weatherFour = "WeatherFour";
+		// weatherFive = "WeatherFive";
+		// this.setState({
+		// 	time: time,
+		// 	lat: lat,
+		// 	long: long,
+		// 	date: date,
+		// 	today: today,
+		// 	weatherToday: weatherResults,
+		// 	weatherHourOne: weatherOne,
+		// 	weatherHourTwo: weatherTwo,
+		// 	weatherHourThree: weatherThree,
+		// 	weatherHourFour: weatherFour,
+		// 	weatherHourFive: weatherFive
+		// });
 	},
 	render: function(){
 		return(
