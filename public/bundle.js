@@ -21558,7 +21558,9 @@
 		},
 		_getTime: function _getTime() {
 			this.setState({
-				time: moment().format("hh:mm" + "a")
+				time: moment().format("hh:mm" + "a"),
+				date: moment().format("MMMM Do YYYY"),
+				today: moment().format("dddd")
 			});
 		},
 		componentWillMount: function componentWillMount() {
@@ -21596,37 +21598,7 @@
 			});
 			console.log(this);
 		},
-		componentDidMount: function componentDidMount() {
-			//PRETTY SURE THAT WE WILL NEED A PROMISE HERE. We want to:
-			//A. Run getLocation(), so that we have the proper lat and long
-			//B. Then, run this._getWeatherToday() so that we can make the API call based on the lat/long.
-			//C. Then, we want to set the state, once this._getWeatherToday() completes. 
-			//If we can chain all of this together within a promise, I believe this should allow us to update the page
-			//And avoid async issues. This is your #1 issue right now that needs to be resolved asap, but its late on a Sunday
-			//Code to get time, date and weather data. 
-			// time = moment().format("hh:mm"+"a");
-			// date = moment().format("MMMM Do YYYY");
-			// today = moment().format("dddd");
-			// weatherToday = _getWeatherToday;
-			// weatherOne = "WeatherOne";
-			// weatherTwo = "WeatherTwo";
-			// weatherThree = "WeatherThree";
-			// weatherFour = "WeatherFour";
-			// weatherFive = "WeatherFive";
-			// this.setState({
-			// 	time: time,
-			// 	lat: lat,
-			// 	long: long,
-			// 	date: date,
-			// 	today: today,
-			// 	weatherToday: weatherResults,
-			// 	weatherHourOne: weatherOne,
-			// 	weatherHourTwo: weatherTwo,
-			// 	weatherHourThree: weatherThree,
-			// 	weatherHourFour: weatherFour,
-			// 	weatherHourFive: weatherFive
-			// });
-		},
+		componentDidMount: function componentDidMount() {},
 		render: function render() {
 			return React.createElement(
 				'div',
@@ -21639,7 +21611,7 @@
 				React.createElement(
 					'div',
 					{ className: 'row' },
-					React.createElement(Today, { date: this.state.date })
+					React.createElement(Today, { date: this.state.date, day: this.state.today })
 				),
 				React.createElement(
 					'div',
@@ -38081,8 +38053,17 @@
 		render: function render() {
 			return React.createElement(
 				"div",
-				{ className: "col-xs-12 today" },
-				this.props.date
+				{ className: "today" },
+				React.createElement(
+					"div",
+					{ className: "col-xs-12 weekday" },
+					this.props.day
+				),
+				React.createElement(
+					"div",
+					{ className: "col-xs-12 date" },
+					this.props.date
+				)
 			);
 		}
 	});
