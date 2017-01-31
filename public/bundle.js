@@ -21556,6 +21556,11 @@
 				console.log(weatherResults);
 			});
 		},
+		_getTime: function _getTime() {
+			this.setState({
+				time: moment().format("hh:mm" + "a")
+			});
+		},
 		componentWillMount: function componentWillMount() {
 			//Function to get the location of our user based on HTML5 Geolocation. 
 			function getLocation() {
@@ -21573,9 +21578,11 @@
 				console.log("Lat: " + lat);
 				console.log("Long: " + long);
 			}
+			//Call get location to get us set with lat and long for the weather call. 
 			getLocation();
+			//Get the time every one second, this will also setState for time to the current time. 
+			setInterval(this._getTime, 1000);
 			this.setState({
-				time: moment().format("hh:mm" + "a"),
 				lat: lat,
 				long: long,
 				date: moment().format("MMMM Do YYYY"),
@@ -21587,6 +21594,7 @@
 				weatherHourFour: weatherFour,
 				weatherHourFive: weatherFive
 			});
+			console.log(this);
 		},
 		componentDidMount: function componentDidMount() {
 			//PRETTY SURE THAT WE WILL NEED A PROMISE HERE. We want to:
