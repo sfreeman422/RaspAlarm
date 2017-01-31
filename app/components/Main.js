@@ -1,5 +1,6 @@
 var React = require('react');
 var moment = require('moment');
+var async = require('async')
 
 //Require the children
 var Clock = require("./Children/Clock.js");
@@ -53,12 +54,20 @@ var Main = React.createClass({
 	},
 	_getWeatherToday: function(){
 		var weatherKey = "a1fdaf6002affae9c9357ffa9a25e0df";
+		console.log("In the getWeather function");
 		return $.ajax({
 			url: "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&APPID="+weatherKey
 		}).done(function(response){
 			 weatherResults = response.data.weather[0].main;
-			 console.log(weatherResults);
+			 this.setState({
+				weatherToday: weatherResults,
+				weatherHourOne: "test0",
+				weatherHourTwo: "test1",
+				weatherHourThree: "test2",
+				weatherHourFour: "test3",
+				weatherHourFive: "test4"
 			})
+		})
 	},
 	_getTime: function(){
 		this.setState({
@@ -70,6 +79,7 @@ var Main = React.createClass({
 	componentWillMount: function(){
 		//Function to get the location of our user based on HTML5 Geolocation. 
 		function getLocation(){
+			console.log("Getting Location...");
 			if(navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(setPosition);
 			}else{
@@ -85,9 +95,26 @@ var Main = React.createClass({
 			console.log("Long: "+long);
 		}
 		//Call get location to get us set with lat and long for the weather call. 
-		getLocation();
-		//Get the time every one second, this will also setState for time to the current time. 
+		var locationThenWeather = new Promise(
+			function(resolve, reject){
+				getLocation();
+				if(lat !== undefined && long !== undefined){
+					resolve("Lat is "+lat+" and Long is "+long);
+				}
+				else{
+					reject(Error("It broke..."));
+				}
+			}
+			)
+
+		locationThenWeather.then(function(result){
+			this._getWeatherToday
+		}, function (err){
+			console.log(err);
+		});
+		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		setInterval(this._getTime, 100);
+		//Working off of this setState since this includes all the possible props being passed to the children. 
 		this.setState({
 			lat: lat,
 			long: long,
@@ -102,15 +129,7 @@ var Main = React.createClass({
 		});
 	},
 	componentDidMount: function(){
-		this._getWeatherToday();
-		this.setState({
-			weatherToday: weatherResults,
-			weatherHourOne: "test0",
-			weatherHourTwo: "test1",
-			weatherHourThree: "test2",
-			weatherHourFour: "test3",
-			weatherHourFive: "test4"
-		})
+
 	},
 	render: function(){
 		return(
