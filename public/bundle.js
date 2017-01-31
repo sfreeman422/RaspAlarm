@@ -21507,8 +21507,6 @@
 
 	//Gloabal variable to will hold the weather results to updatte the state. 
 	var weatherResults;
-	var lat;
-	var long;
 	//Global variables to hold the values of our day. 
 	var time;
 	var date;
@@ -21518,6 +21516,8 @@
 	var weatherThree;
 	var weatherFour;
 	var weatherFive;
+
+	var locationAccessible = false;
 
 	var Main = React.createClass({
 		displayName: 'Main',
@@ -21549,23 +21549,6 @@
 				weatherHourFive: weatherFive
 			});
 		},
-		_getWeatherToday: function _getWeatherToday() {
-			var weatherKey = "a1fdaf6002affae9c9357ffa9a25e0df";
-			console.log("In the getWeather function");
-			return $.ajax({
-				url: "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + long + "&APPID=" + weatherKey
-			}).done(function (response) {
-				weatherResults = response.data.weather[0].main;
-				this.setState({
-					weatherToday: weatherResults,
-					weatherHourOne: "test0",
-					weatherHourTwo: "test1",
-					weatherHourThree: "test2",
-					weatherHourFour: "test3",
-					weatherHourFive: "test4"
-				});
-			});
-		},
 		_getTime: function _getTime() {
 			this.setState({
 				time: moment().format("hh:mm" + "a"),
@@ -21576,42 +21559,47 @@
 		componentWillMount: function componentWillMount() {
 			//Function to get the location of our user based on HTML5 Geolocation. 
 			function getLocation() {
-				console.log("Getting Location...");
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(setPosition);
-				} else {
-					console.log("Geoloc not supported. Unable to get location.");
-				}
+				return new Promise(function (resolve, reject) {
+					navigator.geolocation.getCurrentPosition(function (position) {
+						var location = {
+							lat: position.coords.latitude,
+							long: position.coords.longitude
+						};
+						return resolve(location);
+					}, function (error) {
+						console.log('An error occurred:', error);
+						return reject(error);
+					});
+				});
 			}
-			//Function to assign our location to the lat and long variables. 
-			function setPosition(position) {
-				lat = position.coords.latitude;
-				long = position.coords.longitude;
-				console.log("Position set at: ");
-				console.log("Lat: " + lat);
-				console.log("Long: " + long);
-			}
-			//Call get location to get us set with lat and long for the weather call. 
-			var locationThenWeather = new Promise(function (resolve, reject) {
-				getLocation();
-				if (lat !== undefined && long !== undefined) {
-					resolve("Lat is " + lat + " and Long is " + long);
-				} else {
-					reject(Error("It broke..."));
-				}
-			});
 
-			locationThenWeather.then(function (result) {
-				this._getWeatherToday;
-			}, function (err) {
-				console.log(err);
-			});
+			function locationThenWeather() {
+				return new Promise(function (resolve, reject) {
+					return getLocation().then(function (locationObject) {
+						if (!locationObject) {
+							var error = 'Location was undefined!';
+							return reject(error);
+						}
+						// Makes the API call to openWeather. SHould be another promise structured simialrly to the getLocation function. This will then need to assign state and setInterval so that this refreshes. 
+						$.ajax({
+							url: "http://api.openweathermap.org/data/2.5/weather?lat=" + locationObject.lat + "&lon=" + locationObject.long + "&APPID=a1fdaf6002affae9c9357ffa9a25e0df"
+						}).done(function (response) {
+							weatherResults = response.weather[0].description;
+							console.log("This is the weather right now: " + weatherResults);
+							console.log("This is the name of the town you are in: " + response.name);
+						});
+						return resolve(locationObject);
+					}).catch(function (error) {
+						//do stuff to handle error
+						return reject(error);
+					});
+				});
+			}
+			locationThenWeather();
 			//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 			setInterval(this._getTime, 100);
 			//Working off of this setState since this includes all the possible props being passed to the children. 
 			this.setState({
-				lat: lat,
-				long: long,
 				date: moment().format("MMMM Do YYYY"),
 				today: moment().format("dddd"),
 				weatherToday: this._getWeatherToday,
