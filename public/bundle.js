@@ -21504,21 +21504,7 @@
 	//Require the helper functions
 	var helpers = __webpack_require__(293);
 
-	//Gloabal variable to will hold the weather results to updatte the state. 
-	var weatherResults;
-	var userLoc;
-	//Global variables to hold the values of our day. 
-	var time;
-	var date;
-	var today;
-	var weatherOne;
-	var weatherTwo;
-	var weatherThree;
-	var weatherFour;
-	var weatherFive;
-
 	var hasWeatherData = false;
-	var locationAccessible = false;
 
 	var Main = React.createClass({
 		displayName: 'Main',
@@ -21577,6 +21563,7 @@
 
 			function locationThenWeather() {
 				var currentMinute = moment().format("mm");
+				console.log(currentMinute);
 				if (currentMinute == "00" || hasWeatherData == false) {
 					console.log("Getting weather data...");
 					return new Promise(function (resolve, reject) {
@@ -21590,7 +21577,6 @@
 								url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
 							}).done(function (response) {
 								console.log(response);
-								console.log(moment().format("mm"));
 								that.setState({
 									weatherToday: response.hourly_forecast[0].condition,
 									weatherHourOne: response.hourly_forecast[1].condition,
@@ -21609,7 +21595,6 @@
 					});
 				} else {
 					console.log("No need for new weather...");
-					return resolve("No need for new weather...");
 				}
 			}
 			setInterval(locationThenWeather(), 10000);
