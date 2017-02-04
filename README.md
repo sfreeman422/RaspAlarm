@@ -28,7 +28,7 @@ Promises are hard! I had to consult a friend of mine to help me implement promis
 # Status
 Alpha Build 0.1
 We have lift off! Below is a picture of the "alpha" version of the alarm. We see that we have the time displaying properly, icons for weather and a couple hours forecast for weather. I had to change over to the Weather Underground's API as I was originally using OpenWeaterMap but found that they did not provide me with an hourly forecast. Next steps are to integrate an alarm feature as well as Alexa integrations. 
-![Alpha Build]()
+![Alpha Build](https://github.com/sfreeman422/RaspAlarm/Images/alpha.jpg)
 Still incomplete. Began work on 1/7/17. 
 - Raspberry Pi and touch screen are functional and running Raspbian. 
 ![It's alive](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160419.jpg)
