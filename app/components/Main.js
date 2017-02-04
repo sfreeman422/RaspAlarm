@@ -19,11 +19,17 @@ var Main = React.createClass({
 			date: undefined,
 			today: undefined,
 			weatherToday: undefined,
+			weatherTodayTime: undefined,
 			weatherHourOne: undefined, 
+			weatherHourOneTime: undefined,
 			weatherHourTwo: undefined,
+			weatherHourTwoTime: undefined,
 			weatherHourThree: undefined,
+			weatherHourThreeTime: undefined,
 			weatherHourFour: undefined,
-			weatherHourFive: undefined
+			weatherHourFourTime: undefined,
+			weatherHourFive: undefined,
+			weatherHourFiveTime: undefined
 		};
 	},
 	_getTime: function(){
@@ -66,18 +72,24 @@ var Main = React.createClass({
 		                    const error = 'Location was undefined!';
 		                    return reject(error);
 		                }
-		                // Makes the API call to openWeather. SHould be another promise structured simialrly to the getLocation function. This will then need to assign state and setInterval so that this refreshes. 
+		                // Makes the API call to weatherunderground. SHould be another promise structured simialrly to the getLocation function. This will then need to assign state and setInterval so that this refreshes. 
 		                $.ajax({
 		                	url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
 							}).done(function(response){
 								console.log(response);
 							 that.setState({
 							 	weatherToday: response.hourly_forecast[0].condition,
+							 	weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
 							 	weatherHourOne: response.hourly_forecast[1].condition,
+							 	weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
 							 	weatherHourTwo: response.hourly_forecast[2].condition,
+							 	weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
 							 	weatherHourThree: response.hourly_forecast[3].condition,
+							 	weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
 							 	weatherHourFour: response.hourly_forecast[4].condition,
+							 	weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
 							 	weatherHourFive: response.hourly_forecast[5].condition,
+							 	weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil
 							 });
 						});
 						hasWeatherData = true; 
@@ -108,7 +120,7 @@ var Main = React.createClass({
 					<Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today}/>
 				</div>
 				<div className="row">
-					<Weather today={this.state.weatherToday} one={this.state.weatherHourOne} two={this.state.weatherHourTwo} three={this.state.weatherHourThree} four={this.state.weatherHourFour} five={this.state.weatherHourFive}/>
+					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime}/>
 				</div>
 			</div>);
 	}
