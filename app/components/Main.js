@@ -15,21 +15,26 @@ var Main = React.createClass({
 	getInitialState: function(){
 		return{
 			time: undefined,
-			userLoc: undefined,
 			date: undefined,
 			today: undefined,
 			weatherToday: undefined,
 			weatherTodayTime: undefined,
+			weatherTodayPic: undefined,
 			weatherHourOne: undefined, 
 			weatherHourOneTime: undefined,
+			weatherHourOnePic: undefined,
 			weatherHourTwo: undefined,
 			weatherHourTwoTime: undefined,
+			weatherHourTwoPic: undefined,
 			weatherHourThree: undefined,
 			weatherHourThreeTime: undefined,
+			weatherHourThreePic: undefined,
 			weatherHourFour: undefined,
 			weatherHourFourTime: undefined,
+			weatherHourFourPic: undefined,
 			weatherHourFive: undefined,
-			weatherHourFiveTime: undefined
+			weatherHourFiveTime: undefined,
+			weatherHourFivePic: undefined
 		};
 	},
 	_getTime: function(){
@@ -80,16 +85,22 @@ var Main = React.createClass({
 							 that.setState({
 							 	weatherToday: response.hourly_forecast[0].condition,
 							 	weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
+							 	weatherTodayPic: response.hourly_forecast[0].icon_url,
 							 	weatherHourOne: response.hourly_forecast[1].condition,
 							 	weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
+							 	weatherHourOnePic: response.hourly_forecast[1].icon_url,
 							 	weatherHourTwo: response.hourly_forecast[2].condition,
 							 	weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
+							 	weatherHourTwoPic: response.hourly_forecast[2].icon_url,
 							 	weatherHourThree: response.hourly_forecast[3].condition,
 							 	weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
+							 	weatherHourThreePic: response.hourly_forecast[3].icon_url,
 							 	weatherHourFour: response.hourly_forecast[4].condition,
 							 	weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
+							 	weatherHourFourPic: response.hourly_forecast[4].icon_url,
 							 	weatherHourFive: response.hourly_forecast[5].condition,
-							 	weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil
+							 	weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
+							 	weatherHourFivePic: response.hourly_forecast[5].icon_url,
 							 });
 						});
 						hasWeatherData = true; 
@@ -120,7 +131,7 @@ var Main = React.createClass({
 					<Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today}/>
 				</div>
 				<div className="row">
-					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime}/>
+					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fivePic={this.state.weatherHourFivePic}/>
 				</div>
 			</div>);
 	}
