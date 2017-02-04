@@ -21523,19 +21523,6 @@
 				weatherHourFive: undefined
 			};
 		},
-		_setInfo: function _setInfo(time, date, today, weatherToday, weatherOne, weatherTwo, weatherThree, weatherFour, weatherFive) {
-			this.setState({
-				time: time,
-				date: date,
-				today: today,
-				weatherToday: weatherToday,
-				weatherHourOne: weatherOne,
-				weatherHourTwo: weatherTwo,
-				weatherHourThree: weatherThree,
-				weatherHourFour: weatherFour,
-				weatherHourFive: weatherFive
-			});
-		},
 		_getTime: function _getTime() {
 			this.setState({
 				time: moment().format("hh:mm" + "a"),
@@ -21601,7 +21588,6 @@
 			//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 			setInterval(this._getTime, 100);
 		},
-		componentDidMount: function componentDidMount() {},
 		render: function render() {
 			return React.createElement(
 				'div',
