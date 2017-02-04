@@ -1,6 +1,6 @@
 module.exports = {
 	//Compiled code
-	entry: "./app/App.js",
+	entry: "./app/app.js",
 
 	//Output to be used
 	output: {

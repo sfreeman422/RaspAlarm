@@ -1,6 +1,5 @@
 var React = require('react');
 var moment = require('moment');
-var async = require('async')
 
 //Require the children
 var Clock = require("./Children/Clock.js");
@@ -12,6 +11,7 @@ var helpers = require('./utils/helpers.js');
 
 //Gloabal variable to will hold the weather results to updatte the state. 
 var weatherResults; 
+var userLoc; 
 //Global variables to hold the values of our day. 
 var time; 
 var date;
@@ -22,13 +22,14 @@ var weatherThree;
 var weatherFour;
 var weatherFive;
 
+var hasWeatherData = false; 
 var locationAccessible = false; 
 
 var Main = React.createClass({
 	getInitialState: function(){
 		return{
 			time: undefined,
-			location: undefined,
+			userLoc: undefined,
 			date: undefined,
 			today: undefined,
 			weatherToday: undefined,
@@ -60,6 +61,7 @@ var Main = React.createClass({
 		}) 
 	},
 	componentWillMount: function(){
+		var that = this;
 		//Function to get the location of our user based on HTML5 Geolocation. 
 		function getLocation() {
 		    return new Promise((resolve, reject) => {
@@ -80,7 +82,10 @@ var Main = React.createClass({
 		}
 
 		function locationThenWeather() {
-		    return new Promise((resolve, reject) => {
+			var currentMinute = moment().format("mm");
+			if(currentMinute == "00" || hasWeatherData == false){
+				console.log("Getting weather data...");
+				return new Promise((resolve, reject) => {
 		        return getLocation()
 		            .then((locationObject) => {
 		                if (!locationObject) {
@@ -89,34 +94,37 @@ var Main = React.createClass({
 		                }
 		                // Makes the API call to openWeather. SHould be another promise structured simialrly to the getLocation function. This will then need to assign state and setInterval so that this refreshes. 
 		                $.ajax({
-							url: "http://api.openweathermap.org/data/2.5/weather?lat="+locationObject.lat+"&lon="+locationObject.long+"&APPID=a1fdaf6002affae9c9357ffa9a25e0df"
+		                	url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
 							}).done(function(response){
-							 weatherResults = response.weather[0].description;
-							 console.log("This is the weather right now: "+weatherResults);
-							 console.log("This is the name of the town you are in: "+response.name);
-						})
+								console.log(response);
+								console.log(moment().format("mm"));
+							 that.setState({
+							 	weatherToday: response.hourly_forecast[0].condition,
+							 	weatherHourOne: response.hourly_forecast[1].condition,
+							 	weatherHourTwo: response.hourly_forecast[2].condition,
+							 	weatherHourThree: response.hourly_forecast[3].condition,
+							 	weatherHourFour: response.hourly_forecast[4].condition,
+							 	weatherHourFive: response.hourly_forecast[5].condition,
+							 });
+						});
+						hasWeatherData = true; 
 		                return resolve(locationObject);
 		            })
 		            .catch((error) => {
 		                //do stuff to handle error
 		                return reject(error);
 		            })
-		    });
+		   		});
+			}
+			else{
+				console.log("No need for new weather...");
+				return(resolve("No need for new weather..."))
+			}
+		    
 		}
-		locationThenWeather();
+		setInterval(locationThenWeather(), 10000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		setInterval(this._getTime, 100);
-		//Working off of this setState since this includes all the possible props being passed to the children. 
-		this.setState({
-			date: moment().format("MMMM Do YYYY"),
-			today: moment().format("dddd"),
-			weatherToday: this._getWeatherToday,
-			weatherHourOne: weatherOne,
-			weatherHourTwo: weatherTwo,
-			weatherHourThree: weatherThree,
-			weatherHourFour: weatherFour,
-			weatherHourFive: weatherFive
-		});
 	},
 	componentDidMount: function(){
 
@@ -128,7 +136,7 @@ var Main = React.createClass({
 					<Clock time={this.state.time}/>
 				</div>
 				<div className="row">
-					<Today date={this.state.date} day={this.state.today}/>
+					<Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today}/>
 				</div>
 				<div className="row">
 					<Weather today={this.state.weatherToday} one={this.state.weatherHourOne} two={this.state.weatherHourTwo} three={this.state.weatherHourThree} four={this.state.weatherHourFour} five={this.state.weatherHourFive}/>

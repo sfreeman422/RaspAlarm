@@ -10,6 +10,9 @@ var Today = React.createClass({
 			<div className="col-xs-12 date">
 			{this.props.date}
 			</div>
+			<div className="col-xs-12 locale">
+			{this.props.userLoc}
+			</div>
 		</div>
 		)
 	}
