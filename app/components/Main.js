@@ -6,9 +6,6 @@ var Clock = require("./Children/Clock.js");
 var Today = require("./Children/Today.js");
 var Weather = require("./Children/Weather.js");
 
-//Require the helper functions
-var helpers = require('./utils/helpers.js');
-
 var hasWeatherData = false; 
 
 var Main = React.createClass({
@@ -37,6 +34,7 @@ var Main = React.createClass({
 			weatherHourFivePic: undefined
 		};
 	},
+	//Gets the time for the alarm clock. 
 	_getTime: function(){
 		this.setState({
 			time: moment().format("hh:mm"+"a"),
@@ -48,75 +46,73 @@ var Main = React.createClass({
 		var that = this;
 		//Function to get the location of our user based on HTML5 Geolocation. 
 		function getLocation() {
-		    return new Promise((resolve, reject) => {
-		        navigator.geolocation.getCurrentPosition(
-		            (position) => {
-		                const location = {
-		                    lat: position.coords.latitude,
-		                    long: position.coords.longitude
-		                };
-		                return resolve(location);
-		            },
-		            (error) => {
-		                console.log('An error occurred:', error);
-		                return reject(error);
-		            }
-		        );
-		    });
+			return new Promise((resolve, reject) => {
+				navigator.geolocation.getCurrentPosition(
+					(position) => {
+						const location = {
+							lat: position.coords.latitude,
+							long: position.coords.longitude
+						};
+						return resolve(location);
+					},
+					(error) => {
+						return reject(error);
+					});
+			});
 		}
 
 		function locationThenWeather() {
 			var currentMinute = moment().format("mm");
 			console.log(currentMinute);
+			//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
 			if(currentMinute == "00" || hasWeatherData == false){
 				console.log("Getting weather data...");
 				return new Promise((resolve, reject) => {
-		        return getLocation()
-		            .then((locationObject) => {
-		                if (!locationObject) {
-		                    const error = 'Location was undefined!';
-		                    return reject(error);
-		                }
-		                // Makes the API call to weatherunderground. SHould be another promise structured simialrly to the getLocation function. This will then need to assign state and setInterval so that this refreshes. 
-		                $.ajax({
-		                	url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
+					return getLocation().then((locationObject) => {
+						if (!locationObject) {
+							const error = "Location was undefined!";
+							return reject(error);
+						}
+						// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
+						$.ajax({
+							url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
 							}).done(function(response){
 								console.log(response);
-							 that.setState({
-							 	weatherToday: response.hourly_forecast[0].condition,
-							 	weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
-							 	weatherTodayPic: response.hourly_forecast[0].icon_url,
-							 	weatherHourOne: response.hourly_forecast[1].condition,
-							 	weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
-							 	weatherHourOnePic: response.hourly_forecast[1].icon_url,
-							 	weatherHourTwo: response.hourly_forecast[2].condition,
-							 	weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
-							 	weatherHourTwoPic: response.hourly_forecast[2].icon_url,
-							 	weatherHourThree: response.hourly_forecast[3].condition,
-							 	weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
-							 	weatherHourThreePic: response.hourly_forecast[3].icon_url,
-							 	weatherHourFour: response.hourly_forecast[4].condition,
-							 	weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
-							 	weatherHourFourPic: response.hourly_forecast[4].icon_url,
-							 	weatherHourFive: response.hourly_forecast[5].condition,
-							 	weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
-							 	weatherHourFivePic: response.hourly_forecast[5].icon_url,
-							 });
-						});
+								that.setState({
+									weatherToday: response.hourly_forecast[0].condition,
+									weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
+									weatherTodayPic: response.hourly_forecast[0].icon_url,
+									weatherHourOne: response.hourly_forecast[1].condition,
+									weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
+									weatherHourOnePic: response.hourly_forecast[1].icon_url,
+									weatherHourTwo: response.hourly_forecast[2].condition,
+									weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
+									weatherHourTwoPic: response.hourly_forecast[2].icon_url,
+									weatherHourThree: response.hourly_forecast[3].condition,
+									weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
+									weatherHourThreePic: response.hourly_forecast[3].icon_url,
+									weatherHourFour: response.hourly_forecast[4].condition,
+									weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
+									weatherHourFourPic: response.hourly_forecast[4].icon_url,
+									weatherHourFive: response.hourly_forecast[5].condition,
+									weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
+									weatherHourFivePic: response.hourly_forecast[5].icon_url,
+								});
+							});
 						hasWeatherData = true; 
-		                return resolve(locationObject);
-		            })
-		            .catch((error) => {
-		                //do stuff to handle error
-		                return reject(error);
-		            })
-		   		});
+						return resolve(locationObject);
+					})
+					.catch((error) => {
+						return reject(error);
+					});
+				});
 			}
 			else{
 				console.log("No need for new weather...");
 			}
 		    
 		}
+		//Runs the locationThenWeather function every 10 seconds. 
 		setInterval(locationThenWeather(), 10000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		setInterval(this._getTime, 100);
