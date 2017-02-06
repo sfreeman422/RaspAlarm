@@ -7,3 +7,12 @@
   	display: flex;
   	align-items: center;
 }
+h1{
+	color: white;
+}
+p{
+	color: white;
+}
+body{
+	background-color: black;
+}

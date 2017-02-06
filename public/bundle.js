@@ -36590,17 +36590,22 @@
 				React.createElement(
 					"div",
 					{ className: "col-xs-12 weekday" },
-					this.props.day
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-12 date" },
-					this.props.date
+					React.createElement(
+						"p",
+						null,
+						this.props.day,
+						", ",
+						this.props.date
+					)
 				),
 				React.createElement(
 					"div",
 					{ className: "col-xs-12 locale" },
-					this.props.userLoc
+					React.createElement(
+						"p",
+						null,
+						this.props.userLoc
+					)
 				)
 			);
 		}

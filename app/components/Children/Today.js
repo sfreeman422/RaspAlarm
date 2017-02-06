@@ -5,13 +5,10 @@ var Today = React.createClass({
 		return(
 		<div className="today">
 			<div className="col-xs-12 weekday">
-				{this.props.day}
-			</div>
-			<div className="col-xs-12 date">
-			{this.props.date}
+				<p>{this.props.day}, {this.props.date}</p>
 			</div>
 			<div className="col-xs-12 locale">
-			{this.props.userLoc}
+				<p>{this.props.userLoc}</p>
 			</div>
 		</div>
 		)
