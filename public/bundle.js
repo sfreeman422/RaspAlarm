@@ -21631,7 +21631,7 @@
 		},
 		componentWillMount: function componentWillMount() {
 			this._locationThenWeather();
-			//Runs the locationThenWeather function every 10 seconds. 
+			//Runs the locationThenWeather function every 60 seconds. We do this to avoid 6 API calls within the one minute in which we are at a :00 time. 
 			setInterval(this._locationThenWeather, 60000);
 			//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 			setInterval(this._getTime, 100);
