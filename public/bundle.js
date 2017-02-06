@@ -21500,6 +21500,7 @@
 	var Clock = __webpack_require__(290);
 	var Today = __webpack_require__(291);
 	var Weather = __webpack_require__(292);
+	var Alarm = __webpack_require__(293);
 
 	var hasWeatherData = false;
 
@@ -21512,6 +21513,7 @@
 				date: undefined,
 				today: undefined,
 				userLoc: undefined,
+				alarmStatus: "No alarm set",
 				weatherToday: undefined,
 				weatherTodayTime: undefined,
 				weatherTodayTemp: undefined,
@@ -21609,6 +21611,7 @@
 								});
 							});
 							hasWeatherData = true;
+							//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
 							$.ajax({
 								url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObject.lat + "," + locationObject.long + "&sensor=true"
 							}).done(function (geoloc) {
@@ -21650,6 +21653,11 @@
 					'div',
 					{ className: 'row' },
 					React.createElement(Weather, { today: this.state.weatherToday, todayHour: this.state.weatherTodayTime, todayPic: this.state.weatherTodayPic, todayTemp: this.state.weatherTodayTemp, one: this.state.weatherHourOne, oneHour: this.state.weatherHourOneTime, oneTemp: this.state.weatherHourOneTemp, onePic: this.state.weatherHourOnePic, two: this.state.weatherHourTwo, twoHour: this.state.weatherHourTwoTime, twoTemp: this.state.weatherHourTwoTemp, twoPic: this.state.weatherHourTwoPic, three: this.state.weatherHourThree, threeHour: this.state.weatherHourThreeTime, threeTemp: this.state.weatherHourThreeTemp, threePic: this.state.weatherHourThreePic, four: this.state.weatherHourFour, fourHour: this.state.weatherHourFourTime, fourTemp: this.state.weatherHourFourTemp, fourPic: this.state.weatherHourFourPic, five: this.state.weatherHourFive, fiveHour: this.state.weatherHourFiveTime, fiveTemp: this.state.weatherHourFiveTemp, fivePic: this.state.weatherHourFivePic })
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(Alarm, { alarmStatus: this.state.alarmStatus })
 				)
 			);
 		}
@@ -36606,15 +36614,8 @@
 						null,
 						this.props.day,
 						", ",
-						this.props.date
-					)
-				),
-				React.createElement(
-					"div",
-					{ className: "col-xs-12 locale" },
-					React.createElement(
-						"p",
-						null,
+						this.props.date,
+						" in ",
 						this.props.userLoc
 					)
 				)
@@ -36764,6 +36765,37 @@
 	});
 
 	module.exports = Weather;
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Alarm = React.createClass({
+		displayName: "Alarm",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "col-xs-12", id: "alarm" },
+				React.createElement(
+					"p",
+					null,
+					this.props.alarmStatus
+				),
+				React.createElement(
+					"button",
+					null,
+					"Set an Alarm"
+				)
+			);
+		}
+	});
+
+	module.exports = Alarm;
 
 /***/ }
 /******/ ]);

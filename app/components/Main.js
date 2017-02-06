@@ -5,6 +5,7 @@ var moment = require('moment');
 var Clock = require("./Children/Clock.js");
 var Today = require("./Children/Today.js");
 var Weather = require("./Children/Weather.js");
+var Alarm = require("./Children/Alarm.js");
 
 var hasWeatherData = false; 
 
@@ -15,6 +16,7 @@ var Main = React.createClass({
 			date: undefined,
 			today: undefined,
 			userLoc: undefined,
+			alarmStatus: "No alarm set",
 			weatherToday: undefined,
 			weatherTodayTime: undefined,
 			weatherTodayTemp: undefined,
@@ -152,6 +154,9 @@ var Main = React.createClass({
 				</div>
 				<div className="row">
 					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic}/>
+				</div>
+				<div className="row">
+					<Alarm alarmStatus={this.state.alarmStatus}/>
 				</div>
 			</div>);
 	}
