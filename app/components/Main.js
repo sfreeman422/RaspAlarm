@@ -14,6 +14,7 @@ var Main = React.createClass({
 			time: undefined,
 			date: undefined,
 			today: undefined,
+			userLoc: undefined,
 			weatherToday: undefined,
 			weatherTodayTime: undefined,
 			weatherTodayTemp: undefined,
@@ -55,6 +56,7 @@ var Main = React.createClass({
 			return new Promise((resolve, reject) => {
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
+						console.log(position);
 						const location = {
 							lat: position.coords.latitude,
 							long: position.coords.longitude
@@ -111,7 +113,16 @@ var Main = React.createClass({
 									weatherHourFivePic: response.hourly_forecast[5].icon_url,
 								});
 							});
-						hasWeatherData = true; 
+						hasWeatherData = true;
+						$.ajax({
+							url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+locationObject.lat+","+locationObject.long+"&sensor=true"
+						}).done(function(geoloc){
+							console.log("Response from Google Geocode:"+geoloc);
+							console.log(geoloc);
+							that.setState({
+								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
+							});
+						});
 						return resolve(locationObject);
 					})
 					.catch((error) => {

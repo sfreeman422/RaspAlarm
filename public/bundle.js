@@ -21511,6 +21511,7 @@
 				time: undefined,
 				date: undefined,
 				today: undefined,
+				userLoc: undefined,
 				weatherToday: undefined,
 				weatherTodayTime: undefined,
 				weatherTodayTemp: undefined,
@@ -21551,6 +21552,7 @@
 			function getLocation() {
 				return new Promise(function (resolve, reject) {
 					navigator.geolocation.getCurrentPosition(function (position) {
+						console.log(position);
 						var location = {
 							lat: position.coords.latitude,
 							long: position.coords.longitude
@@ -21607,6 +21609,15 @@
 								});
 							});
 							hasWeatherData = true;
+							$.ajax({
+								url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObject.lat + "," + locationObject.long + "&sensor=true"
+							}).done(function (geoloc) {
+								console.log("Response from Google Geocode:" + geoloc);
+								console.log(geoloc);
+								that.setState({
+									userLoc: geoloc.results[0].address_components[2].short_name + ", " + geoloc.results[0].address_components[4].short_name
+								});
+							});
 							return resolve(locationObject);
 						}).catch(function (error) {
 							return reject(error);
