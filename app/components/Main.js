@@ -51,11 +51,8 @@ var Main = React.createClass({
 			today: moment().format("dddd")
 		}) ;
 	},
-	componentWillMount: function(){
-		var that = this;
-		//Function to get the location of our user based on HTML5 Geolocation. 
-		function getLocation() {
-			return new Promise((resolve, reject) => {
+	_getLocation: function(){
+		return new Promise((resolve, reject) => {
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
 						console.log(position);
@@ -69,16 +66,16 @@ var Main = React.createClass({
 						return reject(error);
 					});
 			});
-		}
-
-		function locationThenWeather() {
+	},
+	_locationThenWeather: function(){
+		var that = this; 
 			var currentMinute = moment().format("mm");
 			console.log(currentMinute);
 			//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
 			if(currentMinute == "00" || hasWeatherData == false){
 				console.log("Getting weather data...");
 				return new Promise((resolve, reject) => {
-					return getLocation().then((locationObject) => {
+					return this._getLocation().then((locationObject) => {
 						if (!locationObject) {
 							const error = "Location was undefined!";
 							return reject(error);
@@ -86,9 +83,9 @@ var Main = React.createClass({
 						// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
 						$.ajax({
 							url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
-							}).done(function(response){
+							}).done((response) =>{
 								console.log(response);
-								that.setState({
+								this.setState({
 									weatherToday: response.hourly_forecast[0].condition,
 									weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
 									weatherTodayTemp: response.hourly_forecast[0].temp.english+"F",
@@ -119,10 +116,10 @@ var Main = React.createClass({
 						//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
 						$.ajax({
 							url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+locationObject.lat+","+locationObject.long+"&sensor=true"
-						}).done(function(geoloc){
+						}).done((geoloc) =>{
 							console.log("Response from Google Geocode:"+geoloc);
 							console.log(geoloc);
-							that.setState({
+							this.setState({
 								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
 							});
 						});
@@ -136,10 +133,10 @@ var Main = React.createClass({
 			else{
 				console.log("No need for new weather...");
 			}
-		    
-		}
+		},
+	componentWillMount: function(){
 		//Runs the locationThenWeather function every 10 seconds. 
-		setInterval(locationThenWeather(), 10000);
+		setInterval(this._locationThenWeather, 10000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		setInterval(this._getTime, 100);
 	},

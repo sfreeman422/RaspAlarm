@@ -21548,90 +21548,90 @@
 				today: moment().format("dddd")
 			});
 		},
-		componentWillMount: function componentWillMount() {
+		_getLocation: function _getLocation() {
+			return new Promise(function (resolve, reject) {
+				navigator.geolocation.getCurrentPosition(function (position) {
+					console.log(position);
+					var location = {
+						lat: position.coords.latitude,
+						long: position.coords.longitude
+					};
+					return resolve(location);
+				}, function (error) {
+					return reject(error);
+				});
+			});
+		},
+		_locationThenWeather: function _locationThenWeather() {
+			var _this = this;
+
 			var that = this;
-			//Function to get the location of our user based on HTML5 Geolocation. 
-			function getLocation() {
+			var currentMinute = moment().format("mm");
+			console.log(currentMinute);
+			//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
+			if (currentMinute == "00" || hasWeatherData == false) {
+				console.log("Getting weather data...");
 				return new Promise(function (resolve, reject) {
-					navigator.geolocation.getCurrentPosition(function (position) {
-						console.log(position);
-						var location = {
-							lat: position.coords.latitude,
-							long: position.coords.longitude
-						};
-						return resolve(location);
-					}, function (error) {
+					return _this._getLocation().then(function (locationObject) {
+						if (!locationObject) {
+							var error = "Location was undefined!";
+							return reject(error);
+						}
+						// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
+						$.ajax({
+							url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
+						}).done(function (response) {
+							console.log(response);
+							_this.setState({
+								weatherToday: response.hourly_forecast[0].condition,
+								weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
+								weatherTodayTemp: response.hourly_forecast[0].temp.english + "F",
+								weatherTodayPic: response.hourly_forecast[0].icon_url,
+								weatherHourOne: response.hourly_forecast[1].condition,
+								weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
+								weatherHourOneTemp: response.hourly_forecast[1].temp.english + "F",
+								weatherHourOnePic: response.hourly_forecast[1].icon_url,
+								weatherHourTwo: response.hourly_forecast[2].condition,
+								weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
+								weatherHourTwoTemp: response.hourly_forecast[2].temp.english + "F",
+								weatherHourTwoPic: response.hourly_forecast[2].icon_url,
+								weatherHourThree: response.hourly_forecast[3].condition,
+								weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
+								weatherHourThreeTemp: response.hourly_forecast[3].temp.english + "F",
+								weatherHourThreePic: response.hourly_forecast[3].icon_url,
+								weatherHourFour: response.hourly_forecast[4].condition,
+								weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
+								weatherHourFourTemp: response.hourly_forecast[4].temp.english + "F",
+								weatherHourFourPic: response.hourly_forecast[4].icon_url,
+								weatherHourFive: response.hourly_forecast[5].condition,
+								weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
+								weatherHourFiveTemp: response.hourly_forecast[1].temp.english + "F",
+								weatherHourFivePic: response.hourly_forecast[5].icon_url
+							});
+						});
+						hasWeatherData = true;
+						//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
+						$.ajax({
+							url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObject.lat + "," + locationObject.long + "&sensor=true"
+						}).done(function (geoloc) {
+							console.log("Response from Google Geocode:" + geoloc);
+							console.log(geoloc);
+							_this.setState({
+								userLoc: geoloc.results[0].address_components[2].short_name + ", " + geoloc.results[0].address_components[4].short_name
+							});
+						});
+						return resolve(locationObject);
+					}).catch(function (error) {
 						return reject(error);
 					});
 				});
+			} else {
+				console.log("No need for new weather...");
 			}
-
-			function locationThenWeather() {
-				var currentMinute = moment().format("mm");
-				console.log(currentMinute);
-				//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
-				if (currentMinute == "00" || hasWeatherData == false) {
-					console.log("Getting weather data...");
-					return new Promise(function (resolve, reject) {
-						return getLocation().then(function (locationObject) {
-							if (!locationObject) {
-								var error = "Location was undefined!";
-								return reject(error);
-							}
-							// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
-							$.ajax({
-								url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
-							}).done(function (response) {
-								console.log(response);
-								that.setState({
-									weatherToday: response.hourly_forecast[0].condition,
-									weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
-									weatherTodayTemp: response.hourly_forecast[0].temp.english + "F",
-									weatherTodayPic: response.hourly_forecast[0].icon_url,
-									weatherHourOne: response.hourly_forecast[1].condition,
-									weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
-									weatherHourOneTemp: response.hourly_forecast[1].temp.english + "F",
-									weatherHourOnePic: response.hourly_forecast[1].icon_url,
-									weatherHourTwo: response.hourly_forecast[2].condition,
-									weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
-									weatherHourTwoTemp: response.hourly_forecast[2].temp.english + "F",
-									weatherHourTwoPic: response.hourly_forecast[2].icon_url,
-									weatherHourThree: response.hourly_forecast[3].condition,
-									weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
-									weatherHourThreeTemp: response.hourly_forecast[3].temp.english + "F",
-									weatherHourThreePic: response.hourly_forecast[3].icon_url,
-									weatherHourFour: response.hourly_forecast[4].condition,
-									weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
-									weatherHourFourTemp: response.hourly_forecast[4].temp.english + "F",
-									weatherHourFourPic: response.hourly_forecast[4].icon_url,
-									weatherHourFive: response.hourly_forecast[5].condition,
-									weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
-									weatherHourFiveTemp: response.hourly_forecast[1].temp.english + "F",
-									weatherHourFivePic: response.hourly_forecast[5].icon_url
-								});
-							});
-							hasWeatherData = true;
-							//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
-							$.ajax({
-								url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObject.lat + "," + locationObject.long + "&sensor=true"
-							}).done(function (geoloc) {
-								console.log("Response from Google Geocode:" + geoloc);
-								console.log(geoloc);
-								that.setState({
-									userLoc: geoloc.results[0].address_components[2].short_name + ", " + geoloc.results[0].address_components[4].short_name
-								});
-							});
-							return resolve(locationObject);
-						}).catch(function (error) {
-							return reject(error);
-						});
-					});
-				} else {
-					console.log("No need for new weather...");
-				}
-			}
+		},
+		componentWillMount: function componentWillMount() {
 			//Runs the locationThenWeather function every 10 seconds. 
-			setInterval(locationThenWeather(), 10000);
+			setInterval(this._locationThenWeather, 10000);
 			//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 			setInterval(this._getTime, 100);
 		},
