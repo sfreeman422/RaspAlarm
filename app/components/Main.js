@@ -16,21 +16,27 @@ var Main = React.createClass({
 			today: undefined,
 			weatherToday: undefined,
 			weatherTodayTime: undefined,
+			weatherTodayTemp: undefined,
 			weatherTodayPic: undefined,
 			weatherHourOne: undefined, 
 			weatherHourOneTime: undefined,
+			weatherHourOneTemp: undefined,
 			weatherHourOnePic: undefined,
 			weatherHourTwo: undefined,
 			weatherHourTwoTime: undefined,
+			weatherHourTwoTemp: undefined,
 			weatherHourTwoPic: undefined,
 			weatherHourThree: undefined,
 			weatherHourThreeTime: undefined,
+			weatherHourThreeTemp: undefined,
 			weatherHourThreePic: undefined,
 			weatherHourFour: undefined,
 			weatherHourFourTime: undefined,
+			weatherHourFourTemp: undefined,
 			weatherHourFourPic: undefined,
 			weatherHourFive: undefined,
 			weatherHourFiveTime: undefined,
+			weatherHourFiveTemp: undefined,
 			weatherHourFivePic: undefined
 		};
 	},
@@ -81,21 +87,27 @@ var Main = React.createClass({
 								that.setState({
 									weatherToday: response.hourly_forecast[0].condition,
 									weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
+									weatherTodayTemp: response.hourly_forecast[0].temp.english+"F",
 									weatherTodayPic: response.hourly_forecast[0].icon_url,
 									weatherHourOne: response.hourly_forecast[1].condition,
 									weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
+									weatherHourOneTemp: response.hourly_forecast[1].temp.english+"F",
 									weatherHourOnePic: response.hourly_forecast[1].icon_url,
 									weatherHourTwo: response.hourly_forecast[2].condition,
 									weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
+									weatherHourTwoTemp: response.hourly_forecast[2].temp.english+"F",
 									weatherHourTwoPic: response.hourly_forecast[2].icon_url,
 									weatherHourThree: response.hourly_forecast[3].condition,
 									weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
+									weatherHourThreeTemp: response.hourly_forecast[3].temp.english+"F",
 									weatherHourThreePic: response.hourly_forecast[3].icon_url,
 									weatherHourFour: response.hourly_forecast[4].condition,
 									weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
+									weatherHourFourTemp: response.hourly_forecast[4].temp.english+"F",
 									weatherHourFourPic: response.hourly_forecast[4].icon_url,
 									weatherHourFive: response.hourly_forecast[5].condition,
 									weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
+									weatherHourFiveTemp: response.hourly_forecast[1].temp.english+"F",
 									weatherHourFivePic: response.hourly_forecast[5].icon_url,
 								});
 							});
@@ -127,7 +139,7 @@ var Main = React.createClass({
 					<Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today}/>
 				</div>
 				<div className="row">
-					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fivePic={this.state.weatherHourFivePic}/>
+					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic}/>
 				</div>
 			</div>);
 	}
