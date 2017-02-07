@@ -21493,6 +21493,8 @@
 
 	'use strict';
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 	var React = __webpack_require__(1);
 	var moment = __webpack_require__(179);
 
@@ -21509,35 +21511,35 @@
 
 		getInitialState: function getInitialState() {
 			return {
-				time: undefined,
-				date: undefined,
-				today: undefined,
-				userLoc: undefined,
+				time: "Loading...",
+				date: "Loading...",
+				today: "Loading...",
+				userLoc: "Loading...",
 				alarmStatus: "No alarm set",
-				weatherToday: undefined,
-				weatherTodayTime: undefined,
-				weatherTodayTemp: undefined,
-				weatherTodayPic: undefined,
-				weatherHourOne: undefined,
-				weatherHourOneTime: undefined,
-				weatherHourOneTemp: undefined,
-				weatherHourOnePic: undefined,
-				weatherHourTwo: undefined,
-				weatherHourTwoTime: undefined,
-				weatherHourTwoTemp: undefined,
-				weatherHourTwoPic: undefined,
-				weatherHourThree: undefined,
-				weatherHourThreeTime: undefined,
-				weatherHourThreeTemp: undefined,
-				weatherHourThreePic: undefined,
-				weatherHourFour: undefined,
-				weatherHourFourTime: undefined,
-				weatherHourFourTemp: undefined,
-				weatherHourFourPic: undefined,
-				weatherHourFive: undefined,
-				weatherHourFiveTime: undefined,
-				weatherHourFiveTemp: undefined,
-				weatherHourFivePic: undefined
+				weatherToday: "Loading...",
+				weatherTodayTime: "Loading...",
+				weatherTodayTemp: "Loading...",
+				weatherTodayPic: "Loading...",
+				weatherHourOne: "Loading...",
+				weatherHourOneTime: "Loading...",
+				weatherHourOneTemp: "Loading...",
+				weatherHourOnePic: "Loading...",
+				weatherHourTwo: "Loading...",
+				weatherHourTwoTime: "Loading...",
+				weatherHourTwoTemp: "Loading...",
+				weatherHourTwoPic: "Loading...",
+				weatherHourThree: "Loading...",
+				weatherHourThreeTime: "Loading...",
+				weatherHourThreeTemp: "Loading...",
+				weatherHourThreePic: "Loading...",
+				weatherHourFour: "Loading...",
+				weatherHourFourTime: "Loading...",
+				weatherHourFourTemp: "Loading...",
+				weatherHourFourPic: "Loading...",
+				weatherHourFive: "Loading...",
+				weatherHourFiveTime: "Loading...",
+				weatherHourFiveTemp: "Loading...",
+				weatherHourFivePic: "Loading..."
 			};
 		},
 		//Gets the time for the alarm clock. 
@@ -21620,6 +21622,17 @@
 								userLoc: geoloc.results[0].address_components[2].short_name + ", " + geoloc.results[0].address_components[4].short_name
 							});
 						});
+						//Gets a list of the already set alarms. 
+						$.ajax({
+							url: "/alarms"
+						}).done(function (alarms) {
+							if (alarms == {}) {
+								console.log("There are no alarms set!");
+							} else {
+								console.log(typeof alarms === 'undefined' ? 'undefined' : _typeof(alarms));
+								console.log("Alarms are: " + alarms);
+							}
+						});
 						return resolve(locationObject);
 					}).catch(function (error) {
 						return reject(error);
@@ -21631,6 +21644,7 @@
 		},
 		componentWillMount: function componentWillMount() {
 			this._locationThenWeather();
+			this._getTime();
 			//Runs the locationThenWeather function every 60 seconds. We do this to avoid 6 API calls within the one minute in which we are at a :00 time. 
 			setInterval(this._locationThenWeather, 60000);
 			//Get the time every 1/10 of a second, this will also setState for time to the current time. 
