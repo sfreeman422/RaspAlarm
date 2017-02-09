@@ -21937,12 +21937,17 @@
 				console.log("No need for new weather...");
 			}
 		},
+		//Function to check whether its time for an alarm to go off or not.
 		_checkAlarm: function _checkAlarm() {
 			if (this.state.time == this.state.alarm) {
 				console.log("Wake up");
 				alarmSound.play();
 				this.setState({
 					alarmStatus: "ringing"
+				});
+			} else {
+				this.setState({
+					alarmStatus: undefined
 				});
 			}
 		},
@@ -21978,7 +21983,7 @@
 				React.createElement(
 					'div',
 					{ className: 'row' },
-					React.createElement(Alarm, { alarmStatus: this.state.alarmStatus })
+					React.createElement(Alarm, { alarmStatus: this.state.alarmStatus, nextAlarm: this.state.nextAlarm })
 				)
 			);
 		}
@@ -37110,8 +37115,13 @@
 					),
 					React.createElement(
 						"button",
-						{ className: "btn btn-danger" },
+						{ className: "btn-xl btn-danger", id: "snooze" },
 						"Snooze"
+					),
+					React.createElement(
+						"button",
+						{ className: "btn-xl btn-success", id: "wakeUp" },
+						"Wake Up"
 					)
 				);
 			} else {

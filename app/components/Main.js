@@ -159,12 +159,18 @@ var Main = React.createClass({
 				console.log("No need for new weather...");
 			}
 		},
+		//Function to check whether its time for an alarm to go off or not.
 	_checkAlarm: function(){
 		if(this.state.time == this.state.alarm){
 			console.log("Wake up");
 			alarmSound.play();
 			this.setState({
 				alarmStatus: "ringing"
+			});
+		}
+		else{
+			this.setState({
+				alarmStatus: undefined
 			});
 		}
 	},
@@ -191,7 +197,7 @@ var Main = React.createClass({
 					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic}/>
 				</div>
 				<div className="row">
-					<Alarm alarmStatus={this.state.alarmStatus}/>
+					<Alarm alarmStatus={this.state.alarmStatus} nextAlarm={this.state.nextAlarm}/>
 				</div>
 			</div>);
 	}

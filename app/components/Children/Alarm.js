@@ -6,7 +6,8 @@ var Alarm = React.createClass({
 			return(
 				<div className="col-xs-12" id="alarm">
 					<p>Good Morning</p>
-					<button className="btn btn-danger">Snooze</button>
+					<button className="btn-xl btn-danger" id="snooze">Snooze</button>
+					<button className="btn-xl btn-success" id="wakeUp">Wake Up</button>
 				</div>
 			)
 		}
