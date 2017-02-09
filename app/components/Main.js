@@ -19,7 +19,8 @@ var Main = React.createClass({
 			date: "Loading...",
 			today: "Loading...",
 			userLoc: "Loading...",
-			alarmStatus: "No alarm set",
+			nextAlarm: "No alarm set",
+			alarmStatus: undefined,
 			alarm: undefined,
 			weatherToday: "Loading...",
 			weatherTodayTime: "Loading...",
@@ -142,7 +143,7 @@ var Main = React.createClass({
 									console.log(alarms[i]);
 								}
 								this.setState({
-									alarmStatus: "Next alarm at "+alarms[0].time,
+									nextAlarm: "Next alarm at "+alarms[0].time,
 									alarm: alarms[0].time
 								});
 							}
@@ -162,6 +163,9 @@ var Main = React.createClass({
 		if(this.state.time == this.state.alarm){
 			console.log("Wake up");
 			alarmSound.play();
+			this.setState({
+				alarmStatus: "ringing"
+			});
 		}
 	},
 	componentWillMount: function(){

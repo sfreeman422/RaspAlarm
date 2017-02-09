@@ -21799,7 +21799,8 @@
 				date: "Loading...",
 				today: "Loading...",
 				userLoc: "Loading...",
-				alarmStatus: "No alarm set",
+				nextAlarm: "No alarm set",
+				alarmStatus: undefined,
 				alarm: undefined,
 				weatherToday: "Loading...",
 				weatherTodayTime: "Loading...",
@@ -21922,7 +21923,7 @@
 										console.log(alarms[i]);
 									}
 									_this.setState({
-										alarmStatus: "Next alarm at " + alarms[0].time,
+										nextAlarm: "Next alarm at " + alarms[0].time,
 										alarm: alarms[0].time
 									});
 								}
@@ -21940,6 +21941,9 @@
 			if (this.state.time == this.state.alarm) {
 				console.log("Wake up");
 				alarmSound.play();
+				this.setState({
+					alarmStatus: "ringing"
+				});
 			}
 		},
 		componentWillMount: function componentWillMount() {
@@ -37095,20 +37099,37 @@
 		displayName: "Alarm",
 
 		render: function render() {
-			return React.createElement(
-				"div",
-				{ className: "col-xs-12", id: "alarm" },
-				React.createElement(
-					"p",
-					null,
-					this.props.alarmStatus
-				),
-				React.createElement(
-					"button",
-					{ "data-toggle": "modal", "data-target": "#setAlarm" },
-					"Set an Alarm"
-				)
-			);
+			if (this.props.alarmStatus == "ringing") {
+				return React.createElement(
+					"div",
+					{ className: "col-xs-12", id: "alarm" },
+					React.createElement(
+						"p",
+						null,
+						"Good Morning"
+					),
+					React.createElement(
+						"button",
+						{ className: "btn btn-danger" },
+						"Snooze"
+					)
+				);
+			} else {
+				return React.createElement(
+					"div",
+					{ className: "col-xs-12", id: "alarm" },
+					React.createElement(
+						"p",
+						null,
+						this.props.nextAlarm
+					),
+					React.createElement(
+						"button",
+						{ "data-toggle": "modal", "data-target": "#setAlarm" },
+						"Set an Alarm"
+					)
+				);
+			}
 		}
 	});
 
