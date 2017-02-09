@@ -27,8 +27,6 @@ app.get('/alarms', function(req, res){
 				res.send("No alarms available!");
 			}
 			else{
-				console.log(typeof(docs));
-				console.log(docs);
 				res.send(docs);
 			}
 		}
@@ -40,6 +38,22 @@ app.get('/alarms', function(req, res){
 //Route to set alarms. 
 app.post('/setAlarm', function(req, res){
 	console.log(req.body);
+	var alarm = new Alarm({
+		time: req.body.time
+		// monday: req.body.monday,
+		// tuesday: req.body.tuesday,
+		// wednesday: req.body.wednesday,
+		// thursday: req.body.thursday,
+		// friday: req.body.friday,
+		// saturday: req.body.saturday,
+		// sunday: req.body.sunday
+
+	});
+	console.log(alarm);
+	alarm.save(function(err, completed){
+		if(err)throw err;
+		console.log("Alarm Saved.");
+	})
 	res.redirect("/");
 });
 //Listen to the port.

@@ -1,6 +1,19 @@
 <html>
 <head>
+<!--Import Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!--Import Timepicker CSS -->
+<link type="text/css" href="../bower_components/bootstrap-timepicker/css/timepicker.less" />
+<!-- Import jQuery -->
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<!--Import Bootstrap JS -->
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <!--Import Timepicker JS -->
+<script src="./js/bootstrap-timepicker.js"></script>
+<!--Import custom CSS -->
 <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
@@ -15,6 +28,10 @@
 			</div>
 			<div class="modal-body">
 				<form action="/setAlarm" method="post" id="alarmForm">
+					<div class = "input-group bootstrap-timepicker timepicker">
+						<input id="timepicker1" type="text" class="form-control input-small">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+					</div>
 					<input type="text" name="time">
 					<input id="alarmSubmit" type="submit" value="Set Alarm">
 				</form>
@@ -24,12 +41,11 @@
 			</div>
 		</div>
 	</div>
-
-	<script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--Timepicker JS-->
+<script>
+	$('#timepicker1').timepicker();
+</script>
+<!--React Bundle-->
 	<script src="bundle.js"></script>
 </body>
 </html>

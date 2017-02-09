@@ -127,12 +127,16 @@ var Main = React.createClass({
 						$.ajax({
 							url: "/alarms"
 						}).done((alarms) =>{
-							if(alarms == {}){
-								console.log("There are no alarms set!");
+							//Check if there are no alarms set (the array would be 0)
+							if(alarms.length == 0){
+								console.log("No Alarms set!");
 							}
+							//Else we will log out the alarms that we have. 
 							else{
-								console.log(typeof(alarms));
-								console.log("Alarms are: "+alarms);
+								console.log("Alarms are: ");
+								for(var i = 0; i < alarms.length; i++){
+									console.log(alarms[i]);
+								}
 							}
 						})
 						return resolve(locationObject);
