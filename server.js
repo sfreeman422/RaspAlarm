@@ -40,6 +40,7 @@ app.get('/alarms', function(req, res){
 //Route to set alarms. 
 app.post('/setAlarm', function(req, res){
 	console.log(req.body);
+	res.redirect("/");
 });
 //Listen to the port.
 app.listen(PORT, function(){
