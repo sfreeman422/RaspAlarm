@@ -11,6 +11,7 @@ mongoose.connect("mongodb://localhost:27017/alarms", function(){
 });
 
 app.use(logger('dev'));
+app.use(bodyParser());
 app.use(express.static('./public'));
 
 //Initial route to load the page for the Timer, weather information, etc. 
@@ -38,8 +39,9 @@ app.get('/alarms', function(req, res){
 });
 //Route to set alarms. 
 app.post('/setAlarm', function(req, res){
-
+	console.log(req.body);
 });
+//Listen to the port.
 app.listen(PORT, function(){
 	console.log('listening on port '+PORT);
 });

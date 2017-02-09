@@ -4,7 +4,9 @@
 <link rel="stylesheet" href="./style/style.css">
 </head>
 <body>
+	<!--Div for the React components -->
 	<div class="verticalCenter" id="app"></div>
+	<!--Modal for the Alarm input by the end user -->
 	<div class="modal fade" id="setAlarm" role="alarm">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -12,8 +14,10 @@
 				<h4 class="modal-title">Set an Alarm</h4>
 			</div>
 			<div class="modal-body">
-				<p>Choose an alarm dropdown should go here.</p>
-				<p>Also there should be a checkbox to determine which days you want to set the alarm for</p>
+				<form action="/setAlarm" method="post" id="alarmForm">
+					<input type="text" name="time">
+					<input id="alarmSubmit" type="submit" value="Set Alarm">
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" data-dismiss="modal">Close</button>
