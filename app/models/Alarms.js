@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
 var alarmSchema = mongoose.Schema({
-	alarm:{
 		time: String,
 		monday: Boolean,
 		tuesday: Boolean,
@@ -10,7 +9,6 @@ var alarmSchema = mongoose.Schema({
 		friday: Boolean,
 		saturday: Boolean,
 		sunday: Boolean
-	}
 });
 
 module.exports = mongoose.model("Alarm", alarmSchema); 

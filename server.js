@@ -6,9 +6,16 @@ var Alarm = require('./app/models/Alarms.js');
 
 var app = express();
 var PORT = process.env.PORT || 3000; 
-mongoose.connect("mongodb://localhost:27017/alarms", function(){
+
+//Connect to mongo and let us know that we are successfully connected or there was an error. 
+mongoose.connect("mongodb://localhost:27017/alarms");
+var db = mongoose.connection;
+db.on("open", function(){
 	console.log("Connected to MongoDB on port 27017.");
 });
+db.on("error", function(){
+	console.log(error);
+})
 
 app.use(logger('dev'));
 app.use(bodyParser());
@@ -38,7 +45,7 @@ app.get('/alarms', function(req, res){
 //Route to set alarms. 
 app.post('/setAlarm', function(req, res){
 	console.log(req.body);
-	var alarm = new Alarm({
+	var newAlarm = new Alarm({
 		time: req.body.time
 		// monday: req.body.monday,
 		// tuesday: req.body.tuesday,
@@ -49,11 +56,14 @@ app.post('/setAlarm', function(req, res){
 		// sunday: req.body.sunday
 
 	});
-	console.log(alarm);
-	alarm.save(function(err, completed){
+	console.log("NewAlarm is: ");
+	console.log(newAlarm);
+
+	newAlarm.save(function(err, completed){
 		if(err)throw err;
-		console.log("Alarm Saved.");
+		console.log(completed);
 	})
+
 	res.redirect("/");
 });
 //Listen to the port.
