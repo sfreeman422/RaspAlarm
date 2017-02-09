@@ -137,6 +137,9 @@ var Main = React.createClass({
 								for(var i = 0; i < alarms.length; i++){
 									console.log(alarms[i]);
 								}
+								this.setState({
+									alarmStatus: "Next alarm at "+alarms[0].time
+								});
 							}
 						})
 						return resolve(locationObject);

@@ -30,12 +30,7 @@ app.get('/alarms', function(req, res){
 	//Mongoose method to retrieve all 
 	Alarm.find({}, function(err, docs){
 		if(!err && docs){
-			if(docs == []){
-				res.send("No alarms available!");
-			}
-			else{
 				res.send(docs);
-			}
 		}
 		else{
 			throw err;
@@ -56,12 +51,10 @@ app.post('/setAlarm', function(req, res){
 		// sunday: req.body.sunday
 
 	});
-	console.log("NewAlarm is: ");
-	console.log(newAlarm);
 
 	newAlarm.save(function(err, completed){
 		if(err)throw err;
-		console.log(completed);
+		console.log("Alarm saved as : "+completed);
 	})
 
 	res.redirect("/");
