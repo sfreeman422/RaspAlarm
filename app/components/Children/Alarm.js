@@ -15,7 +15,7 @@ var Alarm = React.createClass({
 			return(
 				<div className="col-xs-12" id="alarm">
 					<p>{this.props.nextAlarm}</p>
-					<button data-toggle="modal" data-target="#setAlarm">Set an Alarm</button>
+					<button className="btn-xl btn-default" data-toggle="modal" data-target="#setAlarm">Set an Alarm</button>
 				</div>
 			)
 		}

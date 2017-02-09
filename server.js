@@ -40,16 +40,18 @@ app.get('/alarms', function(req, res){
 //Route to set alarms. 
 app.post('/setAlarm', function(req, res){
 	console.log(req.body);
+	var userTime = req.body.hour + ":" + req.body.minute + req.body.ampm;
+	console.log(req.body.monday);
+	console.log(req.body.tuesday);
 	var newAlarm = new Alarm({
-		time: req.body.time
-		// monday: req.body.monday,
-		// tuesday: req.body.tuesday,
-		// wednesday: req.body.wednesday,
-		// thursday: req.body.thursday,
-		// friday: req.body.friday,
-		// saturday: req.body.saturday,
-		// sunday: req.body.sunday
-
+		time: userTime,
+		monday: req.body.monday,
+		tuesday: req.body.tuesday,
+		wednesday: req.body.wednesday,
+		thursday: req.body.thursday,
+		friday: req.body.friday,
+		saturday: req.body.saturday,
+		sunday: req.body.sunday
 	});
 
 	newAlarm.save(function(err, completed){
