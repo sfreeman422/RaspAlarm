@@ -36803,7 +36803,7 @@
 				),
 				React.createElement(
 					"button",
-					null,
+					{ "data-toggle": "modal", "data-target": "#setAlarm" },
 					"Set an Alarm"
 				)
 			);
