@@ -21785,6 +21785,9 @@
 	var Weather = __webpack_require__(297);
 	var Alarm = __webpack_require__(298);
 
+	//AlarmClock Sound
+	var alarmSound = new Audio("./sounds/alarm.mp3");
+
 	var hasWeatherData = false;
 
 	var Main = React.createClass({
@@ -21797,30 +21800,31 @@
 				today: "Loading...",
 				userLoc: "Loading...",
 				alarmStatus: "No alarm set",
+				alarm: undefined,
 				weatherToday: "Loading...",
 				weatherTodayTime: "Loading...",
 				weatherTodayTemp: "Loading...",
-				weatherTodayPic: "Loading...",
+				weatherTodayPic: undefined,
 				weatherHourOne: "Loading...",
 				weatherHourOneTime: "Loading...",
 				weatherHourOneTemp: "Loading...",
-				weatherHourOnePic: "Loading...",
+				weatherHourOnePic: undefined,
 				weatherHourTwo: "Loading...",
 				weatherHourTwoTime: "Loading...",
 				weatherHourTwoTemp: "Loading...",
-				weatherHourTwoPic: "Loading...",
+				weatherHourTwoPic: undefined,
 				weatherHourThree: "Loading...",
 				weatherHourThreeTime: "Loading...",
 				weatherHourThreeTemp: "Loading...",
-				weatherHourThreePic: "Loading...",
+				weatherHourThreePic: undefined,
 				weatherHourFour: "Loading...",
 				weatherHourFourTime: "Loading...",
 				weatherHourFourTemp: "Loading...",
-				weatherHourFourPic: "Loading...",
+				weatherHourFourPic: undefined,
 				weatherHourFive: "Loading...",
 				weatherHourFiveTime: "Loading...",
 				weatherHourFiveTemp: "Loading...",
-				weatherHourFivePic: "Loading..."
+				weatherHourFivePic: undefined
 			};
 		},
 		//Gets the time for the alarm clock. 
@@ -21918,7 +21922,8 @@
 										console.log(alarms[i]);
 									}
 									_this.setState({
-										alarmStatus: "Next alarm at " + alarms[0].time
+										alarmStatus: "Next alarm at " + alarms[0].time,
+										alarm: alarms[0].time
 									});
 								}
 						});
@@ -21931,6 +21936,12 @@
 				console.log("No need for new weather...");
 			}
 		},
+		_checkAlarm: function _checkAlarm() {
+			if (this.state.time == this.state.alarm) {
+				console.log("Wake up");
+				alarmSound.play();
+			}
+		},
 		componentWillMount: function componentWillMount() {
 			this._locationThenWeather();
 			this._getTime();
@@ -21938,6 +21949,8 @@
 			setInterval(this._locationThenWeather, 60000);
 			//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 			setInterval(this._getTime, 100);
+			//Check if its time for an alarm to go off
+			setInterval(this._checkAlarm, 100);
 		},
 		render: function render() {
 			return React.createElement(
