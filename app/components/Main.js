@@ -161,6 +161,7 @@ var Main = React.createClass({
 		},
 		//Function to check whether its time for an alarm to go off or not.
 	_checkAlarm: function(){
+		var dayOfWeek = moment().format("dddd");
 		if(this.state.time == this.state.alarm){
 			console.log("Wake up");
 			alarmSound.play();

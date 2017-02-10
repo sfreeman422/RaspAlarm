@@ -45,13 +45,13 @@ app.post('/setAlarm', function(req, res){
 	console.log(req.body.tuesday);
 	var newAlarm = new Alarm({
 		time: userTime,
-		monday: req.body.monday,
-		tuesday: req.body.tuesday,
-		wednesday: req.body.wednesday,
-		thursday: req.body.thursday,
-		friday: req.body.friday,
-		saturday: req.body.saturday,
-		sunday: req.body.sunday
+		Monday: req.body.monday,
+		Tuesday: req.body.tuesday,
+		Wednesday: req.body.wednesday,
+		Thursday: req.body.thursday,
+		Friday: req.body.friday,
+		Saturday: req.body.saturday,
+		Sunday: req.body.sunday
 	});
 
 	newAlarm.save(function(err, completed){
