@@ -7,9 +7,6 @@ var Today = require("./Children/Today.js");
 var Weather = require("./Children/Weather.js");
 var Alarm = require("./Children/Alarm.js");
 
-//AlarmClock Sound
-var alarmSound = new Audio("./sounds/alarm.mp3")
-
 var hasWeatherData = false; 
 
 var Main = React.createClass({
@@ -20,7 +17,6 @@ var Main = React.createClass({
 			today: "Loading...",
 			userLoc: "Loading...",
 			nextAlarm: "No alarm set",
-			alarmStatus: undefined,
 			alarm: undefined,
 			weatherToday: "Loading...",
 			weatherTodayTime: "Loading...",
@@ -54,7 +50,7 @@ var Main = React.createClass({
 			time: moment().format("hh:mm"+"a"),
 			date: moment().format("MMMM Do YYYY"),
 			today: moment().format("dddd")
-		}) ;
+		});
 	},
 	_getLocation: function(){
 		return new Promise((resolve, reject) => {
@@ -159,35 +155,6 @@ var Main = React.createClass({
 				console.log("No need for new weather...");
 			}
 		},
-		//Function to check whether its time for an alarm to go off or not.
-	_checkAlarm: function(){
-		var dayOfWeek = moment().format("dddd");
-		$.ajax({
-			url: "/alarms"
-		}).done((alarms) =>{
-			for(var i =0; i<alarms.length;i++){
-				for(var j=0; j<alarms[i].dayOfWeek.length; j++){
-					//If the alarm is not ringing, ring the alarm and set the state. This should only happen once. 
-					if(this.state.time == alarms[i].time && alarms[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus !== "ringing"){
-						alarmSound.play();
-						this.setState({
-							alarmStatus: "ringing"
-						});
-					}
-					//If the alarmStatus is already ringing, we just want to play the alarmSound. So we do this. 
-					else if(this.state.time == alarms[i].time && alarms[i].dayofWeek[j] == dayOfWeek && this.state.alarmStatus=="ringing"){
-						alarmSound.play();
-					}
-					//Otherwise, just set the state to undefined. 
-					else{
-						this.setState({
-							alarmStatus: undefined
-						});
-					}
-				}
-			}
-		})
-	},
 	componentWillMount: function(){
 		this._locationThenWeather();
 		this._getTime();
@@ -195,8 +162,6 @@ var Main = React.createClass({
 		setInterval(this._locationThenWeather, 60000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		setInterval(this._getTime, 100);
-		//Check if its time for an alarm to go off
-		setInterval(this._checkAlarm, 100);
 	},
 	render: function(){
 		return(
@@ -211,7 +176,7 @@ var Main = React.createClass({
 					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic}/>
 				</div>
 				<div className="row">
-					<Alarm alarmStatus={this.state.alarmStatus} nextAlarm={this.state.nextAlarm}/>
+					<Alarm nextAlarm={this.state.nextAlarm} currentTime={this.state.time}/>
 				</div>
 			</div>);
 	}
