@@ -3,6 +3,7 @@ var moment = require('moment');
 
 //AlarmClock Sound
 var alarmSound = new Audio("./sounds/alarm.mp3")
+
 var Alarm = React.createClass({
 	getInitialState: function(){
 		return{

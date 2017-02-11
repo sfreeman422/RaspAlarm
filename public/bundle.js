@@ -21587,27 +21587,27 @@
 								weatherToday: response.hourly_forecast[0].condition,
 								weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
 								weatherTodayTemp: response.hourly_forecast[0].temp.english + "F",
-								weatherTodayPic: response.hourly_forecast[0].icon_url,
+								weatherTodayPic: response.hourly_forecast[0].icon,
 								weatherHourOne: response.hourly_forecast[1].condition,
 								weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
 								weatherHourOneTemp: response.hourly_forecast[1].temp.english + "F",
-								weatherHourOnePic: response.hourly_forecast[1].icon_url,
+								weatherHourOnePic: response.hourly_forecast[1].icon,
 								weatherHourTwo: response.hourly_forecast[2].condition,
 								weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
 								weatherHourTwoTemp: response.hourly_forecast[2].temp.english + "F",
-								weatherHourTwoPic: response.hourly_forecast[2].icon_url,
+								weatherHourTwoPic: response.hourly_forecast[2].icon,
 								weatherHourThree: response.hourly_forecast[3].condition,
 								weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
 								weatherHourThreeTemp: response.hourly_forecast[3].temp.english + "F",
-								weatherHourThreePic: response.hourly_forecast[3].icon_url,
+								weatherHourThreePic: response.hourly_forecast[3].icon,
 								weatherHourFour: response.hourly_forecast[4].condition,
 								weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
 								weatherHourFourTemp: response.hourly_forecast[4].temp.english + "F",
-								weatherHourFourPic: response.hourly_forecast[4].icon_url,
+								weatherHourFourPic: response.hourly_forecast[4].icon,
 								weatherHourFive: response.hourly_forecast[5].condition,
 								weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
 								weatherHourFiveTemp: response.hourly_forecast[1].temp.english + "F",
-								weatherHourFivePic: response.hourly_forecast[5].icon_url
+								weatherHourFivePic: response.hourly_forecast[5].icon
 							});
 						});
 						hasWeatherData = true;
@@ -36659,128 +36659,199 @@
 	var Weather = React.createClass({
 		displayName: "Weather",
 
+		_determineWeatherIcon: function _determineWeatherIcon(weatherProp) {
+			if (weatherProp == "chanceflurries") {
+				return "wi wi-day-snow";
+			} else if (weatherProp == "chancerain") {
+				return "wi wi-day-rain";
+			} else if (weatherProp == "chancesleet") {
+				return "wi wi-day-sleet";
+			} else if (weatherProp == "chancesnow") {
+				return "wi wi-day-snow";
+			} else if (weatherProp == "chancestorms") {
+				return "wi wi-day-sprinkle";
+			} else if (weatherProp == "clear") {
+				return "wi wi-day-clear";
+			} else if (weatherProp == "cloudy") {
+				return "wi wi-day-cloudy";
+			} else if (weatherProp == "flurries") {
+				return "wi wi-day-snow";
+			} else if (weatherProp == "fog") {
+				return "wi wi-day-fog";
+			} else if (weatherProp == "hazy") {
+				return "wi wi-day-haze";
+			} else if (weatherProp == "mostlycloudy") {
+				return "wi wi-day-cloudy";
+			} else if (weatherProp == "mostlysunny") {
+				return "wi wi-day-sunny-overcast";
+			} else if (weatherProp == "partlycloudy") {
+				return "wi wi-day-cloudy";
+			} else if (weatherProp == "partlysunny") {
+				return "wi wi-day-sunny-overcast";
+			} else if (weatherProp == "sleet") {
+				return "wi wi-day-sleet";
+			} else if (weatherProp == "rain") {
+				return "wi wi-day-rain";
+			} else if (weatherProp == "snow") {
+				return "wi wi-day-snow";
+			} else if (weatherProp == "sunny") {
+				return "wi wi-day-sunny";
+			} else if (weatherProp == "tstorms") {
+				return "wi wi-day-storm-showers";
+			} else if (weatherProp == "unknown") {
+				return "wi wi-day-cloudy-high";
+			} else if (weatherProp == "cloudy") {
+				return "wi wi-day-cloudy";
+			} else if (weatherProp == "partlycloudy") {
+				return "wi wi-day";
+			}
+		},
 		render: function render() {
 			return React.createElement(
 				"div",
 				{ className: "col-xs-12 allWeather" },
 				React.createElement(
 					"div",
-					{ className: "col-xs-2 weatherToday" },
-					React.createElement("img", { src: this.props.todayPic }),
+					{ className: "col-xs-2 weatherProp" },
+					React.createElement("i", { className: this._determineWeatherIcon(this.props.todayPic) }),
 					React.createElement(
-						"p",
-						null,
-						this.props.today
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.todayTemp
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.todayHour
+						"div",
+						{ className: "weatherDescription" },
+						React.createElement(
+							"p",
+							null,
+							this.props.today
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.todayTemp
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.todayHour
+						)
 					)
 				),
 				React.createElement(
 					"div",
 					{ className: "col-xs-2 weatherOne" },
-					React.createElement("img", { src: this.props.onePic }),
+					React.createElement("i", { className: this._determineWeatherIcon(this.props.onePic) }),
 					React.createElement(
-						"p",
-						null,
-						this.props.one
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.oneTemp
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.oneHour
+						"div",
+						{ className: "weatherDescription" },
+						React.createElement(
+							"p",
+							null,
+							this.props.one
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.oneTemp
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.oneHour
+						)
 					)
 				),
 				React.createElement(
 					"div",
 					{ className: "col-xs-2 weatherTwo" },
-					React.createElement("img", { src: this.props.twoPic }),
+					React.createElement("i", { className: this._determineWeatherIcon(this.props.twoPic) }),
 					React.createElement(
-						"p",
-						null,
-						this.props.two
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.twoTemp
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.twoHour
+						"div",
+						{ className: "weatherDescription" },
+						React.createElement(
+							"p",
+							null,
+							this.props.two
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.twoTemp
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.twoHour
+						)
 					)
 				),
 				React.createElement(
 					"div",
 					{ className: "col-xs-2 weatherThree" },
-					React.createElement("img", { src: this.props.threePic }),
+					React.createElement("i", { className: this._determineWeatherIcon(this.props.threePic) }),
 					React.createElement(
-						"p",
-						null,
-						this.props.three
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.threeTemp
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.threeHour
+						"div",
+						{ className: "weatherDescription" },
+						React.createElement(
+							"p",
+							null,
+							this.props.three
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.threeTemp
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.threeHour
+						)
 					)
 				),
 				React.createElement(
 					"div",
 					{ className: "col-xs-2 weatherFour" },
-					React.createElement("img", { src: this.props.fourPic }),
+					React.createElement("i", { className: this._determineWeatherIcon(this.props.fourPic) }),
 					React.createElement(
-						"p",
-						null,
-						this.props.four
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.fourTemp
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.fourHour
+						"div",
+						{ className: "weatherDescription" },
+						React.createElement(
+							"p",
+							null,
+							this.props.four
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.fourTemp
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.fourHour
+						)
 					)
 				),
 				React.createElement(
 					"div",
 					{ className: "col-xs-2 weatherFive" },
-					React.createElement("img", { src: this.props.fivePic }),
+					React.createElement("i", { className: this._determineWeatherIcon(this.props.fivePic) }),
 					React.createElement(
-						"p",
-						null,
-						this.props.five
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.fiveTemp
-					),
-					React.createElement(
-						"p",
-						null,
-						this.props.fiveHour
+						"div",
+						{ className: "weatherDescription" },
+						React.createElement(
+							"p",
+							null,
+							this.props.five
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.fiveTemp
+						),
+						React.createElement(
+							"p",
+							null,
+							this.props.fiveHour
+						)
 					)
 				)
 			);
@@ -36800,6 +36871,7 @@
 
 	//AlarmClock Sound
 	var alarmSound = new Audio("./sounds/alarm.mp3");
+
 	var Alarm = React.createClass({
 		displayName: 'Alarm',
 
