@@ -162,18 +162,31 @@ var Main = React.createClass({
 		//Function to check whether its time for an alarm to go off or not.
 	_checkAlarm: function(){
 		var dayOfWeek = moment().format("dddd");
-		if(this.state.time == this.state.alarm){
-			console.log("Wake up");
-			alarmSound.play();
-			this.setState({
-				alarmStatus: "ringing"
-			});
-		}
-		else{
-			this.setState({
-				alarmStatus: undefined
-			});
-		}
+		$.ajax({
+			url: "/alarms"
+		}).done((alarms) =>{
+			for(var i =0; i<alarms.length;i++){
+				for(var j=0; j<alarms[i].dayOfWeek.length; j++){
+					//If the alarm is not ringing, ring the alarm and set the state. This should only happen once. 
+					if(this.state.time == alarms[i].time && alarms[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus !== "ringing"){
+						alarmSound.play();
+						this.setState({
+							alarmStatus: "ringing"
+						});
+					}
+					//If the alarmStatus is already ringing, we just want to play the alarmSound. So we do this. 
+					else if(this.state.time == alarms[i].time && alarms[i].dayofWeek[j] == dayOfWeek && this.state.alarmStatus=="ringing"){
+						alarmSound.play();
+					}
+					//Otherwise, just set the state to undefined. 
+					else{
+						this.setState({
+							alarmStatus: undefined
+						});
+					}
+				}
+			}
+		})
 	},
 	componentWillMount: function(){
 		this._locationThenWeather();

@@ -2,13 +2,7 @@ var mongoose = require('mongoose');
 
 var alarmSchema = mongoose.Schema({
 		time: String,
-		monday: Boolean,
-		tuesday: Boolean,
-		wednesday: Boolean,
-		thursday: Boolean,
-		friday: Boolean,
-		saturday: Boolean,
-		sunday: Boolean
+		dayOfWeek: Array
 });
 
 module.exports = mongoose.model("Alarm", alarmSchema); 
