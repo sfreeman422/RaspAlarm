@@ -59,8 +59,8 @@ var Alarm = React.createClass({
 			return(
 				<div className="col-xs-12" id="alarm">
 					<p>Good Morning</p>
-					<button className="btn-xl btn-danger" id="snooze" onClick={this._snooze()}>Snooze</button>
-					<button className="btn-xl btn-success" id="wakeUp" onClick={this._awake()}>Wake Up</button>
+					<button className="btn-xl btn-danger" id="snooze" onClick={()=>{this._snooze()}}>Snooze</button>
+					<button className="btn-xl btn-success" id="wakeUp" onClick={()=>{this._awake()}}>Wake Up</button>
 				</div>
 			)
 		}

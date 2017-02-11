@@ -36856,6 +36856,8 @@
 			});
 		},
 		render: function render() {
+			var _this2 = this;
+
 			if (this.state.alarmStatus == "ringing") {
 				return React.createElement(
 					'div',
@@ -36867,12 +36869,16 @@
 					),
 					React.createElement(
 						'button',
-						{ className: 'btn-xl btn-danger', id: 'snooze', onClick: this._snooze() },
+						{ className: 'btn-xl btn-danger', id: 'snooze', onClick: function onClick() {
+								_this2._snooze();
+							} },
 						'Snooze'
 					),
 					React.createElement(
 						'button',
-						{ className: 'btn-xl btn-success', id: 'wakeUp', onClick: this._awake() },
+						{ className: 'btn-xl btn-success', id: 'wakeUp', onClick: function onClick() {
+								_this2._awake();
+							} },
 						'Wake Up'
 					)
 				);
