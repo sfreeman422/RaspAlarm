@@ -21675,7 +21675,7 @@
 				React.createElement(
 					'div',
 					{ className: 'row' },
-					React.createElement(Weather, { today: this.state.weatherToday, todayHour: this.state.weatherTodayTime, todayPic: this.state.weatherTodayPic, todayTemp: this.state.weatherTodayTemp, one: this.state.weatherHourOne, oneHour: this.state.weatherHourOneTime, oneTemp: this.state.weatherHourOneTemp, onePic: this.state.weatherHourOnePic, two: this.state.weatherHourTwo, twoHour: this.state.weatherHourTwoTime, twoTemp: this.state.weatherHourTwoTemp, twoPic: this.state.weatherHourTwoPic, three: this.state.weatherHourThree, threeHour: this.state.weatherHourThreeTime, threeTemp: this.state.weatherHourThreeTemp, threePic: this.state.weatherHourThreePic, four: this.state.weatherHourFour, fourHour: this.state.weatherHourFourTime, fourTemp: this.state.weatherHourFourTemp, fourPic: this.state.weatherHourFourPic, five: this.state.weatherHourFive, fiveHour: this.state.weatherHourFiveTime, fiveTemp: this.state.weatherHourFiveTemp, fivePic: this.state.weatherHourFivePic })
+					React.createElement(Weather, { today: this.state.weatherToday, todayHour: this.state.weatherTodayTime, todayPic: this.state.weatherTodayPic, todayTemp: this.state.weatherTodayTemp, one: this.state.weatherHourOne, oneHour: this.state.weatherHourOneTime, oneTemp: this.state.weatherHourOneTemp, onePic: this.state.weatherHourOnePic, two: this.state.weatherHourTwo, twoHour: this.state.weatherHourTwoTime, twoTemp: this.state.weatherHourTwoTemp, twoPic: this.state.weatherHourTwoPic, three: this.state.weatherHourThree, threeHour: this.state.weatherHourThreeTime, threeTemp: this.state.weatherHourThreeTemp, threePic: this.state.weatherHourThreePic, four: this.state.weatherHourFour, fourHour: this.state.weatherHourFourTime, fourTemp: this.state.weatherHourFourTemp, fourPic: this.state.weatherHourFourPic, five: this.state.weatherHourFive, fiveHour: this.state.weatherHourFiveTime, fiveTemp: this.state.weatherHourFiveTemp, fivePic: this.state.weatherHourFivePic, currentTime: this.state.time })
 				),
 				React.createElement(
 					'div',
@@ -36673,7 +36673,7 @@
 			} else if (weatherProp == "clear") {
 				return "wi wi-day-clear";
 			} else if (weatherProp == "cloudy") {
-				return "wi wi-day-cloudy";
+				return "wi wi-cloudy";
 			} else if (weatherProp == "flurries") {
 				return "wi wi-day-snow";
 			} else if (weatherProp == "fog") {
@@ -36681,7 +36681,7 @@
 			} else if (weatherProp == "hazy") {
 				return "wi wi-day-haze";
 			} else if (weatherProp == "mostlycloudy") {
-				return "wi wi-day-cloudy";
+				return "wi wi-cloud";
 			} else if (weatherProp == "mostlysunny") {
 				return "wi wi-day-sunny-overcast";
 			} else if (weatherProp == "partlycloudy") {
