@@ -1,11 +1,11 @@
 var React = require('react');
 var moment = require('moment');
-
 //Require the children
 var Clock = require("./Children/Clock.js");
 var Today = require("./Children/Today.js");
 var Weather = require("./Children/Weather.js");
 var Alarm = require("./Children/Alarm.js");
+var AlarmManager = require("./AlarmManager.js");
 
 var hasWeatherData = false; 
 
