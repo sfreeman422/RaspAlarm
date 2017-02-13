@@ -44,3 +44,13 @@ i{
     user-select: none;
     display: inline;
 }
+.dayOfWeek{
+	display: inline;
+	margin-right: 2%;
+}
+#unselected{
+	color: grey;
+}
+#selected{
+	color: #FFFFFF;
+}

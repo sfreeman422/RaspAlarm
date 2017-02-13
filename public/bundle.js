@@ -42035,6 +42035,8 @@
 
 	var React = __webpack_require__(1);
 	var ClockPicker = __webpack_require__(350);
+
+	var daysOfWeek = [];
 	var AlarmManager = React.createClass({
 		displayName: 'AlarmManager',
 
@@ -42044,7 +42046,14 @@
 				minute: 30,
 				ampm: "am",
 				hourDisplay: "01",
-				minuteDisplay: "30"
+				minuteDisplay: "30",
+				monday: "unselected",
+				tuesday: "unselected",
+				wednesday: "unselected",
+				thursday: "unselected",
+				friday: "unselected",
+				saturday: "unselected",
+				sunday: "unselected"
 			};
 		},
 		_incrementHour: function _incrementHour() {
@@ -42112,6 +42121,123 @@
 				});
 			}
 		},
+		_chooseDay: function _chooseDay(day) {
+			if (day == "monday") {
+				if (this.state.monday == "unselected") {
+					this.setState({
+						monday: "selected"
+					});
+					daysOfWeek.push("Monday");
+				} else {
+					this.setState({
+						monday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Monday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			} else if (day == "tuesday") {
+				if (this.state.tuesday == "unselected") {
+					this.setState({
+						tuesday: "selected"
+					});
+					daysOfWeek.push("Tuesday");
+				} else {
+					this.setState({
+						tuesday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Tuesday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			} else if (day == "wednesday") {
+				if (this.state.wednesday == "unselected") {
+					this.setState({
+						wednesday: "selected"
+					});
+					daysOfWeek.push("Wednesday");
+				} else {
+					this.setState({
+						wednesday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Wednesday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			} else if (day == "thursday") {
+				if (this.state.thursday == "unselected") {
+					this.setState({
+						thursday: "selected"
+					});
+					daysOfWeek.push("Thursday");
+				} else {
+					this.setState({
+						thursday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Thursday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			} else if (day == "friday") {
+				if (this.state.friday == "unselected") {
+					this.setState({
+						friday: "selected"
+					});
+					daysOfWeek.push("Friday");
+				} else {
+					this.setState({
+						friday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Friday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			} else if (day == "saturday") {
+				if (this.state.saturday == "unselected") {
+					this.setState({
+						saturday: "selected"
+					});
+					daysOfWeek.push("Saturday");
+				} else {
+					this.setState({
+						saturday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Saturday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			} else if (day == "sunday") {
+				if (this.state.sunday == "unselected") {
+					this.setState({
+						sunday: "selected"
+					});
+					daysOfWeek.push("Sunday");
+				} else {
+					this.setState({
+						sunday: "unselected"
+					});
+					for (var i = 0; i < daysOfWeek.length; i++) {
+						if (daysOfWeek[i] == "Sunday") {
+							daysOfWeek.splice(i, 1);
+						}
+					}
+				}
+			}
+			console.log("Day chosen is " + day);
+			console.log("Days of week: " + daysOfWeek);
+		},
 		_setAlarm: function _setAlarm() {
 			var hour = this.state.hourDisplay;
 			var minute = this.state.minuteDisplay;
@@ -42127,6 +42253,8 @@
 			});
 		},
 		render: function render() {
+			var _this = this;
+
 			return React.createElement(
 				'div',
 				{ className: 'container verticalCenter', id: 'alarmManager' },
@@ -42170,9 +42298,53 @@
 							'Which days would you like to set this alarm for?'
 						),
 						React.createElement(
-							'p',
-							null,
-							'Monday    Tuesday    Wednesday   Thursday   Friday   Saturday   Sunday'
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.monday, onClick: function onClick() {
+									_this._chooseDay("monday");
+								} },
+							'M'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.tuesday, onClick: function onClick() {
+									_this._chooseDay("tuesday");
+								} },
+							'T'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.wednesday, onClick: function onClick() {
+									_this._chooseDay("wednesday");
+								} },
+							'W'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.thursday, onClick: function onClick() {
+									_this._chooseDay("thursday");
+								} },
+							'Th'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.friday, onClick: function onClick() {
+									_this._chooseDay("friday");
+								} },
+							'Fri'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.saturday, onClick: function onClick() {
+									_this._chooseDay("saturday");
+								} },
+							'Sat'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable dayOfWeek', id: this.state.sunday, onClick: function onClick() {
+									_this._chooseDay("sunday");
+								} },
+							'Sun'
 						),
 						React.createElement(
 							'h3',
