@@ -231,7 +231,8 @@ var AlarmManager = React.createClass({
 			data: {
 				hour: hour,
 				minute: minute,
-				ampm: ampm
+				ampm: ampm,
+				dayOfWeek: daysOfWeek
 			}
 		});
 	},
