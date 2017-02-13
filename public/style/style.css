@@ -37,7 +37,7 @@ i{
 .allWeather{
 	margin: 5% 0%;
 }
-#unselectable {
+.unselectable {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

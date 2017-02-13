@@ -42042,28 +42042,62 @@
 			return {
 				hour: 1,
 				minute: 30,
-				ampm: "am"
+				ampm: "am",
+				hourDisplay: "01",
+				minuteDisplay: "30"
 			};
 		},
 		_incrementHour: function _incrementHour() {
 			if (this.state.hour == 12) {
 				this.setState({
-					hour: 1
+					hour: 1,
+					hourDisplay: "01"
 				});
+			} else if (this.state.hour < 10) {
+				//Grab what our hour will be.
+				var stringHour = this.state.hour + 1;
+				if (stringHour == 10) {
+					this.setState({
+						hour: 10,
+						hourDisplay: 10
+					});
+				} else {
+					this.setState({
+						hour: this.state.hour + 1,
+						hourDisplay: "0" + stringHour.toString()
+					});
+				}
 			} else {
 				this.setState({
-					hour: this.state.hour + 1
+					hour: this.state.hour + 1,
+					hourDisplay: this.state.hour + 1
 				});
 			}
 		},
 		_incrementMinute: function _incrementMinute() {
 			if (this.state.minute == 55) {
 				this.setState({
-					minute: 0
+					minute: 0,
+					minuteDisplay: "00"
 				});
+			} else if (this.state.minute < 10) {
+				//Grab what the minute will be for the minuteDisplay
+				var stringMinute = this.state.minute + 5;
+				if (stringMinute == 10) {
+					this.setState({
+						minute: stringMinute,
+						minuteDisplay: stringMinute
+					});
+				} else {
+					this.setState({
+						minute: this.state.minute + 5,
+						minuteDisplay: "0" + stringMinute.toString()
+					});
+				}
 			} else {
 				this.setState({
-					minute: this.state.minute + 5
+					minute: this.state.minute + 5,
+					minuteDisplay: this.state.minute + 5
 				});
 			}
 		},
@@ -42078,6 +42112,20 @@
 				});
 			}
 		},
+		_setAlarm: function _setAlarm() {
+			var hour = this.state.hourDisplay;
+			var minute = this.state.minuteDisplay;
+			var ampm = this.state.ampm;
+			$.ajax({
+				url: "/setAlarm",
+				type: "POST",
+				data: {
+					hour: hour,
+					minute: minute,
+					ampm: ampm
+				}
+			});
+		},
 		render: function render() {
 			return React.createElement(
 				'div',
@@ -42090,22 +42138,22 @@
 						{ className: 'col-xs-12', id: 'timeSet' },
 						React.createElement(
 							'h1',
-							{ id: 'unselectable', onClick: this._incrementHour },
-							this.state.hour
+							{ className: 'unselectable', id: 'hour', onClick: this._incrementHour },
+							this.state.hourDisplay
 						),
 						React.createElement(
 							'h1',
-							{ id: 'unselectable' },
+							{ className: 'unselectable' },
 							':'
 						),
 						React.createElement(
 							'h1',
-							{ id: 'unselectable', onClick: this._incrementMinute },
-							this.state.minute
+							{ className: 'unselectable', id: 'minute', onClick: this._incrementMinute },
+							this.state.minuteDisplay
 						),
 						React.createElement(
 							'h1',
-							{ id: 'unselectable', onClick: this._changeAMPM },
+							{ className: 'unselectable', id: 'ampm', onClick: this._changeAMPM },
 							this.state.ampm
 						)
 					)
@@ -42125,6 +42173,11 @@
 							'p',
 							null,
 							'Monday    Tuesday    Wednesday   Thursday   Friday   Saturday   Sunday'
+						),
+						React.createElement(
+							'h3',
+							{ className: 'unselectable', onClick: this._setAlarm },
+							'Set That Ish'
 						)
 					)
 				)
