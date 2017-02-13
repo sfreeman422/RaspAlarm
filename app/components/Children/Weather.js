@@ -18,7 +18,7 @@ var Weather = React.createClass({
 			return "wi wi-day-sprinkle";
 		}
 		else if(weatherProp == "clear"){
-			return "wi wi-day-clear";
+			return "wi wi-day-sunny";
 		}
 		else if(weatherProp == "cloudy"){
 			return "wi wi-cloud";

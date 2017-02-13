@@ -3,7 +3,7 @@ var moment = require('moment');
 
 //AlarmClock Sound
 var alarmSound = new Audio("./sounds/alarm.mp3")
-
+var alarmInterval; 
 var Alarm = React.createClass({
 	getInitialState: function(){
 		return{
@@ -43,7 +43,10 @@ var Alarm = React.createClass({
 	},
 	componentDidMount: function(){
 		this._checkAlarm();
-		setInterval(this._checkAlarm, 100); 
+		alarmInterval = setInterval(this._checkAlarm, 100); 
+	},
+	componentWillUnmount: function(){
+		clearInterval(alarmInterval);
 	},
 	_snooze: function(){
 		this.setState({

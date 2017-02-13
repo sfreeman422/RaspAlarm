@@ -8,6 +8,8 @@ var Alarm = require("./Children/Alarm.js");
 var AlarmManager = require("./AlarmManager.js");
 
 var hasWeatherData = false; 
+var weatherInterval;
+var timeInterval;
 
 var Main = React.createClass({
 	getInitialState: function(){
@@ -159,9 +161,14 @@ var Main = React.createClass({
 		this._locationThenWeather();
 		this._getTime();
 		//Runs the locationThenWeather function every 60 seconds. We do this to avoid 6 API calls within the one minute in which we are at a :00 time. 
-		setInterval(this._locationThenWeather, 60000);
+		weatherInterval = setInterval(this._locationThenWeather, 60000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
-		setInterval(this._getTime, 100);
+		timeInterval = setInterval(this._getTime, 100);
+	},
+	componentWillUnmount: function(){
+		clearInterval(weatherInterval);
+		clearInterval(timeInterval);
+		hasWeatherData = false; 
 	},
 	render: function(){
 		return(
