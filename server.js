@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var Alarm = require('./app/models/Alarms.js');
+var methodOverride = require('method-override');
 
 var app = express();
 var PORT = process.env.PORT || 3000; 
@@ -20,6 +21,7 @@ db.on("error", function(){
 app.use(logger('dev'));
 app.use(bodyParser());
 app.use(express.static('./public'));
+app.use(methodOverride('_method'));
 
 //Initial route to load the page for the Timer, weather information, etc. 
 app.get('/', function(req, res){
@@ -53,6 +55,12 @@ app.post('/setAlarm', function(req, res){
 
 	res.redirect("/");
 });
+
+//Route to delete alarms
+app.delete('/deleteAlarm', function(req, res){
+	console.log(req.body);
+	Alarm.find({_id: req.body.id}).remove(function(){console.log("Successfully removed.")});
+})
 //Listen to the port.
 app.listen(PORT, function(){
 	console.log('listening on port '+PORT);

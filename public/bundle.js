@@ -42446,7 +42446,19 @@
 	var CurrentAlarms = React.createClass({
 		displayName: "CurrentAlarms",
 
+		_removeAlarm: function _removeAlarm(id) {
+			$.ajax({
+				url: "/deleteAlarm",
+				type: "DELETE",
+				data: {
+					id: id,
+					_method: "delete"
+				}
+			});
+		},
 		render: function render() {
+			var _this = this;
+
 			return React.createElement(
 				"div",
 				{ className: "col-xs-12", id: "alarms" },
@@ -42466,7 +42478,7 @@
 						),
 						React.createElement(
 							"h3",
-							null,
+							{ onClick: _this._removeAlarm(alarm._id) },
 							React.createElement("span", { className: "glyphicon glyphicon-trash" })
 						)
 					);
