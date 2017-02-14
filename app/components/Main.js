@@ -11,39 +11,72 @@ var hasWeatherData = false;
 var weatherInterval;
 var timeInterval;
 
+//Vars to save state. 
+var timeSave="Loading...";
+var dateSave="Loading...";
+var todaySave="Loading...";
+var userLocSave="Loading...";
+var nextAlarmSave="Loading...";
+var alarmSave="Loading...";
+var weatherTodaySave="Loading...";
+var weatherTodayTimeSave="Loading...";
+var weatherTodayTempSave="Loading...";
+var weatherTodayPicSave=undefined;
+var weatherHourOneSave="Loading...";
+var weatherHourOneTimeSave="Loading...";
+var weatherHourOneTempSave="Loading...";
+var weatherHourOnePicSave=undefined;
+var weatherHourTwoSave="Loading...";
+var weatherHourTwoTimeSave="Loading...";
+var weatherHourTwoTempSave="Loading...";
+var weatherHourTwoPicSave=undefined;
+var weatherHourThreeSave="Loading...";
+var weatherHourThreeTimeSave="Loading...";
+var weatherHourThreeTempSave="Loading...";
+var weatherHourThreePicSave=undefined;
+var weatherHourFourSave="Loading...";
+var weatherHourFourTimeSave="Loading...";
+var weatherHourFourTempSave="Loading...";
+var weatherHourFourPicSave=undefined;
+var weatherHourFiveSave="Loading...";
+var weatherHourFiveTimeSave="Loading...";
+var weatherHourFiveTempSave="Loading...";
+var weatherHourFivePicSave=undefined;
+
+
 var Main = React.createClass({
 	getInitialState: function(){
 		return{
-			time: "Loading...",
-			date: "Loading...",
-			today: "Loading...",
-			userLoc: "Loading...",
-			nextAlarm: "No alarm set",
-			alarm: undefined,
-			weatherToday: "Loading...",
-			weatherTodayTime: "Loading...",
-			weatherTodayTemp: "Loading...",
-			weatherTodayPic: undefined,
-			weatherHourOne: "Loading...", 
-			weatherHourOneTime: "Loading...",
-			weatherHourOneTemp: "Loading...",
-			weatherHourOnePic: undefined,
-			weatherHourTwo: "Loading...",
-			weatherHourTwoTime: "Loading...",
-			weatherHourTwoTemp: "Loading...",
-			weatherHourTwoPic: undefined,
-			weatherHourThree: "Loading...",
-			weatherHourThreeTime: "Loading...",
-			weatherHourThreeTemp: "Loading...",
-			weatherHourThreePic: undefined,
-			weatherHourFour: "Loading...",
-			weatherHourFourTime: "Loading...",
-			weatherHourFourTemp: "Loading...",
-			weatherHourFourPic: undefined,
-			weatherHourFive: "Loading...",
-			weatherHourFiveTime: "Loading...",
-			weatherHourFiveTemp: "Loading...",
-			weatherHourFivePic: undefined
+			time: timeSave,
+			date: dateSave,
+			today: todaySave,
+			userLoc: userLocSave,
+			nextAlarm: nextAlarmSave,
+			alarm: alarmSave,
+			weatherToday: weatherTodaySave,
+			weatherTodayTime: weatherTodayTimeSave,
+			weatherTodayTemp: weatherTodayTempSave,
+			weatherTodayPic: weatherTodayPicSave,
+			weatherHourOne: weatherHourOneSave, 
+			weatherHourOneTime: weatherHourOneTimeSave,
+			weatherHourOneTemp: weatherHourOneTempSave,
+			weatherHourOnePic: weatherHourOnePicSave,
+			weatherHourTwo: weatherHourTwoSave,
+			weatherHourTwoTime: weatherHourTwoTimeSave,
+			weatherHourTwoTemp: weatherHourTwoTempSave,
+			weatherHourTwoPic: weatherHourTwoPicSave,
+			weatherHourThree: weatherHourThreeSave,
+			weatherHourThreeTime: weatherHourThreeTimeSave,
+			weatherHourThreeTemp: weatherHourThreeTempSave,
+			weatherHourThreePic: weatherHourThreePicSave,
+			weatherHourFour: weatherHourFourSave,
+			weatherHourFourTime: weatherHourFourTimeSave,
+			weatherHourFourTemp: weatherHourFourTempSave,
+			weatherHourFourPic: weatherHourFourPicSave,
+			weatherHourFive: weatherHourFiveSave,
+			weatherHourFiveTime: weatherHourFiveTimeSave,
+			weatherHourFiveTemp: weatherHourFiveTempSave,
+			weatherHourFivePic: weatherHourFivePicSave
 		};
 	},
 	//Gets the time for the alarm clock. 
@@ -166,9 +199,39 @@ var Main = React.createClass({
 		timeInterval = setInterval(this._getTime, 100);
 	},
 	componentWillUnmount: function(){
+		timeSave=this.state.time;
+		dateSave=this.state.date;
+		todaySave=this.state.today;
+		userLocSave=this.state.userLoc;
+		nextAlarmSave=this.state.nextAlarm;
+		alarmSave=this.state.alarm;
+		weatherTodaySave=this.state.weatherToday;
+		weatherTodayTimeSave=this.state.weatherTodayTime;
+		weatherTodayTempSave=this.state.weatherTodayTemp;
+		weatherTodayPicSave=this.state.weatherTodayPic;
+		weatherHourOneSave=this.state.weatherHourOne;
+		weatherHourOneTimeSave=this.state.weatherHourOneTime;
+		weatherHourOneTempSave=this.state.weatherHourOneTemp;
+		weatherHourOnePicSave=this.state.weatherHourOnePic;
+		weatherHourTwoSave=this.state.weatherHourTwo;
+		weatherHourTwoTimeSave=this.state.weatherHourTwoTime;
+		weatherHourTwoTempSave=this.state.weatherHourTwoTemp;
+		weatherHourTwoPicSave=this.state.weatherHourTwoPic;
+		weatherHourThreeSave=this.state.weatherHourThree;
+		weatherHourThreeTimeSave=this.state.weatherHourThreeTime;
+		weatherHourThreeTempSave=this.state.weatherHourThreeTemp;
+		weatherHourThreePicSave=this.state.weatherHourThreePic;
+		weatherHourFourSave=this.state.weatherHourFour;
+		weatherHourFourTimeSave=this.state.weatherHourFourTime;
+		weatherHourFourTempSave=this.state.weatherHourFourTemp;
+		weatherHourFourPicSave=this.state.weatherHourFourPic;
+		weatherHourFiveSave=this.state.weatherHourFive;
+		weatherHourFiveTimeSave=this.state.weatherHourFiveTime;
+		weatherHourFiveTempSave=this.state.weatherHourFiveTemp;
+		weatherHourFivePicSave=this.state.weatherHourFivePic;
 		clearInterval(weatherInterval);
 		clearInterval(timeInterval);
-		hasWeatherData = false; 
+		//hasWeatherData = false; 
 	},
 	render: function(){
 		return(
