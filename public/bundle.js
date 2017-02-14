@@ -41964,6 +41964,7 @@
 	//AlarmClock Sound
 	var alarmSound = new Audio("./sounds/alarm.mp3");
 	var alarmInterval;
+	var alarmsArr = [];
 	var Alarm = React.createClass({
 		displayName: 'Alarm',
 
@@ -41974,38 +41975,44 @@
 				awake: false
 			};
 		},
-		//Function to check whether its time for an alarm to go off or not.
-		_checkAlarm: function _checkAlarm() {
-			var _this = this;
-
-			var dayOfWeek = moment().format("dddd");
+		_getAlarms: function _getAlarms() {
 			$.ajax({
 				url: "/alarms"
 			}).done(function (alarms) {
 				for (var i = 0; i < alarms.length; i++) {
-					for (var j = 0; j < alarms[i].dayOfWeek.length; j++) {
-						//If the alarm is not ringing, ring the alarm and set the state. This should only happen once. 
-						if (_this.props.currentTime == alarms[i].time && alarms[i].dayOfWeek[j] == dayOfWeek && _this.state.alarmStatus !== "ringing" && _this.state.snoozed == false && _this.state.awake == false) {
-							alarmSound.play();
-							_this.setState({
-								alarmStatus: "ringing"
-							});
-						}
-						//If the alarmStatus is already ringing, we just want to play the alarmSound. So we do this. 
-						else if (_this.props.currentTime == alarms[i].time && alarms[i].dayofWeek[j] == dayOfWeek && _this.state.alarmStatus == "ringing" && _this.state.snoozed == false && _this.state.awake == false) {
-								alarmSound.play();
-							}
-							//Otherwise, just set the state to undefined. 
-							else {
-									_this.setState({
-										alarmStatus: undefined
-									});
-								}
-					}
+					alarmsArr.push(alarms[i]);
 				}
+				console.log("Alarms Arr: ");
+				console.log(alarmsArr);
 			});
 		},
+		//Function to check whether its time for an alarm to go off or not.
+		_checkAlarm: function _checkAlarm() {
+			var dayOfWeek = moment().format("dddd");
+			for (var i = 0; i < alarmsArr.length; i++) {
+				for (var j = 0; j < alarmsArr[i].dayOfWeek.length; j++) {
+					//If the alarm is not ringing, ring the alarm and set the state. This should only happen once. 
+					if (this.props.currentTime == alarmsArr[i].time && alarmsArr[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus !== "ringing" && this.state.snoozed == false && this.state.awake == false) {
+						alarmSound.play();
+						this.setState({
+							alarmStatus: "ringing"
+						});
+					}
+					//If the alarmStatus is already ringing, we just want to play the alarmSound. So we do this. 
+					else if (this.props.currentTime == alarmsArr[i].time && alarmsArr[i].dayofWeek[j] == dayOfWeek && this.state.alarmStatus == "ringing" && this.state.snoozed == false && this.state.awake == false) {
+							alarmSound.play();
+						}
+						//Otherwise, just set the state to undefined. 
+						else {
+								this.setState({
+									alarmStatus: undefined
+								});
+							}
+				}
+			}
+		},
 		componentWillMount: function componentWillMount() {
+			this._getAlarms();
 			this._checkAlarm();
 			alarmInterval = setInterval(this._checkAlarm, 1000);
 		},
@@ -42018,19 +42025,19 @@
 			});
 		},
 		_awake: function _awake() {
-			var _this2 = this;
+			var _this = this;
 
 			this.setState({
 				awake: true
 			});
 			console.log("Awake Status Before: " + this.state.awake);
 			setTimeout(function () {
-				return _this2.setState({ awake: false });
+				return _this.setState({ awake: false });
 			}, 60000);
 			console.log("Awake status after: " + this.state.awake);
 		},
 		render: function render() {
-			var _this3 = this;
+			var _this2 = this;
 
 			if (this.state.alarmStatus == "ringing") {
 				return React.createElement(
@@ -42039,14 +42046,14 @@
 					React.createElement(
 						'button',
 						{ className: 'btn-xl btn-danger', id: 'snooze', onClick: function onClick() {
-								_this3._snooze();
+								_this2._snooze();
 							} },
 						'Snooze'
 					),
 					React.createElement(
 						'button',
 						{ className: 'btn-xl btn-success', id: 'wakeUp', onClick: function onClick() {
-								_this3._awake();
+								_this2._awake();
 							} },
 						'Wake Up'
 					)
