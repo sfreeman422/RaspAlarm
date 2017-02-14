@@ -20,6 +20,9 @@ var CurrentAlarms = React.createClass({
 			});
 		});
 	},
+	componentDidUpdate: function(){
+		this._getAlarms();
+	},
 	_removeAlarm: function(id){
 		$.ajax({
 			url: "/deleteAlarm",

@@ -42479,6 +42479,9 @@
 				});
 			});
 		},
+		componentDidUpdate: function componentDidUpdate() {
+			this._getAlarms();
+		},
 		_removeAlarm: function _removeAlarm(id) {
 			var _this2 = this;
 
