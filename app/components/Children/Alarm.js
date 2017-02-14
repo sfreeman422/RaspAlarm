@@ -1,6 +1,6 @@
 var React = require('react');
 var moment = require('moment');
-
+var Link = require('react-router').Link;
 //AlarmClock Sound
 var alarmSound = new Audio("./sounds/alarm.mp3")
 var alarmInterval; 
@@ -41,9 +41,9 @@ var Alarm = React.createClass({
 			}
 		})
 	},
-	componentDidMount: function(){
+	componentWillMount: function(){
 		this._checkAlarm();
-		alarmInterval = setInterval(this._checkAlarm, 100); 
+		alarmInterval = setInterval(this._checkAlarm, 1000); 
 	},
 	componentWillUnmount: function(){
 		clearInterval(alarmInterval);
@@ -57,12 +57,14 @@ var Alarm = React.createClass({
 		this.setState({
 			awake: true
 		});
+		console.log("Awake Status Before: "+this.state.awake);
+		setTimeout(()=>this.setState({ awake: false}), 60000);
+		console.log("Awake status after: "+this.state.awake);
 	},
 	render: function(){
 		if(this.state.alarmStatus == "ringing"){
 			return(
 				<div className="col-xs-12" id="alarm">
-					<p>Good Morning</p>
 					<button className="btn-xl btn-danger" id="snooze" onClick={()=>{this._snooze()}}>Snooze</button>
 					<button className="btn-xl btn-success" id="wakeUp" onClick={()=>{this._awake()}}>Wake Up</button>
 				</div>
@@ -71,8 +73,7 @@ var Alarm = React.createClass({
 		else{
 			return(
 				<div className="col-xs-12" id="alarm">
-					<p>{this.props.nextAlarm}</p>
-					<button className="btn-xl btn-default" data-toggle="modal" data-target="#setAlarm">Set an Alarm</button>
+					<h3><Link to="/AlarmManager">Set an Alarm</Link></h3>
 				</div>
 			)
 		}

@@ -1,5 +1,6 @@
 var React = require('react');
 var moment = require('moment');
+
 //Require the children
 var Clock = require("./Children/Clock.js");
 var Today = require("./Children/Today.js");
@@ -159,26 +160,6 @@ var Main = React.createClass({
 								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
 							});
 						});
-						//Gets a list of the already set alarms. 
-						$.ajax({
-							url: "/alarms"
-						}).done((alarms) =>{
-							//Check if there are no alarms set (the array would be 0)
-							if(alarms.length == 0){
-								console.log("No Alarms set!");
-							}
-							//Else we will log out the alarms that we have. 
-							else{
-								console.log("Alarms are: ");
-								for(var i = 0; i < alarms.length; i++){
-									console.log(alarms[i]);
-								}
-								this.setState({
-									nextAlarm: "Next alarm at "+alarms[0].time,
-									alarm: alarms[0].time
-								});
-							}
-						})
 						return resolve(locationObject);
 					})
 					.catch((error) => {

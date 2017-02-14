@@ -1,5 +1,5 @@
 var React = require('react');
-var ClockPicker = require('react-clockpicker')
+var Link = require('react-router').Link;
 
 var daysOfWeek = [];
 var AlarmManager = React.createClass({
@@ -248,7 +248,7 @@ var AlarmManager = React.createClass({
 				<div className="col-xs-12" id="daysOfWeek">
 					<h3>Which days would you like to set this alarm for?</h3>
 					<h3 className="unselectable dayOfWeek" id={this.state.monday} onClick={()=>{this._chooseDay("monday")}}>M</h3><h3 className="unselectable dayOfWeek" id={this.state.tuesday} onClick={()=>{this._chooseDay("tuesday")}}>T</h3><h3 className="unselectable dayOfWeek" id={this.state.wednesday} onClick={()=>{this._chooseDay("wednesday")}}>W</h3><h3 className="unselectable dayOfWeek" id={this.state.thursday} onClick={()=>{this._chooseDay("thursday")}}>Th</h3><h3 className="unselectable dayOfWeek" id={this.state.friday} onClick={()=>{this._chooseDay("friday")}}>Fri</h3><h3 className="unselectable dayOfWeek" id={this.state.saturday} onClick={()=>{this._chooseDay("saturday")}}>Sat</h3><h3 className="unselectable dayOfWeek" id={this.state.sunday} onClick={()=>{this._chooseDay("sunday")}}>Sun</h3>
-					<h3 className="unselectable" onClick={this._setAlarm}>Set That Ish</h3>
+					<h3 className="unselectable" onClick={this._setAlarm}><Link to="/">Set That Ish</Link></h3>
 				</div>
 			</div>
 		</div>
