@@ -223,12 +223,17 @@ var AlarmManager = React.createClass({
 		console.log("Day chosen is "+day);
 		console.log("Days of week: "+daysOfWeek);
 	},
-	componentWillMount: function(){
+	_getAlarms: function(){
+		console.log("Getting alarms..");
 		$.ajax({
-			url:"/alarms"
+			url:"/alarms",
+			type:"get"
 		}).done((alarms)=>{
 			this.setState({alarms: alarms});
 		});
+	},
+	componentWillMount: function(){
+		this._getAlarms();
 	},
 	_setAlarm: function(){
 		var hour = this.state.hourDisplay;
@@ -243,6 +248,15 @@ var AlarmManager = React.createClass({
 				ampm: ampm,
 				dayOfWeek: daysOfWeek
 			}
+		}).done((alarms)=>{
+			console.log("Getting alarms via the _setAlarm function...");
+			$.ajax({
+			url:"/alarms",
+			type: "get"
+			}).done((newAlarms)=>{
+				console.log(newAlarms);
+				this.setState({alarms: newAlarms});
+			});
 		});
 	},
 	render: function(){
@@ -262,7 +276,7 @@ var AlarmManager = React.createClass({
 					</div>
 					<div className="row">
 						<div className="col-xs-12">
-							<h3 className="unselectable" onClick={this._setAlarm}><Link to="/">Set Alarm</Link></h3>
+							<h3 className="unselectable" onClick={this._setAlarm}>Set Alarm</h3>
 						</div>
 					</div>
 					<CurrentAlarms alarms={this.state.alarms}/>

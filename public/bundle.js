@@ -42291,16 +42291,23 @@
 			console.log("Day chosen is " + day);
 			console.log("Days of week: " + daysOfWeek);
 		},
-		componentWillMount: function componentWillMount() {
+		_getAlarms: function _getAlarms() {
 			var _this = this;
 
+			console.log("Getting alarms..");
 			$.ajax({
-				url: "/alarms"
+				url: "/alarms",
+				type: "get"
 			}).done(function (alarms) {
 				_this.setState({ alarms: alarms });
 			});
 		},
+		componentWillMount: function componentWillMount() {
+			this._getAlarms();
+		},
 		_setAlarm: function _setAlarm() {
+			var _this2 = this;
+
 			var hour = this.state.hourDisplay;
 			var minute = this.state.minuteDisplay;
 			var ampm = this.state.ampm;
@@ -42313,10 +42320,19 @@
 					ampm: ampm,
 					dayOfWeek: daysOfWeek
 				}
+			}).done(function (alarms) {
+				console.log("Getting alarms via the _setAlarm function...");
+				$.ajax({
+					url: "/alarms",
+					type: "get"
+				}).done(function (newAlarms) {
+					console.log(newAlarms);
+					_this2.setState({ alarms: newAlarms });
+				});
 			});
 		},
 		render: function render() {
-			var _this2 = this;
+			var _this3 = this;
 
 			return React.createElement(
 				'div',
@@ -42363,49 +42379,49 @@
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.monday, onClick: function onClick() {
-									_this2._chooseDay("monday");
+									_this3._chooseDay("monday");
 								} },
 							'M'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.tuesday, onClick: function onClick() {
-									_this2._chooseDay("tuesday");
+									_this3._chooseDay("tuesday");
 								} },
 							'T'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.wednesday, onClick: function onClick() {
-									_this2._chooseDay("wednesday");
+									_this3._chooseDay("wednesday");
 								} },
 							'W'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.thursday, onClick: function onClick() {
-									_this2._chooseDay("thursday");
+									_this3._chooseDay("thursday");
 								} },
 							'Th'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.friday, onClick: function onClick() {
-									_this2._chooseDay("friday");
+									_this3._chooseDay("friday");
 								} },
 							'Fri'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.saturday, onClick: function onClick() {
-									_this2._chooseDay("saturday");
+									_this3._chooseDay("saturday");
 								} },
 							'Sat'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.sunday, onClick: function onClick() {
-									_this2._chooseDay("sunday");
+									_this3._chooseDay("sunday");
 								} },
 							'Sun'
 						)
@@ -42420,11 +42436,7 @@
 						React.createElement(
 							'h3',
 							{ className: 'unselectable', onClick: this._setAlarm },
-							React.createElement(
-								Link,
-								{ to: '/' },
-								'Set Alarm'
-							)
+							'Set Alarm'
 						)
 					)
 				),
@@ -42439,14 +42451,37 @@
 /* 350 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
+	var Link = __webpack_require__(178).Link;
 
 	var CurrentAlarms = React.createClass({
-		displayName: "CurrentAlarms",
+		displayName: 'CurrentAlarms',
 
+		getInitialState: function getInitialState() {
+			return {
+				listAlarms: this.props.alarms
+			};
+		},
+		componentWillMount: function componentWillMount() {
+			this._getAlarms();
+		},
+		_getAlarms: function _getAlarms() {
+			var _this = this;
+
+			$.ajax({
+				url: "/alarms",
+				type: "get"
+			}).done(function (alarms) {
+				_this.setState({
+					listAlarms: alarms
+				});
+			});
+		},
 		_removeAlarm: function _removeAlarm(id) {
+			var _this2 = this;
+
 			$.ajax({
 				url: "/deleteAlarm",
 				type: "DELETE",
@@ -42454,34 +42489,40 @@
 					id: id,
 					_method: "delete"
 				}
+			}).done(function (alarms) {
+				_this2._getAlarms();
 			});
 		},
 		render: function render() {
-			var _this = this;
+			var _this3 = this;
 
 			return React.createElement(
-				"div",
-				{ className: "col-xs-12", id: "alarms" },
-				this.props.alarms.map(function (alarm, i) {
+				'div',
+				{ className: 'col-xs-12', id: 'alarms' },
+				this.state.listAlarms.map(function (alarm, i) {
 					return React.createElement(
-						"div",
-						{ className: "row", id: "alarm", key: i },
+						'div',
+						{ className: 'row', id: 'alarm', key: i },
 						React.createElement(
-							"h3",
+							'h3',
 							null,
 							alarm.time
 						),
 						React.createElement(
-							"p",
+							'p',
 							null,
 							alarm.dayOfWeek
 						),
 						React.createElement(
-							"h3",
+							'h3',
 							{ onClick: function onClick() {
-									return _this._removeAlarm(alarm._id);
+									return _this3._removeAlarm(alarm._id);
 								} },
-							React.createElement("span", { className: "glyphicon glyphicon-trash" })
+							React.createElement(
+								'span',
+								{ className: 'glyphicon glyphicon-trash' },
+								React.createElement(Link, { to: '/alarmManager' })
+							)
 						)
 					);
 				})

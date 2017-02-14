@@ -52,14 +52,14 @@ app.post('/setAlarm', function(req, res){
 		if(err)throw err;
 		console.log("Alarm saved as : "+completed);
 	})
-
-	res.redirect("/");
+	res.end("Success");
 });
 
 //Route to delete alarms
 app.delete('/deleteAlarm', function(req, res){
 	console.log(req.body);
 	Alarm.find({_id: req.body.id}).remove(function(){console.log("Successfully removed.")});
+	res.send("Success");
 })
 //Listen to the port.
 app.listen(PORT, function(){
