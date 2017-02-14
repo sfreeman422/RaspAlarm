@@ -19,7 +19,7 @@ var CurrentAlarms = React.createClass({
 						<div className="row" id="alarm" key={i}>
 							<h3>{alarm.time}</h3>
 							<p>{alarm.dayOfWeek}</p>
-							<h3 onClick={this._removeAlarm(alarm._id)} ><span className="glyphicon glyphicon-trash"></span></h3>
+							<h3 onClick={()=>this._removeAlarm(alarm._id)} ><span className="glyphicon glyphicon-trash"></span></h3>
 						</div>
 						)
 				})}
