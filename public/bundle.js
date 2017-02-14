@@ -42086,8 +42086,9 @@
 
 	var React = __webpack_require__(1);
 	var Link = __webpack_require__(178).Link;
-
+	var CurrentAlarms = __webpack_require__(350);
 	var daysOfWeek = [];
+	var alarmsArr = [];
 	var AlarmManager = React.createClass({
 		displayName: 'AlarmManager',
 
@@ -42104,7 +42105,8 @@
 				thursday: "unselected",
 				friday: "unselected",
 				saturday: "unselected",
-				sunday: "unselected"
+				sunday: "unselected",
+				alarms: []
 			};
 		},
 		_incrementHour: function _incrementHour() {
@@ -42289,6 +42291,15 @@
 			console.log("Day chosen is " + day);
 			console.log("Days of week: " + daysOfWeek);
 		},
+		componentWillMount: function componentWillMount() {
+			var _this = this;
+
+			$.ajax({
+				url: "/alarms"
+			}).done(function (alarms) {
+				_this.setState({ alarms: alarms });
+			});
+		},
 		_setAlarm: function _setAlarm() {
 			var hour = this.state.hourDisplay;
 			var minute = this.state.minuteDisplay;
@@ -42305,8 +42316,10 @@
 			});
 		},
 		render: function render() {
-			var _this = this;
+			var _this2 = this;
 
+			console.log("Rendering..");
+			console.log(alarmsArr);
 			return React.createElement(
 				'div',
 				{ className: 'container verticalCenter', id: 'alarmManager' },
@@ -42352,49 +42365,49 @@
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.monday, onClick: function onClick() {
-									_this._chooseDay("monday");
+									_this2._chooseDay("monday");
 								} },
 							'M'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.tuesday, onClick: function onClick() {
-									_this._chooseDay("tuesday");
+									_this2._chooseDay("tuesday");
 								} },
 							'T'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.wednesday, onClick: function onClick() {
-									_this._chooseDay("wednesday");
+									_this2._chooseDay("wednesday");
 								} },
 							'W'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.thursday, onClick: function onClick() {
-									_this._chooseDay("thursday");
+									_this2._chooseDay("thursday");
 								} },
 							'Th'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.friday, onClick: function onClick() {
-									_this._chooseDay("friday");
+									_this2._chooseDay("friday");
 								} },
 							'Fri'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.saturday, onClick: function onClick() {
-									_this._chooseDay("saturday");
+									_this2._chooseDay("saturday");
 								} },
 							'Sat'
 						),
 						React.createElement(
 							'h3',
 							{ className: 'unselectable dayOfWeek', id: this.state.sunday, onClick: function onClick() {
-									_this._chooseDay("sunday");
+									_this2._chooseDay("sunday");
 								} },
 							'Sun'
 						),
@@ -42408,12 +42421,55 @@
 							)
 						)
 					)
-				)
+				),
+				React.createElement(CurrentAlarms, { alarms: this.state.alarms })
 			);
 		}
 	});
 
 	module.exports = AlarmManager;
+
+/***/ },
+/* 350 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var CurrentAlarms = React.createClass({
+		displayName: "CurrentAlarms",
+
+		render: function render() {
+			return React.createElement(
+				"div",
+				{ className: "alarms" },
+				this.props.alarms.map(function (alarm, i) {
+					return React.createElement(
+						"div",
+						{ className: "row", id: "alarm", key: i },
+						React.createElement(
+							"h3",
+							null,
+							alarm.time
+						),
+						React.createElement(
+							"p",
+							null,
+							alarm.dayOfWeek
+						),
+						React.createElement(
+							"p",
+							null,
+							"Trash Icon"
+						)
+					);
+				})
+			);
+		}
+	});
+
+	module.exports = CurrentAlarms;
 
 /***/ }
 /******/ ]);

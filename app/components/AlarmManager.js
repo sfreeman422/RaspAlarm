@@ -1,7 +1,8 @@
 var React = require('react');
 var Link = require('react-router').Link;
-
+var CurrentAlarms = require('./Children/Grandchildren/CurrentAlarms.js');
 var daysOfWeek = [];
+var alarmsArr = [];
 var AlarmManager = React.createClass({
 	getInitialState: function(){
 		return{
@@ -16,7 +17,8 @@ var AlarmManager = React.createClass({
 			thursday: "unselected",
 			friday: "unselected",
 			saturday: "unselected",
-			sunday: "unselected"
+			sunday: "unselected",
+			alarms: []
 		}
 	},
 	_incrementHour: function(){
@@ -221,6 +223,13 @@ var AlarmManager = React.createClass({
 		console.log("Day chosen is "+day);
 		console.log("Days of week: "+daysOfWeek);
 	},
+	componentWillMount: function(){
+		$.ajax({
+			url:"/alarms"
+		}).done((alarms)=>{
+			this.setState({alarms: alarms});
+		});
+	},
 	_setAlarm: function(){
 		var hour = this.state.hourDisplay;
 		var minute = this.state.minuteDisplay;
@@ -237,22 +246,25 @@ var AlarmManager = React.createClass({
 		});
 	},
 	render: function(){
-		return(
-		<div className="container verticalCenter" id="alarmManager">
-			<div className="row">
-				<div className="col-xs-12" id="timeSet">
-					<h1 className="unselectable" id="hour" onClick={this._incrementHour}>{this.state.hourDisplay}</h1><h1 className="unselectable">:</h1><h1 className="unselectable" id="minute" onClick={this._incrementMinute}>{this.state.minuteDisplay}</h1><h1 className="unselectable" id="ampm" onClick={this._changeAMPM}>{this.state.ampm}</h1>
+		console.log("Rendering..");
+		console.log(alarmsArr);
+			return(
+				<div className="container verticalCenter" id="alarmManager">
+					<div className="row">
+						<div className="col-xs-12" id="timeSet">
+							<h1 className="unselectable" id="hour" onClick={this._incrementHour}>{this.state.hourDisplay}</h1><h1 className="unselectable">:</h1><h1 className="unselectable" id="minute" onClick={this._incrementMinute}>{this.state.minuteDisplay}</h1><h1 className="unselectable" id="ampm" onClick={this._changeAMPM}>{this.state.ampm}</h1>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-xs-12" id="daysOfWeek">
+							<h3>Which days would you like to set this alarm for?</h3>
+							<h3 className="unselectable dayOfWeek" id={this.state.monday} onClick={()=>{this._chooseDay("monday")}}>M</h3><h3 className="unselectable dayOfWeek" id={this.state.tuesday} onClick={()=>{this._chooseDay("tuesday")}}>T</h3><h3 className="unselectable dayOfWeek" id={this.state.wednesday} onClick={()=>{this._chooseDay("wednesday")}}>W</h3><h3 className="unselectable dayOfWeek" id={this.state.thursday} onClick={()=>{this._chooseDay("thursday")}}>Th</h3><h3 className="unselectable dayOfWeek" id={this.state.friday} onClick={()=>{this._chooseDay("friday")}}>Fri</h3><h3 className="unselectable dayOfWeek" id={this.state.saturday} onClick={()=>{this._chooseDay("saturday")}}>Sat</h3><h3 className="unselectable dayOfWeek" id={this.state.sunday} onClick={()=>{this._chooseDay("sunday")}}>Sun</h3>
+							<h3 className="unselectable" onClick={this._setAlarm}><Link to="/">Set That Ish</Link></h3>
+						</div>
+					</div>
+					<CurrentAlarms alarms={this.state.alarms}/>
 				</div>
-			</div>
-			<div className="row">
-				<div className="col-xs-12" id="daysOfWeek">
-					<h3>Which days would you like to set this alarm for?</h3>
-					<h3 className="unselectable dayOfWeek" id={this.state.monday} onClick={()=>{this._chooseDay("monday")}}>M</h3><h3 className="unselectable dayOfWeek" id={this.state.tuesday} onClick={()=>{this._chooseDay("tuesday")}}>T</h3><h3 className="unselectable dayOfWeek" id={this.state.wednesday} onClick={()=>{this._chooseDay("wednesday")}}>W</h3><h3 className="unselectable dayOfWeek" id={this.state.thursday} onClick={()=>{this._chooseDay("thursday")}}>Th</h3><h3 className="unselectable dayOfWeek" id={this.state.friday} onClick={()=>{this._chooseDay("friday")}}>Fri</h3><h3 className="unselectable dayOfWeek" id={this.state.saturday} onClick={()=>{this._chooseDay("saturday")}}>Sat</h3><h3 className="unselectable dayOfWeek" id={this.state.sunday} onClick={()=>{this._chooseDay("sunday")}}>Sun</h3>
-					<h3 className="unselectable" onClick={this._setAlarm}><Link to="/">Set That Ish</Link></h3>
-				</div>
-			</div>
-		</div>
-		)
+			)
 	}
 });
 
