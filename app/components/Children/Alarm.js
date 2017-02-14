@@ -82,7 +82,7 @@ var Alarm = React.createClass({
 		else{
 			return(
 				<div className="col-xs-12" id="alarm">
-					<h3><Link to="/AlarmManager">Set an Alarm</Link></h3>
+					<h3><Link to="/AlarmManager">Set an alarm</Link></h3>
 				</div>
 			)
 		}

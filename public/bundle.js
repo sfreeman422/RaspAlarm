@@ -42068,7 +42068,7 @@
 						React.createElement(
 							Link,
 							{ to: '/AlarmManager' },
-							'Set an Alarm'
+							'Set an alarm'
 						)
 					)
 				);
@@ -42318,11 +42318,9 @@
 		render: function render() {
 			var _this2 = this;
 
-			console.log("Rendering..");
-			console.log(alarmsArr);
 			return React.createElement(
 				'div',
-				{ className: 'container verticalCenter', id: 'alarmManager' },
+				{ className: 'container', id: 'alarmManager' },
 				React.createElement(
 					'div',
 					{ className: 'row' },
@@ -42410,14 +42408,22 @@
 									_this2._chooseDay("sunday");
 								} },
 							'Sun'
-						),
+						)
+					)
+				),
+				React.createElement(
+					'div',
+					{ className: 'row' },
+					React.createElement(
+						'div',
+						{ className: 'col-xs-12' },
 						React.createElement(
 							'h3',
 							{ className: 'unselectable', onClick: this._setAlarm },
 							React.createElement(
 								Link,
 								{ to: '/' },
-								'Set That Ish'
+								'Set Alarm'
 							)
 						)
 					)
@@ -42443,7 +42449,7 @@
 		render: function render() {
 			return React.createElement(
 				"div",
-				{ className: "alarms" },
+				{ className: "col-xs-12", id: "alarms" },
 				this.props.alarms.map(function (alarm, i) {
 					return React.createElement(
 						"div",
@@ -42459,9 +42465,9 @@
 							alarm.dayOfWeek
 						),
 						React.createElement(
-							"p",
+							"h3",
 							null,
-							"Trash Icon"
+							React.createElement("span", { className: "glyphicon glyphicon-trash" })
 						)
 					);
 				})
