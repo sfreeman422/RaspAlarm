@@ -54,3 +54,6 @@ i{
 #selected{
 	color: #FFFFFF;
 }
+#displayBlock{
+	display: block;
+}

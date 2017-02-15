@@ -277,6 +277,7 @@ var AlarmManager = React.createClass({
 					<div className="row">
 						<div className="col-xs-12">
 							<h3 className="unselectable" onClick={this._setAlarm}>Set Alarm</h3>
+							<h3 className="unselectable" id="displayBlock"><Link to="/">Back to Clock</Link></h3>
 						</div>
 					</div>
 					<CurrentAlarms alarms={this.state.alarms}/>
