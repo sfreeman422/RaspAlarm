@@ -26548,6 +26548,7 @@
 	var hasWeatherData = false;
 	var weatherInterval;
 	var timeInterval;
+	var keys = __webpack_require__(351);
 
 	//Vars to save state. 
 	var timeSave = "Loading...";
@@ -26657,7 +26658,7 @@
 						}
 						// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
 						$.ajax({
-							url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
+							url: "http://api.wunderground.com/api/" + keys + "/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
 						}).done(function (response) {
 							console.log(response);
 							_this.setState({
@@ -42535,6 +42536,16 @@
 	});
 
 	module.exports = CurrentAlarms;
+
+/***/ },
+/* 351 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var apiKey = "0f21d9f3506b237b";
+
+	module.exports = apiKey;
 
 /***/ }
 /******/ ]);

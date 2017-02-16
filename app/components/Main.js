@@ -11,6 +11,7 @@ var AlarmManager = require("./AlarmManager.js");
 var hasWeatherData = false; 
 var weatherInterval;
 var timeInterval;
+var keys = require("../../private/keys.js");
 
 //Vars to save state. 
 var timeSave="Loading...";
@@ -119,7 +120,7 @@ var Main = React.createClass({
 						}
 						// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
 						$.ajax({
-							url: "http://api.wunderground.com/api/0f21d9f3506b237b/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
+							url: "http://api.wunderground.com/api/"+keys+"/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
 							}).done((response) =>{
 								console.log(response);
 								this.setState({
