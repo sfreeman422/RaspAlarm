@@ -25,10 +25,15 @@ Raspberry Pi's are cool, fun and cheap. This is my first Raspberry Pi project bu
 Promises are hard! I had to consult a friend of mine to help me implement promises within my React lifecycle methods. I needed to be able to get the user's location and THEN get the weather for that location. It took me a few hours of messing about and consulting my friend on what I was doing wrong, but finally, we are getting the user's location THEN getting the weather. 
 
 # Status
+2/15/17
 - Beta version! This was presented at the Rutgers Coding Bootcamp Demo Day in the state shown below. All weather and alarm clock features are working properly and I am now working to integrate Amazon's Echo API. The case is an alpha version of the final case as I'd like to go for something a bit more sleek. Perhaps stained wood. 
 ![Beta Buid](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/beta.jpg)
+
+2/4/17
 - We have lift off! Below is a picture of the "alpha" version of the alarm. We see that we have the time displaying properly, icons for weather and a couple hours 
 forecast for weather. I had to change over to the Weather Underground's API as I was originally using OpenWeaterMap but found that they did not provide me with an hourly forecast. Next steps are to integrate an alarm feature as well as Alexa integrations. 
 ![Alpha Build](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/alpha.jpg)
+
+January 2017
 - Raspberry Pi and touch screen are functional and running Raspbian. 
 ![It's alive](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160419.jpg)
