@@ -250,6 +250,7 @@ var AlarmManager = React.createClass({
 			}
 		}).done((alarms)=>{
 			console.log("Getting alarms via the _setAlarm function...");
+			daysOfWeek = [];
 			$.ajax({
 			url:"/alarms",
 			type: "get"
