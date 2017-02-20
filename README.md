@@ -21,16 +21,16 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 - MongoDB
 
 ##Steps
-1. Visit https://www.wunderground.com/weather/api/ and sign up for an API Key. 
-2. Create a folder called private in the root of the repo. Inside of this folder, create keys.js
-3. Inside of keys.js, create:
+- Visit https://www.wunderground.com/weather/api/ and sign up for an API Key. 
+- Create a folder called private in the root of the repo. Inside of this folder, create keys.js
+- Inside of keys.js, create:
 ```javascript
 var keys = "yourKeyFromWeatherUndergroundApi";
 module.exports = keys;
 ```
-4. npm install
-5. webpack
-6. Visit localhost:3000 on your browser and enjoy!
+- npm install
+- webpack
+- Visit localhost:3000 on your browser and enjoy!
 
 # Struggles
 This application is still under development.
