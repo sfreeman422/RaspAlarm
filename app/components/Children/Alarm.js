@@ -15,7 +15,6 @@ var Alarm = React.createClass({
 	},
 	//Function to check whether its time for an alarm to go off or not.
 	_checkAlarm: function(){
-		console.log("Checking alarm");
 		var dayOfWeek = moment().format("dddd");
 		$.ajax({
 			url:"/alarms"
