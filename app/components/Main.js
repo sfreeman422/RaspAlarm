@@ -169,15 +169,15 @@ var Main = React.createClass({
 						$.ajax({
 							url:"http://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
 						}).done((sundata)=>{
-							console.log("Sun");
-							console.log("Sunrise Hour: "+sundata.sun_phase.sunrise.hour);
-							console.log("Sunrise Minute: "+sundata.sun_phase.sunrise.minute);
-							console.log("Sunset Hour: "+sundata.sun_phase.sunset.hour);
-							console.log("Sunset Minute: "+sundata.sun_phase.sunset.minute);
 							var sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
 							var sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
+							var sunriseMoment = moment(sunriseString, "hh:mm:a");
+							var sunsetMoment = moment(sunsetString, "hh:mm:a");
 							console.log("SunsetString: "+sunsetString);
 							console.log("SunriseString: "+sunriseString);
+							console.log("Sunrise is after sunset: "+sunriseMoment.isAfter(sunsetMoment));
+							console.log("Sunset is after sunrise: "+sunsetMoment.isAfter(sunriseMoment));
+
 						})
 						return resolve(locationObject);
 					})
