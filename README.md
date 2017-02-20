@@ -27,8 +27,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 ```javascript
 var keys = "yourKeyFromWeatherUndergroundApi";
 module.exports = keys;
-```
-This will allow you to use the weatherunderground without spamming my API key :)
+```This will allow you to use the weatherunderground without spamming my API key :)
 4. npm install
 5. webpack
 6. Visit localhost:3000 on your browser and enjoy!
