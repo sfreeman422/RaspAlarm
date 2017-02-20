@@ -44,6 +44,8 @@ var weatherHourFiveSave="Loading...";
 var weatherHourFiveTimeSave="Loading...";
 var weatherHourFiveTempSave="Loading...";
 var weatherHourFivePicSave=undefined;
+var sunriseSave=undefined;
+var sunsetSave=undefined;
 
 
 var Main = React.createClass({
@@ -78,7 +80,9 @@ var Main = React.createClass({
 			weatherHourFive: weatherHourFiveSave,
 			weatherHourFiveTime: weatherHourFiveTimeSave,
 			weatherHourFiveTemp: weatherHourFiveTempSave,
-			weatherHourFivePic: weatherHourFivePicSave
+			weatherHourFivePic: weatherHourFivePicSave,
+			sunrise: sunriseSave,
+			sunset: sunsetSave
 		};
 	},
 	//Gets the time for the alarm clock. 
@@ -161,6 +165,17 @@ var Main = React.createClass({
 								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
 							});
 						});
+						//Get the sunrise/sunset data
+						$.ajax({
+							url:"http://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
+						}).done((sundata)=>{
+							console.log("Sun");
+							console.log("Sunrise Hour: "+sundata.sun_phase.sunrise.hour);
+							console.log("Sunrise Minute: "+sundata.sun_phase.sunrise.minute);
+							console.log("Sunset Hour: "+sundata.sun_phase.sunset.hour);
+							console.log("Sunset Minute: "+sundata.sun_phase.sunset.minute);
+
+						})
 						return resolve(locationObject);
 					})
 					.catch((error) => {
@@ -211,6 +226,8 @@ var Main = React.createClass({
 		weatherHourFiveTimeSave=this.state.weatherHourFiveTime;
 		weatherHourFiveTempSave=this.state.weatherHourFiveTemp;
 		weatherHourFivePicSave=this.state.weatherHourFivePic;
+		sunsetSave=this.state.sunset;
+		sunriseSave=this.state.sunrise;
 		clearInterval(weatherInterval);
 		clearInterval(timeInterval);
 		//hasWeatherData = false; 
