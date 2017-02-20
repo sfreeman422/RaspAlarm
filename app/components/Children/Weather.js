@@ -6,10 +6,13 @@ var Weather = React.createClass({
 		var sunrise = moment(this.props.sunrise,"hh:mm:a");
 		var sunset = moment(this.props.sunset,"hh:mm:a");
 		var currentTime = moment(this.props.currentTime,"hh:mm:a");
-		console.log("Current Time is after sunset: "+(currentTime).isAfter(sunset));
-		console.log("Current Time is before sunrise: "+(currentTime).isBefore(sunrise));
-		var isNight = (currentTime).isAfter(sunset) && (currentTime).isBefore(sunrise);
-		console.log("Is it night?"+isNight);
+		var isNight;
+		if((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)){
+			isNight = true; 
+		}
+		else{
+			isNight = false; 
+		}
 
 		if(weatherProp == "chanceflurries"){
 			return "wi wi-day-snow"
