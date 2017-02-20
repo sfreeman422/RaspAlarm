@@ -14,7 +14,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 - Express
 - Weather Underground API
 
-#How to Use:
+#Fork this Repo:
 ##Prerequisites:
 - Node
 - Webpack
@@ -23,10 +23,10 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 ##Steps
 1. Create a folder called private in the root of the repo. Inside of this folder, create keys.js
 2. Inside of keys.js, create:
-'''javascript
+```javascript
 var keys = "yourKeyFromWeatherUndergroundApi";
 module.exports = keys;
-'''
+```
 This will allow you to use the weatherunderground without spamming my API key :)
 3. npm install
 4. webpack
