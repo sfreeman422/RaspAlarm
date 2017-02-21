@@ -63,3 +63,6 @@ a{
 #setAlarm{
 	color:white;
 }
+#dayAndLoc{
+	font-size: 120%;
+}
