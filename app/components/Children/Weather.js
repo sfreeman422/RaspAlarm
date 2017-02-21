@@ -53,7 +53,8 @@ var Weather = React.createClass({
 			return "wi wi-day-haze";
 		}
 		else if(weatherProp == "mostlycloudy"){
-			return "wi wi-cloudy";
+			if(isNight == false)return "wi wi-cloudy";
+				else return "wi wi-night-alt-cloudy"
 		}
 		else if(weatherProp == "mostlysunny"){
 			if(isNight == false)return "wi wi-day-sunny-overcast";
