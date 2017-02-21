@@ -44,6 +44,8 @@ var weatherHourFiveSave="Loading...";
 var weatherHourFiveTimeSave="Loading...";
 var weatherHourFiveTempSave="Loading...";
 var weatherHourFivePicSave=undefined;
+var sunriseSave=undefined;
+var sunsetSave=undefined;
 
 
 var Main = React.createClass({
@@ -78,7 +80,9 @@ var Main = React.createClass({
 			weatherHourFive: weatherHourFiveSave,
 			weatherHourFiveTime: weatherHourFiveTimeSave,
 			weatherHourFiveTemp: weatherHourFiveTempSave,
-			weatherHourFivePic: weatherHourFivePicSave
+			weatherHourFivePic: weatherHourFivePicSave,
+			sunrise: sunriseSave,
+			sunset: sunsetSave
 		};
 	},
 	//Gets the time for the alarm clock. 
@@ -161,6 +165,24 @@ var Main = React.createClass({
 								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
 							});
 						});
+						//Get the sunrise/sunset data
+						$.ajax({
+							url:"http://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
+						}).done((sundata)=>{
+							var sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
+							var sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
+							var sunriseMoment = moment(sunriseString, "hh:mm:a");
+							var sunsetMoment = moment(sunsetString, "hh:mm:a");
+							this.setState({
+								sunrise: sunriseMoment,
+								sunset: sunsetMoment
+							});
+							console.log("SunsetString: "+sunsetString);
+							console.log("SunriseString: "+sunriseString);
+							console.log("Sunrise is after sunset: "+sunriseMoment.isAfter(sunsetMoment));
+							console.log("Sunset is after sunrise: "+sunsetMoment.isAfter(sunriseMoment));
+
+						})
 						return resolve(locationObject);
 					})
 					.catch((error) => {
@@ -211,6 +233,8 @@ var Main = React.createClass({
 		weatherHourFiveTimeSave=this.state.weatherHourFiveTime;
 		weatherHourFiveTempSave=this.state.weatherHourFiveTemp;
 		weatherHourFivePicSave=this.state.weatherHourFivePic;
+		sunsetSave=this.state.sunset;
+		sunriseSave=this.state.sunrise;
 		clearInterval(weatherInterval);
 		clearInterval(timeInterval);
 		//hasWeatherData = false; 
@@ -225,7 +249,7 @@ var Main = React.createClass({
 					<Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today}/>
 				</div>
 				<div className="row">
-					<Weather today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic} currentTime={this.state.time}/>
+					<Weather currentTime={this.state.time} today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic} currentTime={this.state.time} sunrise={this.state.sunrise} sunset={this.state.sunset}/>
 				</div>
 				<div className="row">
 					<Alarm nextAlarm={this.state.nextAlarm} currentTime={this.state.time}/>

@@ -1,72 +1,104 @@
 var React = require('react');
+var moment = require('moment');
 
 var Weather = React.createClass({
-	_determineWeatherIcon: function(weatherProp){
+	_determineWeatherIcon: function(weatherProp, sunrise, sunset){
+		var sunrise = moment(this.props.sunrise,"hh:mm:a");
+		var sunset = moment(this.props.sunset,"hh:mm:a");
+		var currentTime = moment(this.props.currentTime,"hh:mm:a");
+		var isNight;
+		if((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)){
+			isNight = true; 
+		}
+		else{
+			isNight = false; 
+		}
+
 		if(weatherProp == "chanceflurries"){
-			return "wi wi-day-snow"
+			if(isNight == false)return "wi wi-day-snow"
+				else return "wi wi-night-snow"
 		}
 		else if(weatherProp == "chancerain"){
-			return "wi wi-day-rain";
+			if(isNight == false)return "wi wi-day-rain"
+				else return "wi wi-night-rain"
 		}
 		else if(weatherProp == "chancesleet"){
-			return "wi wi-day-sleet";
+			if(isNight == false)return "wi wi-day-sleet"
+				else return "wi wi-night-sleet"
 		}
 		else if(weatherProp == "chancesnow"){
-			return "wi wi-day-snow";
+			if(isNight == false)return "wi wi-day-snow"
+				else return "wi wi-night-snow"
 		}
 		else if(weatherProp == "chancestorms"){
-			return "wi wi-day-sprinkle";
+			if(isNight == false)return "wi wi-day-sprinkle"
+				else return "wi wi-night-sprinkle"
 		}
 		else if(weatherProp == "clear"){
-			return "wi wi-day-sunny";
+			if(isNight == false)return "wi wi-day-sunny"
+				else return "wi wi-night-clear"
 		}
 		else if(weatherProp == "cloudy"){
 			return "wi wi-cloud";
 		}
 		else if(weatherProp == "flurries"){
-			return "wi wi-day-snow";
+			if(isNight == false)return "wi wi-day-snow";
+				else return "wi wi-night-snow"
 		}
 		else if(weatherProp == "fog"){
-			return "wi wi-day-fog";
+			if(isNight == false)return "wi wi-day-fog";
+				else return "wi wi-night-fog"
 		}
 		else if(weatherProp == "hazy"){
 			return "wi wi-day-haze";
 		}
 		else if(weatherProp == "mostlycloudy"){
-			return "wi wi-cloudy";
+			if(isNight == false)return "wi wi-cloudy";
+				else return "wi wi-night-alt-cloudy"
 		}
 		else if(weatherProp == "mostlysunny"){
-			return "wi wi-day-sunny-overcast";
+			if(isNight == false)return "wi wi-day-sunny-overcast";
+				else return "wi wi-night-alt-cloudy"
 		}
 		else if(weatherProp == "partlycloudy"){
-			return "wi wi-day-cloudy";
+			if(isNight == false)return "wi wi-day-cloudy";
+				else return "wi wi-night-alt-cloudy"
 		}
 		else if(weatherProp == "partlysunny"){
-			return "wi wi-day-sunny-overcast";
+			if(isNight == false)return "wi wi-day-sunny-overcast";
+				else return "wi wi-night-alt-cloudy"
 		}
 		else if(weatherProp == "sleet"){
-			return "wi wi-day-sleet";
+			if(isNight == false)return "wi wi-day-sleet";
+				else return "wi wi-night-sleet"
 		}
 		else if(weatherProp == "rain"){
-			return "wi wi-day-rain";
+			if(isNight == false)return "wi wi-day-rain";
+				else return "wi wi-night-rain"
 		}
 		else if(weatherProp == "snow"){
-			return "wi wi-day-snow";
+			if(isNight == false)return "wi wi-day-snow";
+				else return "wi wi-night-snow"
 		}
 		else if(weatherProp == "sunny"){
-			return "wi wi-day-sunny";
+			if(isNight == false)return "wi wi-day-sunny";
+				else return "wi wi-night-clear"
 		}
 		else if(weatherProp == "tstorms"){
-			return "wi wi-day-storm-showers";
+			if(isNight == false)return "wi wi-day-storm-showers";
+				else return "wi wi-night-alt-storm-showers"
 		}
 		else if(weatherProp == "unknown"){
-			return "wi wi-day-cloudy-high";
+			if(isNight == false)return "wi wi-day-cloudy-high";
+				else return "wi wi-stars"
 		}
 		else if(weatherProp == "cloudy"){
-			return "wi wi-day-cloudy";
+			if(isNight == false)return "wi wi-day-cloudy";
+				else return "wi wi-night-alt-cloudy"
 		}
 		else if(weatherProp == "partlycloudy"){
-			return "wi wi-day";
+			if(isNight == false)return "wi wi-day";
+				else return "wi wi-night-alt-cloudy"
 		}
 	},
 	render: function(){
