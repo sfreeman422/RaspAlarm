@@ -14,8 +14,8 @@ var db = mongoose.connection;
 db.on("open", function(){
 	console.log("Connected to MongoDB on port 27017.");
 });
-db.on("error", function(){
-	console.log(error);
+db.on("error", function(err){
+	console.log("An error has occurred: "+err);
 })
 
 app.use(logger('dev'));
