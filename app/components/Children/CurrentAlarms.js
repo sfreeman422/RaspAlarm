@@ -41,8 +41,8 @@ var CurrentAlarms = React.createClass({
 				{this.state.listAlarms.map((alarm, i)=>{
 					return (
 						<div className="row" id="alarm" key={i}>
-							<h3>{alarm.time}</h3>
-							<p>{alarm.dayOfWeek}</p>
+							<h3 id="alarmTime">{alarm.time}</h3>
+							<p id="alarmDay">{alarm.dayOfWeek}</p>
 							<h3 onClick={()=>this._removeAlarm(alarm._id)} ><span className="glyphicon glyphicon-trash"><Link to="/alarmManager"></Link></span></h3>
 						</div>
 						)

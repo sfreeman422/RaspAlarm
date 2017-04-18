@@ -66,3 +66,10 @@ a{
 #dayAndLoc{
 	font-size: 120%;
 }
+
+#alarmTime{
+	color: white;
+}
+#alarmDay{
+	color: white;
+}
