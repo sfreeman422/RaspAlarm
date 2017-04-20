@@ -149,8 +149,8 @@ var Main = React.createClass({
 									weatherHourFiveTemp: response.hourly_forecast[1].temp.english+"F",
 									weatherHourFivePic: response.hourly_forecast[5].icon,
 								});
+								hasWeatherData = true;
 							});
-						hasWeatherData = true;
 						//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
 						$.ajax({
 							url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+locationObject.lat+","+locationObject.long+"&sensor=true"

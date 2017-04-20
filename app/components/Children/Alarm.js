@@ -13,13 +13,13 @@ var Alarm = React.createClass({
 			alarms: []
 		}
 	},
-	_getAlarms: function(callback){
+	_getAlarms: function(){
 		$.ajax({
 			url: "/alarms"
 		}).done((alarms)=>{
 			this.setState({alarms: alarms});
 			console.log(this.state.alarms);
-			callback();
+			this._checkAlarm();
 		});
 	},
 	//Function to check whether its time for an alarm to go off or not.
@@ -42,16 +42,13 @@ var Alarm = React.createClass({
 					}
 					//Otherwise, just set the state to undefined. 
 					else{
-						this.setState({
-							alarmStatus: "not ringing"
-						});
 						console.log("No Alarm");
 					}
 				}
 			}	
 	},
 	componentDidMount: function(){
-		this._getAlarms(this._checkAlarm);
+		this._getAlarms();
 		alarmInterval = setInterval(this._checkAlarm, 1000); 
 	},
 	componentWillUnmount: function(){
