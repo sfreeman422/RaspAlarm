@@ -30,7 +30,7 @@ var Weather = React.createClass({
 			if(isNight == false)return "wi wi-day-snow"
 				else return "wi wi-night-snow"
 		}
-		else if(weatherProp == "chancestorms"){
+		else if(weatherProp == "chancestorms" || weatherProp == "chancetstorms"){
 			if(isNight == false)return "wi wi-day-sprinkle"
 				else return "wi wi-night-sprinkle"
 		}
