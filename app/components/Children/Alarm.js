@@ -18,7 +18,6 @@ var Alarm = React.createClass({
 			url: "/alarms"
 		}).done((alarms)=>{
 			this.setState({alarms: alarms});
-			console.log(this.state.alarms);
 			this._checkAlarm();
 		});
 	},
@@ -33,16 +32,10 @@ var Alarm = React.createClass({
 						this.setState({
 							alarmStatus: "ringing"
 						});
-						console.log("Alarm should be playing.")
 					}
 					//If the alarmStatus is already ringing, we just want to play the alarmSound. So we do this. 
 					else if(this.state.alarmStatus=="ringing"){
 						alarmSound.play();
-						console.log("Alarm should be playing.")
-					}
-					//Otherwise, just set the state to undefined. 
-					else{
-						console.log("No Alarm");
 					}
 				}
 			}	
