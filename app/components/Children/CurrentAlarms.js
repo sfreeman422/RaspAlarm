@@ -4,11 +4,13 @@ var Link = require('react-router').Link;
 var CurrentAlarms = React.createClass({
 	getInitialState: function(){
 		return{
-			listAlarms: this.props.alarms
+			listAlarms: []
 		}
 	},
-	componentWillMount: function(){
-		this._getAlarms();
+	componentWillReceiveProps: function(nextProps){
+		if(this.props.alarms != nextProps.alarms){
+			this.setState({listAlarms: nextProps.alarms});			
+		}
 	},
 	_getAlarms: function(){
 		$.ajax({
@@ -19,9 +21,6 @@ var CurrentAlarms = React.createClass({
 				listAlarms: alarms
 			});
 		});
-	},
-	componentDidUpdate: function(){
-		this._getAlarms();
 	},
 	_removeAlarm: function(id){
 		$.ajax({
@@ -36,7 +35,8 @@ var CurrentAlarms = React.createClass({
 		});
 	},
 	render: function(){
-		return(
+		if(this.state.listAlarms != undefined){
+			return(
 			<div className="col-xs-12" id="alarms">
 				{this.state.listAlarms.map((alarm, i)=>{
 					return (
@@ -48,7 +48,15 @@ var CurrentAlarms = React.createClass({
 						)
 				})}
 			</div>
-		)
+			)
+		}
+		else{
+			return(
+				<div className="col-xs-12" id="alarms">
+				</div>
+			)
+		}
+		
 	}
 });
 

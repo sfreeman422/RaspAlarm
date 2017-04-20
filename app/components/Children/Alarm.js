@@ -8,8 +8,7 @@ var alarmsArr = [];
 var Alarm = React.createClass({
 	getInitialState: function(){
 		return{
-			alarmStatus: undefined,
-			snoozed: false,
+			alarmStatus: "not ringing",
 			awake: false
 		}
 	},
@@ -19,10 +18,10 @@ var Alarm = React.createClass({
 		$.ajax({
 			url:"/alarms"
 		}).done((alarms)=>{
-			for(var i =0; i<alarms.length;i++){
-				for(var j=0; j<alarms[i].dayOfWeek.length; j++){
+			for(var i =0; i < alarms.length;i++){
+				for(var j=0; j < alarms[i].dayOfWeek.length; j++){
 					//If the alarm is not ringing, ring the alarm and set the state. This should only happen once. 
-					if(this.props.currentTime == alarms[i].time && alarms[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus !== "ringing" && this.state.snoozed == false && this.state.awake == false){
+					if(this.props.currentTime == alarms[i].time && alarms[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus != "ringing" && this.state.awake == false){
 						alarmSound.play();
 						this.setState({
 							alarmStatus: "ringing"
@@ -30,14 +29,14 @@ var Alarm = React.createClass({
 						console.log("Alarm should be playing.")
 					}
 					//If the alarmStatus is already ringing, we just want to play the alarmSound. So we do this. 
-					else if(this.props.currentTime == alarms[i].time && alarms[i].dayofWeek[j] == dayOfWeek && this.state.alarmStatus=="ringing" && this.state.snoozed == false && this.state.awake == false){
+					else if(this.state.alarmStatus=="ringing"){
 						alarmSound.play();
 						console.log("Alarm should be playing.")
 					}
 					//Otherwise, just set the state to undefined. 
 					else{
 						this.setState({
-							alarmStatus: undefined
+							alarmStatus: "not ringing"
 						});
 						console.log("No Alarm");
 					}
@@ -53,19 +52,13 @@ var Alarm = React.createClass({
 	componentWillUnmount: function(){
 		clearInterval(alarmInterval);
 	},
-	_snooze: function(){
-		this.setState({
-			snoozed: true
-		});
-	},
 	_awake: function(){
 		this.setState({
-			awake: true,
-			alarmStatus: undefined
+			alarmStatus: "not ringing",
+			awake: true
 		});
-		console.log("Awake Status Before: "+this.state.awake);
+		//60 Seconds after waking up, we want to change awake state back to false so that we can get ready for our next alarm. 
 		setTimeout(()=>this.setState({ awake: false}), 60000);
-		console.log("Awake status after: "+this.state.awake);
 	},
 	render: function(){
 		if(this.state.alarmStatus == "ringing"){

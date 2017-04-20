@@ -232,7 +232,7 @@ var AlarmManager = React.createClass({
 			this.setState({alarms: alarms});
 		});
 	},
-	componentWillMount: function(){
+	componentDidMount: function(){
 		this._getAlarms();
 	},
 	_setAlarm: function(){
@@ -248,16 +248,8 @@ var AlarmManager = React.createClass({
 				ampm: ampm,
 				dayOfWeek: daysOfWeek
 			}
-		}).done((alarms)=>{
-			console.log("Getting alarms via the _setAlarm function...");
-			daysOfWeek = [];
-			$.ajax({
-			url:"/alarms",
-			type: "get"
-			}).done((newAlarms)=>{
-				console.log(newAlarms);
-				this.setState({alarms: newAlarms});
-			});
+		}).done((response)=>{
+			this._getAlarms();
 		});
 	},
 	render: function(){

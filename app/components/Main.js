@@ -97,7 +97,6 @@ var Main = React.createClass({
 		return new Promise((resolve, reject) => {
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
-						console.log(position);
 						const location = {
 							lat: position.coords.latitude,
 							long: position.coords.longitude
@@ -112,10 +111,8 @@ var Main = React.createClass({
 	_locationThenWeather: function(){
 		var that = this; 
 			var currentMinute = moment().format("mm");
-			console.log(currentMinute);
 			//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
 			if(currentMinute == "00" || hasWeatherData == false){
-				console.log("Getting weather data...");
 				return new Promise((resolve, reject) => {
 					return this._getLocation().then((locationObject) => {
 						if (!locationObject) {
@@ -126,7 +123,6 @@ var Main = React.createClass({
 						$.ajax({
 							url: "http://api.wunderground.com/api/"+keys+"/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
 							}).done((response) =>{
-								console.log(response);
 								this.setState({
 									weatherToday: response.hourly_forecast[0].condition,
 									weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
@@ -159,8 +155,6 @@ var Main = React.createClass({
 						$.ajax({
 							url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+locationObject.lat+","+locationObject.long+"&sensor=true"
 						}).done((geoloc) =>{
-							console.log("Response from Google Geocode:"+geoloc);
-							console.log(geoloc);
 							this.setState({
 								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
 							});
@@ -177,11 +171,6 @@ var Main = React.createClass({
 								sunrise: sunriseMoment,
 								sunset: sunsetMoment
 							});
-							console.log("SunsetString: "+sunsetString);
-							console.log("SunriseString: "+sunriseString);
-							console.log("Sunrise is after sunset: "+sunriseMoment.isAfter(sunsetMoment));
-							console.log("Sunset is after sunrise: "+sunsetMoment.isAfter(sunriseMoment));
-
 						})
 						return resolve(locationObject);
 					})
@@ -190,11 +179,8 @@ var Main = React.createClass({
 					});
 				});
 			}
-			else{
-				console.log("No need for new weather...");
-			}
 		},
-	componentWillMount: function(){
+	componentDidMount: function(){
 		this._locationThenWeather();
 		this._getTime();
 		//Runs the locationThenWeather function every 60 seconds. We do this to avoid 6 API calls within the one minute in which we are at a :00 time. 
