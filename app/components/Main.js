@@ -238,7 +238,7 @@ var Main = React.createClass({
 					<Weather currentTime={this.state.time} today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic} currentTime={this.state.time} sunrise={this.state.sunrise} sunset={this.state.sunset}/>
 				</div>
 				<div className="row">
-					<Alarm nextAlarm={this.state.nextAlarm} currentTime={this.state.time}/>
+					<Alarm nextAlarm ={this.state.nextAlarm} currentTime={this.state.time}/>
 				</div>
 			</div>);
 	}

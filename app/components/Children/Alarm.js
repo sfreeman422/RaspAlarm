@@ -9,19 +9,26 @@ var Alarm = React.createClass({
 	getInitialState: function(){
 		return{
 			alarmStatus: "not ringing",
-			awake: false
+			awake: false,
+			alarms: []
 		}
+	},
+	_getAlarms: function(callback){
+		$.ajax({
+			url: "/alarms"
+		}).done((alarms)=>{
+			this.setState({alarms: alarms});
+			console.log(this.state.alarms);
+			callback();
+		});
 	},
 	//Function to check whether its time for an alarm to go off or not.
 	_checkAlarm: function(){
 		var dayOfWeek = moment().format("dddd");
-		$.ajax({
-			url:"/alarms"
-		}).done((alarms)=>{
-			for(var i =0; i < alarms.length;i++){
-				for(var j=0; j < alarms[i].dayOfWeek.length; j++){
+			for(var i =0; i < this.state.alarms.length;i++){
+				for(var j=0; j < this.state.alarms[i].dayOfWeek.length; j++){
 					//If the alarm is not ringing, ring the alarm and set the state. This should only happen once. 
-					if(this.props.currentTime == alarms[i].time && alarms[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus != "ringing" && this.state.awake == false){
+					if(this.props.currentTime == this.state.alarms[i].time && this.state.alarms[i].dayOfWeek[j] == dayOfWeek && this.state.alarmStatus != "ringing" && this.state.awake == false){
 						alarmSound.play();
 						this.setState({
 							alarmStatus: "ringing"
@@ -41,12 +48,10 @@ var Alarm = React.createClass({
 						console.log("No Alarm");
 					}
 				}
-			}
-		});
-			
+			}	
 	},
-	componentWillMount: function(){
-		this._checkAlarm();
+	componentDidMount: function(){
+		this._getAlarms(this._checkAlarm);
 		alarmInterval = setInterval(this._checkAlarm, 1000); 
 	},
 	componentWillUnmount: function(){
