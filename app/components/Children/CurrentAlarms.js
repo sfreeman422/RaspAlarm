@@ -34,6 +34,28 @@ var CurrentAlarms = React.createClass({
 			this._getAlarms();
 		});
 	},
+	_displayLetterForDayOfWeek: function(days){
+		console.log(days); 
+		var dayOfWeek = {
+			"Monday": "M",
+			"Tuesday": "T",
+			"Wednesday": "W",
+			"Thursday": "Th",
+			"Friday": "F",
+			"Saturday": "Sat",
+			"Sunday": "Sun"
+		}
+		var responseString = '';
+		for(var i = 0 ; i< days.length; i++){
+			if(i<days.length-1){
+				responseString += dayOfWeek[days[i]]+" | "
+			}
+			else{
+				responseString += dayOfWeek[days[i]]
+			}
+		}
+		return responseString;
+	},
 	render: function(){
 		if(this.state.listAlarms != undefined){
 			return(
@@ -42,7 +64,7 @@ var CurrentAlarms = React.createClass({
 					return (
 						<div className="row" id="alarm" key={i}>
 							<h3 id="alarmTime">{alarm.time}</h3>
-							<p id="alarmDay">{alarm.dayOfWeek}</p>
+							<p id="alarmDay">{this._displayLetterForDayOfWeek(alarm.dayOfWeek)}</p>
 							<h3 onClick={()=>this._removeAlarm(alarm._id)} ><span className="glyphicon glyphicon-trash"><Link to="/alarmManager"></Link></span></h3>
 						</div>
 						)
