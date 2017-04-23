@@ -246,6 +246,16 @@ var AlarmManager = React.createClass({
 				dayOfWeek: daysOfWeek
 			}
 		}).done((response)=>{
+			this.setState({
+				monday: "unselected",
+				tuesday: "unselected",
+				wednesday: "unselected",
+				thursday: "unselected",
+				friday: "unselected",
+				saturday: "unselected",
+				sunday: "unselected"
+			});
+			daysOfWeek = []; 
 			this._getAlarms();
 		});
 	},
