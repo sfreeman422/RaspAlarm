@@ -35,7 +35,6 @@ var CurrentAlarms = React.createClass({
 		});
 	},
 	_displayLetterForDayOfWeek: function(days){
-		console.log(days); 
 		var dayOfWeek = {
 			"Monday": "M",
 			"Tuesday": "T",
