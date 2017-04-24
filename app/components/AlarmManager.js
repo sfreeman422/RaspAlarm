@@ -1,11 +1,14 @@
-var React = require('react');
-var Link = require('react-router').Link;
-var CurrentAlarms = require('./Children/CurrentAlarms.js');
-var daysOfWeek = [];
-var alarmsArr = [];
-var AlarmManager = React.createClass({
-	getInitialState: function(){
-		return{
+import React from 'react'
+import Link from 'react-router'
+import CurrentAlarms from './Children/CurrentAlarms'
+
+let daysOfWeek = [];
+let alarmsArr = [];
+
+export default class AlarmManager extends React.Component{
+	constructor(){
+		super();
+		this.state = {
 			hour: 1,
 			minute: 30,
 			ampm: "am",
@@ -20,8 +23,14 @@ var AlarmManager = React.createClass({
 			sunday: "unselected",
 			alarms: []
 		}
-	},
-	_incrementHour: function(){
+		this._incrementHour = this._incrementHour.bind(this);
+		this._incrementMinute = this._incrementMinute.bind(this);
+		this._changeAMPM = this._changeAMPM.bind(this);
+		this._chooseDay = this._chooseDay.bind(this);
+		this._getAlarms = this._getAlarms.bind(this);
+		this._setAlarm = this._setAlarm.bind(this);
+	}
+	_incrementHour(){
 		if(this.state.hour == 12){
 			this.setState({
 				hour: 1,
@@ -50,8 +59,8 @@ var AlarmManager = React.createClass({
 				hourDisplay: this.state.hour+1
 			});
 		}
-	},
-	_incrementMinute: function(){
+	}
+	_incrementMinute(){
 		if(this.state.minute == 55){
 			this.setState({
 				minute: 0,
@@ -80,8 +89,8 @@ var AlarmManager = React.createClass({
 				minuteDisplay: this.state.minute+5
 			});
 		}
-	},
-	_changeAMPM: function(){
+	}
+	_changeAMPM(){
 		if(this.state.ampm == "am"){
 			this.setState({
 				ampm: "pm"
@@ -92,8 +101,8 @@ var AlarmManager = React.createClass({
 				ampm:"am"
 			})
 		}
-	},
-	_chooseDay: function(day){
+	}
+	_chooseDay(day){
 		if(day == "Monday"){
 			if(this.state.monday == "unselected"){
 				this.setState({
@@ -220,22 +229,22 @@ var AlarmManager = React.createClass({
 				}
 			}
 		}
-	},
-	_getAlarms: function(){
+	}
+	_getAlarms(){
 		$.ajax({
 			url:"/alarms",
 			type:"get"
 		}).done((alarms)=>{
 			this.setState({alarms: alarms});
 		});
-	},
-	componentDidMount: function(){
+	}
+	componentDidMount(){
 		this._getAlarms();
-	},
-	_setAlarm: function(){
-		var hour = this.state.hourDisplay;
-		var minute = this.state.minuteDisplay;
-		var ampm = this.state.ampm;
+	}
+	_setAlarm(){
+		let hour = this.state.hourDisplay;
+		let minute = this.state.minuteDisplay;
+		let ampm = this.state.ampm;
 		$.ajax({
 			url: "/setAlarm",
 			type: "POST",
@@ -258,9 +267,9 @@ var AlarmManager = React.createClass({
 			daysOfWeek = []; 
 			this._getAlarms();
 		});
-	},
-	render: function(){
-			return(
+	}
+	render(){
+		return(
 				<div className="container" id="alarmManager">
 					<div className="row">
 						<div className="col-xs-12" id="timeSet">
@@ -284,6 +293,4 @@ var AlarmManager = React.createClass({
 				</div>
 			)
 	}
-});
-
-module.exports = AlarmManager;
+}
