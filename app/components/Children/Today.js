@@ -1,7 +1,7 @@
-var React = require('react');
+import React from 'react'
 
-var Today = React.createClass({
-	render: function(){
+export default class Today extends React.Component{
+	render(){
 		return(
 		<div className="today">
 			<div className="col-xs-12 weekday">
@@ -10,6 +10,4 @@ var Today = React.createClass({
 		</div>
 		)
 	}
-})
-
-module.exports = Today; 
+}
