@@ -4,7 +4,7 @@ import {Router, Route, Link, hashHistory} from 'react-router'
 
 //Import the children
 import Main from './components/Main'
-import AlarmManager from './components/AlarmManager'
+import AlarmManager  from './components/AlarmManager'
 
 ReactDOM.render(
 	<Router history={hashHistory}>

@@ -1,11 +1,11 @@
 import React from 'react'
-import Link from 'react-router'
+import { Link } from 'react-router'
 import CurrentAlarms from './Children/CurrentAlarms'
 
 let daysOfWeek = [];
 let alarmsArr = [];
 
-export default class AlarmManager extends React.Component{
+export default class AlarmManager extends React.Component {
 	constructor(){
 		super();
 		this.state = {
