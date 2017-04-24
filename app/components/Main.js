@@ -50,13 +50,7 @@ let sunsetSave=undefined;
 export default class Main extends React.Component{
 	constructor(){
 		super();
-	}
-}
-
-
-var Main = React.createClass({
-	getInitialState: function(){
-		return{
+		this.state = {
 			time: timeSave,
 			date: dateSave,
 			today: todaySave,
@@ -89,17 +83,20 @@ var Main = React.createClass({
 			weatherHourFivePic: weatherHourFivePicSave,
 			sunrise: sunriseSave,
 			sunset: sunsetSave
-		};
-	},
+		}
+		this._getTime = this._getTime.bind(this);
+		this._getLocation = this._getLocation.bind(this);
+		this._locationThenWeather = this._locationThenWeather.bind(this)
+	}
 	//Gets the time for the alarm clock. 
-	_getTime: function(){
+	_getTime(){
 		this.setState({
 			time: moment().format("hh:mm"+"a"),
 			date: moment().format("MMMM Do YYYY"),
 			today: moment().format("dddd")
 		});
-	},
-	_getLocation: function(){
+	}
+	_getLocation(){
 		return new Promise((resolve, reject) => {
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
@@ -113,10 +110,9 @@ var Main = React.createClass({
 						return reject(error);
 					});
 			});
-	},
-	_locationThenWeather: function(){
-		var that = this; 
-			var currentMinute = moment().format("mm");
+	}
+	_locationThenWeather(){
+			let currentMinute = moment().format("mm");
 			//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
 			if(currentMinute == "00" || hasWeatherData == false){
 				return new Promise((resolve, reject) => {
@@ -169,10 +165,10 @@ var Main = React.createClass({
 						$.ajax({
 							url:"http://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
 						}).done((sundata)=>{
-							var sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
-							var sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
-							var sunriseMoment = moment(sunriseString, "hh:mm:a");
-							var sunsetMoment = moment(sunsetString, "hh:mm:a");
+							let sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
+							let sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
+							let sunriseMoment = moment(sunriseString, "hh:mm:a");
+							let sunsetMoment = moment(sunsetString, "hh:mm:a");
 							this.setState({
 								sunrise: sunriseMoment,
 								sunset: sunsetMoment
@@ -185,16 +181,16 @@ var Main = React.createClass({
 					});
 				});
 			}
-		},
-	componentDidMount: function(){
+		}
+	componentDidMount(){
 		this._locationThenWeather();
 		this._getTime();
 		//Runs the locationThenWeather function every 60 seconds. We do this to avoid 6 API calls within the one minute in which we are at a :00 time. 
 		weatherInterval = setInterval(this._locationThenWeather, 60000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		timeInterval = setInterval(this._getTime, 100);
-	},
-	componentWillUnmount: function(){
+	}
+	componentWillUnmount(){
 		timeSave=this.state.time;
 		dateSave=this.state.date;
 		todaySave=this.state.today;
@@ -230,8 +226,8 @@ var Main = React.createClass({
 		clearInterval(weatherInterval);
 		clearInterval(timeInterval);
 		//hasWeatherData = false; 
-	},
-	render: function(){
+	}
+	render(){
 		return(
 			<div className="container">
 				<div className="row">
@@ -248,6 +244,4 @@ var Main = React.createClass({
 				</div>
 			</div>);
 	}
-});
-
-module.exports = Main; 
+}
