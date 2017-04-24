@@ -26,7 +26,7 @@ export default class CurrentAlarms extends React.Component{
 			});
 		});
 	}
-	_removeAlarm(){
+	_removeAlarm(id){
 		$.ajax({
 			url: "/deleteAlarm",
 			type: "DELETE",
