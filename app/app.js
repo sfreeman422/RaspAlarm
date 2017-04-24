@@ -1,12 +1,10 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Router = require('react-router').Router;
-var Route = require('react-router').Route;
-var Link = require('react-router').Link;
-var hashHistory = require('react-router').hashHistory;
-//Require the children
-var Main = require('./components/Main');
-var AlarmManager = require('./components/AlarmManager');
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {Router, Route, Link, hashHistory} from 'react-router'
+
+//Import the children
+import Main from './components/Main'
+import AlarmManager from './components/AlarmManager'
 
 ReactDOM.render(
 	<Router history={hashHistory}>

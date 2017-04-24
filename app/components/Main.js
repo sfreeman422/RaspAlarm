@@ -1,51 +1,57 @@
-var React = require('react');
-var moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
 //Require the children
-var Clock = require("./Children/Clock.js");
-var Today = require("./Children/Today.js");
-var Weather = require("./Children/Weather.js");
-var Alarm = require("./Children/Alarm.js");
-var AlarmManager = require("./AlarmManager.js");
+import Clock from './Children/Clock.js'
+import Today from './Children/Today.js'
+import Weather from './Children/Weather.js'
+import Alarm from './Children/Alarm.js'
+import AlarmManager from './AlarmManager.js'
 
-var hasWeatherData = false; 
-var weatherInterval;
-var timeInterval;
-var keys = require("../../private/keys.js");
+let hasWeatherData = false; 
+let weatherInterval;
+let timeInterval;
+const keys = require("../../private/keys.js");
 
 //Vars to save state. 
-var timeSave="Loading...";
-var dateSave="Loading...";
-var todaySave="Loading...";
-var userLocSave="Loading...";
-var nextAlarmSave="Loading...";
-var alarmSave="Loading...";
-var weatherTodaySave="Loading...";
-var weatherTodayTimeSave="Loading...";
-var weatherTodayTempSave="Loading...";
-var weatherTodayPicSave=undefined;
-var weatherHourOneSave="Loading...";
-var weatherHourOneTimeSave="Loading...";
-var weatherHourOneTempSave="Loading...";
-var weatherHourOnePicSave=undefined;
-var weatherHourTwoSave="Loading...";
-var weatherHourTwoTimeSave="Loading...";
-var weatherHourTwoTempSave="Loading...";
-var weatherHourTwoPicSave=undefined;
-var weatherHourThreeSave="Loading...";
-var weatherHourThreeTimeSave="Loading...";
-var weatherHourThreeTempSave="Loading...";
-var weatherHourThreePicSave=undefined;
-var weatherHourFourSave="Loading...";
-var weatherHourFourTimeSave="Loading...";
-var weatherHourFourTempSave="Loading...";
-var weatherHourFourPicSave=undefined;
-var weatherHourFiveSave="Loading...";
-var weatherHourFiveTimeSave="Loading...";
-var weatherHourFiveTempSave="Loading...";
-var weatherHourFivePicSave=undefined;
-var sunriseSave=undefined;
-var sunsetSave=undefined;
+let timeSave="Loading...";
+let dateSave="Loading...";
+let todaySave="Loading...";
+let userLocSave="Loading...";
+let nextAlarmSave="Loading...";
+let alarmSave="Loading...";
+let weatherTodaySave="Loading...";
+let weatherTodayTimeSave="Loading...";
+let weatherTodayTempSave="Loading...";
+let weatherTodayPicSave=undefined;
+let weatherHourOneSave="Loading...";
+let weatherHourOneTimeSave="Loading...";
+let weatherHourOneTempSave="Loading...";
+let weatherHourOnePicSave=undefined;
+let weatherHourTwoSave="Loading...";
+let weatherHourTwoTimeSave="Loading...";
+let weatherHourTwoTempSave="Loading...";
+let weatherHourTwoPicSave=undefined;
+let weatherHourThreeSave="Loading...";
+let weatherHourThreeTimeSave="Loading...";
+let weatherHourThreeTempSave="Loading...";
+let weatherHourThreePicSave=undefined;
+let weatherHourFourSave="Loading...";
+let weatherHourFourTimeSave="Loading...";
+let weatherHourFourTempSave="Loading...";
+let weatherHourFourPicSave=undefined;
+let weatherHourFiveSave="Loading...";
+let weatherHourFiveTimeSave="Loading...";
+let weatherHourFiveTempSave="Loading...";
+let weatherHourFivePicSave=undefined;
+let sunriseSave=undefined;
+let sunsetSave=undefined;
+
+export default class Main extends React.Component{
+	constructor(){
+		super();
+	}
+}
 
 
 var Main = React.createClass({
