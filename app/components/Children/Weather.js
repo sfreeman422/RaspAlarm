@@ -107,48 +107,42 @@ var Weather = React.createClass({
 				<div className="col-xs-2 weatherProp">
 					<i className={this._determineWeatherIcon(this.props.todayPic)}></i>
 					<div className="weatherDescription">
-						<p>{this.props.today}</p>
-						<p>{this.props.todayTemp}</p>
+						<p>{this.props.today+" & "+this.props.todayTemp}</p>
 						<p>{this.props.todayHour}</p>
 					</div>
 				</div>
 				<div className="col-xs-2 weatherOne">
 					<i className={this._determineWeatherIcon(this.props.onePic)}></i>
 					<div className="weatherDescription">
-						<p>{this.props.one}</p>
-						<p>{this.props.oneTemp}</p>
+						<p>{this.props.one+" & "+this.props.oneTemp}</p>
 						<p>{this.props.oneHour}</p>
 					</div>
 				</div>
 				<div className="col-xs-2 weatherTwo">
 					<i className={this._determineWeatherIcon(this.props.twoPic)}></i>
 					<div className="weatherDescription">
-						<p>{this.props.two}</p>
-						<p>{this.props.twoTemp}</p>
+						<p>{this.props.two+" & "+this.props.twoTemp}</p>
 						<p>{this.props.twoHour}</p>
 					</div>
 				</div>
 				<div className="col-xs-2 weatherThree">
 					<i className={this._determineWeatherIcon(this.props.threePic)}></i>
 					<div className="weatherDescription">
-						<p>{this.props.three}</p>
-						<p>{this.props.threeTemp}</p>
+						<p>{this.props.three+" & "+this.props.threeTemp}</p>
 						<p>{this.props.threeHour}</p>
 					</div>
 				</div>
 				<div className="col-xs-2 weatherFour">
 					<i className={this._determineWeatherIcon(this.props.fourPic)}></i>
 					<div className="weatherDescription">
-						<p>{this.props.four}</p>
-						<p>{this.props.fourTemp}</p>
+						<p>{this.props.four+" & "+this.props.fourTemp}</p>
 						<p>{this.props.fourHour}</p>
 					</div>
 				</div>
 				<div className="col-xs-2 weatherFive">
 					<i className={this._determineWeatherIcon(this.props.fivePic)}></i>
 					<div className="weatherDescription">
-						<p>{this.props.five}</p>
-						<p>{this.props.fiveTemp}</p>
+						<p>{this.props.five+" & "+this.props.fiveTemp}</p>
 						<p>{this.props.fiveHour}</p>
 					</div>
 				</div>
