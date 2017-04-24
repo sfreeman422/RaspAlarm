@@ -1,18 +1,22 @@
-var React = require('react');
-var Link = require('react-router').Link;
+import React from 'react'
+import { Link } from 'react-router'
 
-var CurrentAlarms = React.createClass({
-	getInitialState: function(){
-		return{
+export default class CurrentAlarms extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
 			listAlarms: []
 		}
-	},
-	componentWillReceiveProps: function(nextProps){
+		this._getAlarms = this._getAlarms.bind(this);
+		this._removeAlarm = this._removeAlarm.bind(this);
+		this._displayLetterForDayOfWeek = this._displayLetterForDayOfWeek.bind(this);
+	}
+	componentWillReceiveProps(nextProps){
 		if(this.props.alarms != nextProps.alarms){
-			this.setState({listAlarms: nextProps.alarms});			
+			this.setState({listAlarms: nextProps.alarms});
 		}
-	},
-	_getAlarms: function(){
+	}
+	_getAlarms(){
 		$.ajax({
 			url: "/alarms",
 			type: "get"
@@ -21,8 +25,8 @@ var CurrentAlarms = React.createClass({
 				listAlarms: alarms
 			});
 		});
-	},
-	_removeAlarm: function(id){
+	}
+	_removeAlarm(){
 		$.ajax({
 			url: "/deleteAlarm",
 			type: "DELETE",
@@ -33,9 +37,9 @@ var CurrentAlarms = React.createClass({
 		}).done((alarms)=>{
 			this._getAlarms();
 		});
-	},
-	_displayLetterForDayOfWeek: function(days){
-		var dayOfWeek = {
+	}
+	_displayLetterForDayOfWeek(days){
+		const dayOfWeek = {
 			"Monday": "M",
 			"Tuesday": "T",
 			"Wednesday": "W",
@@ -44,8 +48,8 @@ var CurrentAlarms = React.createClass({
 			"Saturday": "Sat",
 			"Sunday": "Sun"
 		}
-		var responseString = '';
-		for(var i = 0 ; i< days.length; i++){
+		let responseString = '';
+		for(let i = 0 ; i< days.length; i++){
 			if(i<days.length-1){
 				responseString += dayOfWeek[days[i]]+" | "
 			}
@@ -54,8 +58,8 @@ var CurrentAlarms = React.createClass({
 			}
 		}
 		return responseString;
-	},
-	render: function(){
+	}
+	render(){
 		if(this.state.listAlarms != undefined){
 			return(
 			<div className="col-xs-12" id="alarms">
@@ -77,8 +81,5 @@ var CurrentAlarms = React.createClass({
 				</div>
 			)
 		}
-		
 	}
-});
-
-module.exports = CurrentAlarms;
+}
