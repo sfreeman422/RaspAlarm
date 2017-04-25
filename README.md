@@ -1,6 +1,6 @@
 # RaspAlarm
 A MERN Stack, Raspberry Pi Controlled Alarm Clock.
-
+![RaspAlarm](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/beta.jpg)
 # Purpose
 A full feature alarm clock that can be used in the bedroom to tell the time, set alarms, show the weather and a whole slew of other, yet to be built features. 
 
@@ -19,19 +19,6 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 ## Planned Changes 
 - Will provide support for per-user alarms in order to make this usable via the web, if someone should want to do that. 
 - Will provide support for custom alarm sounds, background images and more!
-
-## 2/15/17
-- Beta version! This was presented at the Rutgers Coding Bootcamp Demo Day in the state shown below. All weather and alarm clock features are working properly and I am now working to integrate Amazon's Echo API. The case is an alpha version of the final case as I'd like to go for something a bit more sleek. Perhaps stained wood. 
-![Beta Buid](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/beta.jpg)
-
-## 2/4/17
-- We have lift off! Below is a picture of the "alpha" version of the alarm. We see that we have the time displaying properly, icons for weather and a couple hours 
-forecast for weather. I had to change over to the Weather Underground's API as I was originally using OpenWeaterMap but found that they did not provide me with an hourly forecast. Next steps are to integrate an alarm feature as well as Alexa integrations. 
-![Alpha Build](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/alpha.jpg)
-
-## January 2017
-- Raspberry Pi and touch screen are functional and running Raspbian. 
-![It's alive](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/IMG_20170107_160419.jpg)
 
 
 # Fork this Repo:
