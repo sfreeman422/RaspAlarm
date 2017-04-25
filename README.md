@@ -44,11 +44,10 @@ Promises are hard! I had to consult a friend of mine to help me implement promis
 
 # Changelog/Status
 4/24/17
-Recent Changes: 
 - I recently rewrote the application to ES6 so that I can finally get with the time. 
 - Adjusted a number of stylistic components involving how the alarms are shown. Also improved readability of text on some displays. 
 - Adjusted the way that the weather and temperature is displayed on the page. 
-Upcoming Changes:
+
 - Will provide support for per-user alarms in order to make this usable via the web, if someone should want to do that. 
 - Will provide support for custom alarm sounds, background images and more!
 
