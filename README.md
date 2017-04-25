@@ -52,13 +52,5 @@ module.exports = keys;
 - webpack
 - Visit localhost:3000 on your browser and enjoy!
 
-# Struggles
-This application is still under development.
-- Promises were really hard to learn but a necessity in order to get async code to work properly. In my case, getting the user's location before making an API call for the weather. 
-- The Raspberry Pi is throwing an "undervoltage" symbol, indicating that my power supply probably isn't enough. Plan to fix this by buying a new power supply, but will slog through for the time being. RESOLVED: Purchased a new power cable in February that was designed for use with the Raspberry Pi. 
-
 # What I Learned
 Raspberry Pi's are cool, fun and cheap. This is my first Raspberry Pi project but will likely not be my last. 
-
-Promises are hard! I had to consult a friend of mine to help me implement promises within my React lifecycle methods. I needed to be able to get the user's location and THEN get the weather for that location. It took me a few hours of messing about and consulting my friend on what I was doing wrong, but finally, we are getting the user's location THEN getting the weather. 
-
