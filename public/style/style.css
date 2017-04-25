@@ -19,13 +19,15 @@ body{
 	background-color: black;
 	background-size: cover;
 }
-.bootstrap-timepicker-widget.dropdown-menu {
-    z-index: 1050!important;
-}
-
 i{
 	color: white;
 	font-size: 550%;
+}
+a{
+	color:white;
+}
+.bootstrap-timepicker-widget.dropdown-menu {
+    z-index: 1050!important;
 }
 .wi-day-sunny{
 	color: #fed039;
@@ -49,6 +51,9 @@ i{
 	display: inline;
 	margin-right: 2%;
 }
+.glyphicon-trash{
+	color: red;
+}
 #unselected{
 	color: grey;
 }
@@ -57,9 +62,6 @@ i{
 }
 #displayBlock{
 	display: block;
-}
-a{
-	color:white;
 }
 #setAlarm{
 	color:white;
@@ -74,6 +76,6 @@ a{
 #alarmDay{
 	color: white;
 }
-.glyphicon-trash{
-	color: red;
+#alarmManagerPrompt{
+	color:white;
 }

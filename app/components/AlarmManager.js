@@ -278,7 +278,7 @@ export default class AlarmManager extends React.Component {
 					</div>
 					<div className="row">
 						<div className="col-xs-12" id="daysOfWeek">
-							<h3>Which days would you like to set this alarm for?</h3>
+							<h3 id="alarmManagerPrompt">Which days would you like to set this alarm for?</h3>
 							<h3 className="unselectable dayOfWeek" id={this.state.monday} onClick={()=>{this._chooseDay("Monday")}}>M</h3><h3 className="unselectable dayOfWeek" id={this.state.tuesday} onClick={()=>{this._chooseDay("Tuesday")}}>T</h3><h3 className="unselectable dayOfWeek" id={this.state.wednesday} onClick={()=>{this._chooseDay("Wednesday")}}>W</h3><h3 className="unselectable dayOfWeek" id={this.state.thursday} onClick={()=>{this._chooseDay("Thursday")}}>Th</h3><h3 className="unselectable dayOfWeek" id={this.state.friday} onClick={()=>{this._chooseDay("Friday")}}>Fri</h3><h3 className="unselectable dayOfWeek" id={this.state.saturday} onClick={()=>{this._chooseDay("Saturday")}}>Sat</h3><h3 className="unselectable dayOfWeek" id={this.state.sunday} onClick={()=>{this._chooseDay("Sunday")}}>Sun</h3>
 							
 						</div>
