@@ -72,6 +72,7 @@ export default class Alarm extends React.Component{
 			return(
 				<div className="col-xs-12" id="alarm">
 					<h3><Link to="/AlarmManager">Set an alarm</Link></h3>
+					<h3 onClick={()=>document.body.style.background = "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7) ), url('./bgs/bridge.jpg')"}> Change BG</h3>
 				</div>
 			)
 		}
