@@ -1,56 +1,56 @@
-var React = require('react');
-var moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
 //Require the children
-var Clock = require("./Children/Clock.js");
-var Today = require("./Children/Today.js");
-var Weather = require("./Children/Weather.js");
-var Alarm = require("./Children/Alarm.js");
-var AlarmManager = require("./AlarmManager.js");
+import Clock from './Children/Clock.js'
+import Today from './Children/Today.js'
+import Weather from './Children/Weather.js'
+import Alarm from './Children/Alarm.js'
+import AlarmManager from './AlarmManager.js'
 
-var hasWeatherData = false; 
-var weatherInterval;
-var timeInterval;
-var keys = require("../../private/keys.js");
+let hasWeatherData = false; 
+let weatherInterval;
+let timeInterval;
+const keys = require("../../private/keys.js");
 
 //Vars to save state. 
-var timeSave="Loading...";
-var dateSave="Loading...";
-var todaySave="Loading...";
-var userLocSave="Loading...";
-var nextAlarmSave="Loading...";
-var alarmSave="Loading...";
-var weatherTodaySave="Loading...";
-var weatherTodayTimeSave="Loading...";
-var weatherTodayTempSave="Loading...";
-var weatherTodayPicSave=undefined;
-var weatherHourOneSave="Loading...";
-var weatherHourOneTimeSave="Loading...";
-var weatherHourOneTempSave="Loading...";
-var weatherHourOnePicSave=undefined;
-var weatherHourTwoSave="Loading...";
-var weatherHourTwoTimeSave="Loading...";
-var weatherHourTwoTempSave="Loading...";
-var weatherHourTwoPicSave=undefined;
-var weatherHourThreeSave="Loading...";
-var weatherHourThreeTimeSave="Loading...";
-var weatherHourThreeTempSave="Loading...";
-var weatherHourThreePicSave=undefined;
-var weatherHourFourSave="Loading...";
-var weatherHourFourTimeSave="Loading...";
-var weatherHourFourTempSave="Loading...";
-var weatherHourFourPicSave=undefined;
-var weatherHourFiveSave="Loading...";
-var weatherHourFiveTimeSave="Loading...";
-var weatherHourFiveTempSave="Loading...";
-var weatherHourFivePicSave=undefined;
-var sunriseSave=undefined;
-var sunsetSave=undefined;
+let timeSave="Loading...";
+let dateSave="Loading...";
+let todaySave="Loading...";
+let userLocSave="Loading...";
+let nextAlarmSave="Loading...";
+let alarmSave="Loading...";
+let weatherTodaySave="Loading...";
+let weatherTodayTimeSave="Loading...";
+let weatherTodayTempSave="Loading...";
+let weatherTodayPicSave=undefined;
+let weatherHourOneSave="Loading...";
+let weatherHourOneTimeSave="Loading...";
+let weatherHourOneTempSave="Loading...";
+let weatherHourOnePicSave=undefined;
+let weatherHourTwoSave="Loading...";
+let weatherHourTwoTimeSave="Loading...";
+let weatherHourTwoTempSave="Loading...";
+let weatherHourTwoPicSave=undefined;
+let weatherHourThreeSave="Loading...";
+let weatherHourThreeTimeSave="Loading...";
+let weatherHourThreeTempSave="Loading...";
+let weatherHourThreePicSave=undefined;
+let weatherHourFourSave="Loading...";
+let weatherHourFourTimeSave="Loading...";
+let weatherHourFourTempSave="Loading...";
+let weatherHourFourPicSave=undefined;
+let weatherHourFiveSave="Loading...";
+let weatherHourFiveTimeSave="Loading...";
+let weatherHourFiveTempSave="Loading...";
+let weatherHourFivePicSave=undefined;
+let sunriseSave=undefined;
+let sunsetSave=undefined;
 
-
-var Main = React.createClass({
-	getInitialState: function(){
-		return{
+export default class Main extends React.Component{
+	constructor(){
+		super();
+		this.state = {
 			time: timeSave,
 			date: dateSave,
 			today: todaySave,
@@ -83,17 +83,20 @@ var Main = React.createClass({
 			weatherHourFivePic: weatherHourFivePicSave,
 			sunrise: sunriseSave,
 			sunset: sunsetSave
-		};
-	},
+		}
+		this._getTime = this._getTime.bind(this);
+		this._getLocation = this._getLocation.bind(this);
+		this._locationThenWeather = this._locationThenWeather.bind(this)
+	}
 	//Gets the time for the alarm clock. 
-	_getTime: function(){
+	_getTime(){
 		this.setState({
 			time: moment().format("hh:mm"+"a"),
 			date: moment().format("MMMM Do YYYY"),
 			today: moment().format("dddd")
 		});
-	},
-	_getLocation: function(){
+	}
+	_getLocation(){
 		return new Promise((resolve, reject) => {
 				navigator.geolocation.getCurrentPosition(
 					(position) => {
@@ -107,10 +110,9 @@ var Main = React.createClass({
 						return reject(error);
 					});
 			});
-	},
-	_locationThenWeather: function(){
-		var that = this; 
-			var currentMinute = moment().format("mm");
+	}
+	_locationThenWeather(){
+			let currentMinute = moment().format("mm");
 			//If the current time isnt an o'clock or if weather data isnt already included, we run the code to get location and get the weather forecast. 
 			if(currentMinute == "00" || hasWeatherData == false){
 				return new Promise((resolve, reject) => {
@@ -163,10 +165,10 @@ var Main = React.createClass({
 						$.ajax({
 							url:"http://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
 						}).done((sundata)=>{
-							var sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
-							var sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
-							var sunriseMoment = moment(sunriseString, "hh:mm:a");
-							var sunsetMoment = moment(sunsetString, "hh:mm:a");
+							let sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
+							let sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
+							let sunriseMoment = moment(sunriseString, "hh:mm:a");
+							let sunsetMoment = moment(sunsetString, "hh:mm:a");
 							this.setState({
 								sunrise: sunriseMoment,
 								sunset: sunsetMoment
@@ -179,16 +181,16 @@ var Main = React.createClass({
 					});
 				});
 			}
-		},
-	componentDidMount: function(){
+		}
+	componentDidMount(){
 		this._locationThenWeather();
 		this._getTime();
 		//Runs the locationThenWeather function every 60 seconds. We do this to avoid 6 API calls within the one minute in which we are at a :00 time. 
 		weatherInterval = setInterval(this._locationThenWeather, 60000);
 		//Get the time every 1/10 of a second, this will also setState for time to the current time. 
 		timeInterval = setInterval(this._getTime, 100);
-	},
-	componentWillUnmount: function(){
+	}
+	componentWillUnmount(){
 		timeSave=this.state.time;
 		dateSave=this.state.date;
 		todaySave=this.state.today;
@@ -224,8 +226,8 @@ var Main = React.createClass({
 		clearInterval(weatherInterval);
 		clearInterval(timeInterval);
 		//hasWeatherData = false; 
-	},
-	render: function(){
+	}
+	render(){
 		return(
 			<div className="container">
 				<div className="row">
@@ -238,10 +240,8 @@ var Main = React.createClass({
 					<Weather currentTime={this.state.time} today={this.state.weatherToday} todayHour={this.state.weatherTodayTime} todayPic = {this.state.weatherTodayPic} todayTemp={this.state.weatherTodayTemp} one={this.state.weatherHourOne} oneHour={this.state.weatherHourOneTime} oneTemp={this.state.weatherHourOneTemp} onePic={this.state.weatherHourOnePic} two={this.state.weatherHourTwo} twoHour={this.state.weatherHourTwoTime} twoTemp={this.state.weatherHourTwoTemp} twoPic={this.state.weatherHourTwoPic} three={this.state.weatherHourThree} threeHour={this.state.weatherHourThreeTime} threeTemp={this.state.weatherHourThreeTemp} threePic={this.state.weatherHourThreePic} four={this.state.weatherHourFour} fourHour={this.state.weatherHourFourTime} fourTemp={this.state.weatherHourFourTemp} fourPic={this.state.weatherHourFourPic} five={this.state.weatherHourFive} fiveHour={this.state.weatherHourFiveTime} fiveTemp={this.state.weatherHourFiveTemp} fivePic={this.state.weatherHourFivePic} currentTime={this.state.time} sunrise={this.state.sunrise} sunset={this.state.sunset}/>
 				</div>
 				<div className="row">
-					<Alarm nextAlarm ={this.state.nextAlarm} currentTime={this.state.time}/>
+					<Alarm currentTime={this.state.time}/>
 				</div>
 			</div>);
 	}
-});
-
-module.exports = Main; 
+}

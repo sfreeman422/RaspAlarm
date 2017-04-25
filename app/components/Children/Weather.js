@@ -1,12 +1,16 @@
-var React = require('react');
-var moment = require('moment');
+import React from 'react'
+import moment from 'moment'
 
-var Weather = React.createClass({
-	_determineWeatherIcon: function(weatherProp, sunrise, sunset){
-		var sunrise = moment(this.props.sunrise,"hh:mm:a");
-		var sunset = moment(this.props.sunset,"hh:mm:a");
-		var currentTime = moment(this.props.currentTime,"hh:mm:a");
-		var isNight;
+export default class Weather extends React.Component{
+	constructor(props){
+		super(props);
+		this._determineWeatherIcon = this._determineWeatherIcon.bind(this);
+	}
+	_determineWeatherIcon(weatherProp){
+		let sunrise = moment(this.props.sunrise,"hh:mm:a");
+		let sunset = moment(this.props.sunset,"hh:mm:a");
+		let currentTime = moment(this.props.currentTime,"hh:mm:a");
+		let isNight;
 		if((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)){
 			isNight = true; 
 		}
@@ -100,8 +104,8 @@ var Weather = React.createClass({
 			if(isNight == false)return "wi wi-day";
 				else return "wi wi-night-alt-cloudy"
 		}
-	},
-	render: function(){
+	}
+	render(){
 		return(
 			<div className="col-xs-12 allWeather">
 				<div className="col-xs-2 weatherProp">
@@ -149,6 +153,4 @@ var Weather = React.createClass({
 			</div>
 		)
 	}
-})
-
-module.exports = Weather; 
+}
