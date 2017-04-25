@@ -45,6 +45,7 @@ export default class Alarm extends React.Component{
 				}
 			}	
 	}
+	//This is veyr much a temporary function that will instead, open up a modal, allow the user to choose custom sounds and backgrounds and then save them so that the page will always render with the custom options. 
 	_launchModal(){
 		document.body.style.background = "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7) ), url('./bgs/waterfall.jpg')"
 		document.body.style.backgroundSize = "cover"; 
@@ -76,7 +77,7 @@ export default class Alarm extends React.Component{
 			return(
 				<div className="col-xs-12" id="alarm">
 					<h3><Link to="/AlarmManager">Set an alarm</Link></h3>
-					<h3 onClick={()=>this._launchModal()}> Settings</h3>
+					<h3 onClick={()=>this._launchModal()}> Change Background</h3>
 				</div>
 			)
 		}
