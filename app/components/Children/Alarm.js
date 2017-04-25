@@ -77,7 +77,8 @@ export default class Alarm extends React.Component{
 			return(
 				<div className="col-xs-12" id="alarm">
 					<h3><Link to="/AlarmManager">Set an alarm</Link></h3>
-					<h3 onClick={()=>this._launchModal()}> Change Background</h3>
+					{/* This is a placeholder for the modal component. We will use this to change custom user settings in conjunction with _launchModal
+					<h3 id="settings" onClick={()=>this._launchModal()}> Change Background</h3>*/}
 				</div>
 			)
 		}
