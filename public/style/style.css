@@ -17,6 +17,7 @@ p{
 }
 body{
 	background-color: black;
+	background-size: cover;
 }
 .bootstrap-timepicker-widget.dropdown-menu {
     z-index: 1050!important;
