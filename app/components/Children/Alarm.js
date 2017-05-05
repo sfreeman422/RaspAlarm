@@ -69,7 +69,7 @@ export default class Alarm extends React.Component{
 		if(this.state.alarmStatus == "ringing"){
 			return(
 				<div className="col-xs-12" id="alarm">
-					<button className="btn-xl btn-success" id="wakeUp" onClick={()=>{this._awake()}}>Wake Up</button>
+					<button className="btn-lg btn-success" id="wakeUp" onClick={()=>{this._awake()}}>Wake Up</button>
 				</div>
 			)
 		}
