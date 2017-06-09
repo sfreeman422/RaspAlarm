@@ -163,7 +163,7 @@ export default class Main extends React.Component{
 						});
 						//Get the sunrise/sunset data
 						$.ajax({
-							url:"https://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
+							url:"https://api.wunderground.com/api/"+keys.wunderground+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
 						}).done((sundata)=>{
 							let sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
 							let sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
