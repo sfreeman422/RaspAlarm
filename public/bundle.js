@@ -27905,7 +27905,7 @@
 							}
 							// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
 							$.ajax({
-								url: "http://api.wunderground.com/api/" + keys + "/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
+								url: "https://api.wunderground.com/api/" + keys.wunderground + "/hourly/q/" + locationObject.lat + "," + locationObject.long + ".json"
 							}).done(function (response) {
 								_this2.setState({
 									weatherToday: response.hourly_forecast[0].condition,
@@ -27937,7 +27937,7 @@
 							});
 							//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
 							$.ajax({
-								url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObject.lat + "," + locationObject.long + "&sensor=true"
+								url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + locationObject.lat + "," + locationObject.long + "&sensor=true"
 							}).done(function (geoloc) {
 								_this2.setState({
 									userLoc: geoloc.results[0].address_components[2].short_name + ", " + geoloc.results[0].address_components[4].short_name
@@ -27945,7 +27945,7 @@
 							});
 							//Get the sunrise/sunset data
 							$.ajax({
-								url: "http://api.wunderground.com/api/" + keys + "/astronomy/q/" + locationObject.lat + "," + locationObject.long + ".json"
+								url: "https://api.wunderground.com/api/" + keys + "/astronomy/q/" + locationObject.lat + "," + locationObject.long + ".json"
 							}).done(function (sundata) {
 								var sunriseString = "0" + sundata.sun_phase.sunrise.hour + ":" + sundata.sun_phase.sunrise.minute + "am";
 								var sunsetString = "0" + (sundata.sun_phase.sunset.hour - 12) + ":" + sundata.sun_phase.sunset.minute + "pm";
@@ -44984,7 +44984,11 @@
 
 	"use strict";
 
-	var keys = "0f21d9f3506b237b";
+	var keys = {
+		wunderground: "0f21d9f3506b237b",
+		username: "test",
+		pw: "test123"
+	};
 	module.exports = keys;
 
 /***/ })
