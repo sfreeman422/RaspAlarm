@@ -155,7 +155,7 @@ export default class Main extends React.Component{
 							});
 						//Gets the location from the reverse geocode api provided by Google. This enables us to show the actual name of the location that the user is in. 
 						$.ajax({
-							url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+locationObject.lat+","+locationObject.long+"&sensor=true"
+							url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+locationObject.lat+","+locationObject.long+"&sensor=true"
 						}).done((geoloc) =>{
 							this.setState({
 								userLoc: geoloc.results[0].address_components[2].short_name+", "+ geoloc.results[0].address_components[4].short_name
@@ -163,7 +163,7 @@ export default class Main extends React.Component{
 						});
 						//Get the sunrise/sunset data
 						$.ajax({
-							url:"http://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
+							url:"https://api.wunderground.com/api/"+keys+"/astronomy/q/"+locationObject.lat+","+locationObject.long+".json"
 						}).done((sundata)=>{
 							let sunriseString = "0"+sundata.sun_phase.sunrise.hour+":"+sundata.sun_phase.sunrise.minute+"am";
 							let sunsetString = "0"+(sundata.sun_phase.sunset.hour-12)+":"+sundata.sun_phase.sunset.minute+"pm";
