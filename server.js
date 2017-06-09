@@ -4,12 +4,13 @@ var logger = require('morgan');
 var mongoose = require('mongoose');
 var Alarm = require('./app/models/Alarms.js');
 var methodOverride = require('method-override');
+var keys = require("./private/keys.js")
 
 var app = express();
 var PORT = process.env.PORT || 3000; 
 
 //Connect to mongo and let us know that we are successfully connected or there was an error. 
-mongoose.connect("mongodb://localhost:27017/alarms");
+mongoose.connect("mongodb://"+keys.username+":"+keys.pw+"@ds115752.mlab.com:15752/raspalarm");
 var db = mongoose.connection;
 db.on("open", function(){
 	console.log("Connected to MongoDB on port 27017.");

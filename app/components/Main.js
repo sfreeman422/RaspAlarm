@@ -123,7 +123,7 @@ export default class Main extends React.Component{
 						}
 						// Makes the API call to weatherunderground, then assigns forecast, time and weather icon data to the corresponding states. 
 						$.ajax({
-							url: "http://api.wunderground.com/api/"+keys+"/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
+							url: "http://api.wunderground.com/api/"+keys.wunderground+"/hourly/q/"+locationObject.lat+","+locationObject.long+".json"
 							}).done((response) =>{
 								this.setState({
 									weatherToday: response.hourly_forecast[0].condition,
