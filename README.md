@@ -9,7 +9,10 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 
 # Changelog/Status
 
-## 4/24/17 - Recent Changes
+## 9/24/17 - Changes
+- Adjusted code to include an auto brightness feature that adjusts brightness on the RaspberryPi as long as the code is in fact running on a Raspberry Pi.
+
+## 4/24/17 - Changes
 - Rewritten to ES6
 - Added night/day functionality so that the icon will display the proper time of day depending on whether or not it is day or night in your area. 
 - Adjusted a number of stylistic components involving how the alarms are shown. Also improved readability of text on some displays. 
