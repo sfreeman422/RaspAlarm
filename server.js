@@ -26,8 +26,6 @@ app.use(bodyParser());
 app.use(express.static('./public'));
 app.use(methodOverride('_method'));
 
-setInterval(adjustBrightness, 10000);
-
 //Initial route to load the page for the Timer, weather information, etc. 
 app.get('/', function(req, res){
 	res.sendFile('./public/index.html');
@@ -44,6 +42,13 @@ app.get('/alarms', function(req, res){
 		}
 	});
 });
+app.post('/brightness', function (req, res) {
+	if (envVars.isRaspberryPi === true) {
+	  adjustBrightness(req.isNight);
+	  res.send('Brightness Adjusted');
+	}
+	res.send('Brightness unadjusted, not running on Pi');
+})
 //Route to set alarms. 
 app.post('/setAlarm', function(req, res){
 	console.log(req.body);

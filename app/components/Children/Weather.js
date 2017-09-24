@@ -1,23 +1,37 @@
 import React from 'react';
 import moment from 'moment';
 
+let isNight;
+let oldIsNight = isNight;
 export default class Weather extends React.Component{
 	constructor(props){
 		super(props);
 		this._determineWeatherIcon = this._determineWeatherIcon.bind(this);
+		this._adjustBrightness = this._adjustBrightness.bind(this);
+	}
+	_adjustBrightness() {
+		if (oldIsNight !== isNight) {
+			$.ajax({
+				url: "/brightness",
+				type: 'post',
+				data: {
+					isNight: isNight
+				}
+			  });
+			  oldIsNight = isNight;
+		}
 	}
 	_determineWeatherIcon(weatherProp){
 		let sunrise = moment(this.props.sunrise,"hh:mm:a");
 		let sunset = moment(this.props.sunset,"hh:mm:a");
 		let currentTime = moment(this.props.currentTime,"hh:mm:a");
-		let isNight;
 		if((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)){
-      isNight = true;
+			  isNight = true;
 		}
 		else{
-      isNight = false;
+			  isNight = false;
 		}
-
+		this._adjustBrightness();
 		if(weatherProp == "chanceflurries"){
 			if(isNight == false)return "wi wi-day-snow"
 				else return "wi wi-night-snow"
@@ -104,6 +118,16 @@ export default class Weather extends React.Component{
 			if(isNight == false)return "wi wi-day";
 				else return "wi wi-night-alt-cloudy"
 		}
+	}
+	componentDidMount() {
+		this.setState({
+			weatherToday: this._determineWeatherIcon(this.props.todayPic),
+			weatherOne: this._determineWeatherIcon(this.props.onePic),
+			weatherTwo: this._determineWeatherIcon(this.props.twoPic),
+			weatherThree: this._determineWeatherIcon(this.props.threePic),
+			weatherFour: this._determineWeatherIcon(this.props.fourPic),
+			weatherFive: this._determineWeatherIcon(this.props.fivePic),
+		})
 	}
 	render(){
 		return(
