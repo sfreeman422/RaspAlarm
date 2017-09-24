@@ -6,6 +6,7 @@ import Clock from './Children/Clock.jsx';
 import Today from './Children/Today.jsx';
 import Weather from './Children/Weather.jsx';
 import Alarm from './Children/Alarm.jsx';
+import AlarmManager from './AlarmManager.jsx';
 
 let hasWeatherData = false;
 let weatherInterval;

@@ -60,7 +60,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _AlarmManager = __webpack_require__(365);
+	var _AlarmManager = __webpack_require__(364);
 
 	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
 
@@ -27759,6 +27759,10 @@
 
 	var _Alarm2 = _interopRequireDefault(_Alarm);
 
+	var _AlarmManager = __webpack_require__(364);
+
+	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27773,7 +27777,7 @@
 	var hasWeatherData = false;
 	var weatherInterval = void 0;
 	var timeInterval = void 0;
-	var keys = __webpack_require__(364);
+	var keys = __webpack_require__(366);
 
 	// Vars to save state.
 	var timeSave = 'Loading...';
@@ -44427,20 +44431,6 @@
 
 /***/ }),
 /* 364 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var keys = {
-	  wunderground: '0f21d9f3506b237b',
-	  username: 'test',
-	  pw: 'test123'
-	};
-
-	module.exports = keys;
-
-/***/ }),
-/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44457,7 +44447,7 @@
 
 	var _reactRouter = __webpack_require__(182);
 
-	var _CurrentAlarms = __webpack_require__(366);
+	var _CurrentAlarms = __webpack_require__(365);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
 
@@ -44521,8 +44511,8 @@
 	      });
 	    }
 	  }, {
-	    key: '_incrementMinute',
-	    value: function _incrementMinute() {
+	    key: 'incrementMinute',
+	    value: function incrementMinute() {
 	      if (this.state.minute === 55) {
 	        this.setState({
 	          minute: 0,
@@ -44550,8 +44540,8 @@
 	      }
 	    }
 	  }, {
-	    key: '_changeAMPM',
-	    value: function _changeAMPM() {
+	    key: 'changeAMPM',
+	    value: function changeAMPM() {
 	      if (this.state.ampm === 'am') {
 	        this.setState({
 	          ampm: 'pm'
@@ -44563,8 +44553,8 @@
 	      }
 	    }
 	  }, {
-	    key: '_chooseDay',
-	    value: function _chooseDay(day) {
+	    key: 'chooseDay',
+	    value: function chooseDay(day) {
 	      if (day === 'Monday') {
 	        if (this.state.monday === 'unselected') {
 	          this.setState({
@@ -44709,8 +44699,8 @@
 	      }
 	    }
 	  }, {
-	    key: '_setAlarm',
-	    value: function _setAlarm() {
+	    key: 'setAlarm',
+	    value: function setAlarm() {
 	      var _this3 = this;
 
 	      var hour = this.state.hourDisplay;
@@ -44870,7 +44860,7 @@
 	exports.default = AlarmManager;
 
 /***/ }),
-/* 366 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45018,6 +45008,20 @@
 	}(_react2.default.Component);
 
 	exports.default = CurrentAlarms;
+
+/***/ }),
+/* 366 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var keys = {
+	  wunderground: '0f21d9f3506b237b',
+	  username: 'test',
+	  pw: 'test123'
+	};
+
+	module.exports = keys;
 
 /***/ })
 /******/ ]);

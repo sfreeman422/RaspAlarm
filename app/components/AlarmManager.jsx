@@ -40,7 +40,7 @@ export default class AlarmManager extends React.Component {
       this.setState({ alarms });
     });
   }
-  _incrementMinute() {
+  incrementMinute() {
     if (this.state.minute === 55) {
       this.setState({
         minute: 0,
@@ -67,7 +67,7 @@ export default class AlarmManager extends React.Component {
       });
     }
   }
-  _changeAMPM() {
+  changeAMPM() {
     if (this.state.ampm === 'am') {
       this.setState({
         ampm: 'pm',
@@ -78,7 +78,7 @@ export default class AlarmManager extends React.Component {
       });
     }
   }
-  _chooseDay(day) {
+  chooseDay(day) {
     if (day === 'Monday') {
       if (this.state.monday === 'unselected') {
         this.setState({
@@ -220,7 +220,7 @@ export default class AlarmManager extends React.Component {
       });
     }
   }
-  _setAlarm() {
+  setAlarm() {
     const hour = this.state.hourDisplay;
     const minute = this.state.minuteDisplay;
     const ampm = this.state.ampm;
