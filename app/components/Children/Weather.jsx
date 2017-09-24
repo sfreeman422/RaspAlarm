@@ -21,79 +21,86 @@ export default class Weather extends React.Component {
       oldIsNight = isNight;
     }
   }
-  determineWeatherIcon(weatherProp) {
+  determineWeatherIcon(weatherProp, hour) {
     const sunrise = moment(this.props.sunrise, 'hh:mm:a');
     const sunset = moment(this.props.sunset, 'hh:mm:a');
     const currentTime = moment(this.props.currentTime, 'hh:mm:a');
+    const isHour = moment(hour, 'hh:mm:a');
+    let isHourNight;
     if ((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)) {
       isNight = true;
     } else {
       isNight = false;
     }
+    if ((isHour).isAfter(sunset) || (isHour).isBefore(sunrise)) {
+      isHourNight = true;
+    } else {
+      isHourNight = false;
+    }
     this.adjustBrightness();
     if (weatherProp === 'chanceflurries') {
-      if (isNight === false) return 'wi wi-day-snow';
+      if (isHourNight === false) return 'wi wi-day-snow';
       return 'wi wi-night-snow';
     } else if (weatherProp === 'chancerain') {
-      if (isNight === false) return 'wi wi-day-rain';
+      if (isHourNight === false) return 'wi wi-day-rain';
       return 'wi wi-night-rain';
     } else if (weatherProp === 'chancesleet') {
-      if (isNight === false) return 'wi wi-day-sleet';
+      if (isHourNight === false) return 'wi wi-day-sleet';
       return 'wi wi-night-sleet';
     } else if (weatherProp === 'chancesnow') {
-      if (isNight === false) return 'wi wi-day-snow';
+      if (isHourNight === false) return 'wi wi-day-snow';
       return 'wi wi-night-snow';
     } else if (weatherProp === 'chancestorms' || weatherProp === 'chancetstorms') {
-      if (isNight === false) return 'wi wi-day-sprinkle';
+      if (isHourNight === false) return 'wi wi-day-sprinkle';
       return 'wi wi-night-sprinkle';
     } else if (weatherProp === 'clear') {
-      if (isNight === false) return 'wi wi-day-sunny';
+      if (isHourNight === false) return 'wi wi-day-sunny';
       return 'wi wi-night-clear';
     } else if (weatherProp === 'cloudy') {
       return 'wi wi-cloud';
     } else if (weatherProp === 'flurries') {
-      if (isNight === false) return 'wi wi-day-snow';
+      if (isHourNight === false) return 'wi wi-day-snow';
       return 'wi wi-night-snow';
     } else if (weatherProp === 'fog') {
-      if (isNight === false) return 'wi wi-day-fog';
+      if (isHourNight === false) return 'wi wi-day-fog';
       return 'wi wi-night-fog';
     } else if (weatherProp === 'hazy') {
       return 'wi wi-day-haze';
     } else if (weatherProp === 'mostlycloudy') {
-      if (isNight === false) return 'wi wi-cloudy';
+      if (isHourNight === false) return 'wi wi-cloudy';
       return 'wi wi-night-alt-cloudy';
     } else if (weatherProp === 'mostlysunny') {
-      if (isNight === false) return 'wi wi-day-sunny-overcast';
+      if (isHourNight === false) return 'wi wi-day-sunny-overcast';
       return 'wi wi-night-alt-cloudy';
     } else if (weatherProp === 'partlycloudy') {
-      if (isNight === false) return 'wi wi-day-cloudy';
+      if (isHourNight === false) return 'wi wi-day-cloudy';
       return 'wi wi-night-alt-cloudy';
     } else if (weatherProp === 'partlysunny') {
-      if (isNight === false) return 'wi wi-day-sunny-overcast';
+      if (isHourNight === false) return 'wi wi-day-sunny-overcast';
       return 'wi wi-night-alt-cloudy';
     } else if (weatherProp === 'sleet') {
-      if (isNight === false) return 'wi wi-day-sleet';
+      if (isHourNight === false) return 'wi wi-day-sleet';
       return 'wi wi-night-sleet';
     } else if (weatherProp === 'rain') {
-      if (isNight === false) return 'wi wi-day-rain';
+      if (isHourNight === false) return 'wi wi-day-rain';
       return 'wi wi-night-rain';
     } else if (weatherProp === 'snow') {
-      if (isNight === false) return 'wi wi-day-snow';
+      if (isHourNight === false) return 'wi wi-day-snow';
       return 'wi wi-night-snow';
     } else if (weatherProp === 'sunny') {
-      if (isNight === false) return 'wi wi-day-sunny';
+      if (isHourNight === false) return 'wi wi-day-sunny';
       return 'wi wi-night-clear';
     } else if (weatherProp === 'tstorms') {
-      if (isNight === false) return 'wi wi-day-storm-showers';
+      if (isHourNight === false) return 'wi wi-day-storm-showers';
       return 'wi wi-night-alt-storm-showers';
     } else if (weatherProp === 'unknown') {
-      if (isNight === false) return 'wi wi-day-cloudy-high';
+      if (isHourNight === false) return 'wi wi-day-cloudy-high';
       return 'wi wi-stars';
     } else if (weatherProp === 'cloudy') {
-      if (isNight === false) return 'wi wi-day-cloudy';
+      if (isHourNight === false) return 'wi wi-day-cloudy';
       return 'wi wi-night-alt-cloudy';
     } else if (weatherProp === 'partlycloudy') {
-      if (isNight === false) return 'wi wi-day';
+      if (isHourNight === false) return 'wi wi-day';
       return 'wi wi-night-alt-cloudy';
     }
     return 'wi wi-na';
@@ -102,7 +109,7 @@ export default class Weather extends React.Component {
     return (
       <div className="col-xs-12 allWeather">
         <div className="col-xs-2 weatherProp">
-          <i className={this.determineWeatherIcon(this.props.todayPic)} />
+          <i className={this.determineWeatherIcon(this.props.todayPic, this.props.todayHour)} />
           <div className="weatherDescription">
             <p>{this.props.todayTemp}</p>
             <p>{this.props.today}</p>
@@ -110,7 +117,7 @@ export default class Weather extends React.Component {
           </div>
         </div>
         <div className="col-xs-2 weatherOne">
-          <i className={this.determineWeatherIcon(this.props.onePic)} />
+          <i className={this.determineWeatherIcon(this.props.onePic, this.props.oneHour)} />
           <div className="weatherDescription">
             <p>{this.props.oneTemp}</p>
             <p>{this.props.one}</p>
@@ -118,7 +125,7 @@ export default class Weather extends React.Component {
           </div>
         </div>
         <div className="col-xs-2 weatherTwo">
-          <i className={this.determineWeatherIcon(this.props.twoPic)} />
+          <i className={this.determineWeatherIcon(this.props.twoPic, this.props.twoHour)} />
           <div className="weatherDescription">
             <p>{this.props.twoTemp}</p>
             <p>{this.props.two}</p>
@@ -126,7 +133,7 @@ export default class Weather extends React.Component {
           </div>
         </div>
         <div className="col-xs-2 weatherThree">
-          <i className={this.determineWeatherIcon(this.props.threePic)} />
+          <i className={this.determineWeatherIcon(this.props.threePic, this.props.threeHour)} />
           <div className="weatherDescription">
             <p>{this.props.threeTemp}</p>
             <p>{this.props.three}</p>
@@ -134,7 +141,7 @@ export default class Weather extends React.Component {
           </div>
         </div>
         <div className="col-xs-2 weatherFour">
-          <i className={this.determineWeatherIcon(this.props.fourPic)} />
+          <i className={this.determineWeatherIcon(this.props.fourPic, this.props.fourHour)} />
           <div className="weatherDescription">
             <p>{this.props.fourTemp}</p>
             <p>{this.props.four}</p>
@@ -142,7 +149,7 @@ export default class Weather extends React.Component {
           </div>
         </div>
         <div className="col-xs-2 weatherFive">
-          <i className={this.determineWeatherIcon(this.props.fivePic)} />
+          <i className={this.determineWeatherIcon(this.props.fivePic, this.props.fiveHour)} />
           <div className="weatherDescription">
             <p>{this.props.fiveTemp}</p>
             <p>{this.props.five}</p>

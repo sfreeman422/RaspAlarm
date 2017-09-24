@@ -44017,79 +44017,86 @@
 	    }
 	  }, {
 	    key: 'determineWeatherIcon',
-	    value: function determineWeatherIcon(weatherProp) {
+	    value: function determineWeatherIcon(weatherProp, hour) {
 	      var sunrise = (0, _moment2.default)(this.props.sunrise, 'hh:mm:a');
 	      var sunset = (0, _moment2.default)(this.props.sunset, 'hh:mm:a');
 	      var currentTime = (0, _moment2.default)(this.props.currentTime, 'hh:mm:a');
+	      var isHour = (0, _moment2.default)(hour, 'hh:mm:a');
+	      var isHourNight = void 0;
 	      if (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) {
 	        isNight = true;
 	      } else {
 	        isNight = false;
 	      }
+	      if (isHour.isAfter(sunset) || isHour.isBefore(sunrise)) {
+	        isHourNight = true;
+	      } else {
+	        isHourNight = false;
+	      }
 	      this.adjustBrightness();
 	      if (weatherProp === 'chanceflurries') {
-	        if (isNight === false) return 'wi wi-day-snow';
+	        if (isHourNight === false) return 'wi wi-day-snow';
 	        return 'wi wi-night-snow';
 	      } else if (weatherProp === 'chancerain') {
-	        if (isNight === false) return 'wi wi-day-rain';
+	        if (isHourNight === false) return 'wi wi-day-rain';
 	        return 'wi wi-night-rain';
 	      } else if (weatherProp === 'chancesleet') {
-	        if (isNight === false) return 'wi wi-day-sleet';
+	        if (isHourNight === false) return 'wi wi-day-sleet';
 	        return 'wi wi-night-sleet';
 	      } else if (weatherProp === 'chancesnow') {
-	        if (isNight === false) return 'wi wi-day-snow';
+	        if (isHourNight === false) return 'wi wi-day-snow';
 	        return 'wi wi-night-snow';
 	      } else if (weatherProp === 'chancestorms' || weatherProp === 'chancetstorms') {
-	        if (isNight === false) return 'wi wi-day-sprinkle';
+	        if (isHourNight === false) return 'wi wi-day-sprinkle';
 	        return 'wi wi-night-sprinkle';
 	      } else if (weatherProp === 'clear') {
-	        if (isNight === false) return 'wi wi-day-sunny';
+	        if (isHourNight === false) return 'wi wi-day-sunny';
 	        return 'wi wi-night-clear';
 	      } else if (weatherProp === 'cloudy') {
 	        return 'wi wi-cloud';
 	      } else if (weatherProp === 'flurries') {
-	        if (isNight === false) return 'wi wi-day-snow';
+	        if (isHourNight === false) return 'wi wi-day-snow';
 	        return 'wi wi-night-snow';
 	      } else if (weatherProp === 'fog') {
-	        if (isNight === false) return 'wi wi-day-fog';
+	        if (isHourNight === false) return 'wi wi-day-fog';
 	        return 'wi wi-night-fog';
 	      } else if (weatherProp === 'hazy') {
 	        return 'wi wi-day-haze';
 	      } else if (weatherProp === 'mostlycloudy') {
-	        if (isNight === false) return 'wi wi-cloudy';
+	        if (isHourNight === false) return 'wi wi-cloudy';
 	        return 'wi wi-night-alt-cloudy';
 	      } else if (weatherProp === 'mostlysunny') {
-	        if (isNight === false) return 'wi wi-day-sunny-overcast';
+	        if (isHourNight === false) return 'wi wi-day-sunny-overcast';
 	        return 'wi wi-night-alt-cloudy';
 	      } else if (weatherProp === 'partlycloudy') {
-	        if (isNight === false) return 'wi wi-day-cloudy';
+	        if (isHourNight === false) return 'wi wi-day-cloudy';
 	        return 'wi wi-night-alt-cloudy';
 	      } else if (weatherProp === 'partlysunny') {
-	        if (isNight === false) return 'wi wi-day-sunny-overcast';
+	        if (isHourNight === false) return 'wi wi-day-sunny-overcast';
 	        return 'wi wi-night-alt-cloudy';
 	      } else if (weatherProp === 'sleet') {
-	        if (isNight === false) return 'wi wi-day-sleet';
+	        if (isHourNight === false) return 'wi wi-day-sleet';
 	        return 'wi wi-night-sleet';
 	      } else if (weatherProp === 'rain') {
-	        if (isNight === false) return 'wi wi-day-rain';
+	        if (isHourNight === false) return 'wi wi-day-rain';
 	        return 'wi wi-night-rain';
 	      } else if (weatherProp === 'snow') {
-	        if (isNight === false) return 'wi wi-day-snow';
+	        if (isHourNight === false) return 'wi wi-day-snow';
 	        return 'wi wi-night-snow';
 	      } else if (weatherProp === 'sunny') {
-	        if (isNight === false) return 'wi wi-day-sunny';
+	        if (isHourNight === false) return 'wi wi-day-sunny';
 	        return 'wi wi-night-clear';
 	      } else if (weatherProp === 'tstorms') {
-	        if (isNight === false) return 'wi wi-day-storm-showers';
+	        if (isHourNight === false) return 'wi wi-day-storm-showers';
 	        return 'wi wi-night-alt-storm-showers';
 	      } else if (weatherProp === 'unknown') {
-	        if (isNight === false) return 'wi wi-day-cloudy-high';
+	        if (isHourNight === false) return 'wi wi-day-cloudy-high';
 	        return 'wi wi-stars';
 	      } else if (weatherProp === 'cloudy') {
-	        if (isNight === false) return 'wi wi-day-cloudy';
+	        if (isHourNight === false) return 'wi wi-day-cloudy';
 	        return 'wi wi-night-alt-cloudy';
 	      } else if (weatherProp === 'partlycloudy') {
-	        if (isNight === false) return 'wi wi-day';
+	        if (isHourNight === false) return 'wi wi-day';
 	        return 'wi wi-night-alt-cloudy';
 	      }
 	      return 'wi wi-na';
@@ -44103,7 +44110,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2 weatherProp' },
-	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.todayPic) }),
+	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.todayPic, this.props.todayHour) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'weatherDescription' },
@@ -44127,7 +44134,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2 weatherOne' },
-	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.onePic) }),
+	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.onePic, this.props.oneHour) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'weatherDescription' },
@@ -44151,7 +44158,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2 weatherTwo' },
-	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.twoPic) }),
+	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.twoPic, this.props.twoHour) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'weatherDescription' },
@@ -44175,7 +44182,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2 weatherThree' },
-	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.threePic) }),
+	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.threePic, this.props.threeHour) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'weatherDescription' },
@@ -44199,7 +44206,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2 weatherFour' },
-	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.fourPic) }),
+	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.fourPic, this.props.fourHour) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'weatherDescription' },
@@ -44223,7 +44230,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2 weatherFive' },
-	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.fivePic) }),
+	          _react2.default.createElement('i', { className: this.determineWeatherIcon(this.props.fivePic, this.props.fiveHour) }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'weatherDescription' },
