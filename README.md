@@ -10,7 +10,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 # Changelog/Status
 
 ## 9/24/17 - Changes
-- Adjusted code to include an auto brightness feature that adjusts brightness on the RaspberryPi as long as the code is in fact running on a Raspberry Pi.
+- Adjusted code to include an auto brightness feature that adjusts brightness on the RaspberryPi as long as the code is in fact running on a Raspberry Pi. This is controlled by modifying `/sys/class/backlight/rpi_backlight/brightness`. 0 is off, 1 is on, and anything from 2-255 increases the brightness. When the software detects that it is in fact night time, it will reduce brightness accordingly. When it is day time, it increases. This relies on the `/sys/class/backlight/rpi_backlight/brightness` file permissions set to 777.
 - Added ESLint support to make code more human readable.
 
 ## 4/24/17 - Changes
@@ -39,9 +39,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 var keys = "yourKeyFromWeatherUndergroundApi";
 module.exports = keys;
 ```
+- Adjust server.js so that your `process.env.isRaspberryPi` is set accordingly. The default value is `false`.
 - npm install
 - webpack
 - Visit localhost:3000 on your browser and enjoy!
-
-# What I Learned
-Raspberry Pi's are cool, fun and cheap. This is my first Raspberry Pi project but will likely not be my last. 
