@@ -40,6 +40,7 @@ var keys = "yourKeyFromWeatherUndergroundApi";
 module.exports = keys;
 ```
 - Adjust server.js so that your `process.env.isRaspberryPi` is set accordingly. The default value is `false`.
+- If you are running on a pi, be sure to run `chmod 777 /sys/class/backlight/rpi_backlight/brightness` in order to take advantage of the auto-dim/brighten feature.
 - npm install
 - webpack
 - Visit localhost:3000 on your browser and enjoy!
