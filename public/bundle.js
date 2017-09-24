@@ -60,7 +60,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _AlarmManager = __webpack_require__(364);
+	var _AlarmManager = __webpack_require__(365);
 
 	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
 
@@ -27755,11 +27755,11 @@
 
 	var _Weather2 = _interopRequireDefault(_Weather);
 
-	var _Alarm = __webpack_require__(363);
+	var _Alarm = __webpack_require__(364);
 
 	var _Alarm2 = _interopRequireDefault(_Alarm);
 
-	var _AlarmManager = __webpack_require__(364);
+	var _AlarmManager = __webpack_require__(365);
 
 	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
 
@@ -27779,7 +27779,7 @@
 	var hasWeatherData = false;
 	var weatherInterval = void 0;
 	var timeInterval = void 0;
-	var keys = __webpack_require__(366);
+	var keys = __webpack_require__(367);
 
 	//Vars to save state. 
 	var timeSave = "Loading...";
@@ -44238,7 +44238,8 @@
 	exports.default = Weather;
 
 /***/ }),
-/* 363 */
+/* 363 */,
+/* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44398,7 +44399,7 @@
 	exports.default = Alarm;
 
 /***/ }),
-/* 364 */
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44415,7 +44416,7 @@
 
 	var _reactRouter = __webpack_require__(182);
 
-	var _CurrentAlarms = __webpack_require__(365);
+	var _CurrentAlarms = __webpack_require__(366);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
 
@@ -44829,7 +44830,7 @@
 	exports.default = AlarmManager;
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44979,7 +44980,7 @@
 	exports.default = CurrentAlarms;
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports) {
 
 	"use strict";

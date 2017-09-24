@@ -6,6 +6,7 @@ var Alarm = require('./app/models/Alarms.js');
 var methodOverride = require('method-override');
 var keys = require("./private/keys.js")
 const envVars = require('./private/env.js');
+const adjustBrightness = require('./utilities/brightness.js');
 
 var app = express();
 var PORT = process.env.PORT || 3000; 
@@ -24,6 +25,8 @@ app.use(logger('dev'));
 app.use(bodyParser());
 app.use(express.static('./public'));
 app.use(methodOverride('_method'));
+
+setInterval(adjustBrightness, 10000);
 
 //Initial route to load the page for the Timer, weather information, etc. 
 app.get('/', function(req, res){
