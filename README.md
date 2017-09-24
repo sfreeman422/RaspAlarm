@@ -11,6 +11,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 
 ## 9/24/17 - Changes
 - Adjusted code to include an auto brightness feature that adjusts brightness on the RaspberryPi as long as the code is in fact running on a Raspberry Pi.
+- Added ESLint support to make code more human readable.
 
 ## 4/24/17 - Changes
 - Rewritten to ES6

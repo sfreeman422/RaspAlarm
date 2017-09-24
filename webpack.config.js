@@ -1,21 +1,21 @@
 module.exports = {
-	//Compiled code
-	entry: "./app/app.js",
+  // Compiled code
+  entry: './app/app.jsx',
 
-	//Output to be used
-	output: {
-		filename: "public/bundle.js"
-	},
-	module: {
-		loaders: [
-		{
-			test: /\.jsx?$/,
-			exclude: /(node_modules|bower_components)/,
-			loader: 'babel-loader',
-			query: {
-				presets: ['react', 'es2015']
-			}
-		}
-	]
-	}
-}
+  // Output to be used
+  output: {
+    filename: 'public/bundle.js',
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['react', 'es2015'],
+        },
+      },
+    ],
+  },
+};
