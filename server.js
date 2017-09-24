@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Alarm = require('./app/models/Alarms.js');
 var methodOverride = require('method-override');
 var keys = require("./private/keys.js")
+const envVars = require('./private/env.js');
 
 var app = express();
 var PORT = process.env.PORT || 3000; 

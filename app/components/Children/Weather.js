@@ -1,5 +1,6 @@
-import React from 'react'
-import moment from 'moment'
+import React from 'react';
+import moment from 'moment';
+const adjustBrightness = require('../../../utilities/brightness.js');
 
 export default class Weather extends React.Component{
 	constructor(props){
@@ -12,10 +13,16 @@ export default class Weather extends React.Component{
 		let currentTime = moment(this.props.currentTime,"hh:mm:a");
 		let isNight;
 		if((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)){
-			isNight = true; 
+      isNight = true;
+      if (process.env.isRaspberryPi) {
+        adjustBrightness(isNight);
+      }
 		}
 		else{
-			isNight = false; 
+      isNight = false;
+      if (proces.env.isRaspberryPi) {
+        adjustBrightness(isNight); 
+      }
 		}
 
 		if(weatherProp == "chanceflurries"){
