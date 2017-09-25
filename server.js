@@ -43,7 +43,7 @@ app.get('/alarms', (req, res) => {
 });
 app.post('/brightness', (req, res) => {
   if (process.env.isRaspberryPi === true) {
-    adjustBrightness(req.isNight);
+    adjustBrightness(req.body.isNight);
     res.send('Brightness Adjusted');
   }
   res.send('Brightness unadjusted, not running on Pi');
