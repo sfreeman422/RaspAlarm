@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Alarm = require('./app/models/Alarms.js');
 const methodOverride = require('method-override');
 const keys = require('./private/keys.js');
-const adjustBrightness = require('./utilities/brightness.js');
+const exec = require('child_process').exec;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,10 +41,23 @@ app.get('/alarms', (req, res) => {
 });
 app.post('/brightness', (req, res) => {
   if (process.env.isRaspberryPi === 'true') {
-    adjustBrightness(req.body.isNight);
-    res.send('Brightness Adjusted');
-  } else {
-    res.send('Brightness unadjusted, not running on Pi');
+    if (req.body.isNight === 'true') {
+      exec('echo 20 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
+        if (error) {
+          res.send(`execError: ${error}`);
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr; ${stderr}`);
+      });
+    } else if (req.body.isNight !== 'true') {
+      exec('echo 255 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
+        if (error) {
+          res.send(`execError: ${error}`);
+        }
+        console.log(`stdout: ${stdout}`);
+        console.log(`stderr; ${stderr}`);
+      });
+    }
   }
 });
 // Route to set alarms.

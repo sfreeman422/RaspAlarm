@@ -17,6 +17,8 @@ export default class Weather extends React.Component {
         data: {
           isNight,
         },
+      }).done((response) => {
+        console.log(response);
       });
       oldIsNight = isNight;
     }
