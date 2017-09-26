@@ -46,6 +46,8 @@ let weatherHourFiveTempSave = 'Loading...';
 let weatherHourFivePicSave;
 let sunriseSave;
 let sunsetSave;
+let isNight;
+let oldIsNight;
 
 export default class Main extends React.Component {
   constructor() {
@@ -87,8 +89,56 @@ export default class Main extends React.Component {
     this.getTime = this.getTime.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.locationThenWeather = this.locationThenWeather.bind(this);
+    this.determineWeatherIcon = this.determineWeatherIcon.bind(this);
+    this.adjustBrightness = this.adjustBrightness.bind(this);
   }
-  // Gets the time for the alarm clock.
+  componentDidMount() {
+    this.locationThenWeather();
+    this.getTime();
+    // Runs the locationThenWeather function every 60 seconds.
+    // We do this to avoid 6 API calls within the one minute in which we are at a :00 time.
+    weatherInterval = setInterval(this.locationThenWeather, 60000);
+    // Get the time every 1/10 of a second
+    // This will also setState for time to the current time.
+    timeInterval = setInterval(this.getTime, 100);
+  }
+  componentWillUnmount() {
+    timeSave = this.state.time;
+    dateSave = this.state.date;
+    todaySave = this.state.today;
+    userLocSave = this.state.userLoc;
+    nextAlarmSave = this.state.nextAlarm;
+    alarmSave = this.state.alarm;
+    weatherTodaySave = this.state.weatherToday;
+    weatherTodayTimeSave = this.state.weatherTodayTime;
+    weatherTodayTempSave = this.state.weatherTodayTemp;
+    weatherTodayPicSave = this.state.weatherTodayPic;
+    weatherHourOneSave = this.state.weatherHourOne;
+    weatherHourOneTimeSave = this.state.weatherHourOneTime;
+    weatherHourOneTempSave = this.state.weatherHourOneTemp;
+    weatherHourOnePicSave = this.state.weatherHourOnePic;
+    weatherHourTwoSave = this.state.weatherHourTwo;
+    weatherHourTwoTimeSave = this.state.weatherHourTwoTime;
+    weatherHourTwoTempSave = this.state.weatherHourTwoTemp;
+    weatherHourTwoPicSave = this.state.weatherHourTwoPic;
+    weatherHourThreeSave = this.state.weatherHourThree;
+    weatherHourThreeTimeSave = this.state.weatherHourThreeTime;
+    weatherHourThreeTempSave = this.state.weatherHourThreeTemp;
+    weatherHourThreePicSave = this.state.weatherHourThreePic;
+    weatherHourFourSave = this.state.weatherHourFour;
+    weatherHourFourTimeSave = this.state.weatherHourFourTime;
+    weatherHourFourTempSave = this.state.weatherHourFourTemp;
+    weatherHourFourPicSave = this.state.weatherHourFourPic;
+    weatherHourFiveSave = this.state.weatherHourFive;
+    weatherHourFiveTimeSave = this.state.weatherHourFiveTime;
+    weatherHourFiveTempSave = this.state.weatherHourFiveTemp;
+    weatherHourFivePicSave = this.state.weatherHourFivePic;
+    sunsetSave = this.state.sunset;
+    sunriseSave = this.state.sunrise;
+    clearInterval(weatherInterval);
+    clearInterval(timeInterval);
+  }
+    // Gets the time for the alarm clock.
   getTime() {
     this.setState({
       time: moment().format('hh:mm' + 'a'),
@@ -176,51 +226,103 @@ export default class Main extends React.Component {
       }).catch(error => reject(error)));
     }
   }
-  componentDidMount() {
-    this.locationThenWeather();
-    this.getTime();
-    // Runs the locationThenWeather function every 60 seconds.
-    // We do this to avoid 6 API calls within the one minute in which we are at a :00 time.
-    weatherInterval = setInterval(this.locationThenWeather, 60000);
-    // Get the time every 1/10 of a second
-    // This will also setState for time to the current time.
-    timeInterval = setInterval(this.getTime, 100);
+  adjustBrightness() {
+    if (oldIsNight !== isNight) {
+      $.ajax({
+        url: '/brightness',
+        type: 'post',
+        data: {
+          isNight,
+        },
+      }).done((response) => {
+        console.log(response);
+      });
+      oldIsNight = isNight;
+    }
   }
-  componentWillUnmount() {
-    timeSave = this.state.time;
-    dateSave = this.state.date;
-    todaySave = this.state.today;
-    userLocSave = this.state.userLoc;
-    nextAlarmSave = this.state.nextAlarm;
-    alarmSave = this.state.alarm;
-    weatherTodaySave = this.state.weatherToday;
-    weatherTodayTimeSave = this.state.weatherTodayTime;
-    weatherTodayTempSave = this.state.weatherTodayTemp;
-    weatherTodayPicSave = this.state.weatherTodayPic;
-    weatherHourOneSave = this.state.weatherHourOne;
-    weatherHourOneTimeSave = this.state.weatherHourOneTime;
-    weatherHourOneTempSave = this.state.weatherHourOneTemp;
-    weatherHourOnePicSave = this.state.weatherHourOnePic;
-    weatherHourTwoSave = this.state.weatherHourTwo;
-    weatherHourTwoTimeSave = this.state.weatherHourTwoTime;
-    weatherHourTwoTempSave = this.state.weatherHourTwoTemp;
-    weatherHourTwoPicSave = this.state.weatherHourTwoPic;
-    weatherHourThreeSave = this.state.weatherHourThree;
-    weatherHourThreeTimeSave = this.state.weatherHourThreeTime;
-    weatherHourThreeTempSave = this.state.weatherHourThreeTemp;
-    weatherHourThreePicSave = this.state.weatherHourThreePic;
-    weatherHourFourSave = this.state.weatherHourFour;
-    weatherHourFourTimeSave = this.state.weatherHourFourTime;
-    weatherHourFourTempSave = this.state.weatherHourFourTemp;
-    weatherHourFourPicSave = this.state.weatherHourFourPic;
-    weatherHourFiveSave = this.state.weatherHourFive;
-    weatherHourFiveTimeSave = this.state.weatherHourFiveTime;
-    weatherHourFiveTempSave = this.state.weatherHourFiveTemp;
-    weatherHourFivePicSave = this.state.weatherHourFivePic;
-    sunsetSave = this.state.sunset;
-    sunriseSave = this.state.sunrise;
-    clearInterval(weatherInterval);
-    clearInterval(timeInterval);
+  determineWeatherIcon(weatherState, hour) {
+    const sunrise = moment(this.state.sunrise, 'hh:mm:a');
+    const sunset = moment(this.state.sunset, 'hh:mm:a');
+    const currentTime = moment(this.state.time, 'hh:mm:a');
+    const isHour = moment(hour, 'hh:mm:a');
+    let isHourNight;
+    if ((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)) {
+      isNight = true;
+    } else {
+      isNight = false;
+    }
+    if ((isHour).isAfter(sunset) || (isHour).isBefore(sunrise)) {
+      isHourNight = true;
+    } else {
+      isHourNight = false;
+    }
+    this.adjustBrightness();
+    if (weatherState === 'chanceflurries') {
+      if (isHourNight === false) return 'wi wi-day-snow';
+      return 'wi wi-night-snow';
+    } else if (weatherState === 'chancerain') {
+      if (isHourNight === false) return 'wi wi-day-rain';
+      return 'wi wi-night-rain';
+    } else if (weatherState === 'chancesleet') {
+      if (isHourNight === false) return 'wi wi-day-sleet';
+      return 'wi wi-night-sleet';
+    } else if (weatherState === 'chancesnow') {
+      if (isHourNight === false) return 'wi wi-day-snow';
+      return 'wi wi-night-snow';
+    } else if (weatherState === 'chancestorms' || weatherState === 'chancetstorms') {
+      if (isHourNight === false) return 'wi wi-day-sprinkle';
+      return 'wi wi-night-sprinkle';
+    } else if (weatherState === 'clear') {
+      if (isHourNight === false) return 'wi wi-day-sunny';
+      return 'wi wi-night-clear';
+    } else if (weatherState === 'cloudy') {
+      return 'wi wi-cloud';
+    } else if (weatherState === 'flurries') {
+      if (isHourNight === false) return 'wi wi-day-snow';
+      return 'wi wi-night-snow';
+    } else if (weatherState === 'fog') {
+      if (isHourNight === false) return 'wi wi-day-fog';
+      return 'wi wi-night-fog';
+    } else if (weatherState === 'hazy') {
+      return 'wi wi-day-haze';
+    } else if (weatherState === 'mostlycloudy') {
+      if (isHourNight === false) return 'wi wi-cloudy';
+      return 'wi wi-night-alt-cloudy';
+    } else if (weatherState === 'mostlysunny') {
+      if (isHourNight === false) return 'wi wi-day-sunny-overcast';
+      return 'wi wi-night-alt-cloudy';
+    } else if (weatherState === 'partlycloudy') {
+      if (isHourNight === false) return 'wi wi-day-cloudy';
+      return 'wi wi-night-alt-cloudy';
+    } else if (weatherState === 'partlysunny') {
+      if (isHourNight === false) return 'wi wi-day-sunny-overcast';
+      return 'wi wi-night-alt-cloudy';
+    } else if (weatherState === 'sleet') {
+      if (isHourNight === false) return 'wi wi-day-sleet';
+      return 'wi wi-night-sleet';
+    } else if (weatherState === 'rain') {
+      if (isHourNight === false) return 'wi wi-day-rain';
+      return 'wi wi-night-rain';
+    } else if (weatherState === 'snow') {
+      if (isHourNight === false) return 'wi wi-day-snow';
+      return 'wi wi-night-snow';
+    } else if (weatherState === 'sunny') {
+      if (isHourNight === false) return 'wi wi-day-sunny';
+      return 'wi wi-night-clear';
+    } else if (weatherState === 'tstorms') {
+      if (isHourNight === false) return 'wi wi-day-storm-showers';
+      return 'wi wi-night-alt-storm-showers';
+    } else if (weatherState === 'unknown') {
+      if (isHourNight === false) return 'wi wi-day-cloudy-high';
+      return 'wi wi-stars';
+    } else if (weatherState === 'cloudy') {
+      if (isHourNight === false) return 'wi wi-day-cloudy';
+      return 'wi wi-night-alt-cloudy';
+    } else if (weatherState === 'partlycloudy') {
+      if (isHourNight === false) return 'wi wi-day';
+      return 'wi wi-night-alt-cloudy';
+    }
+    return 'wi wi-na';
   }
   render() {
     return (
@@ -236,28 +338,28 @@ export default class Main extends React.Component {
             currentTime={this.state.time}
             today={this.state.weatherToday}
             todayHour={this.state.weatherTodayTime}
-            todayPic={this.state.weatherTodayPic}
+            todayPic={this.determineWeatherIcon(this.state.weatherTodayPic, this.state.weatherTodayTime)}
             todayTemp={this.state.weatherTodayTemp}
             one={this.state.weatherHourOne}
             oneHour={this.state.weatherHourOneTime}
             oneTemp={this.state.weatherHourOneTemp}
-            onePic={this.state.weatherHourOnePic}
+            onePic={this.determineWeatherIcon(this.state.weatherHourOnePic, this.state.weatherHourOneTime)}
             two={this.state.weatherHourTwo}
             twoHour={this.state.weatherHourTwoTime}
             twoTemp={this.state.weatherHourTwoTemp}
-            twoPic={this.state.weatherHourTwoPic}
+            twoPic={this.determineWeatherIcon(this.state.weatherHourTwoPic, this.state.weatherHourTwoTime)}
             three={this.state.weatherHourThree}
             threeHour={this.state.weatherHourThreeTime}
             threeTemp={this.state.weatherHourThreeTemp}
-            threePic={this.state.weatherHourThreePic}
+            threePic={this.determineWeatherIcon(this.state.weatherHourThreePic, this.state.weatherHourThreeTime)}
             four={this.state.weatherHourFour}
             fourHour={this.state.weatherHourFourTime}
             fourTemp={this.state.weatherHourFourTemp}
-            fourPic={this.state.weatherHourFourPic}
+            fourPic={this.determineWeatherIcon(this.state.weatherHourFourPic, this.state.weatherHourFourTime)}
             five={this.state.weatherHourFive}
             fiveHour={this.state.weatherHourFiveTime}
             fiveTemp={this.state.weatherHourFiveTemp}
-            fivePic={this.state.weatherHourFivePic}
+            fivePic={this.determineWeatherIcon(this.state.weatherHourFivePic, this.state.weatherHourFiveTime)}
             sunrise={this.state.sunrise}
             sunset={this.state.sunset}
           />
