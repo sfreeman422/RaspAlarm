@@ -60,7 +60,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _AlarmManager = __webpack_require__(364);
+	var _AlarmManager = __webpack_require__(365);
 
 	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
 
@@ -27759,10 +27759,6 @@
 
 	var _Alarm2 = _interopRequireDefault(_Alarm);
 
-	var _AlarmManager = __webpack_require__(364);
-
-	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27777,7 +27773,7 @@
 	var hasWeatherData = false;
 	var weatherInterval = void 0;
 	var timeInterval = void 0;
-	var keys = __webpack_require__(366);
+	var keys = __webpack_require__(364);
 
 	// Vars to save state.
 	var timeSave = 'Loading...';
@@ -27876,6 +27872,7 @@
 	      // Get the time every 1/10 of a second
 	      // This will also setState for time to the current time.
 	      timeInterval = setInterval(this.getTime, 100);
+	      this.adjustBrightness();
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
@@ -27925,6 +27922,14 @@
 	        date: (0, _moment2.default)().format('MMMM Do YYYY'),
 	        today: (0, _moment2.default)().format('dddd')
 	      });
+	      if (this.state.time === this.state.sunset) {
+	        isNight = true;
+	        this.adjustBrightness();
+	      }
+	      if (this.state.time === this.state.sunrise) {
+	        isNight = false;
+	        this.adjustBrightness();
+	      }
 	    }
 	  }, {
 	    key: 'getLocation',
@@ -28021,7 +28026,10 @@
 	  }, {
 	    key: 'adjustBrightness',
 	    value: function adjustBrightness() {
-	      if (oldIsNight !== isNight) {
+	      console.log("Attemping to adjust brightness: ");
+	      console.log("oldIsNight: " + oldIsNight);
+	      console.log('newIsNight: ' + isNight);
+	      if (oldIsNight !== isNight && isNight !== undefined) {
 	        $.ajax({
 	          url: '/brightness',
 	          type: 'post',
@@ -28052,7 +28060,6 @@
 	      } else {
 	        isHourNight = false;
 	      }
-	      this.adjustBrightness();
 	      if (weatherState === 'chanceflurries') {
 	        if (isHourNight === false) return 'wi wi-day-snow';
 	        return 'wi wi-night-snow';
@@ -44402,6 +44409,17 @@
 
 /***/ }),
 /* 364 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var keys = {
+	  wunderground: '0f21d9f3506b237b'
+	};
+	module.exports = keys;
+
+/***/ }),
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44418,7 +44436,7 @@
 
 	var _reactRouter = __webpack_require__(182);
 
-	var _CurrentAlarms = __webpack_require__(365);
+	var _CurrentAlarms = __webpack_require__(366);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
 
@@ -44831,7 +44849,7 @@
 	exports.default = AlarmManager;
 
 /***/ }),
-/* 365 */
+/* 366 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44979,20 +44997,6 @@
 	}(_react2.default.Component);
 
 	exports.default = CurrentAlarms;
-
-/***/ }),
-/* 366 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var keys = {
-	  wunderground: '0f21d9f3506b237b',
-	  username: 'test',
-	  pw: 'test123'
-	};
-
-	module.exports = keys;
 
 /***/ })
 /******/ ]);

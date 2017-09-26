@@ -6,7 +6,6 @@ import Clock from './Children/Clock.jsx';
 import Today from './Children/Today.jsx';
 import Weather from './Children/Weather.jsx';
 import Alarm from './Children/Alarm.jsx';
-import AlarmManager from './AlarmManager.jsx';
 
 let hasWeatherData = false;
 let weatherInterval;
@@ -101,6 +100,7 @@ export default class Main extends React.Component {
     // Get the time every 1/10 of a second
     // This will also setState for time to the current time.
     timeInterval = setInterval(this.getTime, 100);
+    this.adjustBrightness();
   }
   componentWillUnmount() {
     timeSave = this.state.time;
@@ -145,6 +145,14 @@ export default class Main extends React.Component {
       date: moment().format('MMMM Do YYYY'),
       today: moment().format('dddd'),
     });
+    if (this.state.time === this.state.sunset) {
+      isNight = true;
+      this.adjustBrightness();
+    }
+    if (this.state.time === this.state.sunrise) {
+      isNight = false;
+      this.adjustBrightness();
+    }
   }
   getLocation() {
     return new Promise((resolve, reject) => {
@@ -227,7 +235,10 @@ export default class Main extends React.Component {
     }
   }
   adjustBrightness() {
-    if (oldIsNight !== isNight) {
+    console.log("Attemping to adjust brightness: ");
+    console.log("oldIsNight: " + oldIsNight);
+    console.log('newIsNight: ' + isNight);
+    if (oldIsNight !== isNight && isNight !== undefined) {
       $.ajax({
         url: '/brightness',
         type: 'post',
@@ -256,7 +267,6 @@ export default class Main extends React.Component {
     } else {
       isHourNight = false;
     }
-    this.adjustBrightness();
     if (weatherState === 'chanceflurries') {
       if (isHourNight === false) return 'wi wi-day-snow';
       return 'wi wi-night-snow';
