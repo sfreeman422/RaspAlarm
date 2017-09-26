@@ -40,13 +40,12 @@ app.get('/alarms', (req, res) => {
   });
 });
 app.post('/brightness', (req, res) => {
-  console.log(process.env.isRaspberryPi);
-  console.log(req.body.isNight);
-  if (process.env.isRaspberryPi === true) {
+  if (process.env.isRaspberryPi === 'true') {
     adjustBrightness(req.body.isNight);
     res.send('Brightness Adjusted');
+  } else {
+    res.send('Brightness unadjusted, not running on Pi');
   }
-  res.send('Brightness unadjusted, not running on Pi');
 });
 // Route to set alarms.
 app.post('/setAlarm', (req, res) => {
