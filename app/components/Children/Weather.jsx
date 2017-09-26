@@ -10,6 +10,8 @@ export default class Weather extends React.Component {
     this.adjustBrightness = this.adjustBrightness.bind(this);
   }
   adjustBrightness() {
+    console.log('oldIsNight: ' + oldIsNight);
+    console.log('isNight: ' + isNight);
     if (oldIsNight !== isNight) {
       $.ajax({
         url: '/brightness',
