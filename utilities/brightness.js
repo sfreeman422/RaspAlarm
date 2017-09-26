@@ -4,8 +4,22 @@ const exec = require('child_process').exec;
 // If it is day, we brighten.
 module.exports = function adjustBrightness(isNight) {
   if (isNight) {
-    exec('echo 20 > /sys/class/backlight/rpi_backlight/brightness');
+    exec('echo 20 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`execError: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr; ${stderr}`);
+    });
   } else if (!isNight) {
-    exec('echo 255 > /sys/class/backlight/rpi_backlight/brightness');
+    exec('echo 255 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`execError: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr; ${stderr}`);
+    });
   }
 };

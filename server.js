@@ -9,8 +9,6 @@ const adjustBrightness = require('./utilities/brightness.js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-// Tells us whether or not we are running on a pi.
-process.env.isRaspberryPi = false;
 // Connect to mongo and let us know that we are successfully connected or there was an error.
 mongoose.connect(`mongodb://${keys.username}:${keys.pw}@ds115752.mlab.com:15752/raspalarm`);
 const db = mongoose.connection;
@@ -42,6 +40,8 @@ app.get('/alarms', (req, res) => {
   });
 });
 app.post('/brightness', (req, res) => {
+  console.log(process.env.isRaspberryPi);
+  console.log(req.body.isNight);
   if (process.env.isRaspberryPi === true) {
     adjustBrightness(req.body.isNight);
     res.send('Brightness Adjusted');
