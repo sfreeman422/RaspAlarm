@@ -11,7 +11,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 
 ## 9/26/17 - Changes
 - Resolved bugs with Auto-brightness feature.
-- Added `utilities/chrome-refresh.sh` which can be used to auto-refresh Chrome on the Raspberry Pi whenever the repo is updated. Special thanks to ![Silviu Tantos](http://razius.com/articles/auto-refreshing-google-chrome-on-file-changes/) for the script!
+- Added `utilities/chrome-refresh.sh` which can be used to auto-refresh Chrome on the Raspberry Pi whenever the repo is updated. Special thanks to [Silviu Tantos](http://razius.com/articles/auto-refreshing-google-chrome-on-file-changes/) for the script!
 - Updated the readme to include information on how to get set with the `utilities/chrome-refresh.sh`
 
 ## 9/24/17 - Changes
