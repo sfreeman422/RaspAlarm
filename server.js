@@ -48,6 +48,7 @@ app.post('/brightness', (req, res) => {
         }
         console.log(`stdout: ${stdout}`);
         console.log(`stderr; ${stderr}`);
+        res.send('Successfully set brighness to night mode!');
       });
     } else if (req.body.isNight !== 'true') {
       exec('echo 255 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
@@ -56,6 +57,7 @@ app.post('/brightness', (req, res) => {
         }
         console.log(`stdout: ${stdout}`);
         console.log(`stderr; ${stderr}`);
+        res.send('Successfully set brightness to day mode!');
       });
     }
   }

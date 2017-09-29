@@ -153,6 +153,12 @@ export default class Main extends React.Component {
       isNight = false;
       this.adjustBrightness();
     }
+    if (isNight !== oldIsNight && isNight !== undefined) {
+      console.log('adjust brightness because...');
+      console.log('isNight: ' + isNight);
+      console.log('oldIsNight: ' + oldIsNight);
+      this.adjustBrightness();
+    }
   }
   getLocation() {
     return new Promise((resolve, reject) => {
@@ -254,14 +260,8 @@ export default class Main extends React.Component {
     let isHourNight;
     if ((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)) {
       isNight = true;
-      if (isNight !== oldIsNight) {
-        this.adjustBrightness();
-      }
     } else {
       isNight = false;
-      if (isNight !== oldIsNight) {
-        this.adjustBrightness();
-      }
     }
     if ((isHour).isAfter(sunset) || (isHour).isBefore(sunrise)) {
       isHourNight = true;
