@@ -235,9 +235,6 @@ export default class Main extends React.Component {
     }
   }
   adjustBrightness() {
-    console.log("Attemping to adjust brightness: ");
-    console.log("oldIsNight: " + oldIsNight);
-    console.log('newIsNight: ' + isNight);
     if (oldIsNight !== isNight && isNight !== undefined) {
       $.ajax({
         url: '/brightness',

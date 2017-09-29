@@ -28026,9 +28026,6 @@
 	  }, {
 	    key: 'adjustBrightness',
 	    value: function adjustBrightness() {
-	      console.log("Attemping to adjust brightness: ");
-	      console.log("oldIsNight: " + oldIsNight);
-	      console.log('newIsNight: ' + isNight);
 	      if (oldIsNight !== isNight && isNight !== undefined) {
 	        $.ajax({
 	          url: '/brightness',
@@ -44414,8 +44411,11 @@
 	'use strict';
 
 	var keys = {
-	  wunderground: '0f21d9f3506b237b'
+	  wunderground: '0f21d9f3506b237b',
+	  username: 'test',
+	  pw: 'test123'
 	};
+
 	module.exports = keys;
 
 /***/ }),
