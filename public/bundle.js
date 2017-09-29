@@ -28027,16 +28027,12 @@
 	    key: 'adjustBrightness',
 	    value: function adjustBrightness() {
 	      if (oldIsNight !== isNight && isNight !== undefined) {
-	        console.log('old:' + oldIsNight);
-	        console.log('new:' + isNight);
 	        $.ajax({
 	          url: '/brightness',
 	          type: 'post',
 	          data: {
 	            isNight: isNight
 	          }
-	        }).done(function (response) {
-	          console.log(response);
 	        });
 	        oldIsNight = isNight;
 	      }

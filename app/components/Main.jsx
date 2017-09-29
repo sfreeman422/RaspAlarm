@@ -236,16 +236,12 @@ export default class Main extends React.Component {
   }
   adjustBrightness() {
     if (oldIsNight !== isNight && isNight !== undefined) {
-      console.log('old:' + oldIsNight);
-      console.log('new:' + isNight);
       $.ajax({
         url: '/brightness',
         type: 'post',
         data: {
           isNight,
         },
-      }).done((response) => {
-        console.log(response);
       });
       oldIsNight = isNight;
     }
