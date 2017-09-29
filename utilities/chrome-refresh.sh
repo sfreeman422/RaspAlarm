@@ -11,6 +11,6 @@ TIME_FORMAT='%F %H:%M'
 OUTPUT_FORMAT='%T Event(s): %e fired for file: %w. Refreshing.'
 
 while inotifywait -q -r --timefmt "${TIME_FORMAT}" --format "${OUTPUT_FORMAT}" "$@"; do
-    CHROME_WINDOW_ID=$(xdotool search --onlyvisible --class google-chrome | head -1)
+    CHROME_WINDOW_ID=$(xdotool search --onlyvisible --class chromium | head -1)
     xdotool key --window $CHROME_WINDOW_ID 'CTRL+r'
 done
