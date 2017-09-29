@@ -28027,6 +28027,8 @@
 	    key: 'adjustBrightness',
 	    value: function adjustBrightness() {
 	      if (oldIsNight !== isNight && isNight !== undefined) {
+	        console.log('old:' + oldIsNight);
+	        console.log('new:' + isNight);
 	        $.ajax({
 	          url: '/brightness',
 	          type: 'post',
@@ -28049,8 +28051,14 @@
 	      var isHourNight = void 0;
 	      if (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) {
 	        isNight = true;
+	        if (isNight !== oldIsNight) {
+	          this.adjustBrightness();
+	        }
 	      } else {
 	        isNight = false;
+	        if (isNight !== oldIsNight) {
+	          this.adjustBrightness();
+	        }
 	      }
 	      if (isHour.isAfter(sunset) || isHour.isBefore(sunrise)) {
 	        isHourNight = true;

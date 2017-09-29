@@ -236,6 +236,8 @@ export default class Main extends React.Component {
   }
   adjustBrightness() {
     if (oldIsNight !== isNight && isNight !== undefined) {
+      console.log('old:' + oldIsNight);
+      console.log('new:' + isNight);
       $.ajax({
         url: '/brightness',
         type: 'post',
@@ -256,8 +258,14 @@ export default class Main extends React.Component {
     let isHourNight;
     if ((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)) {
       isNight = true;
+      if (isNight !== oldIsNight) {
+        this.adjustBrightness();
+      }
     } else {
       isNight = false;
+      if (isNight !== oldIsNight) {
+        this.adjustBrightness();
+      }
     }
     if ((isHour).isAfter(sunset) || (isHour).isBefore(sunrise)) {
       isHourNight = true;
