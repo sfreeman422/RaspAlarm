@@ -65,7 +65,7 @@ export default class CurrentAlarms extends React.Component {
           {this.state.listAlarms.map((alarm, i) => (
             <div className="col-xs-2" id="alarm" key={i}>
               <h3 id="alarmTime">{alarm.time}</h3>
-              <p id="alarmDay">{this._displayLetterForDayOfWeek(alarm.dayOfWeek)}</p>
+              <p id="alarmDay">{this.displayLetterForDayOfWeek(alarm.dayOfWeek)}</p>
               <h3 onClick={() => this.removeAlarm(alarm._id)}><span className="glyphicon glyphicon-trash"><Link to="/alarmManager" /></span></h3>
             </div>
           ))}
