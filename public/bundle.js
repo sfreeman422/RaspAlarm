@@ -27930,6 +27930,12 @@
 	        isNight = false;
 	        this.adjustBrightness();
 	      }
+	      if (isNight !== oldIsNight && isNight !== undefined) {
+	        console.log('adjust brightness because...');
+	        console.log('isNight: ' + isNight);
+	        console.log('oldIsNight: ' + oldIsNight);
+	        this.adjustBrightness();
+	      }
 	    }
 	  }, {
 	    key: 'getLocation',
@@ -28026,9 +28032,6 @@
 	  }, {
 	    key: 'adjustBrightness',
 	    value: function adjustBrightness() {
-	      console.log("Attemping to adjust brightness: ");
-	      console.log("oldIsNight: " + oldIsNight);
-	      console.log('newIsNight: ' + isNight);
 	      if (oldIsNight !== isNight && isNight !== undefined) {
 	        $.ajax({
 	          url: '/brightness',
@@ -28036,8 +28039,6 @@
 	          data: {
 	            isNight: isNight
 	          }
-	        }).done(function (response) {
-	          console.log(response);
 	        });
 	        oldIsNight = isNight;
 	      }
@@ -44414,8 +44415,11 @@
 	'use strict';
 
 	var keys = {
-	  wunderground: '0f21d9f3506b237b'
+	  wunderground: '0f21d9f3506b237b',
+	  username: 'test',
+	  pw: 'test123'
 	};
+
 	module.exports = keys;
 
 /***/ }),

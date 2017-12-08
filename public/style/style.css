@@ -32,7 +32,9 @@ a{
 .wi-day-sunny{
 	color: #fed039;
 }
-
+.wi-night-clear {
+  color: #FAD976
+}
 .weatherDescription{
 	padding-top: 20%;
 }

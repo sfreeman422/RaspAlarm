@@ -153,6 +153,12 @@ export default class Main extends React.Component {
       isNight = false;
       this.adjustBrightness();
     }
+    if (isNight !== oldIsNight && isNight !== undefined) {
+      console.log('adjust brightness because...');
+      console.log('isNight: ' + isNight);
+      console.log('oldIsNight: ' + oldIsNight);
+      this.adjustBrightness();
+    }
   }
   getLocation() {
     return new Promise((resolve, reject) => {
@@ -235,9 +241,6 @@ export default class Main extends React.Component {
     }
   }
   adjustBrightness() {
-    console.log("Attemping to adjust brightness: ");
-    console.log("oldIsNight: " + oldIsNight);
-    console.log('newIsNight: ' + isNight);
     if (oldIsNight !== isNight && isNight !== undefined) {
       $.ajax({
         url: '/brightness',
@@ -245,8 +248,6 @@ export default class Main extends React.Component {
         data: {
           isNight,
         },
-      }).done((response) => {
-        console.log(response);
       });
       oldIsNight = isNight;
     }
