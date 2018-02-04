@@ -33,7 +33,7 @@ app.get('/alarms', (req, res) => {
   // Mongoose method to retrieve all
   Alarm.find({}, (err, docs) => {
     if (!err && docs) {
-      res.send(docs);
+      res.json(docs);
     } else {
       throw err;
     }

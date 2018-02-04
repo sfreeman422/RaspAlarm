@@ -27905,10 +27905,10 @@
 	      var currentMinute = (0, _moment2.default)().format('mm');
 	      if (currentMinute === '00' || hasWeatherData === false) {
 	        this.getLocation().then(function (locationObject) {
+	          // Need to handle a lack of locationObject in the UI.
 	          if (!locationObject) {
 	            var error = 'Location was undefined!';
 	            console.log(error);
-	            return reject(error);
 	          }
 	          // Gets our weather from the weather undergound.
 	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + keys.wunderground + '/hourly/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
@@ -44553,6 +44553,10 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _isomorphicFetch = __webpack_require__(360);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
 	var _reactRouter = __webpack_require__(182);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -44601,7 +44605,7 @@
 	    value: function getAlarms() {
 	      var _this2 = this;
 
-	      fetch('/alarms').then(function (res) {
+	      (0, _isomorphicFetch2.default)('/alarms').then(function (res) {
 	        return res.json();
 	      }).then(function (alarms) {
 	        _this2.setState({ alarms: alarms });
@@ -44729,6 +44733,10 @@
 
 	var _reactRouter = __webpack_require__(182);
 
+	var _isomorphicFetch = __webpack_require__(360);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
 	var _CurrentAlarms = __webpack_require__(369);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
@@ -44785,10 +44793,10 @@
 	    value: function getAlarms() {
 	      var _this2 = this;
 
-	      $.ajax({
-	        url: '/alarms',
-	        type: 'get'
-	      }).done(function (alarms) {
+	      (0, _isomorphicFetch2.default)('/alarms').then(function (res) {
+	        return res.json();
+	      }).then(function (alarms) {
+	        console.log(alarms);
 	        _this2.setState({ alarms: alarms });
 	      });
 	    }
@@ -44988,16 +44996,22 @@
 	      var hour = this.state.hourDisplay;
 	      var minute = this.state.minuteDisplay;
 	      var ampm = this.state.ampm;
-	      $.ajax({
-	        url: '/setAlarm',
-	        type: 'POST',
-	        data: {
-	          hour: hour,
-	          minute: minute,
-	          ampm: ampm,
-	          dayOfWeek: daysOfWeek
-	        }
-	      }).done(function () {
+	      console.log(hour);
+	      console.log(minute);
+	      console.log(ampm);
+	      var data = {
+	        hour: hour,
+	        minute: minute,
+	        ampm: ampm,
+	        dayOfWeek: daysOfWeek
+	      };
+	      (0, _isomorphicFetch2.default)('/setAlarm', {
+	        method: 'POST',
+	        body: JSON.stringify(data),
+	        headers: new Headers({
+	          'Content-Type': 'application/json'
+	        })
+	      }).then(function () {
 	        _this3.setState({
 	          monday: 'unselected',
 	          tuesday: 'unselected',
@@ -45157,6 +45171,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _isomorphicFetch = __webpack_require__(360);
+
+	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
+
 	var _reactRouter = __webpack_require__(182);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -45196,10 +45214,9 @@
 	    value: function getAlarms() {
 	      var _this2 = this;
 
-	      $.ajax({
-	        url: '/alarms',
-	        type: 'get'
-	      }).done(function (alarms) {
+	      (0, _isomorphicFetch2.default)('/alarms').then(function (response) {
+	        return response.json();
+	      }).then(function (alarms) {
 	        _this2.setState({
 	          listAlarms: alarms
 	        });
@@ -45210,14 +45227,17 @@
 	    value: function removeAlarm(id) {
 	      var _this3 = this;
 
-	      $.ajax({
-	        url: '/deleteAlarm',
-	        type: 'DELETE',
-	        data: {
+	      console.log('should remove alarm');
+	      (0, _isomorphicFetch2.default)('/deleteAlarm', {
+	        method: 'DELETE',
+	        body: JSON.stringify({
 	          id: id,
 	          _method: 'delete'
-	        }
-	      }).done(function () {
+	        }),
+	        headers: new Headers({
+	          'Content-Type': 'application/json'
+	        })
+	      }).then(function () {
 	        _this3.getAlarms();
 	      });
 	    }
@@ -45251,7 +45271,7 @@
 	      if (this.state.listAlarms !== undefined) {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'col-xs-12', id: 'alarms' },
+	          { id: 'alarms' },
 	          this.state.listAlarms.map(function (alarm, i) {
 	            return _react2.default.createElement(
 	              'div',

@@ -80,7 +80,9 @@ a{
 #dayAndLoc{
 	font-size: 120%;
 }
-
+#alarms{
+	display: flex;
+}
 #alarmTime{
 	color: white;
 }

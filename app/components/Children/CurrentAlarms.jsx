@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from 'isomorphic-fetch';
 import { Link } from 'react-router';
 
 export default class CurrentAlarms extends React.Component {
@@ -17,24 +18,28 @@ export default class CurrentAlarms extends React.Component {
     }
   }
   getAlarms() {
-    $.ajax({
-      url: '/alarms',
-      type: 'get',
-    }).done((alarms) => {
+    fetch('/alarms')
+    .then(response => response.json())
+    .then((alarms) => {
       this.setState({
         listAlarms: alarms,
       });
     });
   }
   removeAlarm(id) {
-    $.ajax({
-      url: '/deleteAlarm',
-      type: 'DELETE',
-      data: {
-        id,
-        _method: 'delete',
+    console.log('should remove alarm');
+    fetch('/deleteAlarm',
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id,
+          _method: 'delete',
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
       },
-    }).done(() => {
+    ).then(() => {
       this.getAlarms();
     });
   }
@@ -61,7 +66,7 @@ export default class CurrentAlarms extends React.Component {
   render() {
     if (this.state.listAlarms !== undefined) {
       return (
-        <div className="col-xs-12" id="alarms">
+        <div id="alarms">
           {this.state.listAlarms.map((alarm, i) => (
             <div className="col-xs-2" id="alarm" key={i}>
               <h3 id="alarmTime">{alarm.time}</h3>

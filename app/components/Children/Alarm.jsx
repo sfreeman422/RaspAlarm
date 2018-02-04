@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import fetch from 'isomorphic-fetch';
 import { Link } from 'react-router';
 
 const alarmSound = new Audio('./sounds/alarm.mp3');

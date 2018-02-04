@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import fetch from 'isomorphic-fetch';
 import CurrentAlarms from './Children/CurrentAlarms.jsx';
 
 let daysOfWeek = [];
@@ -33,12 +34,12 @@ export default class AlarmManager extends React.Component {
     this.getAlarms();
   }
   getAlarms() {
-    $.ajax({
-      url: '/alarms',
-      type: 'get',
-    }).done((alarms) => {
-      this.setState({ alarms });
-    });
+    fetch('/alarms')
+      .then(res => res.json())
+      .then((alarms) => {
+        console.log(alarms);
+        this.setState({ alarms });
+      });
   }
   incrementMinute() {
     if (this.state.minute === 55) {
@@ -224,28 +225,36 @@ export default class AlarmManager extends React.Component {
     const hour = this.state.hourDisplay;
     const minute = this.state.minuteDisplay;
     const ampm = this.state.ampm;
-    $.ajax({
-      url: '/setAlarm',
-      type: 'POST',
-      data: {
-        hour,
-        minute,
-        ampm,
-        dayOfWeek: daysOfWeek,
-      },
-    }).done(() => {
-      this.setState({
-        monday: 'unselected',
-        tuesday: 'unselected',
-        wednesday: 'unselected',
-        thursday: 'unselected',
-        friday: 'unselected',
-        saturday: 'unselected',
-        sunday: 'unselected',
+    console.log(hour);
+    console.log(minute);
+    console.log(ampm);
+    const data = {
+      hour,
+      minute,
+      ampm,
+      dayOfWeek: daysOfWeek,
+    };
+    fetch('/setAlarm',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      })
+      .then(() => {
+        this.setState({
+          monday: 'unselected',
+          tuesday: 'unselected',
+          wednesday: 'unselected',
+          thursday: 'unselected',
+          friday: 'unselected',
+          saturday: 'unselected',
+          sunday: 'unselected',
+        });
+        daysOfWeek = [];
+        this.getAlarms();
       });
-      daysOfWeek = [];
-      this.getAlarms();
-    });
   }
   render() {
     return (

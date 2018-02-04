@@ -118,10 +118,10 @@ export default class Main extends React.Component {
     if (currentMinute === '00' || hasWeatherData === false) {
       this.getLocation()
       .then((locationObject) => {
+        // Need to handle a lack of locationObject in the UI.
         if (!locationObject) {
           const error = 'Location was undefined!';
           console.log(error);
-          return reject(error);
         }
         // Gets our weather from the weather undergound.
         fetch(`https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
@@ -175,8 +175,8 @@ export default class Main extends React.Component {
         {
           method: 'POST',
           body: {
-          isNight,
-        },
+            isNight,
+          },
         })
       .then(res => res.json())
       .then(resp => console.log(resp))
