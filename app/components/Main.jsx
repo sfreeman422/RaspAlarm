@@ -16,33 +16,10 @@ const keys = require('../../private/keys.js');
 let timeSave = 'Loading...';
 let dateSave = 'Loading...';
 let todaySave = 'Loading...';
-let userLocSave = 'Loading...';
+let userLocSave;
 let nextAlarmSave = 'Loading...';
 let alarmSave = 'Loading...';
-let weatherTodaySave = 'Loading...';
-let weatherTodayTimeSave = 'Loading...';
-let weatherTodayTempSave = 'Loading...';
-let weatherTodayPicSave;
-let weatherHourOneSave = 'Loading...';
-let weatherHourOneTimeSave = 'Loading...';
-let weatherHourOneTempSave = 'Loading...';
-let weatherHourOnePicSave;
-let weatherHourTwoSave = 'Loading...';
-let weatherHourTwoTimeSave = 'Loading...';
-let weatherHourTwoTempSave = 'Loading...';
-let weatherHourTwoPicSave;
-let weatherHourThreeSave = 'Loading...';
-let weatherHourThreeTimeSave = 'Loading...';
-let weatherHourThreeTempSave = 'Loading...';
-let weatherHourThreePicSave;
-let weatherHourFourSave = 'Loading...';
-let weatherHourFourTimeSave = 'Loading...';
-let weatherHourFourTempSave = 'Loading...';
-let weatherHourFourPicSave;
-let weatherHourFiveSave = 'Loading...';
-let weatherHourFiveTimeSave = 'Loading...';
-let weatherHourFiveTempSave = 'Loading...';
-let weatherHourFivePicSave;
+let weatherArrSave = [];
 let sunriseSave;
 let sunsetSave;
 let isNight;
@@ -58,30 +35,7 @@ export default class Main extends React.Component {
       userLoc: userLocSave,
       nextAlarm: nextAlarmSave,
       alarm: alarmSave,
-      weatherToday: weatherTodaySave,
-      weatherTodayTime: weatherTodayTimeSave,
-      weatherTodayTemp: weatherTodayTempSave,
-      weatherTodayPic: weatherTodayPicSave,
-      weatherHourOne: weatherHourOneSave,
-      weatherHourOneTime: weatherHourOneTimeSave,
-      weatherHourOneTemp: weatherHourOneTempSave,
-      weatherHourOnePic: weatherHourOnePicSave,
-      weatherHourTwo: weatherHourTwoSave,
-      weatherHourTwoTime: weatherHourTwoTimeSave,
-      weatherHourTwoTemp: weatherHourTwoTempSave,
-      weatherHourTwoPic: weatherHourTwoPicSave,
-      weatherHourThree: weatherHourThreeSave,
-      weatherHourThreeTime: weatherHourThreeTimeSave,
-      weatherHourThreeTemp: weatherHourThreeTempSave,
-      weatherHourThreePic: weatherHourThreePicSave,
-      weatherHourFour: weatherHourFourSave,
-      weatherHourFourTime: weatherHourFourTimeSave,
-      weatherHourFourTemp: weatherHourFourTempSave,
-      weatherHourFourPic: weatherHourFourPicSave,
-      weatherHourFive: weatherHourFiveSave,
-      weatherHourFiveTime: weatherHourFiveTimeSave,
-      weatherHourFiveTemp: weatherHourFiveTempSave,
-      weatherHourFivePic: weatherHourFivePicSave,
+      weatherArr: weatherArrSave,
       sunrise: sunriseSave,
       sunset: sunsetSave,
     };
@@ -109,30 +63,7 @@ export default class Main extends React.Component {
     userLocSave = this.state.userLoc;
     nextAlarmSave = this.state.nextAlarm;
     alarmSave = this.state.alarm;
-    weatherTodaySave = this.state.weatherToday;
-    weatherTodayTimeSave = this.state.weatherTodayTime;
-    weatherTodayTempSave = this.state.weatherTodayTemp;
-    weatherTodayPicSave = this.state.weatherTodayPic;
-    weatherHourOneSave = this.state.weatherHourOne;
-    weatherHourOneTimeSave = this.state.weatherHourOneTime;
-    weatherHourOneTempSave = this.state.weatherHourOneTemp;
-    weatherHourOnePicSave = this.state.weatherHourOnePic;
-    weatherHourTwoSave = this.state.weatherHourTwo;
-    weatherHourTwoTimeSave = this.state.weatherHourTwoTime;
-    weatherHourTwoTempSave = this.state.weatherHourTwoTemp;
-    weatherHourTwoPicSave = this.state.weatherHourTwoPic;
-    weatherHourThreeSave = this.state.weatherHourThree;
-    weatherHourThreeTimeSave = this.state.weatherHourThreeTime;
-    weatherHourThreeTempSave = this.state.weatherHourThreeTemp;
-    weatherHourThreePicSave = this.state.weatherHourThreePic;
-    weatherHourFourSave = this.state.weatherHourFour;
-    weatherHourFourTimeSave = this.state.weatherHourFourTime;
-    weatherHourFourTempSave = this.state.weatherHourFourTemp;
-    weatherHourFourPicSave = this.state.weatherHourFourPic;
-    weatherHourFiveSave = this.state.weatherHourFive;
-    weatherHourFiveTimeSave = this.state.weatherHourFiveTime;
-    weatherHourFiveTempSave = this.state.weatherHourFiveTemp;
-    weatherHourFivePicSave = this.state.weatherHourFivePic;
+    weatherArrSave = this.state.weatherArr;
     sunsetSave = this.state.sunset;
     sunriseSave = this.state.sunrise;
     clearInterval(weatherInterval);
@@ -140,11 +71,21 @@ export default class Main extends React.Component {
   }
     // Gets the time for the alarm clock.
   getTime() {
-    this.setState({
-      time: moment().format('hh:mm' + 'a'),
-      date: moment().format('MMMM Do YYYY'),
-      today: moment().format('dddd'),
-    });
+    if (this.state.time !== moment().format('hh:mm' + 'a')) {
+      this.setState({
+        time: moment().format('hh:mm' + 'a'),
+      });
+    }
+    if (this.state.date !== moment().format('MMMM Do YYYY')) {
+      this.setState({
+        date: moment().format('MMMM Do YYYY'),
+      });
+    }
+    if (this.state.today !== moment().format('dddd')) {
+      this.setState({
+        today: moment().format('dddd'),
+      });
+    }
     if (this.state.time === this.state.sunset) {
       isNight = true;
       this.adjustBrightness();
@@ -155,8 +96,8 @@ export default class Main extends React.Component {
     }
     if (isNight !== oldIsNight && isNight !== undefined) {
       console.log('adjust brightness because...');
-      console.log('isNight: ' + isNight);
-      console.log('oldIsNight: ' + oldIsNight);
+      console.log(`isNight: ${isNight}`);
+      console.log(`oldIsNight: ${oldIsNight}`);
       this.adjustBrightness();
     }
   }
@@ -173,44 +114,28 @@ export default class Main extends React.Component {
   }
   locationThenWeather() {
     const currentMinute = moment().format('mm');
-    // If the current time isnt an o'clock or if weather data isnt already included,
-    // we run the code to get location and get the weather forecast.
     if (currentMinute === '00' || hasWeatherData === false) {
       return new Promise((resolve, reject) => this.getLocation().then((locationObject) => {
         if (!locationObject) {
           const error = 'Location was undefined!';
           return reject(error);
         }
-        // Makes the API call to weatherunderground, then assigns
-        // forecast, time and weather icon data to the corresponding states.
+        // Gets our weather from the weather undergound.
         $.ajax({
           url: `https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`,
         }).done((response) => {
+          const weatherArr = [];
+          // Builds out an array to list weather information.
+          for (let i = 0; i < 5; i += 1) {
+            weatherArr.push({
+              condition: response.hourly_forecast[i].condition,
+              time: response.hourly_forecast[i].FCTTIME.civil,
+              temp: `${response.hourly_forecast[i].temp.english}F`,
+              icon: this.determineWeatherIcon(response.hourly_forecast[i].icon, response.hourly_forecast[i].FCTTIME.civil),
+            });
+          }
           this.setState({
-            weatherToday: response.hourly_forecast[0].condition,
-            weatherTodayTime: response.hourly_forecast[0].FCTTIME.civil,
-            weatherTodayTemp: `${response.hourly_forecast[0].temp.english}F`,
-            weatherTodayPic: response.hourly_forecast[0].icon,
-            weatherHourOne: response.hourly_forecast[1].condition,
-            weatherHourOneTime: response.hourly_forecast[1].FCTTIME.civil,
-            weatherHourOneTemp: `${response.hourly_forecast[1].temp.english}F`,
-            weatherHourOnePic: response.hourly_forecast[1].icon,
-            weatherHourTwo: response.hourly_forecast[2].condition,
-            weatherHourTwoTime: response.hourly_forecast[2].FCTTIME.civil,
-            weatherHourTwoTemp: `${response.hourly_forecast[2].temp.english}F`,
-            weatherHourTwoPic: response.hourly_forecast[2].icon,
-            weatherHourThree: response.hourly_forecast[3].condition,
-            weatherHourThreeTime: response.hourly_forecast[3].FCTTIME.civil,
-            weatherHourThreeTemp: `${response.hourly_forecast[3].temp.english}F`,
-            weatherHourThreePic: response.hourly_forecast[3].icon,
-            weatherHourFour: response.hourly_forecast[4].condition,
-            weatherHourFourTime: response.hourly_forecast[4].FCTTIME.civil,
-            weatherHourFourTemp: `${response.hourly_forecast[4].temp.english}F`,
-            weatherHourFourPic: response.hourly_forecast[4].icon,
-            weatherHourFive: response.hourly_forecast[5].condition,
-            weatherHourFiveTime: response.hourly_forecast[5].FCTTIME.civil,
-            weatherHourFiveTemp: `${response.hourly_forecast[1].temp.english}F`,
-            weatherHourFivePic: response.hourly_forecast[5].icon,
+            weatherArr,
           });
           hasWeatherData = true;
         });
@@ -336,48 +261,17 @@ export default class Main extends React.Component {
     return 'wi wi-na';
   }
   render() {
+    console.log(this.state);
     return (
       <div className="container">
-        <div className="row">
-          <Clock time={this.state.time} />
-        </div>
-        <div className="row">
-          <Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today} />
-        </div>
-        <div className="row">
-          <Weather
-            currentTime={this.state.time}
-            today={this.state.weatherToday}
-            todayHour={this.state.weatherTodayTime}
-            todayPic={this.determineWeatherIcon(this.state.weatherTodayPic, this.state.weatherTodayTime)}
-            todayTemp={this.state.weatherTodayTemp}
-            one={this.state.weatherHourOne}
-            oneHour={this.state.weatherHourOneTime}
-            oneTemp={this.state.weatherHourOneTemp}
-            onePic={this.determineWeatherIcon(this.state.weatherHourOnePic, this.state.weatherHourOneTime)}
-            two={this.state.weatherHourTwo}
-            twoHour={this.state.weatherHourTwoTime}
-            twoTemp={this.state.weatherHourTwoTemp}
-            twoPic={this.determineWeatherIcon(this.state.weatherHourTwoPic, this.state.weatherHourTwoTime)}
-            three={this.state.weatherHourThree}
-            threeHour={this.state.weatherHourThreeTime}
-            threeTemp={this.state.weatherHourThreeTemp}
-            threePic={this.determineWeatherIcon(this.state.weatherHourThreePic, this.state.weatherHourThreeTime)}
-            four={this.state.weatherHourFour}
-            fourHour={this.state.weatherHourFourTime}
-            fourTemp={this.state.weatherHourFourTemp}
-            fourPic={this.determineWeatherIcon(this.state.weatherHourFourPic, this.state.weatherHourFourTime)}
-            five={this.state.weatherHourFive}
-            fiveHour={this.state.weatherHourFiveTime}
-            fiveTemp={this.state.weatherHourFiveTemp}
-            fivePic={this.determineWeatherIcon(this.state.weatherHourFivePic, this.state.weatherHourFiveTime)}
-            sunrise={this.state.sunrise}
-            sunset={this.state.sunset}
-          />
-        </div>
-        <div className="row">
-          <Alarm currentTime={this.state.time} />
-        </div>
+        <Clock time={this.state.time} />
+        <Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today} />
+        <Weather
+          weatherArr={this.state.weatherArr}
+          sunrise={this.state.sunrise}
+          sunset={this.state.sunset}
+        />
+        <Alarm currentTime={this.state.time} />
       </div>);
   }
 }
