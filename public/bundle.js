@@ -27909,7 +27909,7 @@
 	            var error = 'Location was undefined!';
 	            console.log(error);
 	            return reject(error);
-	          };
+	          }
 	          // Gets our weather from the weather undergound.
 	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + keys.wunderground + '/hourly/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
 	            return response.json();
@@ -27936,6 +27936,7 @@
 	          (0, _isomorphicFetch2.default)('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + locationObject.lat + ',' + locationObject.long + '&sensor=true').then(function (response) {
 	            return response.json();
 	          }).then(function (geoloc) {
+	            console.log(geoloc);
 	            _this2.setState({
 	              userLoc: geoloc.results[0].address_components[2].short_name + ', ' + geoloc.results[0].address_components[4].short_name
 	            });
@@ -27956,7 +27957,7 @@
 	        }).catch(function (error) {
 	          return reject(error);
 	        });
-	      };
+	      }
 	    }
 	  }, {
 	    key: 'adjustBrightness',
@@ -44439,12 +44440,9 @@
 	        { id: "dayAndLoc" },
 	        props.day,
 	        ", ",
-	        props.date
-	      ),
-	      _react2.default.createElement(
-	        "p",
-	        { id: "dayAndLoc" },
-	        props.userLoc !== undefined ? props.userLoc : null
+	        props.date,
+	        " ",
+	        props.userLoc !== undefined ? " in " + props.userLoc : null
 	      )
 	    )
 	  );

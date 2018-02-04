@@ -122,7 +122,7 @@ export default class Main extends React.Component {
           const error = 'Location was undefined!';
           console.log(error);
           return reject(error);
-        };
+        }
         // Gets our weather from the weather undergound.
         fetch(`https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
           .then(response => response.json())
@@ -141,16 +141,17 @@ export default class Main extends React.Component {
               weatherArr,
             });
             hasWeatherData = true;
-        })
+          })
         .catch(err => err);
         // Gets the location from the reverse geocode api provided by Google.
         // This enables us to show the actual name of the location that the user is in.
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
         .then(response => response.json())
         .then((geoloc) => {
+          console.log(geoloc);
           this.setState({
             userLoc: `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`,
-        });
+          });
         });
         // Get the sunrise/sunset data
         fetch(`https://api.wunderground.com/api/${keys.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
@@ -166,17 +167,17 @@ export default class Main extends React.Component {
           });
         });
       }).catch(error => reject(error));
-    };
+    }
   }
   adjustBrightness() {
     if (oldIsNight !== isNight && isNight !== undefined) {
       fetch('/brightness',
-      {
-        method: 'POST',
-        body: {
+        {
+          method: 'POST',
+          body: {
           isNight,
         },
-      })
+        })
       .then(res => res.json())
       .then(resp => console.log(resp))
       .catch(e => console.log(e));
