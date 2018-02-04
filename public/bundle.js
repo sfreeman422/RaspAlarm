@@ -46534,7 +46534,7 @@
 	    { className: "today" },
 	    _react2.default.createElement(
 	      "div",
-	      { className: "col-xs-12 weekday" },
+	      { className: "weekday" },
 	      _react2.default.createElement(
 	        "p",
 	        { id: "dayAndLoc" },
