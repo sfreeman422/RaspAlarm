@@ -25,9 +25,9 @@ export default class Alarm extends React.Component {
     clearInterval(alarmInterval);
   }
   getAlarms() {
-    $.ajax({
-      url: '/alarms',
-    }).done((alarms) => {
+    fetch('/alarms')
+    .then(res => res.json())
+    .then((alarms) => {
       this.setState({ alarms });
       this.checkAlarm();
     });

@@ -44,20 +44,22 @@ app.post('/brightness', (req, res) => {
     if (req.body.isNight === 'true') {
       exec('echo 20 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
         if (error) {
-          res.send(`execError: ${error}`);
+          res.json(`execError: ${error}`);
         } else {
-          res.send('Successfully set brighness to night mode!');
+          res.json('Successfully set brighness to night mode!');
         }
       });
     } else if (req.body.isNight !== 'true') {
       exec('echo 255 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
         if (error) {
-          res.send(`execError: ${error}`);
+          res.json(`execError: ${error}`);
         } else {
-          res.send('Successfully set brightness to day mode!');
+          res.json('Successfully set brightness to day mode!');
         }
       });
     }
+  } else {
+    res.json('RaspberryPi env variable not set. No changes made');
   }
 });
 // Route to set alarms.

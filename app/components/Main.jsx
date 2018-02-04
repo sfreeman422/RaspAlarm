@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import fetch from 'isomorphic-fetch';
 
 // Require the children
 import Clock from './Children/Clock.jsx';
@@ -115,43 +116,46 @@ export default class Main extends React.Component {
   locationThenWeather() {
     const currentMinute = moment().format('mm');
     if (currentMinute === '00' || hasWeatherData === false) {
-      return new Promise((resolve, reject) => this.getLocation().then((locationObject) => {
+      this.getLocation()
+      .then((locationObject) => {
         if (!locationObject) {
           const error = 'Location was undefined!';
+          console.log(error);
           return reject(error);
-        }
+        };
         // Gets our weather from the weather undergound.
-        $.ajax({
-          url: `https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`,
-        }).done((response) => {
-          const weatherArr = [];
-          // Builds out an array to list weather information.
-          for (let i = 0; i < 5; i += 1) {
-            weatherArr.push({
-              condition: response.hourly_forecast[i].condition,
-              time: response.hourly_forecast[i].FCTTIME.civil,
-              temp: `${response.hourly_forecast[i].temp.english}F`,
-              icon: this.determineWeatherIcon(response.hourly_forecast[i].icon, response.hourly_forecast[i].FCTTIME.civil),
+        fetch(`https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
+          .then(response => response.json())
+          .then((json) => {
+            const weatherArr = [];
+            // Builds out an array to list weather information.
+            for (let i = 0; i < 5; i += 1) {
+              weatherArr.push({
+                condition: json.hourly_forecast[i].condition,
+                time: json.hourly_forecast[i].FCTTIME.civil,
+                temp: `${json.hourly_forecast[i].temp.english}F`,
+                icon: this.determineWeatherIcon(json.hourly_forecast[i].icon, json.hourly_forecast[i].FCTTIME.civil),
+              });
+            }
+            this.setState({
+              weatherArr,
             });
-          }
-          this.setState({
-            weatherArr,
-          });
-          hasWeatherData = true;
-        });
+            hasWeatherData = true;
+        })
+        .catch(err => err);
         // Gets the location from the reverse geocode api provided by Google.
         // This enables us to show the actual name of the location that the user is in.
-        $.ajax({
-          url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`,
-        }).done((geoloc) => {
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
+        .then(response => response.json())
+        .then((geoloc) => {
           this.setState({
             userLoc: `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`,
-          });
+        });
         });
         // Get the sunrise/sunset data
-        $.ajax({
-          url: `https://api.wunderground.com/api/${keys.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`,
-        }).done((sundata) => {
+        fetch(`https://api.wunderground.com/api/${keys.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
+        .then(response => response.json())
+        .then((sundata) => {
           const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
           const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
           const sunriseMoment = moment(sunriseString, 'hh:mm:a');
@@ -161,19 +165,21 @@ export default class Main extends React.Component {
             sunset: sunsetMoment,
           });
         });
-        return resolve(locationObject);
-      }).catch(error => reject(error)));
-    }
+      }).catch(error => reject(error));
+    };
   }
   adjustBrightness() {
     if (oldIsNight !== isNight && isNight !== undefined) {
-      $.ajax({
-        url: '/brightness',
-        type: 'post',
-        data: {
+      fetch('/brightness',
+      {
+        method: 'POST',
+        body: {
           isNight,
         },
-      });
+      })
+      .then(res => res.json())
+      .then(resp => console.log(resp))
+      .catch(e => console.log(e));
       oldIsNight = isNight;
     }
   }
