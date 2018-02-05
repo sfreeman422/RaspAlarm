@@ -76,9 +76,6 @@ export default class CurrentAlarms extends React.Component {
         </div>
       );
     }
-
-    return (
-      <div className="col-xs-12" id="alarms" />
-    );
+    return null;
   }
 }

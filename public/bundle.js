@@ -45212,8 +45212,7 @@
 	          })
 	        );
 	      }
-
-	      return _react2.default.createElement('div', { className: 'col-xs-12', id: 'alarms' });
+	      return null;
 	    }
 	  }]);
 

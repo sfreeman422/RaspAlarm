@@ -66,9 +66,14 @@ app.post('/brightness', (req, res) => {
 app.post('/setAlarm', (req, res) => {
   console.log(req.body);
   const userTime = `${req.body.hour}:${req.body.minute}${req.body.ampm}`;
+  let oneTimeUse = false;
+  if (req.body.dayOfWeek.length === 0) {
+    oneTimeUse = true;
+  }
   const newAlarm = new Alarm({
     time: userTime,
     dayOfWeek: req.body.dayOfWeek,
+    oneTimeUse,
   });
 
   newAlarm.save((err, completed) => {
