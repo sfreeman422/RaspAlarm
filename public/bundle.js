@@ -44737,11 +44737,17 @@
 
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
+	var _moment = __webpack_require__(242);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	var _CurrentAlarms = __webpack_require__(369);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -44759,19 +44765,26 @@
 
 	    var _this = _possibleConstructorReturn(this, (AlarmManager.__proto__ || Object.getPrototypeOf(AlarmManager)).call(this));
 
+	    var now = (0, _moment2.default)();
+	    var minute = parseInt(now.format('mm'), 10);
+	    if (minute < 10 && minute > 0) {
+	      minute = 10;
+	    } else {
+	      minute = Math.ceil(minute / 5) * 5;
+	    }
 	    _this.state = {
-	      hour: 1,
-	      minute: 30,
-	      ampm: 'am',
-	      hourDisplay: '01',
-	      minuteDisplay: '30',
-	      monday: 'unselected',
-	      tuesday: 'unselected',
-	      wednesday: 'unselected',
-	      thursday: 'unselected',
-	      friday: 'unselected',
-	      saturday: 'unselected',
-	      sunday: 'unselected',
+	      hour: parseInt(now.format('h'), 10),
+	      minute: minute,
+	      ampm: now.format('a'),
+	      hourDisplay: now.format('hh'),
+	      minuteDisplay: minute,
+	      Monday: false,
+	      Tuesday: false,
+	      Wednesday: false,
+	      Thursday: false,
+	      Friday: false,
+	      Saturday: false,
+	      Sunday: false,
 	      alarms: []
 	    };
 	    _this.incrementHour = _this.incrementHour.bind(_this);
@@ -44842,119 +44855,20 @@
 	        });
 	      }
 	    }
+	    // This new logic is super concise but presents an issue with the CSS when choosing days.
+	    // Need to ensure that we can set a className based on the boolean in the day.
+
 	  }, {
 	    key: 'chooseDay',
 	    value: function chooseDay(day) {
-	      if (day === 'Monday') {
-	        if (this.state.monday === 'unselected') {
-	          this.setState({
-	            monday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            monday: 'unselected'
-	          });
-	          for (var i = 0; i < daysOfWeek.length; i += 1) {
-	            if (daysOfWeek[i] === 'Monday') {
-	              daysOfWeek.splice(i, 1);
-	            }
-	          }
-	        }
-	      } else if (day === 'Tuesday') {
-	        if (this.state.tuesday === 'unselected') {
-	          this.setState({
-	            tuesday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            tuesday: 'unselected'
-	          });
-	          for (var _i = 0; _i < daysOfWeek.length; _i += 1) {
-	            if (daysOfWeek[_i] === 'Tuesday') {
-	              daysOfWeek.splice(_i, 1);
-	            }
-	          }
-	        }
-	      } else if (day === 'Wednesday') {
-	        if (this.state.wednesday === 'unselected') {
-	          this.setState({
-	            wednesday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            wednesday: 'unselected'
-	          });
-	          for (var _i2 = 0; _i2 < daysOfWeek.length; _i2 += 1) {
-	            if (daysOfWeek[_i2] === 'Wednesday') {
-	              daysOfWeek.splice(_i2, 1);
-	            }
-	          }
-	        }
-	      } else if (day === 'Thursday') {
-	        if (this.state.thursday === 'unselected') {
-	          this.setState({
-	            thursday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            thursday: 'unselected'
-	          });
-	          for (var _i3 = 0; _i3 < daysOfWeek.length; _i3 += 1) {
-	            if (daysOfWeek[_i3] === 'Thursday') {
-	              daysOfWeek.splice(_i3, 1);
-	            }
-	          }
-	        }
-	      } else if (day === 'Friday') {
-	        if (this.state.friday === 'unselected') {
-	          this.setState({
-	            friday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            friday: 'unselected'
-	          });
-	          for (var _i4 = 0; _i4 < daysOfWeek.length; _i4 += 1) {
-	            if (daysOfWeek[_i4] === 'Friday') {
-	              daysOfWeek.splice(_i4, 1);
-	            }
-	          }
-	        }
-	      } else if (day === 'Saturday') {
-	        if (this.state.saturday === 'unselected') {
-	          this.setState({
-	            saturday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            saturday: 'unselected'
-	          });
-	          for (var _i5 = 0; _i5 < daysOfWeek.length; _i5 += 1) {
-	            if (daysOfWeek[_i5] === 'Saturday') {
-	              daysOfWeek.splice(_i5, 1);
-	            }
-	          }
-	        }
-	      } else if (day === 'Sunday') {
-	        if (this.state.sunday === 'unselected') {
-	          this.setState({
-	            sunday: 'selected'
-	          });
-	          daysOfWeek.push(day);
-	        } else {
-	          this.setState({
-	            sunday: 'unselected'
-	          });
-	          for (var _i6 = 0; _i6 < daysOfWeek.length; _i6 += 1) {
-	            if (daysOfWeek[_i6] === 'Sunday') {
-	              daysOfWeek.splice(_i6, 1);
-	            }
+	      if (!this.state[day]) {
+	        this.setState(_defineProperty({}, day, true));
+	        daysOfWeek.push(day);
+	      } else {
+	        this.setState(_defineProperty({}, day, false));
+	        for (var i = 0; i < daysOfWeek.length; i += 1) {
+	          if (daysOfWeek[i] === day) {
+	            daysOfWeek.splice(i, 1);
 	          }
 	        }
 	      }
@@ -44996,9 +44910,6 @@
 	      var hour = this.state.hourDisplay;
 	      var minute = this.state.minuteDisplay;
 	      var ampm = this.state.ampm;
-	      console.log(hour);
-	      console.log(minute);
-	      console.log(ampm);
 	      var data = {
 	        hour: hour,
 	        minute: minute,
@@ -45013,13 +44924,13 @@
 	        })
 	      }).then(function () {
 	        _this3.setState({
-	          monday: 'unselected',
-	          tuesday: 'unselected',
-	          wednesday: 'unselected',
-	          thursday: 'unselected',
-	          friday: 'unselected',
-	          saturday: 'unselected',
-	          sunday: 'unselected'
+	          Monday: false,
+	          Tuesday: false,
+	          Wednesday: false,
+	          Thursday: false,
+	          Friday: false,
+	          Saturday: false,
+	          Sunday: false
 	        });
 	        daysOfWeek = [];
 	        _this3.getAlarms();
@@ -45030,6 +44941,7 @@
 	    value: function render() {
 	      var _this4 = this;
 
+	      console.log(this.state);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container', id: 'alarmManager' },
@@ -45074,49 +44986,49 @@
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.monday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Monday', id: this.state.Monday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Monday');
 	                } },
 	              'M'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.tuesday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Tuesday', id: this.state.Tuesday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Tuesday');
 	                } },
 	              'T'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.wednesday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Wednesday', id: this.state.Wednesday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Wednesday');
 	                } },
 	              'W'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.thursday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Thursday', id: this.state.Thursday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Thursday');
 	                } },
 	              'Th'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.friday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Friday', id: this.state.Friday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Friday');
 	                } },
 	              'Fri'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.saturday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Saturday', id: this.state.Saturday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Saturday');
 	                } },
 	              'Sat'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
-	              { className: 'unselectable dayOfWeek', id: this.state.sunday, onClick: function onClick() {
+	              { className: 'unselectable dayOfWeek Sunday', id: this.state.Sunday === true ? 'selected' : 'unselected', onClick: function onClick() {
 	                  _this4.chooseDay('Sunday');
 	                } },
 	              'Sun'
@@ -45227,7 +45139,6 @@
 	    value: function removeAlarm(id) {
 	      var _this3 = this;
 
-	      console.log('should remove alarm');
 	      (0, _isomorphicFetch2.default)('/deleteAlarm', {
 	        method: 'DELETE',
 	        body: JSON.stringify({

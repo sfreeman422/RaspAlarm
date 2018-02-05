@@ -27,7 +27,6 @@ export default class CurrentAlarms extends React.Component {
     });
   }
   removeAlarm(id) {
-    console.log('should remove alarm');
     fetch('/deleteAlarm',
       {
         method: 'DELETE',
