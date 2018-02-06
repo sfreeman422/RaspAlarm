@@ -77,17 +77,19 @@ app.post('/setAlarm', (req, res) => {
   });
 
   newAlarm.save((err, completed) => {
-    if (err) throw err;
+    if (err) res.status(500).send('Error occurred during setting of alarm.');
     console.log(`Alarm saved as : ${completed}`);
+    res.status(200).json('Alarm successfully saved.');
   });
-  res.end('Success');
 });
 
 // Route to delete alarms
 app.delete('/deleteAlarm', (req, res) => {
   console.log(req.body);
-  Alarm.find({ _id: req.body.id }).remove(() => { console.log('Successfully removed.'); });
-  res.send('Success');
+  Alarm.find({ _id: req.body.id }).remove(() => {
+    console.log('Successfully removed.');
+    res.status(200).json('Successfully removed.');
+  });
 });
 // Listen to the port.
 app.listen(PORT, () => {

@@ -28000,11 +28000,19 @@
 	        { className: 'container' },
 	        _react2.default.createElement(_Clock2.default, { time: this.state.time }),
 	        _react2.default.createElement(_Today2.default, { date: this.state.date, userLoc: this.state.userLoc, day: this.state.today }),
-	        _react2.default.createElement(_Weather2.default, {
+	        this.state.weatherArr.length > 0 ? _react2.default.createElement(_Weather2.default, {
 	          weatherArr: this.state.weatherArr,
 	          sunrise: this.state.sunrise,
 	          sunset: this.state.sunset
-	        }),
+	        }) : _react2.default.createElement(
+	          'div',
+	          { className: 'loading' },
+	          _react2.default.createElement(
+	            'p',
+	            { id: 'loadingText' },
+	            'Getting weather information...'
+	          )
+	        ),
 	        _react2.default.createElement(_Alarm2.default, { currentTime: this.state.time })
 	      );
 	    }

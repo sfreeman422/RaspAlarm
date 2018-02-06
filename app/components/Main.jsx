@@ -199,11 +199,11 @@ export default class Main extends React.Component {
       <div className="container">
         <Clock time={this.state.time} />
         <Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today} />
-        <Weather
+        {this.state.weatherArr.length > 0 ? <Weather
           weatherArr={this.state.weatherArr}
           sunrise={this.state.sunrise}
           sunset={this.state.sunset}
-        />
+        /> : <div className="loading"><p id="loadingText">Getting weather information...</p></div>}
         <Alarm currentTime={this.state.time} />
       </div>);
   }

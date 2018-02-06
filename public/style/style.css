@@ -65,6 +65,12 @@ a{
 .glyphicon-trash{
 	color: red;
 }
+.loading {
+	margin: 5%;
+}
+#loadingText{
+	margin: 2%;
+}
 #unselected{
 	color: grey;
 }
