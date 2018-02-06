@@ -262,7 +262,6 @@ export default class Main extends React.Component {
     return 'wi wi-na';
   }
   render() {
-    console.log(this.state);
     return (
       <div className="container">
         <Clock time={this.state.time} />

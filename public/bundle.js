@@ -28060,7 +28060,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.state);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container' },
@@ -44613,8 +44612,6 @@
 	  }, {
 	    key: 'checkAlarm',
 	    value: function checkAlarm() {
-	      console.log('checking alarm');
-	      console.log(this.state.alarms);
 	      var dayOfWeek = (0, _moment2.default)().format('dddd');
 	      for (var i = 0; i < this.state.alarms.length; i += 1) {
 	        if (this.props.currentTime === this.state.alarms[i].time && this.state.alarmStatus !== 'ringing' && !this.state.awake && (this.state.alarms[i].dayOfWeek.includes(dayOfWeek) || this.state.alarms[i].oneTimeUse)) {
@@ -44627,16 +44624,6 @@
 	          alarmSound.play();
 	        }
 	      }
-	    }
-	    // This is veyr much a temporary function that will instead, open up a modal,
-	    // allow the user to choose custom sounds and backgrounds and
-	    // then save them so that the page will always render with the custom options.
-
-	  }, {
-	    key: 'launchModal',
-	    value: function launchModal() {
-	      document.body.style.background = "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7) ), url('./bgs/waterfall.jpg')";
-	      document.body.style.backgroundSize = 'cover';
 	    }
 	  }, {
 	    key: 'removeAlarm',
@@ -44683,7 +44670,7 @@
 	      if (this.state.alarmStatus === 'ringing') {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'col-xs-12', id: 'alarm' },
+	          { id: 'alarm' },
 	          _react2.default.createElement(
 	            'button',
 	            {
@@ -44700,7 +44687,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'col-xs-12', id: 'alarm' },
+	        { id: 'alarm' },
 	        _react2.default.createElement(
 	          'h3',
 	          null,

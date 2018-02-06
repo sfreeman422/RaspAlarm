@@ -37,8 +37,6 @@ export default class Alarm extends React.Component {
   }
   // Function to check whether its time for an alarm to go off or not.
   checkAlarm() {
-    console.log('checking alarm');
-    console.log(this.state.alarms);
     const dayOfWeek = moment().format('dddd');
     for (let i = 0; i < this.state.alarms.length; i += 1) {
       if (
@@ -56,13 +54,6 @@ export default class Alarm extends React.Component {
         alarmSound.play();
       }
     }
-  }
-  // This is veyr much a temporary function that will instead, open up a modal,
-  // allow the user to choose custom sounds and backgrounds and
-  // then save them so that the page will always render with the custom options.
-  launchModal() {
-    document.body.style.background = "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7) ), url('./bgs/waterfall.jpg')";
-    document.body.style.backgroundSize = 'cover';
   }
   removeAlarm(id) {
     fetch('/deleteAlarm',
@@ -96,7 +87,7 @@ export default class Alarm extends React.Component {
   render() {
     if (this.state.alarmStatus === 'ringing') {
       return (
-        <div className="col-xs-12" id="alarm">
+        <div id="alarm">
           <button
             className="btn-lg btn-success"
             id="wakeUp"
@@ -107,11 +98,8 @@ export default class Alarm extends React.Component {
     }
 
     return (
-      <div className="col-xs-12" id="alarm">
+      <div id="alarm">
         <h3><Link to="/AlarmManager">Set an alarm</Link></h3>
-        {/* This is a placeholder for the modal component.
-            We will use this to change custom user settings in conjunction with _launchModal
-            <h3 id="settings" onClick={()=>this._launchModal()}> Change Background</h3> */}
       </div>
     );
   }
