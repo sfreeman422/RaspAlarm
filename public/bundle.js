@@ -60,7 +60,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _AlarmManager = __webpack_require__(368);
+	var _AlarmManager = __webpack_require__(369);
 
 	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
 
@@ -27763,6 +27763,10 @@
 
 	var _Alarm2 = _interopRequireDefault(_Alarm);
 
+	var _weatherIcons = __webpack_require__(372);
+
+	var _weatherIcons2 = _interopRequireDefault(_weatherIcons);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -27777,7 +27781,7 @@
 	var hasWeatherData = false;
 	var weatherInterval = void 0;
 	var timeInterval = void 0;
-	var keys = __webpack_require__(367);
+	var keys = __webpack_require__(368);
 
 	// Vars to save state.
 	var dateSave = void 0;
@@ -27984,72 +27988,9 @@
 	      } else {
 	        isHourNight = false;
 	      }
-	      if (weatherState === 'chanceflurries') {
-	        if (isHourNight === false) return 'wi wi-day-snow';
-	        return 'wi wi-night-snow';
-	      } else if (weatherState === 'chancerain') {
-	        if (isHourNight === false) return 'wi wi-day-rain';
-	        return 'wi wi-night-rain';
-	      } else if (weatherState === 'chancesleet') {
-	        if (isHourNight === false) return 'wi wi-day-sleet';
-	        return 'wi wi-night-sleet';
-	      } else if (weatherState === 'chancesnow') {
-	        if (isHourNight === false) return 'wi wi-day-snow';
-	        return 'wi wi-night-snow';
-	      } else if (weatherState === 'chancestorms' || weatherState === 'chancetstorms') {
-	        if (isHourNight === false) return 'wi wi-day-sprinkle';
-	        return 'wi wi-night-sprinkle';
-	      } else if (weatherState === 'clear') {
-	        if (isHourNight === false) return 'wi wi-day-sunny';
-	        return 'wi wi-night-clear';
-	      } else if (weatherState === 'cloudy') {
-	        return 'wi wi-cloud';
-	      } else if (weatherState === 'flurries') {
-	        if (isHourNight === false) return 'wi wi-day-snow';
-	        return 'wi wi-night-snow';
-	      } else if (weatherState === 'fog') {
-	        if (isHourNight === false) return 'wi wi-day-fog';
-	        return 'wi wi-night-fog';
-	      } else if (weatherState === 'hazy') {
-	        return 'wi wi-day-haze';
-	      } else if (weatherState === 'mostlycloudy') {
-	        if (isHourNight === false) return 'wi wi-cloudy';
-	        return 'wi wi-night-alt-cloudy';
-	      } else if (weatherState === 'mostlysunny') {
-	        if (isHourNight === false) return 'wi wi-day-sunny-overcast';
-	        return 'wi wi-night-alt-cloudy';
-	      } else if (weatherState === 'partlycloudy') {
-	        if (isHourNight === false) return 'wi wi-day-cloudy';
-	        return 'wi wi-night-alt-cloudy';
-	      } else if (weatherState === 'partlysunny') {
-	        if (isHourNight === false) return 'wi wi-day-sunny-overcast';
-	        return 'wi wi-night-alt-cloudy';
-	      } else if (weatherState === 'sleet') {
-	        if (isHourNight === false) return 'wi wi-day-sleet';
-	        return 'wi wi-night-sleet';
-	      } else if (weatherState === 'rain') {
-	        if (isHourNight === false) return 'wi wi-day-rain';
-	        return 'wi wi-night-rain';
-	      } else if (weatherState === 'snow') {
-	        if (isHourNight === false) return 'wi wi-day-snow';
-	        return 'wi wi-night-snow';
-	      } else if (weatherState === 'sunny') {
-	        if (isHourNight === false) return 'wi wi-day-sunny';
-	        return 'wi wi-night-clear';
-	      } else if (weatherState === 'tstorms') {
-	        if (isHourNight === false) return 'wi wi-day-storm-showers';
-	        return 'wi wi-night-alt-storm-showers';
-	      } else if (weatherState === 'unknown') {
-	        if (isHourNight === false) return 'wi wi-day-cloudy-high';
-	        return 'wi wi-stars';
-	      } else if (weatherState === 'cloudy') {
-	        if (isHourNight === false) return 'wi wi-day-cloudy';
-	        return 'wi wi-night-alt-cloudy';
-	      } else if (weatherState === 'partlycloudy') {
-	        if (isHourNight === false) return 'wi wi-day';
-	        return 'wi wi-night-alt-cloudy';
-	      }
-	      return 'wi wi-na';
+	      if (isHourNight) {
+	        return _weatherIcons2.default[weatherState].night;
+	      }return _weatherIcons2.default[weatherState].day;
 	    }
 	  }, {
 	    key: 'render',
@@ -44701,7 +44642,8 @@
 	exports.default = Alarm;
 
 /***/ }),
-/* 367 */
+/* 367 */,
+/* 368 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44714,7 +44656,7 @@
 	module.exports = keys;
 
 /***/ }),
-/* 368 */
+/* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44739,7 +44681,7 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _CurrentAlarms = __webpack_require__(369);
+	var _CurrentAlarms = __webpack_require__(370);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
 
@@ -45087,7 +45029,7 @@
 	exports.default = AlarmManager;
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45160,6 +45102,98 @@
 	};
 
 	exports.default = CurrentAlarms;
+
+/***/ }),
+/* 371 */,
+/* 372 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var weatherIcons = {
+	  chanceflurries: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  chancerain: {
+	    day: 'wi wi-day-rain',
+	    night: 'wi wi-night-rain'
+	  },
+	  chancesleet: {
+	    day: 'wi wi-day-sleet',
+	    night: 'wi wi-night-sleet'
+	  },
+	  chancesnow: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  chancestorms: {
+	    day: 'wi wi-day-sprinkle',
+	    night: 'wi wi-night-sprinkle'
+	  },
+	  clear: {
+	    day: 'wi wi-day-sunny',
+	    night: 'wi wi-night-clear'
+	  },
+	  cloudy: {
+	    day: 'wi wi-day-cloudy',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  flurries: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  fog: {
+	    day: 'wi wi-day-fog',
+	    night: 'wi wi-night-fog'
+	  },
+	  hazy: {
+	    day: 'wi wi-day-haze',
+	    night: 'wi wi-day-haze'
+	  },
+	  mostlycloudy: {
+	    day: 'wi wi-cloudy',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  mostlysunny: {
+	    day: 'wi wi-day-sunny-overcast',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  partlycloudy: {
+	    day: 'wi wi-day-cloudy',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  partlysunny: {
+	    day: 'wi wi-day-sunny-overcast',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  sleet: {
+	    day: 'wi wi-day-sleet',
+	    night: 'wi wi-night-sleet'
+	  },
+	  rain: {
+	    day: 'wi wi-day-rain',
+	    night: 'wi wi-night-rain'
+	  },
+	  snow: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  sunny: {
+	    day: 'wi wi-day-sunny',
+	    night: 'wi wi-night-clear'
+	  },
+	  tstorms: {
+	    day: 'wi wi-day-storm-showers',
+	    night: 'wi wi-night-alt-storm-showers'
+	  },
+	  unknown: {
+	    day: 'wi wi-day-cloudy-high',
+	    night: 'wi wi-stars'
+	  }
+	};
+
+	module.exports = weatherIcons;
 
 /***/ })
 /******/ ]);

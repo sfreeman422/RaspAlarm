@@ -8,6 +8,8 @@ import Today from './Children/Today.jsx';
 import Weather from './Children/Weather.jsx';
 import Alarm from './Children/Alarm.jsx';
 
+import weatherIcons from './weatherIcons.js';
+
 let hasWeatherData = false;
 let weatherInterval;
 let timeInterval;
@@ -188,72 +190,9 @@ export default class Main extends React.Component {
     } else {
       isHourNight = false;
     }
-    if (weatherState === 'chanceflurries') {
-      if (isHourNight === false) return 'wi wi-day-snow';
-      return 'wi wi-night-snow';
-    } else if (weatherState === 'chancerain') {
-      if (isHourNight === false) return 'wi wi-day-rain';
-      return 'wi wi-night-rain';
-    } else if (weatherState === 'chancesleet') {
-      if (isHourNight === false) return 'wi wi-day-sleet';
-      return 'wi wi-night-sleet';
-    } else if (weatherState === 'chancesnow') {
-      if (isHourNight === false) return 'wi wi-day-snow';
-      return 'wi wi-night-snow';
-    } else if (weatherState === 'chancestorms' || weatherState === 'chancetstorms') {
-      if (isHourNight === false) return 'wi wi-day-sprinkle';
-      return 'wi wi-night-sprinkle';
-    } else if (weatherState === 'clear') {
-      if (isHourNight === false) return 'wi wi-day-sunny';
-      return 'wi wi-night-clear';
-    } else if (weatherState === 'cloudy') {
-      return 'wi wi-cloud';
-    } else if (weatherState === 'flurries') {
-      if (isHourNight === false) return 'wi wi-day-snow';
-      return 'wi wi-night-snow';
-    } else if (weatherState === 'fog') {
-      if (isHourNight === false) return 'wi wi-day-fog';
-      return 'wi wi-night-fog';
-    } else if (weatherState === 'hazy') {
-      return 'wi wi-day-haze';
-    } else if (weatherState === 'mostlycloudy') {
-      if (isHourNight === false) return 'wi wi-cloudy';
-      return 'wi wi-night-alt-cloudy';
-    } else if (weatherState === 'mostlysunny') {
-      if (isHourNight === false) return 'wi wi-day-sunny-overcast';
-      return 'wi wi-night-alt-cloudy';
-    } else if (weatherState === 'partlycloudy') {
-      if (isHourNight === false) return 'wi wi-day-cloudy';
-      return 'wi wi-night-alt-cloudy';
-    } else if (weatherState === 'partlysunny') {
-      if (isHourNight === false) return 'wi wi-day-sunny-overcast';
-      return 'wi wi-night-alt-cloudy';
-    } else if (weatherState === 'sleet') {
-      if (isHourNight === false) return 'wi wi-day-sleet';
-      return 'wi wi-night-sleet';
-    } else if (weatherState === 'rain') {
-      if (isHourNight === false) return 'wi wi-day-rain';
-      return 'wi wi-night-rain';
-    } else if (weatherState === 'snow') {
-      if (isHourNight === false) return 'wi wi-day-snow';
-      return 'wi wi-night-snow';
-    } else if (weatherState === 'sunny') {
-      if (isHourNight === false) return 'wi wi-day-sunny';
-      return 'wi wi-night-clear';
-    } else if (weatherState === 'tstorms') {
-      if (isHourNight === false) return 'wi wi-day-storm-showers';
-      return 'wi wi-night-alt-storm-showers';
-    } else if (weatherState === 'unknown') {
-      if (isHourNight === false) return 'wi wi-day-cloudy-high';
-      return 'wi wi-stars';
-    } else if (weatherState === 'cloudy') {
-      if (isHourNight === false) return 'wi wi-day-cloudy';
-      return 'wi wi-night-alt-cloudy';
-    } else if (weatherState === 'partlycloudy') {
-      if (isHourNight === false) return 'wi wi-day';
-      return 'wi wi-night-alt-cloudy';
-    }
-    return 'wi wi-na';
+    if (isHourNight) {
+      return weatherIcons[weatherState].night;
+    } return weatherIcons[weatherState].day;
   }
   render() {
     return (
