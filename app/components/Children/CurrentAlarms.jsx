@@ -63,6 +63,8 @@ export default class CurrentAlarms extends React.Component {
     return responseString;
   }
   render() {
+    console.log(this.state.listAlarms);
+    console.log(this.props);
     if (this.state.listAlarms !== undefined) {
       return (
         <div id="alarms">

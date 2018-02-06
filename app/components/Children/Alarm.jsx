@@ -13,10 +13,12 @@ export default class Alarm extends React.Component {
       alarmStatus: 'not ringing',
       awake: false,
       alarms: [],
+      ringingAlarm: {},
     };
     this.getAlarms = this.getAlarms.bind(this);
     this.checkAlarm = this.checkAlarm.bind(this);
     this.awake = this.awake.bind(this);
+    this.removeAlarm = this.removeAlarm.bind(this);
   }
   componentDidMount() {
     this.getAlarms();
@@ -35,20 +37,23 @@ export default class Alarm extends React.Component {
   }
   // Function to check whether its time for an alarm to go off or not.
   checkAlarm() {
+    console.log('checking alarm');
+    console.log(this.state.alarms);
     const dayOfWeek = moment().format('dddd');
     for (let i = 0; i < this.state.alarms.length; i += 1) {
-      for (let j = 0; j < this.state.alarms[i].dayOfWeek.length; j += 1) {
-        // If the alarm is not ringing, ring the alarm and set the state
-        if (this.props.currentTime === this.state.alarms[i].time
-          && this.state.alarms[i].dayOfWeek[j] === dayOfWeek
-          && this.state.alarmStatus !== 'ringing' && this.state.awake === false) {
-          alarmSound.play();
-          this.setState({
-            alarmStatus: 'ringing',
-          });
-        } else if (this.state.alarmStatus === 'ringing') {
-          alarmSound.play();
-        }
+      if (
+        this.props.currentTime === this.state.alarms[i].time
+        && this.state.alarmStatus !== 'ringing'
+        && !this.state.awake
+        && (this.state.alarms[i].dayOfWeek.includes(dayOfWeek) || this.state.alarms[i].oneTimeUse)
+      ) {
+        alarmSound.play();
+        this.setState({
+          alarmStatus: 'ringing',
+          ringingAlarm: this.state.alarms[i],
+        });
+      } else if (this.state.alarmStatus === 'ringing') {
+        alarmSound.play();
       }
     }
   }
@@ -59,15 +64,34 @@ export default class Alarm extends React.Component {
     document.body.style.background = "linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7) ), url('./bgs/waterfall.jpg')";
     document.body.style.backgroundSize = 'cover';
   }
+  removeAlarm(id) {
+    fetch('/deleteAlarm',
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id,
+          _method: 'delete',
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      },
+    ).then(() => {
+      this.getAlarms();
+    });
+  }
   awake() {
     this.setState({
       alarmStatus: 'not ringing',
       awake: true,
     });
+    if (this.state.ringingAlarm.oneTimeUse) {
+      this.removeAlarm(this.state.ringingAlarm._id);
+    }
     // After 60 seconds, this will revert awake to false.
     // We wait 60 to prevent the alarm from continously going off
     // even when the user is awake.
-    setTimeout(() => this.setState({ awake: false }), 60000);
+    setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
   }
   render() {
     if (this.state.alarmStatus === 'ringing') {

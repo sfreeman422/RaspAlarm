@@ -27784,8 +27784,6 @@
 	var dateSave = 'Loading...';
 	var todaySave = 'Loading...';
 	var userLocSave = void 0;
-	var nextAlarmSave = 'Loading...';
-	var alarmSave = 'Loading...';
 	var weatherArrSave = [];
 	var sunriseSave = void 0;
 	var sunsetSave = void 0;
@@ -27805,8 +27803,6 @@
 	      date: dateSave,
 	      today: todaySave,
 	      userLoc: userLocSave,
-	      nextAlarm: nextAlarmSave,
-	      alarm: alarmSave,
 	      weatherArr: weatherArrSave,
 	      sunrise: sunriseSave,
 	      sunset: sunsetSave
@@ -27839,8 +27835,6 @@
 	      dateSave = this.state.date;
 	      todaySave = this.state.today;
 	      userLocSave = this.state.userLoc;
-	      nextAlarmSave = this.state.nextAlarm;
-	      alarmSave = this.state.alarm;
 	      weatherArrSave = this.state.weatherArr;
 	      sunsetSave = this.state.sunset;
 	      sunriseSave = this.state.sunrise;
@@ -44581,11 +44575,13 @@
 	    _this.state = {
 	      alarmStatus: 'not ringing',
 	      awake: false,
-	      alarms: []
+	      alarms: [],
+	      ringingAlarm: {}
 	    };
 	    _this.getAlarms = _this.getAlarms.bind(_this);
 	    _this.checkAlarm = _this.checkAlarm.bind(_this);
 	    _this.awake = _this.awake.bind(_this);
+	    _this.removeAlarm = _this.removeAlarm.bind(_this);
 	    return _this;
 	  }
 
@@ -44617,18 +44613,18 @@
 	  }, {
 	    key: 'checkAlarm',
 	    value: function checkAlarm() {
+	      console.log('checking alarm');
+	      console.log(this.state.alarms);
 	      var dayOfWeek = (0, _moment2.default)().format('dddd');
 	      for (var i = 0; i < this.state.alarms.length; i += 1) {
-	        for (var j = 0; j < this.state.alarms[i].dayOfWeek.length; j += 1) {
-	          // If the alarm is not ringing, ring the alarm and set the state
-	          if (this.props.currentTime === this.state.alarms[i].time && this.state.alarms[i].dayOfWeek[j] === dayOfWeek && this.state.alarmStatus !== 'ringing' && this.state.awake === false) {
-	            alarmSound.play();
-	            this.setState({
-	              alarmStatus: 'ringing'
-	            });
-	          } else if (this.state.alarmStatus === 'ringing') {
-	            alarmSound.play();
-	          }
+	        if (this.props.currentTime === this.state.alarms[i].time && this.state.alarmStatus !== 'ringing' && !this.state.awake && (this.state.alarms[i].dayOfWeek.includes(dayOfWeek) || this.state.alarms[i].oneTimeUse)) {
+	          alarmSound.play();
+	          this.setState({
+	            alarmStatus: 'ringing',
+	            ringingAlarm: this.state.alarms[i]
+	          });
+	        } else if (this.state.alarmStatus === 'ringing') {
+	          alarmSound.play();
 	        }
 	      }
 	    }
@@ -44643,25 +44639,46 @@
 	      document.body.style.backgroundSize = 'cover';
 	    }
 	  }, {
+	    key: 'removeAlarm',
+	    value: function removeAlarm(id) {
+	      var _this3 = this;
+
+	      (0, _isomorphicFetch2.default)('/deleteAlarm', {
+	        method: 'DELETE',
+	        body: JSON.stringify({
+	          id: id,
+	          _method: 'delete'
+	        }),
+	        headers: new Headers({
+	          'Content-Type': 'application/json'
+	        })
+	      }).then(function () {
+	        _this3.getAlarms();
+	      });
+	    }
+	  }, {
 	    key: 'awake',
 	    value: function awake() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      this.setState({
 	        alarmStatus: 'not ringing',
 	        awake: true
 	      });
+	      if (this.state.ringingAlarm.oneTimeUse) {
+	        this.removeAlarm(this.state.ringingAlarm._id);
+	      }
 	      // After 60 seconds, this will revert awake to false.
 	      // We wait 60 to prevent the alarm from continously going off
 	      // even when the user is awake.
 	      setTimeout(function () {
-	        return _this3.setState({ awake: false });
+	        return _this4.setState({ awake: false, ringingAlarm: {} });
 	      }, 60000);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      if (this.state.alarmStatus === 'ringing') {
 	        return _react2.default.createElement(
@@ -44673,7 +44690,7 @@
 	              className: 'btn-lg btn-success',
 	              id: 'wakeUp',
 	              onClick: function onClick() {
-	                _this4.awake();
+	                _this5.awake();
 	              }
 	            },
 	            'Wake Up'
@@ -44767,8 +44784,12 @@
 
 	    var now = (0, _moment2.default)();
 	    var minute = parseInt(now.format('mm'), 10);
+	    var minuteDisplay = void 0;
 	    if (minute < 10 && minute > 0) {
 	      minute = 10;
+	    } else if (minute === 0) {
+	      minute = 0;
+	      minuteDisplay = '00';
 	    } else {
 	      minute = Math.ceil(minute / 5) * 5;
 	    }
@@ -44777,7 +44798,7 @@
 	      minute: minute,
 	      ampm: now.format('a'),
 	      hourDisplay: now.format('hh'),
-	      minuteDisplay: minute,
+	      minuteDisplay: minuteDisplay || minute,
 	      Monday: false,
 	      Tuesday: false,
 	      Wednesday: false,
@@ -44941,7 +44962,6 @@
 	    value: function render() {
 	      var _this4 = this;
 
-	      console.log(this.state);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'container', id: 'alarmManager' },
@@ -45179,6 +45199,8 @@
 	    value: function render() {
 	      var _this4 = this;
 
+	      console.log(this.state.listAlarms);
+	      console.log(this.props);
 	      if (this.state.listAlarms !== undefined) {
 	        return _react2.default.createElement(
 	          'div',

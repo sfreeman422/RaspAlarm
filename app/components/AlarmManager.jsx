@@ -11,8 +11,12 @@ export default class AlarmManager extends React.Component {
     super();
     const now = moment();
     let minute = parseInt(now.format('mm'), 10);
+    let minuteDisplay;
     if (minute < 10 && minute > 0) {
       minute = 10;
+    } else if (minute === 0) {
+      minute = 0;
+      minuteDisplay = '00';
     } else {
       minute = Math.ceil(minute / 5) * 5;
     }
@@ -21,7 +25,7 @@ export default class AlarmManager extends React.Component {
       minute,
       ampm: now.format('a'),
       hourDisplay: now.format('hh'),
-      minuteDisplay: minute,
+      minuteDisplay: minuteDisplay || minute,
       Monday: false,
       Tuesday: false,
       Wednesday: false,
@@ -166,7 +170,6 @@ export default class AlarmManager extends React.Component {
       });
   }
   render() {
-    console.log(this.state);
     return (
       <div className="container" id="alarmManager">
         <div className="row">

@@ -18,8 +18,6 @@ let timeSave = 'Loading...';
 let dateSave = 'Loading...';
 let todaySave = 'Loading...';
 let userLocSave;
-let nextAlarmSave = 'Loading...';
-let alarmSave = 'Loading...';
 let weatherArrSave = [];
 let sunriseSave;
 let sunsetSave;
@@ -34,8 +32,6 @@ export default class Main extends React.Component {
       date: dateSave,
       today: todaySave,
       userLoc: userLocSave,
-      nextAlarm: nextAlarmSave,
-      alarm: alarmSave,
       weatherArr: weatherArrSave,
       sunrise: sunriseSave,
       sunset: sunsetSave,
@@ -62,8 +58,6 @@ export default class Main extends React.Component {
     dateSave = this.state.date;
     todaySave = this.state.today;
     userLocSave = this.state.userLoc;
-    nextAlarmSave = this.state.nextAlarm;
-    alarmSave = this.state.alarm;
     weatherArrSave = this.state.weatherArr;
     sunsetSave = this.state.sunset;
     sunriseSave = this.state.sunrise;
