@@ -41,6 +41,7 @@ export default class AlarmManager extends React.Component {
     this.chooseDay = this.chooseDay.bind(this);
     this.getAlarms = this.getAlarms.bind(this);
     this.setAlarm = this.setAlarm.bind(this);
+    this.removeAlarm = this.removeAlarm.bind(this);
   }
   componentDidMount() {
     this.getAlarms();
@@ -49,7 +50,6 @@ export default class AlarmManager extends React.Component {
     fetch('/alarms')
       .then(res => res.json())
       .then((alarms) => {
-        console.log(alarms);
         this.setState({ alarms });
       });
   }
@@ -169,6 +169,22 @@ export default class AlarmManager extends React.Component {
         this.getAlarms();
       });
   }
+  removeAlarm(id) {
+    fetch('/deleteAlarm',
+      {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id,
+          _method: 'delete',
+        }),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      },
+    ).then(() => {
+      this.getAlarms();
+    });
+  }
   render() {
     return (
       <div className="container" id="alarmManager">
@@ -198,7 +214,7 @@ export default class AlarmManager extends React.Component {
             <h3 className="unselectable" id="displayBlock"><Link to="/">Back to Clock</Link></h3>
           </div>
         </div>
-        <CurrentAlarms alarms={this.state.alarms} />
+        <CurrentAlarms alarms={this.state.alarms} removeAlarm={this.removeAlarm} />
       </div>
     );
   }

@@ -14,9 +14,8 @@ let timeInterval;
 const keys = require('../../private/keys.js');
 
 // Vars to save state.
-let timeSave = 'Loading...';
-let dateSave = 'Loading...';
-let todaySave = 'Loading...';
+let dateSave;
+let todaySave;
 let userLocSave;
 let weatherArrSave = [];
 let sunriseSave;
@@ -28,7 +27,7 @@ export default class Main extends React.Component {
   constructor() {
     super();
     this.state = {
-      time: timeSave,
+      time: '',
       date: dateSave,
       today: todaySave,
       userLoc: userLocSave,
@@ -54,7 +53,6 @@ export default class Main extends React.Component {
     this.adjustBrightness();
   }
   componentWillUnmount() {
-    timeSave = this.state.time;
     dateSave = this.state.date;
     todaySave = this.state.today;
     userLocSave = this.state.userLoc;
@@ -90,9 +88,6 @@ export default class Main extends React.Component {
       this.adjustBrightness();
     }
     if (isNight !== oldIsNight && isNight !== undefined) {
-      console.log('adjust brightness because...');
-      console.log(`isNight: ${isNight}`);
-      console.log(`oldIsNight: ${oldIsNight}`);
       this.adjustBrightness();
     }
   }
@@ -142,7 +137,6 @@ export default class Main extends React.Component {
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
         .then(response => response.json())
         .then((geoloc) => {
-          console.log(geoloc);
           this.setState({
             userLoc: `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`,
           });

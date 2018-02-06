@@ -92,6 +92,9 @@ a{
 #alarmManagerPrompt{
 	color:white;
 }
+#alarm {
+	margin: 0 1%;
+}
 #settings{
 	color: white;
 }

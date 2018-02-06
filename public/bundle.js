@@ -27780,9 +27780,8 @@
 	var keys = __webpack_require__(367);
 
 	// Vars to save state.
-	var timeSave = 'Loading...';
-	var dateSave = 'Loading...';
-	var todaySave = 'Loading...';
+	var dateSave = void 0;
+	var todaySave = void 0;
 	var userLocSave = void 0;
 	var weatherArrSave = [];
 	var sunriseSave = void 0;
@@ -27799,7 +27798,7 @@
 	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this));
 
 	    _this.state = {
-	      time: timeSave,
+	      time: '',
 	      date: dateSave,
 	      today: todaySave,
 	      userLoc: userLocSave,
@@ -27831,7 +27830,6 @@
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      timeSave = this.state.time;
 	      dateSave = this.state.date;
 	      todaySave = this.state.today;
 	      userLocSave = this.state.userLoc;
@@ -27870,9 +27868,6 @@
 	        this.adjustBrightness();
 	      }
 	      if (isNight !== oldIsNight && isNight !== undefined) {
-	        console.log('adjust brightness because...');
-	        console.log('isNight: ' + isNight);
-	        console.log('oldIsNight: ' + oldIsNight);
 	        this.adjustBrightness();
 	      }
 	    }
@@ -27930,7 +27925,6 @@
 	          (0, _isomorphicFetch2.default)('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + locationObject.lat + ',' + locationObject.long + '&sensor=true').then(function (response) {
 	            return response.json();
 	          }).then(function (geoloc) {
-	            console.log(geoloc);
 	            _this2.setState({
 	              userLoc: geoloc.results[0].address_components[2].short_name + ', ' + geoloc.results[0].address_components[4].short_name
 	            });
@@ -44801,6 +44795,7 @@
 	    _this.chooseDay = _this.chooseDay.bind(_this);
 	    _this.getAlarms = _this.getAlarms.bind(_this);
 	    _this.setAlarm = _this.setAlarm.bind(_this);
+	    _this.removeAlarm = _this.removeAlarm.bind(_this);
 	    return _this;
 	  }
 
@@ -44817,7 +44812,6 @@
 	      (0, _isomorphicFetch2.default)('/alarms').then(function (res) {
 	        return res.json();
 	      }).then(function (alarms) {
-	        console.log(alarms);
 	        _this2.setState({ alarms: alarms });
 	      });
 	    }
@@ -44945,9 +44939,27 @@
 	      });
 	    }
 	  }, {
+	    key: 'removeAlarm',
+	    value: function removeAlarm(id) {
+	      var _this4 = this;
+
+	      (0, _isomorphicFetch2.default)('/deleteAlarm', {
+	        method: 'DELETE',
+	        body: JSON.stringify({
+	          id: id,
+	          _method: 'delete'
+	        }),
+	        headers: new Headers({
+	          'Content-Type': 'application/json'
+	        })
+	      }).then(function () {
+	        _this4.getAlarms();
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      return _react2.default.createElement(
 	        'div',
@@ -44994,49 +45006,49 @@
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Monday', id: this.state.Monday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Monday');
+	                  _this5.chooseDay('Monday');
 	                } },
 	              'M'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Tuesday', id: this.state.Tuesday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Tuesday');
+	                  _this5.chooseDay('Tuesday');
 	                } },
 	              'T'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Wednesday', id: this.state.Wednesday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Wednesday');
+	                  _this5.chooseDay('Wednesday');
 	                } },
 	              'W'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Thursday', id: this.state.Thursday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Thursday');
+	                  _this5.chooseDay('Thursday');
 	                } },
 	              'Th'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Friday', id: this.state.Friday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Friday');
+	                  _this5.chooseDay('Friday');
 	                } },
 	              'Fri'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Saturday', id: this.state.Saturday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Saturday');
+	                  _this5.chooseDay('Saturday');
 	                } },
 	              'Sat'
 	            ),
 	            _react2.default.createElement(
 	              'h3',
 	              { className: 'unselectable dayOfWeek Sunday', id: this.state.Sunday === true ? 'selected' : 'unselected', onClick: function onClick() {
-	                  _this4.chooseDay('Sunday');
+	                  _this5.chooseDay('Sunday');
 	                } },
 	              'Sun'
 	            )
@@ -45064,7 +45076,7 @@
 	            )
 	          )
 	        ),
-	        _react2.default.createElement(_CurrentAlarms2.default, { alarms: this.state.alarms })
+	        _react2.default.createElement(_CurrentAlarms2.default, { alarms: this.state.alarms, removeAlarm: this.removeAlarm })
 	      );
 	    }
 	  }]);
@@ -45084,149 +45096,68 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
-
-	var _isomorphicFetch = __webpack_require__(360);
-
-	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
 	var _reactRouter = __webpack_require__(182);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var CurrentAlarms = function (_React$Component) {
-	  _inherits(CurrentAlarms, _React$Component);
-
-	  function CurrentAlarms(props) {
-	    _classCallCheck(this, CurrentAlarms);
-
-	    var _this = _possibleConstructorReturn(this, (CurrentAlarms.__proto__ || Object.getPrototypeOf(CurrentAlarms)).call(this, props));
-
-	    _this.state = {
-	      listAlarms: []
-	    };
-	    _this.getAlarms = _this.getAlarms.bind(_this);
-	    _this.removeAlarm = _this.removeAlarm.bind(_this);
-	    _this.displayLetterForDayOfWeek = _this.displayLetterForDayOfWeek.bind(_this);
-	    return _this;
+	function displayLetterForDayOfWeek(days) {
+	  var dayOfWeek = {
+	    Monday: 'M',
+	    Tuesday: 'T',
+	    Wednesday: 'W',
+	    Thursday: 'Th',
+	    Friday: 'F',
+	    Saturday: 'Sat',
+	    Sunday: 'Sun'
+	  };
+	  var responseString = '';
+	  for (var i = 0; i < days.length; i += 1) {
+	    if (i < days.length - 1) {
+	      responseString += dayOfWeek[days[i]] + ' | ';
+	    } else {
+	      responseString += dayOfWeek[days[i]];
+	    }
 	  }
+	  return responseString;
+	}
 
-	  _createClass(CurrentAlarms, [{
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      if (this.props.alarms !== nextProps.alarms) {
-	        this.setState({ listAlarms: nextProps.alarms });
-	      }
-	    }
-	  }, {
-	    key: 'getAlarms',
-	    value: function getAlarms() {
-	      var _this2 = this;
-
-	      (0, _isomorphicFetch2.default)('/alarms').then(function (response) {
-	        return response.json();
-	      }).then(function (alarms) {
-	        _this2.setState({
-	          listAlarms: alarms
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'removeAlarm',
-	    value: function removeAlarm(id) {
-	      var _this3 = this;
-
-	      (0, _isomorphicFetch2.default)('/deleteAlarm', {
-	        method: 'DELETE',
-	        body: JSON.stringify({
-	          id: id,
-	          _method: 'delete'
-	        }),
-	        headers: new Headers({
-	          'Content-Type': 'application/json'
-	        })
-	      }).then(function () {
-	        _this3.getAlarms();
-	      });
-	    }
-	  }, {
-	    key: 'displayLetterForDayOfWeek',
-	    value: function displayLetterForDayOfWeek(days) {
-	      var dayOfWeek = {
-	        Monday: 'M',
-	        Tuesday: 'T',
-	        Wednesday: 'W',
-	        Thursday: 'Th',
-	        Friday: 'F',
-	        Saturday: 'Sat',
-	        Sunday: 'Sun'
-	      };
-	      var responseString = '';
-	      for (var i = 0; i < days.length; i += 1) {
-	        if (i < days.length - 1) {
-	          responseString += dayOfWeek[days[i]] + ' | ';
-	        } else {
-	          responseString += dayOfWeek[days[i]];
-	        }
-	      }
-	      return responseString;
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this4 = this;
-
-	      console.log(this.state.listAlarms);
-	      console.log(this.props);
-	      if (this.state.listAlarms !== undefined) {
-	        return _react2.default.createElement(
-	          'div',
-	          { id: 'alarms' },
-	          this.state.listAlarms.map(function (alarm, i) {
-	            return _react2.default.createElement(
-	              'div',
-	              { className: 'col-xs-2', id: 'alarm', key: i },
-	              _react2.default.createElement(
-	                'h3',
-	                { id: 'alarmTime' },
-	                alarm.time
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                { id: 'alarmDay' },
-	                _this4.displayLetterForDayOfWeek(alarm.dayOfWeek)
-	              ),
-	              _react2.default.createElement(
-	                'h3',
-	                { onClick: function onClick() {
-	                    return _this4.removeAlarm(alarm._id);
-	                  } },
-	                _react2.default.createElement(
-	                  'span',
-	                  { className: 'glyphicon glyphicon-trash' },
-	                  _react2.default.createElement(_reactRouter.Link, { to: '/alarmManager' })
-	                )
-	              )
-	            );
-	          })
-	        );
-	      }
-	      return null;
-	    }
-	  }]);
-
-	  return CurrentAlarms;
-	}(_react2.default.Component);
+	var CurrentAlarms = function CurrentAlarms(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    { id: 'alarms' },
+	    props.alarms.map(function (alarm, i) {
+	      return _react2.default.createElement(
+	        'div',
+	        { id: 'alarm', key: 'alarm-' + i },
+	        _react2.default.createElement(
+	          'h3',
+	          { id: 'alarmTime' },
+	          alarm.time
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          { id: 'alarmDay' },
+	          displayLetterForDayOfWeek(alarm.dayOfWeek)
+	        ),
+	        _react2.default.createElement(
+	          'h3',
+	          { onClick: function onClick() {
+	              return props.removeAlarm(alarm._id);
+	            } },
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'glyphicon glyphicon-trash' },
+	            _react2.default.createElement(_reactRouter.Link, { to: '/alarmManager' })
+	          )
+	        )
+	      );
+	    })
+	  );
+	};
 
 	exports.default = CurrentAlarms;
 
