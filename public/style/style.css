@@ -42,31 +42,19 @@ a{
 }
 .error {
 	color: red;
-	font-size: 550%;
 }
 .weatherDescription{
-	padding-top: 20%;
+	margin-top: 10%;
 }
-@media(max-height: 999px) {
-	.allWeather{
-		margin: auto;
-		text-align: center;
+.allWeather{
 		display: flex;
-		align-items: center;
-		height: 40%
-	}
-}
-@media(min-height: 1000px) {
-	.allWeather{
-		margin: auto;
 		text-align: center;
-		display: flex;
 		align-items: center;
-		height: 20%
+		margin: 5% 0;
 	}
-}
 .weatherPerDay{
-	width: 20%
+	max-height:100%;
+	width: 20%;
 }
 .unselectable {
     -webkit-user-select: none;

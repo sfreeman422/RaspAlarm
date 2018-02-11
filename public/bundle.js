@@ -44439,7 +44439,11 @@
 	  return _react2.default.createElement(
 	    "div",
 	    { className: "weatherPerDay" },
-	    _react2.default.createElement("i", { className: props.icon }),
+	    _react2.default.createElement(
+	      "div",
+	      { className: "weatherIcon" },
+	      _react2.default.createElement("i", { className: props.icon })
+	    ),
 	    _react2.default.createElement(
 	      "div",
 	      { className: "weatherDescription" },
