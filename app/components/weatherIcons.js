@@ -24,8 +24,8 @@ const weatherIcons = {
     night: 'wi wi-night-clear',
   },
   cloudy: {
-    day: 'wi wi-day-cloudy',
-    night: 'wi wi-night-alt-cloudy',
+    day: 'wi wi-cloudy',
+    night: 'wi wi-cloudy',
   },
   flurries: {
     day: 'wi wi-day-snow',
@@ -36,8 +36,8 @@ const weatherIcons = {
     night: 'wi wi-night-fog',
   },
   hazy: {
-    day: 'wi wi-day-haze',
-    night: 'wi wi-day-haze',
+    day: 'wi wi-day-fog',
+    night: 'wi wi-night-fog',
   },
   mostlycloudy: {
     day: 'wi wi-cloudy',
@@ -56,24 +56,24 @@ const weatherIcons = {
     night: 'wi wi-night-alt-cloudy',
   },
   sleet: {
-    day: 'wi wi-day-sleet',
-    night: 'wi wi-night-sleet',
+    day: 'wi wi-sleet',
+    night: 'wi wi-sleet',
   },
   rain: {
-    day: 'wi wi-day-rain',
-    night: 'wi wi-night-rain',
+    day: 'wi wi-rain',
+    night: 'wi wi-rain',
   },
   snow: {
-    day: 'wi wi-day-snow',
-    night: 'wi wi-night-snow',
+    day: 'wi wi-snow',
+    night: 'wi wi-snow',
   },
   sunny: {
     day: 'wi wi-day-sunny',
     night: 'wi wi-night-clear',
   },
   tstorms: {
-    day: 'wi wi-day-storm-showers',
-    night: 'wi wi-night-alt-storm-showers',
+    day: 'wi wi-thunderstorm',
+    night: 'wi wi-thunderstorm',
   },
   unknown: {
     day: 'wi wi-day-cloudy-high',
