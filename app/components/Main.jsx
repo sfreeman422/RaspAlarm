@@ -117,7 +117,7 @@ export default class Main extends React.Component {
             .then((json) => {
               const weatherArr = [];
               // Builds out an array to list weather information.
-              for (let i = 0; i < 5; i += 1) {
+              for (let i = 0; i < 6; i += 1) {
                 weatherArr.push({
                   condition: json.hourly_forecast[i].condition,
                   time: json.hourly_forecast[i].FCTTIME.civil,
