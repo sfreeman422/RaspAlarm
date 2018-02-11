@@ -37,16 +37,33 @@ a{
 .wi-night-clear {
   color: #FAD976
 }
+.yellow {
+	color: #FAD976
+}
+.error {
+	color: red;
+	font-size: 550%;
+}
 .weatherDescription{
 	padding-top: 20%;
 }
-
-.allWeather{
-	margin: auto;
-	text-align: center;
-	display: flex;
-	align-items: center;
-	height: 20%
+@media(max-height: 999px) {
+	.allWeather{
+		margin: auto;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		height: 40%
+	}
+}
+@media(min-height: 1000px) {
+	.allWeather{
+		margin: auto;
+		text-align: center;
+		display: flex;
+		align-items: center;
+		height: 20%
+	}
 }
 .weatherPerDay{
 	width: 20%

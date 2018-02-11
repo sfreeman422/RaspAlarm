@@ -7,6 +7,7 @@ import Clock from './Children/Clock.jsx';
 import Today from './Children/Today.jsx';
 import Weather from './Children/Weather.jsx';
 import Alarm from './Children/Alarm.jsx';
+import Loading from './Children/Loading.jsx';
 
 import weatherIcons from './weatherIcons.js';
 
@@ -33,6 +34,7 @@ export default class Main extends React.Component {
       date: dateSave,
       today: todaySave,
       userLoc: userLocSave,
+      locationError: '',
       weatherArr: weatherArrSave,
       sunrise: sunriseSave,
       sunset: sunsetSave,
@@ -109,54 +111,53 @@ export default class Main extends React.Component {
     if (currentMinute === '00' || hasWeatherData === false) {
       this.getLocation()
       .then((locationObject) => {
-        // Need to handle a lack of locationObject in the UI.
-        if (!locationObject) {
-          const error = 'Location was undefined!';
-          console.log(error);
-        }
-        // Gets our weather from the weather undergound.
+          // Gets our weather from the weather undergound.
         fetch(`https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
-          .then(response => response.json())
-          .then((json) => {
-            const weatherArr = [];
-            // Builds out an array to list weather information.
-            for (let i = 0; i < 5; i += 1) {
-              weatherArr.push({
-                condition: json.hourly_forecast[i].condition,
-                time: json.hourly_forecast[i].FCTTIME.civil,
-                temp: `${json.hourly_forecast[i].temp.english}F`,
-                icon: this.determineWeatherIcon(json.hourly_forecast[i].icon, json.hourly_forecast[i].FCTTIME.civil),
+            .then(response => response.json())
+            .then((json) => {
+              const weatherArr = [];
+              // Builds out an array to list weather information.
+              for (let i = 0; i < 5; i += 1) {
+                weatherArr.push({
+                  condition: json.hourly_forecast[i].condition,
+                  time: json.hourly_forecast[i].FCTTIME.civil,
+                  temp: `${json.hourly_forecast[i].temp.english}F`,
+                  icon: this.determineWeatherIcon(json.hourly_forecast[i].icon, json.hourly_forecast[i].FCTTIME.civil),
+                });
+              }
+              this.setState({
+                weatherArr,
               });
-            }
-            this.setState({
-              weatherArr,
-            });
-            hasWeatherData = true;
-          })
-        .catch(err => err);
-        // Gets the location from the reverse geocode api provided by Google.
-        // This enables us to show the actual name of the location that the user is in.
+              hasWeatherData = true;
+            })
+          .catch(err => err);
+          // Gets the location from the reverse geocode api provided by Google.
+          // This enables us to show the actual name of the location that the user is in.
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
-        .then(response => response.json())
-        .then((geoloc) => {
-          this.setState({
-            userLoc: `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`,
+          .then(response => response.json())
+          .then((geoloc) => {
+            console.log(geoloc);
+            this.setState({
+              userLoc: `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`,
+            });
           });
-        });
-        // Get the sunrise/sunset data
+          // Get the sunrise/sunset data
         fetch(`https://api.wunderground.com/api/${keys.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
-        .then(response => response.json())
-        .then((sundata) => {
-          const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
-          const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
-          const sunriseMoment = moment(sunriseString, 'hh:mm:a');
-          const sunsetMoment = moment(sunsetString, 'hh:mm:a');
-          this.setState({
-            sunrise: sunriseMoment,
-            sunset: sunsetMoment,
+          .then(response => response.json())
+          .then((sundata) => {
+            const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
+            const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
+            const sunriseMoment = moment(sunriseString, 'hh:mm:a');
+            const sunsetMoment = moment(sunsetString, 'hh:mm:a');
+            this.setState({
+              sunrise: sunriseMoment,
+              sunset: sunsetMoment,
+            });
           });
-        });
-      }).catch(error => reject(error));
+      }).catch(error =>
+      this.setState({
+        locationError: 'Please allow geolocation in you browser in order to retrieve the weather.',
+      }));
     }
   }
   adjustBrightness() {
@@ -203,7 +204,7 @@ export default class Main extends React.Component {
           weatherArr={this.state.weatherArr}
           sunrise={this.state.sunrise}
           sunset={this.state.sunset}
-        /> : <div className="loading"><p id="loadingText">Getting weather information...</p></div>}
+        /> : <Loading locationError={this.state.locationError} />}
         <Alarm currentTime={this.state.time} />
       </div>);
   }

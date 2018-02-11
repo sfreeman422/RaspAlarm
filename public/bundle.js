@@ -60,7 +60,7 @@
 
 	var _Main2 = _interopRequireDefault(_Main);
 
-	var _AlarmManager = __webpack_require__(369);
+	var _AlarmManager = __webpack_require__(370);
 
 	var _AlarmManager2 = _interopRequireDefault(_AlarmManager);
 
@@ -27763,7 +27763,11 @@
 
 	var _Alarm2 = _interopRequireDefault(_Alarm);
 
-	var _weatherIcons = __webpack_require__(372);
+	var _Loading = __webpack_require__(367);
+
+	var _Loading2 = _interopRequireDefault(_Loading);
+
+	var _weatherIcons = __webpack_require__(368);
 
 	var _weatherIcons2 = _interopRequireDefault(_weatherIcons);
 
@@ -27781,7 +27785,7 @@
 	var hasWeatherData = false;
 	var weatherInterval = void 0;
 	var timeInterval = void 0;
-	var keys = __webpack_require__(368);
+	var keys = __webpack_require__(369);
 
 	// Vars to save state.
 	var dateSave = void 0;
@@ -27806,6 +27810,7 @@
 	      date: dateSave,
 	      today: todaySave,
 	      userLoc: userLocSave,
+	      locationError: '',
 	      weatherArr: weatherArrSave,
 	      sunrise: sunriseSave,
 	      sunset: sunsetSave
@@ -27898,11 +27903,6 @@
 	      var currentMinute = (0, _moment2.default)().format('mm');
 	      if (currentMinute === '00' || hasWeatherData === false) {
 	        this.getLocation().then(function (locationObject) {
-	          // Need to handle a lack of locationObject in the UI.
-	          if (!locationObject) {
-	            var error = 'Location was undefined!';
-	            console.log(error);
-	          }
 	          // Gets our weather from the weather undergound.
 	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + keys.wunderground + '/hourly/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
 	            return response.json();
@@ -27929,6 +27929,7 @@
 	          (0, _isomorphicFetch2.default)('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + locationObject.lat + ',' + locationObject.long + '&sensor=true').then(function (response) {
 	            return response.json();
 	          }).then(function (geoloc) {
+	            console.log(geoloc);
 	            _this2.setState({
 	              userLoc: geoloc.results[0].address_components[2].short_name + ', ' + geoloc.results[0].address_components[4].short_name
 	            });
@@ -27947,7 +27948,9 @@
 	            });
 	          });
 	        }).catch(function (error) {
-	          return reject(error);
+	          return _this2.setState({
+	            locationError: 'Please allow geolocation in you browser in order to retrieve the weather.'
+	          });
 	        });
 	      }
 	    }
@@ -28004,15 +28007,7 @@
 	          weatherArr: this.state.weatherArr,
 	          sunrise: this.state.sunrise,
 	          sunset: this.state.sunset
-	        }) : _react2.default.createElement(
-	          'div',
-	          { className: 'loading' },
-	          _react2.default.createElement(
-	            'p',
-	            { id: 'loadingText' },
-	            'Getting weather information...'
-	          )
-	        ),
+	        }) : _react2.default.createElement(_Loading2.default, { locationError: this.state.locationError }),
 	        _react2.default.createElement(_Alarm2.default, { currentTime: this.state.time })
 	      );
 	    }
@@ -44650,8 +44645,196 @@
 	exports.default = Alarm;
 
 /***/ }),
-/* 367 */,
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var animateInterval = void 0;
+	var iconPosition = 1;
+
+	var Main = function (_React$Component) {
+	  _inherits(Main, _React$Component);
+
+	  function Main(props) {
+	    _classCallCheck(this, Main);
+
+	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+
+	    _this.state = {
+	      icon: 'wi wi-moon-waning-crescent-6 yellow'
+	    };
+	    _this.changeIcon = _this.changeIcon.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Main, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      animateInterval = setInterval(this.changeIcon, 100);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      clearInterval(animateInterval);
+	    }
+	  }, {
+	    key: 'changeIcon',
+	    value: function changeIcon() {
+	      var icons = ['wi wi-moon-waning-crescent-6 yellow', 'wi wi-moon-waning-crescent-5 yellow', 'wi wi-moon-waning-crescent-4 yellow', 'wi wi-moon-waning-crescent-3 yellow', 'wi wi-moon-waning-crescent-2 yellow', 'wi wi-moon-waning-crescent-1 yellow', 'wi wi-moon-third-quarter yellow', 'wi wi-moon-waning-gibbous-6 yellow', 'wi wi-moon-waning-gibbous-5 yellow', 'wi wi-moon-waning-gibbous-4 yellow', 'wi wi-moon-waning-gibbous-3 yellow', 'wi wi-moon-waning-gibbous-2 yellow', 'wi wi-moon-waning-gibbous-1 yellow', 'wi wi-moon-full yellow', 'wi wi-moon-waxing-gibbous-6 yellow', 'wi wi-moon-waxing-gibbous-5 yellow', 'wi wi-moon-waxing-gibbous-4 yellow', 'wi wi-moon-waxing-gibbous-3 yellow', 'wi wi-moon-waxing-gibbous-2 yellow', 'wi wi-moon-waxing-gibbous-1 yellow', 'wi wi-moon-first-quarter yellow', 'wi wi-moon-waxing-crescent-6 yellow', 'wi wi-moon-waxing-crescent-5 yellow', 'wi wi-moon-waxing-crescent-4 yellow', 'wi wi-moon-waxing-crescent-3 yellow', 'wi wi-moon-waxing-crescent-2 yellow', 'wi wi-moon-waxing-crescent-1 yellow', 'wi wi-moon-new yellow'];
+	      if (iconPosition > icons.length - 1) {
+	        iconPosition = 0;
+	      }
+	      this.setState({
+	        icon: icons[iconPosition]
+	      });
+	      iconPosition += 1;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return this.props.locationError !== '' ? _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'p',
+	          { className: 'error' },
+	          'Woops!'
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          this.props.locationError
+	        )
+	      ) : _react2.default.createElement(
+	        'div',
+	        { className: 'loading' },
+	        _react2.default.createElement('i', { className: this.state.icon, id: 'loading' }),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          'Loading your weather...'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Main;
+	}(_react2.default.Component);
+
+	exports.default = Main;
+
+/***/ }),
 /* 368 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var weatherIcons = {
+	  chanceflurries: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  chancerain: {
+	    day: 'wi wi-day-rain',
+	    night: 'wi wi-night-rain'
+	  },
+	  chancesleet: {
+	    day: 'wi wi-day-sleet',
+	    night: 'wi wi-night-sleet'
+	  },
+	  chancesnow: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  chancestorms: {
+	    day: 'wi wi-day-sprinkle',
+	    night: 'wi wi-night-sprinkle'
+	  },
+	  clear: {
+	    day: 'wi wi-day-sunny',
+	    night: 'wi wi-night-clear'
+	  },
+	  cloudy: {
+	    day: 'wi wi-day-cloudy',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  flurries: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  fog: {
+	    day: 'wi wi-day-fog',
+	    night: 'wi wi-night-fog'
+	  },
+	  hazy: {
+	    day: 'wi wi-day-haze',
+	    night: 'wi wi-day-haze'
+	  },
+	  mostlycloudy: {
+	    day: 'wi wi-cloudy',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  mostlysunny: {
+	    day: 'wi wi-day-sunny-overcast',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  partlycloudy: {
+	    day: 'wi wi-day-cloudy',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  partlysunny: {
+	    day: 'wi wi-day-sunny-overcast',
+	    night: 'wi wi-night-alt-cloudy'
+	  },
+	  sleet: {
+	    day: 'wi wi-day-sleet',
+	    night: 'wi wi-night-sleet'
+	  },
+	  rain: {
+	    day: 'wi wi-day-rain',
+	    night: 'wi wi-night-rain'
+	  },
+	  snow: {
+	    day: 'wi wi-day-snow',
+	    night: 'wi wi-night-snow'
+	  },
+	  sunny: {
+	    day: 'wi wi-day-sunny',
+	    night: 'wi wi-night-clear'
+	  },
+	  tstorms: {
+	    day: 'wi wi-day-storm-showers',
+	    night: 'wi wi-night-alt-storm-showers'
+	  },
+	  unknown: {
+	    day: 'wi wi-day-cloudy-high',
+	    night: 'wi wi-stars'
+	  }
+	};
+
+	module.exports = weatherIcons;
+
+/***/ }),
+/* 369 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -44664,7 +44847,7 @@
 	module.exports = keys;
 
 /***/ }),
-/* 369 */
+/* 370 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -44689,7 +44872,7 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
-	var _CurrentAlarms = __webpack_require__(370);
+	var _CurrentAlarms = __webpack_require__(371);
 
 	var _CurrentAlarms2 = _interopRequireDefault(_CurrentAlarms);
 
@@ -45037,7 +45220,7 @@
 	exports.default = AlarmManager;
 
 /***/ }),
-/* 370 */
+/* 371 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -45110,98 +45293,6 @@
 	};
 
 	exports.default = CurrentAlarms;
-
-/***/ }),
-/* 371 */,
-/* 372 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	var weatherIcons = {
-	  chanceflurries: {
-	    day: 'wi wi-day-snow',
-	    night: 'wi wi-night-snow'
-	  },
-	  chancerain: {
-	    day: 'wi wi-day-rain',
-	    night: 'wi wi-night-rain'
-	  },
-	  chancesleet: {
-	    day: 'wi wi-day-sleet',
-	    night: 'wi wi-night-sleet'
-	  },
-	  chancesnow: {
-	    day: 'wi wi-day-snow',
-	    night: 'wi wi-night-snow'
-	  },
-	  chancestorms: {
-	    day: 'wi wi-day-sprinkle',
-	    night: 'wi wi-night-sprinkle'
-	  },
-	  clear: {
-	    day: 'wi wi-day-sunny',
-	    night: 'wi wi-night-clear'
-	  },
-	  cloudy: {
-	    day: 'wi wi-day-cloudy',
-	    night: 'wi wi-night-alt-cloudy'
-	  },
-	  flurries: {
-	    day: 'wi wi-day-snow',
-	    night: 'wi wi-night-snow'
-	  },
-	  fog: {
-	    day: 'wi wi-day-fog',
-	    night: 'wi wi-night-fog'
-	  },
-	  hazy: {
-	    day: 'wi wi-day-haze',
-	    night: 'wi wi-day-haze'
-	  },
-	  mostlycloudy: {
-	    day: 'wi wi-cloudy',
-	    night: 'wi wi-night-alt-cloudy'
-	  },
-	  mostlysunny: {
-	    day: 'wi wi-day-sunny-overcast',
-	    night: 'wi wi-night-alt-cloudy'
-	  },
-	  partlycloudy: {
-	    day: 'wi wi-day-cloudy',
-	    night: 'wi wi-night-alt-cloudy'
-	  },
-	  partlysunny: {
-	    day: 'wi wi-day-sunny-overcast',
-	    night: 'wi wi-night-alt-cloudy'
-	  },
-	  sleet: {
-	    day: 'wi wi-day-sleet',
-	    night: 'wi wi-night-sleet'
-	  },
-	  rain: {
-	    day: 'wi wi-day-rain',
-	    night: 'wi wi-night-rain'
-	  },
-	  snow: {
-	    day: 'wi wi-day-snow',
-	    night: 'wi wi-night-snow'
-	  },
-	  sunny: {
-	    day: 'wi wi-day-sunny',
-	    night: 'wi wi-night-clear'
-	  },
-	  tstorms: {
-	    day: 'wi wi-day-storm-showers',
-	    night: 'wi wi-night-alt-storm-showers'
-	  },
-	  unknown: {
-	    day: 'wi wi-day-cloudy-high',
-	    night: 'wi wi-stars'
-	  }
-	};
-
-	module.exports = weatherIcons;
 
 /***/ })
 /******/ ]);
