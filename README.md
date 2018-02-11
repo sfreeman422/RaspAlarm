@@ -1,6 +1,6 @@
 # RaspAlarm
 A MERN Stack, Raspberry Pi Controlled Alarm Clock.
-![RaspAlarm](https://github.com/sfreeman422/RaspAlarm/blob/master/Images/current.jpg)
+
 # Purpose
 A full feature alarm clock that can be used in the bedroom to tell the time, set alarms, show the weather and a whole slew of other, yet to be built features. 
 
