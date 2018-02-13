@@ -49,7 +49,10 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 - Create a folder called private in the root of the repo. Inside of this folder, create keys.js
 - Inside of keys.js, create:
 ```javascript
-var keys = "yourKeyFromWeatherUndergroundApi";
+const keys = {
+  wunderground: 'yourKeyFromWeatherUndergroundApi',
+  mongoDbConnection: 'linkToYourMongoDBInstance',
+};
 module.exports = keys;
 ```
 - Adjust server.js so that your `process.env.isRaspberryPi` is set accordingly. Set to `true` if running on a Raspberry Pi or `false` (or undefined) if not.

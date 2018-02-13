@@ -10,7 +10,7 @@ const exec = require('child_process').exec;
 const app = express();
 const PORT = process.env.PORT || 3000;
 // Connect to mongo and let us know that we are successfully connected or there was an error.
-mongoose.connect(`mongodb://${keys.username}:${keys.pw}@ds115752.mlab.com:15752/raspalarm`);
+mongoose.connect(keys.mongoDbConnection);
 const db = mongoose.connection;
 db.on('open', () => {
   console.log('Connected to MongoDB on port 27017.');

@@ -44841,12 +44841,13 @@
 /* 369 */
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var keys = {
-		wunderground: "0f21d9f3506b237b",
-		username: "test",
-		pw: "test123"
+	  wunderground: '0f21d9f3506b237b',
+	  username: 'test',
+	  pw: 'test123',
+	  mongoDbConnection: 'mongodb://test:test123@ds115752.mlab.com:15752/raspalarm'
 	};
 	module.exports = keys;
 
