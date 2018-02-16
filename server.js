@@ -4,11 +4,15 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const Alarm = require('./app/models/Alarms.js');
 const methodOverride = require('method-override');
+const yaml = require('yamljs');
 const keys = require('./private/keys.js');
 const exec = require('child_process').exec;
+const argv = require('yargs').argv
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = argv.port || process.env.PORT || 3000;
+configPath = argv.config || './config/config.yaml'
+keys = yaml.load(configPath)
 // Connect to mongo and let us know that we are successfully connected or there was an error.
 mongoose.connect(keys.mongoDbConnection);
 const db = mongoose.connection;
