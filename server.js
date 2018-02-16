@@ -11,8 +11,8 @@ const argv = require('yargs').argv
 
 const app = express();
 const PORT = argv.port || process.env.PORT || 3000;
-configPath = argv.config || './config/config.yaml'
-keys = yaml.load(configPath)
+const configPath = argv.config || './config/config.yaml'
+const keys = yaml.load(configPath)
 // Connect to mongo and let us know that we are successfully connected or there was an error.
 mongoose.connect(keys.mongoDbConnection);
 const db = mongoose.connection;
