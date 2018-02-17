@@ -9,7 +9,7 @@ import Weather from './Children/Weather.jsx';
 import Alarm from './Children/Alarm.jsx';
 import Loading from './Children/Loading.jsx';
 
-import weatherIcons from './weatherIcons.js';
+import weatherIcons from './weatherIcons.json';
 
 const config = require('../../private/config.json');
 
