@@ -4,17 +4,12 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const Alarm = require('./app/models/Alarms.js');
 const methodOverride = require('method-override');
-const yaml = require('yamljs');
-const keys = require('./private/keys.js');
 const exec = require('child_process').exec;
-const argv = require('yargs').argv
 
 const app = express();
-const PORT = argv.port || process.env.PORT || 3000;
-const configPath = argv.config || './config/config.yaml'
-const keys = yaml.load(configPath)
+const PORT = process.env.PORT || 3000;
 // Connect to mongo and let us know that we are successfully connected or there was an error.
-mongoose.connect(keys.mongoDbConnection);
+mongoose.connect(process.env.RaspAlarmMongoDB);
 const db = mongoose.connection;
 db.on('open', () => {
   console.log('Connected to MongoDB on port 27017.');

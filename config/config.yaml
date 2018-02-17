@@ -1,4 +1,0 @@
-# your key from weather underground API
-wunderground: '',
-# link to your Mongo DB instance
-mongoDbConnection: ''
