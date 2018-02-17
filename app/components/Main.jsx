@@ -11,10 +11,11 @@ import Loading from './Children/Loading.jsx';
 
 import weatherIcons from './weatherIcons.js';
 
+const config = require('../../private/config.json');
+
 let hasWeatherData = false;
 let weatherInterval;
 let timeInterval;
-const keys = require('../../private/keys.js');
 
 // Vars to save state.
 let dateSave;
@@ -112,7 +113,7 @@ export default class Main extends React.Component {
       this.getLocation()
       .then((locationObject) => {
           // Gets our weather from the weather undergound.
-        fetch(`https://api.wunderground.com/api/${keys.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
+        fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
             .then(response => response.json())
             .then((json) => {
               const weatherArr = [];
@@ -142,7 +143,7 @@ export default class Main extends React.Component {
             });
           });
           // Get the sunrise/sunset data
-        fetch(`https://api.wunderground.com/api/${keys.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
+        fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
           .then(response => response.json())
           .then((sundata) => {
             const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;

@@ -27782,10 +27782,11 @@
 	// Require the children
 
 
+	var config = __webpack_require__(369);
+
 	var hasWeatherData = false;
 	var weatherInterval = void 0;
 	var timeInterval = void 0;
-	var keys = __webpack_require__(369);
 
 	// Vars to save state.
 	var dateSave = void 0;
@@ -27904,7 +27905,7 @@
 	      if (currentMinute === '00' || hasWeatherData === false) {
 	        this.getLocation().then(function (locationObject) {
 	          // Gets our weather from the weather undergound.
-	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + keys.wunderground + '/hourly/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
+	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + config.wunderground + '/hourly/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
 	            return response.json();
 	          }).then(function (json) {
 	            var weatherArr = [];
@@ -27935,7 +27936,7 @@
 	            });
 	          });
 	          // Get the sunrise/sunset data
-	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + keys.wunderground + '/astronomy/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
+	          (0, _isomorphicFetch2.default)('https://api.wunderground.com/api/' + config.wunderground + '/astronomy/q/' + locationObject.lat + ',' + locationObject.long + '.json').then(function (response) {
 	            return response.json();
 	          }).then(function (sundata) {
 	            var sunriseString = '0' + sundata.sun_phase.sunrise.hour + ':' + sundata.sun_phase.sunrise.minute + 'am';
@@ -44841,15 +44842,7 @@
 /* 369 */
 /***/ (function(module, exports) {
 
-	'use strict';
-
-	var keys = {
-	  wunderground: '0f21d9f3506b237b',
-	  username: 'test',
-	  pw: 'test123',
-	  mongoDbConnection: 'mongodb://test:test123@ds115752.mlab.com:15752/raspalarm'
-	};
-	module.exports = keys;
+	module.exports = {"wunderground":"0f21d9f3506b237b"}
 
 /***/ }),
 /* 370 */

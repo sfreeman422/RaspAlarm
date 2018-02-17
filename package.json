@@ -29,6 +29,7 @@
     "core-js": "^2.4.1",
     "express": "^4.14.0",
     "isomorphic-fetch": "^2.2.1",
+    "json-loader": "^0.5.7",
     "method-override": "^2.3.7",
     "moment": "^2.17.1",
     "mongoose": "^4.8.1",
@@ -36,9 +37,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.2",
-    "webpack": "^1.14.0",
-    "yamljs": "^0.3.0",
-    "yargs": "^11.0.0"
+    "webpack": "^1.14.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

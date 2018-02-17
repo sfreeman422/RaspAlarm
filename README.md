@@ -46,7 +46,8 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 
 ## Steps
 - Visit https://www.wunderground.com/weather/api/ and sign up for an API Key. 
-- Set up `wunderground`, `RaspAlarmMongoDB`, and `isRaspberryPi` as environment variables where wunderground is your wunderground API key, RaspAlarmMongoDB is your Mongo instance you would like to use, and isRaspberryPi is a boolean describing whether or not this project is running on a Raspberry Pi.
+- Create private/config.json with key `wunderground` that includes your API key.
+- Set up `RaspAlarmMongoDB`, and `isRaspberryPi` as environment variables where RaspAlarmMongoDB is your Mongo instance you would like to use, and isRaspberryPi is a boolean describing whether or not this project is running on a Raspberry Pi.
 - If you are running on a pi, be sure to run `chmod 777 /sys/class/backlight/rpi_backlight/brightness` in order to take advantage of the auto-dim/brighten feature.
 - npm install
 - webpack
