@@ -50,5 +50,5 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 - If you are running on a pi, be sure to run `chmod 777 /sys/class/backlight/rpi_backlight/brightness` in order to take advantage of the auto-dim/brighten feature.
 - npm install
 - webpack
-- If you wish to take advantage of `chrome-refresh.sh`, be sure to `chmod +x chrome-refresh.sh` then `bash chrome-refresh.sh /folder/you/want/to/watch`. It is best to use this in conjunction with `nodemon` and `webpack -w` so that any time the files in the repo change, your server refreshes, your webpack refresh and your webpage refreshes.
+- If you wish to take advantage of `chrome-refresh.sh`, run `bash chrome-refresh.sh /folder/you/want/to/watch`. It is best to use this in conjunction with `nodemon` and `webpack -w` so that any time the files in the repo change, your server refreshes, your webpack refresh and your webpage refreshes.
 - Visit localhost:3000 on your browser and enjoy!
