@@ -1,8 +1,7 @@
 {
   "name": "raspalarm",
   "version": "1.0.0",
-  "description":
-    "A Raspberry Pi Controlled Alarm Clock with Alexa Integrations",
+  "description": "A Raspberry Pi Controlled Alarm Clock with Alexa Integrations",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
