@@ -1,4 +1,4 @@
-import { ADJUST_DATETIME, GET_WEATHER, GET_USERLOC, ADJUST_SUNDATA } from '../constants/action-types';
+import { ADJUST_DATETIME, GET_WEATHER, GET_USERLOC, ADJUST_SUNDATA, GET_ALARMS } from '../constants/action-types';
 
 export const adjustTime = time => ({
   type: ADJUST_DATETIME,
@@ -18,4 +18,9 @@ export const getUserLoc = userLoc => ({
 export const adjustSunData = sunData => ({
   type: ADJUST_SUNDATA,
   payload: sunData,
+});
+
+export const getAlarms = alarms => ({
+  type: GET_ALARMS,
+  payload: alarms,
 });

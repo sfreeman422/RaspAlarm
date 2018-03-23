@@ -7,6 +7,7 @@ const initialState = {
   weatherArr: [],
   sunrise: '',
   sunset: '',
+  alarms: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -32,6 +33,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         sunrise: action.payload.sunrise,
         sunset: action.payload.sunset,
+      };
+    case 'GET_ALARMS':
+      return {
+        ...state,
+        alarms: action.payload,
       };
     default:
       return state;
