@@ -1,0 +1,4 @@
+export const ADJUST_DATETIME = 'ADJUST_DATETIME';
+export const GET_WEATHER = 'GET_WEATHER';
+export const GET_USERLOC = 'GET_USERLOC';
+export const ADJUST_SUNDATA = 'ADJUST_SUNDATA';

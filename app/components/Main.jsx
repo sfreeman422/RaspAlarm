@@ -17,29 +17,9 @@ let hasWeatherData = false;
 let weatherInterval;
 let timeInterval;
 
-// Vars to save state.
-let dateSave;
-let todaySave;
-let userLocSave;
-let weatherArrSave = [];
-let sunriseSave;
-let sunsetSave;
-let isNight;
-let oldIsNight;
-
-export default class Main extends React.Component {
+export default class ConnectedMain extends React.Component {
   constructor() {
     super();
-    this.state = {
-      time: '',
-      date: dateSave,
-      today: todaySave,
-      userLoc: userLocSave,
-      locationError: '',
-      weatherArr: weatherArrSave,
-      sunrise: sunriseSave,
-      sunset: sunsetSave,
-    };
     this.getTime = this.getTime.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.locationThenWeather = this.locationThenWeather.bind(this);
@@ -58,16 +38,10 @@ export default class Main extends React.Component {
     this.adjustBrightness();
   }
   componentWillUnmount() {
-    dateSave = this.state.date;
-    todaySave = this.state.today;
-    userLocSave = this.state.userLoc;
-    weatherArrSave = this.state.weatherArr;
-    sunsetSave = this.state.sunset;
-    sunriseSave = this.state.sunrise;
     clearInterval(weatherInterval);
     clearInterval(timeInterval);
   }
-    // Gets the time for the alarm clock.
+  // Gets the time for the alarm clock.
   getTime() {
     if (this.state.time !== moment().format('hh:mm' + 'a')) {
       this.setState({
@@ -98,22 +72,29 @@ export default class Main extends React.Component {
   }
   getLocation() {
     return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const location = {
-          lat: position.coords.latitude,
-          long: position.coords.longitude,
-        };
-        return resolve(location);
-      }, error => reject(error));
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            lat: position.coords.latitude,
+            long: position.coords.longitude,
+          };
+          return resolve(location);
+        },
+        error => reject(error),
+      );
     });
   }
   locationThenWeather() {
     const currentMinute = moment().format('mm');
     if (currentMinute === '00' || hasWeatherData === false) {
       this.getLocation()
-      .then((locationObject) => {
+        .then((locationObject) => {
           // Gets our weather from the weather undergound.
-        fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
+          fetch(
+            `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
+            locationObject.lat
+            },${locationObject.long}.json`,
+          )
             .then(response => response.json())
             .then((json) => {
               const weatherArr = [];
@@ -123,7 +104,10 @@ export default class Main extends React.Component {
                   condition: json.hourly_forecast[i].condition,
                   time: json.hourly_forecast[i].FCTTIME.civil,
                   temp: `${json.hourly_forecast[i].temp.english}F`,
-                  icon: this.determineWeatherIcon(json.hourly_forecast[i].icon, json.hourly_forecast[i].FCTTIME.civil),
+                  icon: this.determineWeatherIcon(
+                    json.hourly_forecast[i].icon,
+                    json.hourly_forecast[i].FCTTIME.civil,
+                  ),
                 });
               }
               this.setState({
@@ -131,50 +115,63 @@ export default class Main extends React.Component {
               });
               hasWeatherData = true;
             })
-          .catch(err => err);
+            .catch(err => err);
           // Gets the location from the reverse geocode api provided by Google.
           // This enables us to show the actual name of the location that the user is in.
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
-          .then(response => response.json())
-          .then((geoloc) => {
-            console.log(geoloc);
-            this.setState({
-              userLoc: `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`,
+          fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${
+            locationObject.lat
+            },${locationObject.long}&sensor=true`,
+          )
+            .then(response => response.json())
+            .then((geoloc) => {
+              console.log(geoloc);
+              this.setState({
+                userLoc: `${
+                  geoloc.results[0].address_components[2].short_name
+                  }, ${geoloc.results[0].address_components[4].short_name}`,
+              });
             });
-          });
           // Get the sunrise/sunset data
-        fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
-          .then(response => response.json())
-          .then((sundata) => {
-            const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
-            const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
-            const sunriseMoment = moment(sunriseString, 'hh:mm:a');
-            const sunsetMoment = moment(sunsetString, 'hh:mm:a');
-            this.setState({
-              sunrise: sunriseMoment,
-              sunset: sunsetMoment,
+          fetch(
+            `https://api.wunderground.com/api/${
+            config.wunderground
+            }/astronomy/q/${locationObject.lat},${locationObject.long}.json`,
+          )
+            .then(response => response.json())
+            .then((sundata) => {
+              const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${
+                sundata.sun_phase.sunrise.minute
+                }am`;
+              const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${
+                sundata.sun_phase.sunset.minute
+                }pm`;
+              const sunriseMoment = moment(sunriseString, 'hh:mm:a');
+              const sunsetMoment = moment(sunsetString, 'hh:mm:a');
+              this.setState({
+                sunrise: sunriseMoment,
+                sunset: sunsetMoment,
+              });
             });
-          });
-      }).catch(error =>
-      this.setState({
-        locationError: 'Please allow geolocation in you browser in order to retrieve the weather.',
-      }));
+        })
+        .catch(error =>
+          this.setState({
+            locationError:
+              'Please allow geolocation in you browser in order to retrieve the weather.',
+          }),
+      );
     }
   }
   adjustBrightness() {
-    if (oldIsNight !== isNight && isNight !== undefined) {
-      fetch('/brightness',
-        {
-          method: 'POST',
-          body: {
-            isNight,
-          },
-        })
+    fetch('/brightness', {
+      method: 'POST',
+      body: {
+        isNight,
+      },
+    })
       .then(res => res.json())
       .then(resp => console.log(resp))
       .catch(e => console.log(e));
-      oldIsNight = isNight;
-    }
   }
   determineWeatherIcon(weatherState, hour) {
     const sunrise = moment(this.state.sunrise, 'hh:mm:a');
@@ -182,31 +179,41 @@ export default class Main extends React.Component {
     const currentTime = moment(this.state.time, 'hh:mm:a');
     const isHour = moment(hour, 'hh:mm:a');
     let isHourNight;
-    if ((currentTime).isAfter(sunset) || (currentTime).isBefore(sunrise)) {
+    if (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) {
       isNight = true;
     } else {
       isNight = false;
     }
-    if ((isHour).isAfter(sunset) || (isHour).isBefore(sunrise)) {
+    if (isHour.isAfter(sunset) || isHour.isBefore(sunrise)) {
       isHourNight = true;
     } else {
       isHourNight = false;
     }
     if (isHourNight) {
       return weatherIcons[weatherState].night;
-    } return weatherIcons[weatherState].day;
+    }
+    return weatherIcons[weatherState].day;
   }
   render() {
     return (
       <div className="container">
         <Clock time={this.state.time} />
-        <Today date={this.state.date} userLoc={this.state.userLoc} day={this.state.today} />
-        {this.state.weatherArr.length > 0 ? <Weather
-          weatherArr={this.state.weatherArr}
-          sunrise={this.state.sunrise}
-          sunset={this.state.sunset}
-        /> : <Loading locationError={this.state.locationError} />}
+        <Today
+          date={this.state.date}
+          userLoc={this.state.userLoc}
+          day={this.state.today}
+        />
+        {this.state.weatherArr.length > 0 ? (
+          <Weather
+            weatherArr={this.state.weatherArr}
+            sunrise={this.state.sunrise}
+            sunset={this.state.sunset}
+          />
+        ) : (
+            <Loading locationError={this.state.locationError} />
+          )}
         <Alarm currentTime={this.state.time} />
-      </div>);
+      </div>
+    );
   }
 }
