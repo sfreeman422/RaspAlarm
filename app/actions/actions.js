@@ -1,10 +1,17 @@
-import { ADJUST_DATETIME, GET_WEATHER, GET_USERLOC, ADJUST_SUNDATA, GET_ALARMS } from '../constants/action-types';
+import { ADJUST_TIME, ADJUST_DATE, GET_WEATHER, GET_USERLOC, ADJUST_SUNDATA, GET_ALARMS } from '../constants/action-types';
 
 export const adjustTime = time => ({
-  type: ADJUST_DATETIME,
+  type: ADJUST_TIME,
   payload: time,
 });
-
+export const adjustDate = date => ({
+  type: ADJUST_DATE,
+  payload: date,
+});
+export const adjustToday = today => ({
+  type: ADJUST_TODAY,
+  payload: today,
+});
 export const getWeather = weather => ({
   type: GET_WEATHER,
   payload: weather,

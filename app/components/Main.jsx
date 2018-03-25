@@ -1,7 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
-
+import connect from 'react-redux';
+import { adjustTime, adjustDate, adjustToday } from '../actions/actions';
 // Require the children
 import Clock from './Children/Clock.jsx';
 import Today from './Children/Today.jsx';
@@ -17,9 +18,21 @@ let hasWeatherData = false;
 let weatherInterval;
 let timeInterval;
 
-export default class ConnectedMain extends React.Component {
-  constructor() {
-    super();
+const mapDispatchToProps = dispatch => ({
+  adjustTime: time => dispatch(adjustTime(time)),
+  adjustDate: date => dispatch(adjustDate(date)),
+  adjustToday: today => dispatch(adjustToday(today)),
+});
+const mapStateToProps = state => ({
+  time: state.time,
+  date: state.date,
+  today: state.today,
+  sunset: state.sunset,
+  sunrise: state.sunrise,
+});
+class Main extends React.Component {
+  constructor(props) {
+    super(props);
     this.getTime = this.getTime.bind(this);
     this.getLocation = this.getLocation.bind(this);
     this.locationThenWeather = this.locationThenWeather.bind(this);
@@ -27,15 +40,15 @@ export default class ConnectedMain extends React.Component {
     this.adjustBrightness = this.adjustBrightness.bind(this);
   }
   componentDidMount() {
-    this.locationThenWeather();
+    // this.locationThenWeather();
     this.getTime();
     // Runs the locationThenWeather function every 60 seconds.
     // We do this to avoid 6 API calls within the one minute in which we are at a :00 time.
-    weatherInterval = setInterval(this.locationThenWeather, 60000);
+    // weatherInterval = setInterval(this.locationThenWeather, 60000);
     // Get the time every 1/10 of a second
     // This will also setState for time to the current time.
     timeInterval = setInterval(this.getTime, 100);
-    this.adjustBrightness();
+    // this.adjustBrightness();
   }
   componentWillUnmount() {
     clearInterval(weatherInterval);
@@ -43,32 +56,27 @@ export default class ConnectedMain extends React.Component {
   }
   // Gets the time for the alarm clock.
   getTime() {
-    if (this.state.time !== moment().format('hh:mm' + 'a')) {
-      this.setState({
-        time: moment().format('hh:mm' + 'a'),
-      });
+    if (this.props.time !== moment().format('hh:mm' + 'a')) {
+      this.props.adjustTime(moment().format('hh:mm' + 'a'));
     }
-    if (this.state.date !== moment().format('MMMM Do YYYY')) {
-      this.setState({
-        date: moment().format('MMMM Do YYYY'),
-      });
+    if (this.props.date !== moment().format('MMMM Do YYYY')) {
+      this.props.adjustDate(moment().format('MMMM Do YYYY'));
     }
-    if (this.state.today !== moment().format('dddd')) {
-      this.setState({
-        today: moment().format('dddd'),
-      });
+    if (this.props.today !== moment().format('dddd')) {
+      this.props.adjustToday(moment().format('dddd'));
     }
-    if (this.state.time === this.state.sunset) {
-      isNight = true;
-      this.adjustBrightness();
-    }
-    if (this.state.time === this.state.sunrise) {
-      isNight = false;
-      this.adjustBrightness();
-    }
-    if (isNight !== oldIsNight && isNight !== undefined) {
-      this.adjustBrightness();
-    }
+    // Need to work with this. Currently semi-broken anyway.
+    // if (props.time === props.sunset) {
+    //   isNight = true;
+    //   this.adjustBrightness();
+    // }
+    // if (this.state.time === this.state.sunrise) {
+    //   isNight = false;
+    //   this.adjustBrightness();
+    // }
+    // if (isNight !== oldIsNight && isNight !== undefined) {
+    //   this.adjustBrightness();
+    // }
   }
   getLocation() {
     return new Promise((resolve, reject) => {
@@ -197,23 +205,32 @@ export default class ConnectedMain extends React.Component {
   render() {
     return (
       <div className="container">
-        <Clock time={this.state.time} />
-        <Today
-          date={this.state.date}
-          userLoc={this.state.userLoc}
-          day={this.state.today}
-        />
-        {this.state.weatherArr.length > 0 ? (
-          <Weather
-            weatherArr={this.state.weatherArr}
-            sunrise={this.state.sunrise}
-            sunset={this.state.sunset}
-          />
-        ) : (
-            <Loading locationError={this.state.locationError} />
-          )}
-        <Alarm currentTime={this.state.time} />
+        <Clock />
       </div>
     );
   }
 }
+
+const ConnectedMain = connect(mapStateToProps, mapDispatchToProps)(Main);
+// Old return pre-Redux
+// return (
+//   <div className="container">
+//     <Clock time={this.state.time} />
+//     <Today
+//       date={this.state.date}
+//       userLoc={this.state.userLoc}
+//       day={this.state.today}
+//     />
+//     {this.state.weatherArr.length > 0 ? (
+//       <Weather
+//         weatherArr={this.state.weatherArr}
+//         sunrise={this.state.sunrise}
+//         sunset={this.state.sunset}
+//       />
+//     ) : (
+//         <Loading locationError={this.state.locationError} />
+//       )}
+//     <Alarm currentTime={this.state.time} />
+//   </div>
+// );
+export default ConnectedMain;
