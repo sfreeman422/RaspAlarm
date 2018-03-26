@@ -4,8 +4,8 @@ import { Router, Route, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import store from './store/store';
 // Import the children
-import Main from './components/Main.jsx';
-import AlarmManager from './components/AlarmManager.jsx';
+import Main from './App';
+import AlarmManager from './components/AlarmManager';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -14,5 +14,5 @@ ReactDOM.render(
       <Route path="/alarmManager" component={AlarmManager} />
     </Router>
   </Provider>,
-  document.getElementById('app'),
+  document.getElementById('root'),
 );

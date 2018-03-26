@@ -1,18 +1,18 @@
 import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
-import connect from 'react-redux';
-import { adjustTime, adjustDate, adjustToday } from '../actions/actions';
+import { connect } from 'react-redux';
+import { adjustTime, adjustDate, adjustToday } from './actions/actions';
 // Require the children
-import Clock from './Children/Clock.jsx';
-import Today from './Children/Today.jsx';
-import Weather from './Children/Weather.jsx';
-import Alarm from './Children/Alarm.jsx';
-import Loading from './Children/Loading.jsx';
+import Clock from './components/Children/Clock';
+import Today from './components/Children/Today';
+import Weather from './components/Children/Weather';
+import Alarm from './components/Children/Alarm';
+import Loading from './components/Children/Loading';
 
-import weatherIcons from './weatherIcons.json';
+import weatherIcons from './components/weatherIcons.json';
 
-const config = require('../../private/config.json');
+const config = require('./private/config.json');
 
 let hasWeatherData = false;
 let weatherInterval;
@@ -30,7 +30,7 @@ const mapStateToProps = state => ({
   sunset: state.sunset,
   sunrise: state.sunrise,
 });
-class Main extends React.Component {
+class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
     this.getTime = this.getTime.bind(this);
@@ -57,13 +57,16 @@ class Main extends React.Component {
   // Gets the time for the alarm clock.
   getTime() {
     if (this.props.time !== moment().format('hh:mm' + 'a')) {
-      this.props.adjustTime(moment().format('hh:mm' + 'a'));
+      const time = moment().format('hh:mm' + 'a');
+      this.props.adjustTime(time);
     }
     if (this.props.date !== moment().format('MMMM Do YYYY')) {
-      this.props.adjustDate(moment().format('MMMM Do YYYY'));
+      const date = moment().format('MMMM Do YYYY');
+      this.props.adjustDate(date);
     }
     if (this.props.today !== moment().format('dddd')) {
-      this.props.adjustToday(moment().format('dddd'));
+      const today = moment().format('dddd');
+      this.props.adjustToday(today);
     }
     // Need to work with this. Currently semi-broken anyway.
     // if (props.time === props.sunset) {
@@ -171,6 +174,7 @@ class Main extends React.Component {
     }
   }
   adjustBrightness() {
+    const isNight = this.props.isNight;
     fetch('/brightness', {
       method: 'POST',
       body: {
@@ -188,9 +192,9 @@ class Main extends React.Component {
     const isHour = moment(hour, 'hh:mm:a');
     let isHourNight;
     if (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) {
-      isNight = true;
+      this.props.isNight = true;
     } else {
-      isNight = false;
+      this.props.isNight = false;
     }
     if (isHour.isAfter(sunset) || isHour.isBefore(sunrise)) {
       isHourNight = true;
@@ -206,12 +210,13 @@ class Main extends React.Component {
     return (
       <div className="container">
         <Clock />
+        <Today />
       </div>
     );
   }
 }
 
-const ConnectedMain = connect(mapStateToProps, mapDispatchToProps)(Main);
+const Main = connect(mapStateToProps, mapDispatchToProps)(ConnectedMain);
 // Old return pre-Redux
 // return (
 //   <div className="container">
@@ -233,4 +238,4 @@ const ConnectedMain = connect(mapStateToProps, mapDispatchToProps)(Main);
 //     <Alarm currentTime={this.state.time} />
 //   </div>
 // );
-export default ConnectedMain;
+export default Main;

@@ -8,16 +8,21 @@ const initialState = {
   sunrise: '',
   sunset: '',
   alarms: [],
+  isNight: '',
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADJUST_DATETIME':
+    case 'ADJUST_TIME':
       return {
         ...state,
-        time: action.payload.time,
-        date: action.payload.date,
+        time: action.payload,
       };
+    case 'ADJUST_DATE':
+      return {
+        ...state,
+        date: action.payload,
+      }
     case 'GET_WEATHER':
       return {
         ...state,
@@ -38,6 +43,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         alarms: action.payload,
+      };
+    case 'ADJUST_NIGHT':
+      return {
+        ...state,
+        isNight: action.payload,
+      };
+    case 'ADJUST_TODAY':
+      return {
+        ...state,
+        today: action.payload,
       };
     default:
       return state;
