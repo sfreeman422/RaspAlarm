@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
-import { adjustTime, adjustDate, adjustToday } from './actions/actions';
+import { adjustTime, adjustDate, adjustToday, adjustWeather, adjustUserLoc, adjustSunData, reportError } from './actions/actions';
 // Require the children
 import Clock from './components/Children/Clock';
 import Today from './components/Children/Today';
@@ -22,6 +22,10 @@ const mapDispatchToProps = dispatch => ({
   adjustTime: time => dispatch(adjustTime(time)),
   adjustDate: date => dispatch(adjustDate(date)),
   adjustToday: today => dispatch(adjustToday(today)),
+  adjustWeather: weatherArr => dispatch(adjustWeather(weatherArr)),
+  adjustUserLoc: userLoc => dispatch(adjustUserLoc(userLoc)),
+  adjustSunData: sunData => dispatch(adjustSunData(sunData)),
+  reportError: error => dispatch(reportError(error)),
 });
 const mapStateToProps = state => ({
   time: state.time,
@@ -44,7 +48,7 @@ class ConnectedMain extends React.Component {
     this.getTime();
     // Runs the locationThenWeather function every 60 seconds.
     // We do this to avoid 6 API calls within the one minute in which we are at a :00 time.
-    // weatherInterval = setInterval(this.locationThenWeather, 60000);
+    weatherInterval = setInterval(this.locationThenWeather, 60000);
     // Get the time every 1/10 of a second
     // This will also setState for time to the current time.
     timeInterval = setInterval(this.getTime, 100);
@@ -101,11 +105,7 @@ class ConnectedMain extends React.Component {
       this.getLocation()
         .then((locationObject) => {
           // Gets our weather from the weather undergound.
-          fetch(
-            `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-            locationObject.lat
-            },${locationObject.long}.json`,
-          )
+          fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
             .then(response => response.json())
             .then((json) => {
               const weatherArr = [];
@@ -121,34 +121,23 @@ class ConnectedMain extends React.Component {
                   ),
                 });
               }
-              this.setState({
-                weatherArr,
-              });
+              this.props.adjustWeather(weatherArr);
               hasWeatherData = true;
             })
             .catch(err => err);
           // Gets the location from the reverse geocode api provided by Google.
           // This enables us to show the actual name of the location that the user is in.
-          fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${
+          fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${
             locationObject.lat
-            },${locationObject.long}&sensor=true`,
-          )
+            },${locationObject.long}&sensor=true`, )
             .then(response => response.json())
             .then((geoloc) => {
-              console.log(geoloc);
-              this.setState({
-                userLoc: `${
-                  geoloc.results[0].address_components[2].short_name
-                  }, ${geoloc.results[0].address_components[4].short_name}`,
-              });
+              this.props.adjustUserLoc(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`);
             });
           // Get the sunrise/sunset data
-          fetch(
-            `https://api.wunderground.com/api/${
+          fetch(`https://api.wunderground.com/api/${
             config.wunderground
-            }/astronomy/q/${locationObject.lat},${locationObject.long}.json`,
-          )
+            }/astronomy/q/${locationObject.lat},${locationObject.long}.json`, )
             .then(response => response.json())
             .then((sundata) => {
               const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${
@@ -159,18 +148,15 @@ class ConnectedMain extends React.Component {
                 }pm`;
               const sunriseMoment = moment(sunriseString, 'hh:mm:a');
               const sunsetMoment = moment(sunsetString, 'hh:mm:a');
-              this.setState({
+              const sunObject = {
                 sunrise: sunriseMoment,
                 sunset: sunsetMoment,
-              });
+              };
+              this.props.adjustSunData(sunObject);
             });
         })
         .catch(error =>
-          this.setState({
-            locationError:
-              'Please allow geolocation in you browser in order to retrieve the weather.',
-          }),
-      );
+          this.props.reportError(`Please allow geolocation in your browser in order to receive the weather. \n ${error.message}`));
     }
   }
   adjustBrightness() {
@@ -211,6 +197,8 @@ class ConnectedMain extends React.Component {
       <div className="container">
         <Clock />
         <Today />
+        {this.props.weatherArr && this.props.weatherArr.length > 0 ? (
+          <Weather />) : <Loading />}
       </div>
     );
   }

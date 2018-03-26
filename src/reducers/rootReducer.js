@@ -22,13 +22,13 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         date: action.payload,
-      }
-    case 'GET_WEATHER':
+      };
+    case 'ADJUST_WEATHER':
       return {
         ...state,
-        weatherArr: [...state, action.payload],
+        weatherArr: [action.payload],
       };
-    case 'GET_USERLOC':
+    case 'ADJUST_USERLOC':
       return {
         ...state,
         userLoc: action.payload,
@@ -53,6 +53,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         today: action.payload,
+      };
+    case 'REPORT_ERROR':
+      return {
+        ...state,
+        locationError: action.payload,
       };
     default:
       return state;
