@@ -1,12 +1,17 @@
 import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 const alarmSound = new Audio('./sounds/alarm.mp3');
 let alarmInterval;
 
-export default class Alarm extends React.Component {
+const mapStateToProps = state => ({
+  currentTime: state.time,
+});
+
+class ConnectedAlarm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,11 +34,11 @@ export default class Alarm extends React.Component {
   }
   getAlarms() {
     fetch('/alarms')
-    .then(res => res.json())
-    .then((alarms) => {
-      this.setState({ alarms });
-      this.checkAlarm();
-    });
+      .then(res => res.json())
+      .then((alarms) => {
+        this.setState({ alarms });
+        this.checkAlarm();
+      });
   }
   // Function to check whether its time for an alarm to go off or not.
   checkAlarm() {
@@ -104,3 +109,7 @@ export default class Alarm extends React.Component {
     );
   }
 }
+
+const Alarm = connect(mapStateToProps)(ConnectedAlarm);
+
+export default Alarm;

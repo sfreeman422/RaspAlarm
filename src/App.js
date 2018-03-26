@@ -199,31 +199,12 @@ class ConnectedMain extends React.Component {
         <Today />
         {this.props.weatherArr && this.props.weatherArr.length > 0 ? (
           <Weather />) : <Loading />}
+        <Alarm />
       </div>
     );
   }
 }
 
 const Main = connect(mapStateToProps, mapDispatchToProps)(ConnectedMain);
-// Old return pre-Redux
-// return (
-//   <div className="container">
-//     <Clock time={this.state.time} />
-//     <Today
-//       date={this.state.date}
-//       userLoc={this.state.userLoc}
-//       day={this.state.today}
-//     />
-//     {this.state.weatherArr.length > 0 ? (
-//       <Weather
-//         weatherArr={this.state.weatherArr}
-//         sunrise={this.state.sunrise}
-//         sunset={this.state.sunset}
-//       />
-//     ) : (
-//         <Loading locationError={this.state.locationError} />
-//       )}
-//     <Alarm currentTime={this.state.time} />
-//   </div>
-// );
+
 export default Main;
