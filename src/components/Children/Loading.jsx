@@ -64,8 +64,7 @@ class ConnectedLoading extends React.Component {
     return (
       this.props.locationError !== '' ?
         <div>
-          <p className="error">Woops!</p>
-          <p>{this.props.locationError}</p>
+          <p className="error">Error: {this.props.locationError}</p>
         </div>
         :
         <div className="loading">

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
-import { adjustTime, adjustDate, adjustToday, adjustWeather, adjustUserLoc, adjustSunData, reportError } from './actions/actions';
+import { adjustTime, adjustDate, adjustToday, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError } from './actions/actions';
 // Require the children
 import Clock from './components/Children/Clock';
 import Today from './components/Children/Today';
@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
   adjustToday: today => dispatch(adjustToday(today)),
   adjustWeather: weatherArr => dispatch(adjustWeather(weatherArr)),
   adjustUserLoc: userLoc => dispatch(adjustUserLoc(userLoc)),
+  adjustUserCoords: userCoords => dispatch(adjustUserCoords(userCoords)),
   adjustSunData: sunData => dispatch(adjustSunData(sunData)),
   reportError: error => dispatch(reportError(error)),
 });
@@ -89,21 +90,26 @@ class ConnectedMain extends React.Component {
   }
   getLocation() {
     return new Promise((resolve, reject) => {
-      console.log('trying to get location');
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const location = {
             lat: position.coords.latitude,
             long: position.coords.longitude,
           };
+          this.props.adjustUserCoords(location);
           return resolve(location);
         },
         error => {
           reject(error)
         },
-        { timeout: 10000 }
+        { timeout: 20000 }
       );
     });
+  }
+  getWeather() {
+    if (this.props.userLoc) {
+
+    }
   }
   locationThenWeather() {
     const currentMinute = moment().format('mm');

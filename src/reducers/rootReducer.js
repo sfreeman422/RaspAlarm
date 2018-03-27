@@ -3,6 +3,7 @@ const initialState = {
   date: '',
   today: '',
   userLoc: '',
+  userCoords: '',
   locationError: '',
   weatherArr: [],
   sunrise: '',
@@ -32,6 +33,14 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userLoc: action.payload,
+      };
+    case 'ADJUST_USERCOORDS':
+      return {
+        ...state,
+        userCoords: {
+          latitude: action.payload.latitude,
+          longitude: action.payload.longitude,
+        },
       };
     case 'ADJUST_SUNDATA':
       return {
