@@ -74,6 +74,8 @@ class ConnectedMain extends React.Component {
           this.props.reportError(`Error Getting Weather: ${weather.message}`);
         } else {
           this.props.adjustWeather(weather);
+          // Runs the locationThenWeather function every 60 seconds.
+          weatherInterval = setInterval(this.getWeather, 60000);
           if (this.props.hasWeatherData === false) {
             this.props.adjustWeatherStatus(true);
           }
@@ -83,8 +85,6 @@ class ConnectedMain extends React.Component {
         }
       }
     }
-    // Runs the locationThenWeather function every 60 seconds.
-    weatherInterval = setInterval(this.getWeather, 60000);
     // this.adjustBrightness();
   }
   componentWillUnmount() {
@@ -116,7 +116,6 @@ class ConnectedMain extends React.Component {
     if (time === sunset ||
       (time.isAfter(sunset) && time.isBefore(sunrise))) {
       if (this.props.isNight !== true) {
-        console.log(`${this.props.isNight} vs true. Test for setting TO night`);
         this.props.adjustNight(true);
         this.adjustBrightness(true);
       }
@@ -124,7 +123,6 @@ class ConnectedMain extends React.Component {
     if (time === sunrise ||
       (time.isAfter(sunrise) && time.isBefore(sunset))) {
       if (this.props.isNight !== false) {
-        console.log(`${this.props.isNight} vs false. Test for setting TO day`);
         this.props.adjustNight(false);
         this.adjustBrightness(false);
       }

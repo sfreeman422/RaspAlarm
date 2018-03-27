@@ -90,21 +90,19 @@ class ConnectedAlarm extends React.Component {
     setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
   }
   render() {
-    if (this.state.alarmStatus === 'ringing') {
-      return (
-        <div id="alarm">
+    return (
+      <div id="alarm">
+        {this.state.alarmStatus === 'ringing' ?
           <button
             className="btn-lg btn-success"
             id="wakeUp"
             onClick={() => { this.awake(); }}
-          >Wake Up</button>
-        </div>
-      );
-    }
-
-    return (
-      <div id="alarm">
-        <h3><Link to="/AlarmManager">Set an alarm</Link></h3>
+          >
+            Wake Up
+          </button> :
+          <h3>
+            <Link to="/AlarmManager">Set an alarm</Link>
+          </h3>}
       </div>
     );
   }
