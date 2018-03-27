@@ -1,58 +1,58 @@
-import { ADJUST_LOADING_STATUS, ADJUST_TIME, ADJUST_DATE, ADJUST_TODAY, ADJUST_NIGHT, ADJUST_WEATHER, ADJUST_USERLOC, ADJUST_SUNDATA, GET_ALARMS, REPORT_ERROR, ADJUST_USERCOORDS, ADJUST_WEATHER_STATUS } from '../constants/action-types';
+import * as types from '../constants/action-types';
 
 export const adjustTime = time => ({
-  type: ADJUST_TIME,
+  type: types.ADJUST_TIME,
   payload: time,
 });
 export const adjustDate = date => ({
-  type: ADJUST_DATE,
+  type: types.ADJUST_DATE,
   payload: date,
 });
 export const adjustToday = today => ({
-  type: ADJUST_TODAY,
+  type: types.ADJUST_TODAY,
   payload: today,
 });
 export const adjustWeather = weather => ({
-  type: ADJUST_WEATHER,
+  type: types.ADJUST_WEATHER,
   payload: weather,
 });
 
 export const adjustUserLoc = userLoc => ({
-  type: ADJUST_USERLOC,
+  type: types.ADJUST_USERLOC,
   payload: userLoc,
 });
 
 export const adjustSunData = sunData => ({
-  type: ADJUST_SUNDATA,
+  type: types.ADJUST_SUNDATA,
   payload: sunData,
 });
 
 export const getAlarms = alarms => ({
-  type: GET_ALARMS,
+  type: types.GET_ALARMS,
   payload: alarms,
 });
 
 export const adjustNight = night => ({
-  type: ADJUST_NIGHT,
+  type: types.ADJUST_NIGHT,
   payload: night,
 });
 
 export const reportError = error => ({
-  type: REPORT_ERROR,
+  type: types.REPORT_ERROR,
   payload: error,
 });
 
 export const adjustUserCoords = location => ({
-  type: ADJUST_USERCOORDS,
+  type: types.ADJUST_USERCOORDS,
   payload: location,
 });
 
 export const adjustWeatherStatus = weatherStatus => ({
-  type: ADJUST_WEATHER_STATUS,
+  type: types.ADJUST_WEATHER_STATUS,
   payload: weatherStatus,
 });
 
 export const adjustLoadingStatus = status => ({
-  type: ADJUST_LOADING_STATUS,
+  type: types.ADJUST_LOADING_STATUS,
   payload: status,
 });

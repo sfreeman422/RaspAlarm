@@ -3,7 +3,7 @@ import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { adjustLoadingStatus, adjustTime, adjustDate, adjustToday, adjustNight, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError, adjustWeatherStatus } from './actions/actions';
+import * as actions from './actions/actions';
 import Clock from './components/Children/Clock';
 import Today from './components/Children/Today';
 import Weather from './components/Children/Weather';
@@ -17,17 +17,17 @@ let weatherInterval;
 let timeInterval;
 
 const mapDispatchToProps = dispatch => ({
-  adjustTime: time => dispatch(adjustTime(time)),
-  adjustDate: date => dispatch(adjustDate(date)),
-  adjustToday: today => dispatch(adjustToday(today)),
-  adjustNight: night => dispatch(adjustNight(night)),
-  adjustWeather: weatherArr => dispatch(adjustWeather(weatherArr)),
-  adjustUserLoc: userLoc => dispatch(adjustUserLoc(userLoc)),
-  adjustUserCoords: userCoords => dispatch(adjustUserCoords(userCoords)),
-  adjustSunData: sunData => dispatch(adjustSunData(sunData)),
-  adjustWeatherStatus: status => dispatch(adjustWeatherStatus(status)),
-  adjustLoadingStatus: status => dispatch(adjustLoadingStatus(status)),
-  reportError: error => dispatch(reportError(error)),
+  adjustTime: time => dispatch(actions.adjustTime(time)),
+  adjustDate: date => dispatch(actions.adjustDate(date)),
+  adjustToday: today => dispatch(actions.adjustToday(today)),
+  adjustNight: night => dispatch(actions.adjustNight(night)),
+  adjustWeather: weatherArr => dispatch(actions.adjustWeather(weatherArr)),
+  adjustUserLoc: userLoc => dispatch(actions.adjustUserLoc(userLoc)),
+  adjustUserCoords: userCoords => dispatch(actions.adjustUserCoords(userCoords)),
+  adjustSunData: sunData => dispatch(actions.adjustSunData(sunData)),
+  adjustWeatherStatus: status => dispatch(actions.adjustWeatherStatus(status)),
+  adjustLoadingStatus: status => dispatch(actions.adjustLoadingStatus(status)),
+  reportError: error => dispatch(actions.reportError(error)),
 });
 const mapStateToProps = state => ({
   time: state.time,
@@ -53,8 +53,6 @@ class ConnectedMain extends React.Component {
   }
   async componentDidMount() {
     this.getTime();
-    // Get the time every 1/10 of a second
-    // This will also setState for time to the current time.
     timeInterval = setInterval(this.getTime, 100);
     // This is practically callback hell, what can we do here?
     this.props.adjustLoadingStatus('Getting Location...');
