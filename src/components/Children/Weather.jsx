@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import WeatherPerDay from './WeatherPerDay.jsx';
+import PropTypes from 'prop-types';
+import WeatherPerDay from './WeatherPerDay';
 
 const mapStateToProps = state => ({
   weatherArr: state.weatherArr,
@@ -14,10 +15,12 @@ const ConnectedWeather = ({ weatherArr }) => (
         temp={weatherItem.temp}
         condition={weatherItem.condition}
         time={weatherItem.time}
-      />),
-    )}
+      />))}
   </div>
 );
 
+ConnectedWeather.propTypes = {
+  weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 const Weather = connect(mapStateToProps)(ConnectedWeather);
 export default Weather;

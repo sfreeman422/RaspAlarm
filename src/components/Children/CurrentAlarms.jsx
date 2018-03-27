@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 
 function displayLetterForDayOfWeek(days) {
   const dayOfWeek = {
@@ -34,4 +35,8 @@ const CurrentAlarms = props => (
   </div>
 );
 
+CurrentAlarms.propTypes = {
+  alarms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  removeAlarm: PropTypes.func.isRequired,
+}
 export default CurrentAlarms;

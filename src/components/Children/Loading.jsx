@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 let animateInterval;
 let iconPosition = 1;
@@ -76,5 +77,14 @@ class ConnectedLoading extends React.Component {
 }
 
 const Loading = connect(mapStateToProps)(ConnectedLoading);
+
+ConnectedLoading.propTypes = {
+  locationError: PropTypes.string,
+  loadingMessage: PropTypes.string.isRequired,
+};
+
+ConnectedLoading.defaultProps = {
+  locationError: '',
+};
 
 export default Loading;

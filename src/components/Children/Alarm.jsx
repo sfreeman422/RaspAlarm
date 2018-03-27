@@ -3,6 +3,7 @@ import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 
 const alarmSound = new Audio('./sounds/alarm.mp3');
 let alarmInterval;
@@ -61,7 +62,8 @@ class ConnectedAlarm extends React.Component {
     }
   }
   removeAlarm(id) {
-    fetch('/deleteAlarm',
+    fetch(
+      '/deleteAlarm',
       {
         method: 'DELETE',
         body: JSON.stringify({
@@ -109,5 +111,9 @@ class ConnectedAlarm extends React.Component {
 }
 
 const Alarm = connect(mapStateToProps)(ConnectedAlarm);
+
+ConnectedAlarm.propTypes = {
+  currentTime: PropTypes.string.isRequired,
+};
 
 export default Alarm;

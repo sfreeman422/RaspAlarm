@@ -3,14 +3,17 @@ const initialState = {
   date: '',
   today: '',
   userLoc: '',
-  userCoords: '',
+  userCoords: {
+    lat: 0,
+    long: 0,
+  },
   locationError: '',
   hasWeatherData: false,
   weatherArr: [],
   sunrise: '',
   sunset: '',
   alarms: [],
-  isNight: '',
+  isNight: false,
   loadingMessage: '',
 };
 

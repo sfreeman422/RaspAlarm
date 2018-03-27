@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { adjustLoadingStatus, adjustTime, adjustDate, adjustToday, adjustNight, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError, adjustWeatherStatus } from './actions/actions';
 import Clock from './components/Children/Clock';
@@ -235,6 +236,31 @@ class ConnectedMain extends React.Component {
   }
 }
 
+ConnectedMain.propTypes = {
+  adjustLoadingStatus: PropTypes.func.isRequired,
+  adjustUserCoords: PropTypes.func.isRequired,
+  adjustUserLoc: PropTypes.func.isRequired,
+  adjustWeather: PropTypes.func.isRequired,
+  adjustWeatherStatus: PropTypes.func.isRequired,
+  adjustSunData: PropTypes.func.isRequired,
+  adjustTime: PropTypes.func.isRequired,
+  adjustDate: PropTypes.func.isRequired,
+  adjustToday: PropTypes.func.isRequired,
+  adjustNight: PropTypes.func.isRequired,
+  reportError: PropTypes.func.isRequired,
+  hasWeatherData: PropTypes.bool.isRequired,
+  time: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  today: PropTypes.string.isRequired,
+  sunset: PropTypes.object.isRequired,
+  sunrise: PropTypes.object.isRequired,
+  isNight: PropTypes.bool.isRequired,
+  userCoords: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    long: PropTypes.number.isRequired,
+  }).isRequired,
+  weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 const Main = connect(mapStateToProps, mapDispatchToProps)(ConnectedMain);
 
 export default Main;
