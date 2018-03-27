@@ -26,7 +26,7 @@ const rootReducer = (state = initialState, action) => {
     case 'ADJUST_WEATHER':
       return {
         ...state,
-        weatherArr: [action.payload],
+        weatherArr: action.payload,
       };
     case 'ADJUST_USERLOC':
       return {
