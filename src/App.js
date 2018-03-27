@@ -2,19 +2,16 @@ import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
-import { adjustTime, adjustDate, adjustToday, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError } from './actions/actions';
-// Require the children
+import { adjustTime, adjustDate, adjustToday, adjustNight, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError, adjustWeatherStatus } from './actions/actions';
 import Clock from './components/Children/Clock';
 import Today from './components/Children/Today';
 import Weather from './components/Children/Weather';
 import Alarm from './components/Children/Alarm';
 import Loading from './components/Children/Loading';
-
 import weatherIcons from './components/weatherIcons.json';
 
 const config = require('./private/config.json');
 
-let hasWeatherData = false;
 let weatherInterval;
 let timeInterval;
 
@@ -22,39 +19,63 @@ const mapDispatchToProps = dispatch => ({
   adjustTime: time => dispatch(adjustTime(time)),
   adjustDate: date => dispatch(adjustDate(date)),
   adjustToday: today => dispatch(adjustToday(today)),
+  adjustNight: night => dispatch(adjustNight(night)),
   adjustWeather: weatherArr => dispatch(adjustWeather(weatherArr)),
   adjustUserLoc: userLoc => dispatch(adjustUserLoc(userLoc)),
   adjustUserCoords: userCoords => dispatch(adjustUserCoords(userCoords)),
   adjustSunData: sunData => dispatch(adjustSunData(sunData)),
+  adjustWeatherStatus: status => dispatch(adjustWeatherStatus(status)),
   reportError: error => dispatch(reportError(error)),
 });
 const mapStateToProps = state => ({
   time: state.time,
   date: state.date,
   today: state.today,
+  isNight: state.isNight,
   sunset: state.sunset,
   sunrise: state.sunrise,
   userLoc: state.userLoc,
+  userCoords: state.userCoords,
+  hasWeatherData: state.hasWeatherData,
   weatherArr: state.weatherArr,
 });
 class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
     this.getTime = this.getTime.bind(this);
+    this.getWeather = this.getWeather.bind(this);
     this.getLocation = this.getLocation.bind(this);
-    this.locationThenWeather = this.locationThenWeather.bind(this);
+    this.refineLocation = this.refineLocation.bind(this);
     this.determineWeatherIcon = this.determineWeatherIcon.bind(this);
     this.adjustBrightness = this.adjustBrightness.bind(this);
   }
-  componentDidMount() {
-    this.locationThenWeather();
+  async componentDidMount() {
     this.getTime();
-    // Runs the locationThenWeather function every 60 seconds.
-    // We do this to avoid 6 API calls within the one minute in which we are at a :00 time.
-    weatherInterval = setInterval(this.locationThenWeather, 60000);
     // Get the time every 1/10 of a second
     // This will also setState for time to the current time.
     timeInterval = setInterval(this.getTime, 100);
+    // This is practically callback hell, what can we do here?
+    const userLoc = await this.getLocation().catch(err => err);
+    if (userLoc instanceof Error) {
+      this.props.reportError(`Geolocation failed! \n ${userLoc.message}`);
+    } else {
+      this.props.adjustUserCoords(userLoc);
+      const refinedLoc = await this.refineLocation(userLoc).catch(err => err);
+      if (refinedLoc instanceof Error) {
+        this.props.reportError(`Location Refinement Failed! \n ${refinedLoc.message}`);
+      } else {
+        this.props.adjustUserLoc(refinedLoc);
+        const weather = await this.getWeather();
+        this.props.adjustWeather(weather);
+        if (this.props.hasWeatherData === false) {
+          this.props.adjustWeatherStatus(true);
+        }
+        const sunData = await this.getSunData().catch(err => err);
+        this.props.adjustSunData(sunData);
+      }
+    }
+    // Runs the locationThenWeather function every 60 seconds.
+    weatherInterval = setInterval(this.getWeather, 60000);
     // this.adjustBrightness();
   }
   componentWillUnmount() {
@@ -76,97 +97,98 @@ class ConnectedMain extends React.Component {
       this.props.adjustToday(today);
     }
     // Need to work with this. Currently semi-broken anyway.
-    // if (props.time === props.sunset) {
-    //   isNight = true;
-    //   this.adjustBrightness();
-    // }
-    // if (this.state.time === this.state.sunrise) {
-    //   isNight = false;
-    //   this.adjustBrightness();
-    // }
-    // if (isNight !== oldIsNight && isNight !== undefined) {
-    //   this.adjustBrightness();
-    // }
+    // If time is equal to sunset, set to night.
+    // If time is after sunset and before sunrise, set to night.
+    // Only set to night if our isNight changes.
+
+    const time = moment(this.props.time, 'hh:mm:a');
+    const sunset = moment(this.props.sunset, 'hh:mm:a');
+    const sunrise = moment(this.props.sunrise, 'hh:mm:a');
+    if (time === sunset ||
+      (time.isAfter(sunset) && time.isBefore(sunrise))) {
+      if (this.props.isNight !== true) {
+        console.log(`${this.props.isNight} vs true. Test for setting TO night`);
+        this.props.adjustNight(true);
+        this.adjustBrightness(true);
+      }
+    }
+    if (time === sunrise ||
+      (time.isAfter(sunrise) && time.isBefore(sunset))) {
+      if (this.props.isNight !== false) {
+        console.log(`${this.props.isNight} vs false. Test for setting TO day`);
+        this.props.adjustNight(false);
+        this.adjustBrightness(false);
+      }
+    }
   }
   getLocation() {
+    // Gets our location by coordinates using the geolocation api.
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            lat: position.coords.latitude,
-            long: position.coords.longitude,
-          };
-          this.props.adjustUserCoords(location);
-          return resolve(location);
-        },
-        error => {
-          reject(error)
-        },
-        { timeout: 20000 }
+        position => resolve({ lat: position.coords.latitude, long: position.coords.longitude }),
+        error => reject(new Error(error.message)),
+        { timeout: 30000 },
       );
     });
   }
+  // Gets the weather if we are at an 'oclock' or if we do not already have weatherData.
   getWeather() {
-    if (this.props.userLoc) {
-
-    }
+    return new Promise((resolve, reject) => {
+      const currentMinute = moment().format('mm');
+      if (currentMinute === '00' || this.props.hasWeatherData === false) {
+        // Gets our weather from the weather undergound.
+        fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
+          .then(response => response.json())
+          .then((json) => {
+            const weatherArr = [];
+            // Builds out an array to list weather information.
+            for (let i = 0; i < 5; i += 1) {
+              weatherArr.push({
+                condition: json.hourly_forecast[i].condition,
+                time: json.hourly_forecast[i].FCTTIME.civil,
+                temp: `${json.hourly_forecast[i].temp.english}F`,
+                icon: this.determineWeatherIcon(
+                  json.hourly_forecast[i].icon,
+                  json.hourly_forecast[i].FCTTIME.civil,
+                ),
+              });
+            }
+            resolve(weatherArr);
+          })
+          .catch(err => reject(new Error(err.message)));
+      }
+    });
   }
-  locationThenWeather() {
-    const currentMinute = moment().format('mm');
-    if (currentMinute === '00' || hasWeatherData === false) {
-      this.getLocation()
-        .then((locationObject) => {
-          console.log('Location resolved');
-          // Gets our weather from the weather undergound.
-          fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${locationObject.lat},${locationObject.long}.json`)
-            .then(response => response.json())
-            .then((json) => {
-              const weatherArr = [];
-              // Builds out an array to list weather information.
-              for (let i = 0; i < 5; i += 1) {
-                weatherArr.push({
-                  condition: json.hourly_forecast[i].condition,
-                  time: json.hourly_forecast[i].FCTTIME.civil,
-                  temp: `${json.hourly_forecast[i].temp.english}F`,
-                  icon: this.determineWeatherIcon(
-                    json.hourly_forecast[i].icon,
-                    json.hourly_forecast[i].FCTTIME.civil,
-                  ),
-                });
-              }
-              this.props.adjustWeather(weatherArr);
-              hasWeatherData = true;
-            })
-            .catch(err => err);
-          // Gets the location from the reverse geocode api provided by Google.
-          // This enables us to show the actual name of the location that the user is in.
-          fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
-            .then(response => response.json())
-            .then((geoloc) => {
-              console.log(geoloc);
-              this.props.adjustUserLoc(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`);
-            });
-          // Get the sunrise/sunset data
-          fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${locationObject.lat},${locationObject.long}.json`)
-            .then(response => response.json())
-            .then((sundata) => {
-              const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
-              const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
-              const sunriseMoment = moment(sunriseString, 'hh:mm:a');
-              const sunsetMoment = moment(sunsetString, 'hh:mm:a');
-              const sunObject = {
-                sunrise: sunriseMoment,
-                sunset: sunsetMoment,
-              };
-              this.props.adjustSunData(sunObject);
-            });
+  getSunData() {
+    return new Promise((resolve, reject) => {
+      // Get the sunrise/sunset data
+      fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
+        .then(response => response.json())
+        .then((sundata) => {
+          const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
+          const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
+          const sunriseMoment = moment(sunriseString, 'hh:mm:a');
+          const sunsetMoment = moment(sunsetString, 'hh:mm:a');
+          const sunObject = {
+            sunrise: sunriseMoment,
+            sunset: sunsetMoment,
+          };
+          resolve(sunObject);
         })
-        .catch(error =>
-          this.props.reportError(`Geolocation failed! \n ${error.message}`));
-    }
+        .catch(err => reject(new Error(err.message)));
+    });
   }
-  adjustBrightness() {
-    const isNight = this.props.isNight;
+  refineLocation(locationObject) {
+    return new Promise((resolve, reject) => {
+      // Gets the location from the reverse geocode api provided by Google.
+      // This enables us to show the actual name of the location that the user is in.
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
+        .then(response => response.json())
+        .then(geoloc => resolve(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`))
+        .catch(err => reject(err));
+    });
+  }
+  adjustBrightness(isNight) {
     fetch('/brightness', {
       method: 'POST',
       body: {

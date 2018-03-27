@@ -5,6 +5,7 @@ const initialState = {
   userLoc: '',
   userCoords: '',
   locationError: '',
+  hasWeatherData: false,
   weatherArr: [],
   sunrise: '',
   sunset: '',
@@ -29,6 +30,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         weatherArr: action.payload,
       };
+    case 'ADJUST_WEATHER_STATUS':
+      return {
+        ...state,
+        hasWeatherData: action.payload,
+      };
     case 'ADJUST_USERLOC':
       return {
         ...state,
@@ -38,8 +44,8 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         userCoords: {
-          latitude: action.payload.latitude,
-          longitude: action.payload.longitude,
+          lat: action.payload.lat,
+          long: action.payload.long,
         },
       };
     case 'ADJUST_SUNDATA':
