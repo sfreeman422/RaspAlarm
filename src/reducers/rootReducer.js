@@ -11,6 +11,7 @@ const initialState = {
   sunset: '',
   alarms: [],
   isNight: '',
+  loadingMessage: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -73,6 +74,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         locationError: action.payload,
+      };
+    case 'ADJUST_LOADING_STATUS':
+      return {
+        ...state,
+        loadingMessage: action.payload,
       };
     default:
       return state;

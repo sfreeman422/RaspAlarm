@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
 import { connect } from 'react-redux';
-import { adjustTime, adjustDate, adjustToday, adjustNight, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError, adjustWeatherStatus } from './actions/actions';
+import { adjustLoadingStatus, adjustTime, adjustDate, adjustToday, adjustNight, adjustWeather, adjustUserLoc, adjustUserCoords, adjustSunData, reportError, adjustWeatherStatus } from './actions/actions';
 import Clock from './components/Children/Clock';
 import Today from './components/Children/Today';
 import Weather from './components/Children/Weather';
@@ -25,6 +25,7 @@ const mapDispatchToProps = dispatch => ({
   adjustUserCoords: userCoords => dispatch(adjustUserCoords(userCoords)),
   adjustSunData: sunData => dispatch(adjustSunData(sunData)),
   adjustWeatherStatus: status => dispatch(adjustWeatherStatus(status)),
+  adjustLoadingStatus: status => dispatch(adjustLoadingStatus(status)),
   reportError: error => dispatch(reportError(error)),
 });
 const mapStateToProps = state => ({
@@ -55,23 +56,31 @@ class ConnectedMain extends React.Component {
     // This will also setState for time to the current time.
     timeInterval = setInterval(this.getTime, 100);
     // This is practically callback hell, what can we do here?
+    this.props.adjustLoadingStatus('Getting Location...');
     const userLoc = await this.getLocation().catch(err => err);
     if (userLoc instanceof Error) {
       this.props.reportError(`Geolocation failed! \n ${userLoc.message}`);
     } else {
+      this.props.adjustLoadingStatus('Refining Location...');
       this.props.adjustUserCoords(userLoc);
       const refinedLoc = await this.refineLocation(userLoc).catch(err => err);
       if (refinedLoc instanceof Error) {
         this.props.reportError(`Location Refinement Failed! \n ${refinedLoc.message}`);
       } else {
+        this.props.adjustLoadingStatus('Getting Weather...');
         this.props.adjustUserLoc(refinedLoc);
-        const weather = await this.getWeather();
-        this.props.adjustWeather(weather);
-        if (this.props.hasWeatherData === false) {
-          this.props.adjustWeatherStatus(true);
+        const weather = await this.getWeather().catch(err => err);
+        if (weather instanceof Error) {
+          this.props.reportError(`Error Getting Weather: ${weather.message}`);
+        } else {
+          this.props.adjustWeather(weather);
+          if (this.props.hasWeatherData === false) {
+            this.props.adjustWeatherStatus(true);
+          }
+          const sunData = await this.getSunData().catch(err => err);
+          this.props.adjustSunData(sunData);
+          this.props.adjustLoadingStatus('Done!');
         }
-        const sunData = await this.getSunData().catch(err => err);
-        this.props.adjustSunData(sunData);
       }
     }
     // Runs the locationThenWeather function every 60 seconds.
@@ -155,7 +164,7 @@ class ConnectedMain extends React.Component {
             }
             resolve(weatherArr);
           })
-          .catch(err => reject(new Error(err.message)));
+          .catch(err => reject(new Error(`Error Getting Weather: \n ${err.message}`)));
       }
     });
   }

@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 let animateInterval;
 let iconPosition = 1;
 const mapStateToProps = state => ({
-  locationError: state.locationError
+  locationError: state.locationError,
+  loadingMessage: state.loadingMessage,
 });
 
 class ConnectedLoading extends React.Component {
@@ -69,7 +70,7 @@ class ConnectedLoading extends React.Component {
         :
         <div className="loading">
           <i className={this.state.icon} id="loading" />
-          <p>Loading your weather...</p>
+          <p>{this.props.loadingMessage}</p>
         </div>);
   }
 }

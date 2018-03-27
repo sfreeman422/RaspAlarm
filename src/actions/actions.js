@@ -1,4 +1,4 @@
-import { ADJUST_TIME, ADJUST_DATE, ADJUST_TODAY, ADJUST_NIGHT, ADJUST_WEATHER, ADJUST_USERLOC, ADJUST_SUNDATA, GET_ALARMS, REPORT_ERROR, ADJUST_USERCOORDS, ADJUST_WEATHER_STATUS } from '../constants/action-types';
+import { ADJUST_LOADING_STATUS, ADJUST_TIME, ADJUST_DATE, ADJUST_TODAY, ADJUST_NIGHT, ADJUST_WEATHER, ADJUST_USERLOC, ADJUST_SUNDATA, GET_ALARMS, REPORT_ERROR, ADJUST_USERCOORDS, ADJUST_WEATHER_STATUS } from '../constants/action-types';
 
 export const adjustTime = time => ({
   type: ADJUST_TIME,
@@ -50,4 +50,9 @@ export const adjustUserCoords = location => ({
 export const adjustWeatherStatus = weatherStatus => ({
   type: ADJUST_WEATHER_STATUS,
   payload: weatherStatus,
+});
+
+export const adjustLoadingStatus = status => ({
+  type: ADJUST_LOADING_STATUS,
+  payload: status,
 });
