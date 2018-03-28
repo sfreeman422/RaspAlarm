@@ -1,12 +1,18 @@
 import React from 'react';
 import moment from 'moment';
 import fetch from 'isomorphic-fetch';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 
 const alarmSound = new Audio('./sounds/alarm.mp3');
 let alarmInterval;
 
-export default class Alarm extends React.Component {
+const mapStateToProps = state => ({
+  currentTime: state.time,
+});
+
+class ConnectedAlarm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,11 +35,11 @@ export default class Alarm extends React.Component {
   }
   getAlarms() {
     fetch('/alarms')
-    .then(res => res.json())
-    .then((alarms) => {
-      this.setState({ alarms });
-      this.checkAlarm();
-    });
+      .then(res => res.json())
+      .then((alarms) => {
+        this.setState({ alarms });
+        this.checkAlarm();
+      });
   }
   // Function to check whether its time for an alarm to go off or not.
   checkAlarm() {
@@ -56,7 +62,8 @@ export default class Alarm extends React.Component {
     }
   }
   removeAlarm(id) {
-    fetch('/deleteAlarm',
+    fetch(
+      '/deleteAlarm',
       {
         method: 'DELETE',
         body: JSON.stringify({
@@ -85,22 +92,28 @@ export default class Alarm extends React.Component {
     setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
   }
   render() {
-    if (this.state.alarmStatus === 'ringing') {
-      return (
-        <div id="alarm">
+    return (
+      <div id="alarm">
+        {this.state.alarmStatus === 'ringing' ?
           <button
             className="btn-lg btn-success"
             id="wakeUp"
             onClick={() => { this.awake(); }}
-          >Wake Up</button>
-        </div>
-      );
-    }
-
-    return (
-      <div id="alarm">
-        <h3><Link to="/AlarmManager">Set an alarm</Link></h3>
+          >
+            Wake Up
+          </button> :
+          <h3>
+            <Link to="/AlarmManager">Set an alarm</Link>
+          </h3>}
       </div>
     );
   }
 }
+
+const Alarm = connect(mapStateToProps)(ConnectedAlarm);
+
+ConnectedAlarm.propTypes = {
+  currentTime: PropTypes.string.isRequired,
+};
+
+export default Alarm;

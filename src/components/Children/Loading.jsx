@@ -1,8 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 let animateInterval;
 let iconPosition = 1;
-export default class Main extends React.Component {
+const mapStateToProps = state => ({
+  locationError: state.locationError,
+  loadingMessage: state.loadingMessage,
+});
+
+class ConnectedLoading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,13 +66,25 @@ export default class Main extends React.Component {
     return (
       this.props.locationError !== '' ?
         <div>
-          <p className="error">Woops!</p>
-          <p>{this.props.locationError}</p>
+          <p className="error">Error: {this.props.locationError}</p>
         </div>
-       :
+        :
         <div className="loading">
           <i className={this.state.icon} id="loading" />
-          <p>Loading your weather...</p>
+          <p>{this.props.loadingMessage}</p>
         </div>);
   }
 }
+
+const Loading = connect(mapStateToProps)(ConnectedLoading);
+
+ConnectedLoading.propTypes = {
+  locationError: PropTypes.string,
+  loadingMessage: PropTypes.string.isRequired,
+};
+
+ConnectedLoading.defaultProps = {
+  locationError: '',
+};
+
+export default Loading;

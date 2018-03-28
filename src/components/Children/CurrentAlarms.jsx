@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 
 function displayLetterForDayOfWeek(days) {
   const dayOfWeek = {
@@ -22,16 +23,20 @@ function displayLetterForDayOfWeek(days) {
   return responseString;
 }
 
-const CurrentAlarms = props => (
+const CurrentAlarms = ({ alarms, removeAlarm }) => (
   <div id="alarms">
-    {props.alarms.map((alarm, i) => (
+    {alarms.map((alarm, i) => (
       <div id="alarm" key={`alarm-${i}`}>
         <h3 id="alarmTime">{alarm.time}</h3>
         <p id="alarmDay">{displayLetterForDayOfWeek(alarm.dayOfWeek)}</p>
-        <h3 onClick={() => props.removeAlarm(alarm._id)}><span className="glyphicon glyphicon-trash"><Link to="/alarmManager" /></span></h3>
+        <h3 onClick={() => removeAlarm(alarm._id)}><span className="glyphicon glyphicon-trash"><Link to="/alarmManager" /></span></h3>
       </div>
     ))}
   </div>
 );
 
+CurrentAlarms.propTypes = {
+  alarms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  removeAlarm: PropTypes.func.isRequired,
+};
 export default CurrentAlarms;

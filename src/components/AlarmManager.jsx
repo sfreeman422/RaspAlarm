@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import moment from 'moment';
-import CurrentAlarms from './Children/CurrentAlarms.jsx';
+import CurrentAlarms from './Children/CurrentAlarms';
 
 let daysOfWeek = [];
 
@@ -53,62 +53,39 @@ export default class AlarmManager extends React.Component {
         this.setState({ alarms });
       });
   }
-  incrementMinute() {
-    if (this.state.minute === 55) {
-      this.setState({
-        minute: 0,
-        minuteDisplay: '00',
-      });
-    } else if (this.state.minute < 10) {
-      // Grab what the minute will be for the minuteDisplay
-      const stringMinute = this.state.minute + 5;
-      if (stringMinute === 10) {
+  setAlarm() {
+    const hour = this.state.hourDisplay;
+    const minute = this.state.minuteDisplay;
+    const { ampm } = this.state;
+    const data = {
+      hour,
+      minute,
+      ampm,
+      dayOfWeek: daysOfWeek,
+    };
+    fetch(
+      '/setAlarm',
+      {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+      },
+    )
+      .then(() => {
         this.setState({
-          minute: stringMinute,
-          minuteDisplay: stringMinute,
+          Monday: false,
+          Tuesday: false,
+          Wednesday: false,
+          Thursday: false,
+          Friday: false,
+          Saturday: false,
+          Sunday: false,
         });
-      } else {
-        this.setState({
-          minute: this.state.minute + 5,
-          minuteDisplay: `0${stringMinute.toString()}`,
-        });
-      }
-    } else {
-      this.setState({
-        minute: this.state.minute + 5,
-        minuteDisplay: this.state.minute + 5,
+        daysOfWeek = [];
+        this.getAlarms();
       });
-    }
-  }
-  changeAMPM() {
-    if (this.state.ampm === 'am') {
-      this.setState({
-        ampm: 'pm',
-      });
-    } else {
-      this.setState({
-        ampm: 'am',
-      });
-    }
-  }
-  // This new logic is super concise but presents an issue with the CSS when choosing days.
-  // Need to ensure that we can set a className based on the boolean in the day.
-  chooseDay(day) {
-    if (!this.state[day]) {
-      this.setState({
-        [day]: true,
-      });
-      daysOfWeek.push(day);
-    } else {
-      this.setState({
-        [day]: false,
-      });
-      for (let i = 0; i < daysOfWeek.length; i += 1) {
-        if (daysOfWeek[i] === day) {
-          daysOfWeek.splice(i, 1);
-        }
-      }
-    }
   }
   incrementHour() {
     if (this.state.hour === 12) {
@@ -137,40 +114,64 @@ export default class AlarmManager extends React.Component {
       });
     }
   }
-  setAlarm() {
-    const hour = this.state.hourDisplay;
-    const minute = this.state.minuteDisplay;
-    const ampm = this.state.ampm;
-    const data = {
-      hour,
-      minute,
-      ampm,
-      dayOfWeek: daysOfWeek,
-    };
-    fetch('/setAlarm',
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-      })
-      .then(() => {
-        this.setState({
-          Monday: false,
-          Tuesday: false,
-          Wednesday: false,
-          Thursday: false,
-          Friday: false,
-          Saturday: false,
-          Sunday: false,
-        });
-        daysOfWeek = [];
-        this.getAlarms();
+  changeAMPM() {
+    if (this.state.ampm === 'am') {
+      this.setState({
+        ampm: 'pm',
       });
+    } else {
+      this.setState({
+        ampm: 'am',
+      });
+    }
+  }
+  chooseDay(day) {
+    if (!this.state[day]) {
+      this.setState({
+        [day]: true,
+      });
+      daysOfWeek.push(day);
+    } else {
+      this.setState({
+        [day]: false,
+      });
+      for (let i = 0; i < daysOfWeek.length; i += 1) {
+        if (daysOfWeek[i] === day) {
+          daysOfWeek.splice(i, 1);
+        }
+      }
+    }
+  }
+  incrementMinute() {
+    if (this.state.minute === 55) {
+      this.setState({
+        minute: 0,
+        minuteDisplay: '00',
+      });
+    } else if (this.state.minute < 10) {
+      // Grab what the minute will be for the minuteDisplay
+      const stringMinute = this.state.minute + 5;
+      if (stringMinute === 10) {
+        this.setState({
+          minute: stringMinute,
+          minuteDisplay: stringMinute,
+        });
+      } else {
+        this.setState({
+          minute: this.state.minute + 5,
+          minuteDisplay: `0${stringMinute.toString()}`,
+        });
+      }
+    } else {
+      this.setState({
+        minute: this.state.minute + 5,
+        minuteDisplay: this.state.minute + 5,
+      });
+    }
   }
   removeAlarm(id) {
-    fetch('/deleteAlarm',
+    fetch(
+      '/deleteAlarm',
       {
         method: 'DELETE',
         body: JSON.stringify({

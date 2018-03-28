@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const Alarm = require('./app/models/Alarms.js');
+const Alarm = require('./models/Alarms.js');
 const methodOverride = require('method-override');
 const exec = require('child_process').exec;
 
@@ -41,21 +41,27 @@ app.get('/alarms', (req, res) => {
 app.post('/brightness', (req, res) => {
   if (process.env.isRaspberryPi === 'true') {
     if (req.body.isNight === 'true') {
-      exec('echo 20 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
-        if (error) {
-          res.json(`execError: ${error}`);
-        } else {
-          res.json('Successfully set brighness to night mode!');
-        }
-      });
+      exec(
+        'echo 20 > /sys/class/backlight/rpi_backlight/brightness',
+        (error, stdout, stderr) => {
+          if (error) {
+            res.json(`execError: ${error}`);
+          } else {
+            res.json('Successfully set brighness to night mode!');
+          }
+        },
+      );
     } else if (req.body.isNight !== 'true') {
-      exec('echo 255 > /sys/class/backlight/rpi_backlight/brightness', (error, stdout, stderr) => {
-        if (error) {
-          res.json(`execError: ${error}`);
-        } else {
-          res.json('Successfully set brightness to day mode!');
-        }
-      });
+      exec(
+        'echo 255 > /sys/class/backlight/rpi_backlight/brightness',
+        (error, stdout, stderr) => {
+          if (error) {
+            res.json(`execError: ${error}`);
+          } else {
+            res.json('Successfully set brightness to day mode!');
+          }
+        },
+      );
     }
   } else {
     res.json('RaspberryPi env variable not set. No changes made');

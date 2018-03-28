@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const WeatherPerDay = props => (
   <div className="weatherPerDay">
@@ -13,4 +14,10 @@ const WeatherPerDay = props => (
   </div>
 );
 
+WeatherPerDay.propTypes = {
+  icon: PropTypes.string.isRequired,
+  temp: PropTypes.string.isRequired,
+  condition: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+};
 export default WeatherPerDay;
