@@ -190,7 +190,12 @@ class ConnectedMain extends React.Component {
       // This enables us to show the actual name of the location that the user is in.
       fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
         .then(response => response.json())
-        .then(geoloc => (resolve(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`)))
+        .then((geoloc) => {
+          if (geoloc.error_message) {
+            reject(new Error(geoloc.error_message));
+          }
+          resolve(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`);
+        })
         .catch(err => reject(err));
     });
   }
