@@ -9,6 +9,9 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 
 # Changelog/Status
 
+## 3/28/16 - Redux Rewrite/Create-React-App Restructure
+- Restructured the app to use redux and create-react-app.
+
 ## 2/11/16 - Bug Fixes
 - Resolved error handling issues when the user chooses not to share their location.
 - Many modifications to code to make it more concise and easier to read.
@@ -49,7 +52,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 - Create private/config.json with key `wunderground` that includes your API key.
 - Set up `RaspAlarmMongoDB`, and `isRaspberryPi` as environment variables where RaspAlarmMongoDB is your Mongo instance you would like to use, and isRaspberryPi is a boolean describing whether or not this project is running on a Raspberry Pi.
 - If you are running on a pi, be sure to run `chmod 777 /sys/class/backlight/rpi_backlight/brightness` in order to take advantage of the auto-dim/brighten feature.
-- npm install
-- webpack
-- If you wish to take advantage of `chrome-refresh.sh`, run `bash chrome-refresh.sh /folder/you/want/to/watch`. It is best to use this in conjunction with `nodemon` and `webpack -w` so that any time the files in the repo change, your server refreshes, your webpack refresh and your webpage refreshes.
-- Visit localhost:3000 on your browser and enjoy!
+- `npm install`
+- `node server.js`
+- `npm run start` - Hit Y when it asks if you would like to use a different port.
+- Visit localhost:3001 on your browser and enjoy!

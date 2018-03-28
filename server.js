@@ -4,7 +4,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const Alarm = require('./models/Alarms.js');
 const methodOverride = require('method-override');
-const exec = require('child_process').exec;
+const { exec } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
