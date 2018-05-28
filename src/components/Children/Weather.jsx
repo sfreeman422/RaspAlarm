@@ -8,14 +8,11 @@ const mapStateToProps = state => ({
 });
 const ConnectedWeather = ({ weatherArr }) => (
   <div className="allWeather">
-    {weatherArr.map((weatherItem, index) =>
-      (<WeatherPerDay
-        key={`weather-${index}`}
-        icon={weatherItem.icon}
-        temp={weatherItem.temp}
-        condition={weatherItem.condition}
-        time={weatherItem.time}
-      />))}
+    {weatherArr.map((weatherItem, index) => (<WeatherPerDay
+      key={`weather-${index}`}
+      weatherItem={weatherItem}
+      up={index > 0 ? weatherItem.temp > weatherArr[index - 1].temp : undefined}
+    />))}
   </div>
 );
 

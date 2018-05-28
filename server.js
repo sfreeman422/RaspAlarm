@@ -27,6 +27,7 @@ app.use(methodOverride('_method'));
 app.get('/', (req, res) => {
   res.sendFile('./public/index.html');
 });
+
 // Route to grab the set alarms from the mongoDB.
 app.get('/alarms', (req, res) => {
   // Mongoose method to retrieve all
@@ -38,12 +39,14 @@ app.get('/alarms', (req, res) => {
     }
   });
 });
+
+// Adjusted brightness when running on a pi.
 app.post('/brightness', (req, res) => {
   if (process.env.isRaspberryPi === 'true') {
     if (req.body.isNight === 'true') {
       exec(
         'echo 20 > /sys/class/backlight/rpi_backlight/brightness',
-        (error, stdout, stderr) => {
+        (error) => {
           if (error) {
             res.json(`execError: ${error}`);
           } else {
@@ -54,7 +57,7 @@ app.post('/brightness', (req, res) => {
     } else if (req.body.isNight !== 'true') {
       exec(
         'echo 255 > /sys/class/backlight/rpi_backlight/brightness',
-        (error, stdout, stderr) => {
+        (error) => {
           if (error) {
             res.json(`execError: ${error}`);
           } else {
@@ -67,9 +70,9 @@ app.post('/brightness', (req, res) => {
     res.json('RaspberryPi env variable not set. No changes made');
   }
 });
+
 // Route to set alarms.
 app.post('/setAlarm', (req, res) => {
-  console.log(req.body);
   const userTime = `${req.body.hour}:${req.body.minute}${req.body.ampm}`;
   let oneTimeUse = false;
   if (req.body.dayOfWeek.length === 0) {
@@ -96,6 +99,7 @@ app.delete('/deleteAlarm', (req, res) => {
     res.status(200).json('Successfully removed.');
   });
 });
+
 // Listen to the port.
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

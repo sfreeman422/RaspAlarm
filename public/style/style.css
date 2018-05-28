@@ -24,7 +24,7 @@ body{
 	background-size: cover;
 	font-family: 'Roboto', sans-serif;
 }
-i{
+i {
 	color: white;
 	font-size: 550%;
 }
@@ -72,6 +72,16 @@ a{
 }
 .loading {
 	margin: 5%;
+}
+.material-icons {
+	font-size: 12px;
+	color: white;
+}
+#up {
+	color: orange;
+}
+#down {
+	color: lightblue;
 }
 #loadingText{
 	margin: 2%;

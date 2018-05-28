@@ -29,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
   adjustLoadingStatus: status => dispatch(actions.adjustLoadingStatus(status)),
   reportError: error => dispatch(actions.reportError(error)),
 });
+
 const mapStateToProps = state => ({
   time: state.time,
   date: state.date,
@@ -41,6 +42,7 @@ const mapStateToProps = state => ({
   hasWeatherData: state.hasWeatherData,
   weatherArr: state.weatherArr,
 });
+
 class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
@@ -90,6 +92,7 @@ class ConnectedMain extends React.Component {
     clearInterval(weatherInterval);
     clearInterval(timeInterval);
   }
+
   // Gets the time for the alarm clock.
   getTime() {
     if (this.props.time !== moment().format('hh:mma')) {
@@ -127,6 +130,7 @@ class ConnectedMain extends React.Component {
       }
     }
   }
+
   getLocation() {
     // Gets our location by coordinates using the geolocation api.
     return new Promise((resolve, reject) => {
@@ -137,6 +141,7 @@ class ConnectedMain extends React.Component {
       );
     });
   }
+
   // Gets the weather if we are at an 'oclock' or if we do not already have weatherData.
   getWeather() {
     return new Promise((resolve, reject) => {
@@ -165,6 +170,7 @@ class ConnectedMain extends React.Component {
       }
     });
   }
+
   getSunData() {
     return new Promise((resolve, reject) => {
       // Get the sunrise/sunset data
@@ -184,6 +190,7 @@ class ConnectedMain extends React.Component {
         .catch(err => reject(new Error(err.message)));
     });
   }
+
   refineLocation(locationObject) {
     return new Promise((resolve, reject) => {
       // Gets the location from the reverse geocode api provided by Google.
@@ -199,6 +206,7 @@ class ConnectedMain extends React.Component {
         .catch(err => reject(err));
     });
   }
+
   adjustBrightness(isNight) {
     fetch('/brightness', {
       method: 'POST',
@@ -210,6 +218,7 @@ class ConnectedMain extends React.Component {
       .then(resp => console.log(resp))
       .catch(e => console.log(e));
   }
+
   determineWeatherIcon(weatherState, hour) {
     const sunrise = moment(this.props.sunrise, 'hh:mm:a');
     const sunset = moment(this.props.sunset, 'hh:mm:a');
