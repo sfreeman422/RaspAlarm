@@ -28,6 +28,7 @@ const mapDispatchToProps = dispatch => ({
   adjustWeatherStatus: status => dispatch(actions.adjustWeatherStatus(status)),
   adjustLoadingStatus: status => dispatch(actions.adjustLoadingStatus(status)),
   reportError: error => dispatch(actions.reportError(error)),
+  addLocation: location => dispatch(actions.addLocation(location)),
 });
 
 const mapStateToProps = state => ({
@@ -41,6 +42,7 @@ const mapStateToProps = state => ({
   userCoords: state.userCoords,
   hasWeatherData: state.hasWeatherData,
   weatherArr: state.weatherArr,
+  coloredIcons: state.coloredIcons,
 });
 
 class ConnectedMain extends React.Component {
@@ -68,21 +70,26 @@ class ConnectedMain extends React.Component {
       if (refinedLoc instanceof Error) {
         this.props.reportError(`Location Refinement Failed! \n ${refinedLoc.message}`);
       } else {
-        this.props.adjustLoadingStatus('Getting Weather...');
+        this.props.adjustLoadingStatus('Getting Solar Information...');
         this.props.adjustUserLoc(refinedLoc);
-        const weather = await this.getWeather().catch(err => err);
-        if (weather instanceof Error) {
-          this.props.reportError(`Error Getting Weather: ${weather.message}`);
+        const sunData = await this.getSunData().catch(err => err);
+        this.props.adjustSunData(sunData);
+        if (sunData instanceof Error) {
+          this.props.reportError(`Error Getting SunData: ${sunData.message}`);
         } else {
-          this.props.adjustWeather(weather);
-          // Runs the locationThenWeather function every 60 seconds.
-          weatherInterval = setInterval(this.getWeather, 60000);
-          if (this.props.hasWeatherData === false) {
-            this.props.adjustWeatherStatus(true);
+          this.props.adjustLoadingStatus('Getting weather...');
+          const weather = await this.getWeather().catch(err => err);
+          if (weather instanceof Error) {
+            this.props.reportError(`Error Getting Weather: ${weather.message}`);
+          } else {
+            this.props.adjustWeather(weather);
+            // Runs the locationThenWeather function every 60 seconds.
+            weatherInterval = setInterval(this.getWeather, 60000);
+            if (this.props.hasWeatherData === false) {
+              this.props.adjustWeatherStatus(true);
+            }
+            this.props.adjustLoadingStatus('Done!');
           }
-          const sunData = await this.getSunData().catch(err => err);
-          this.props.adjustSunData(sunData);
-          this.props.adjustLoadingStatus('Done!');
         }
       }
     }
@@ -147,17 +154,32 @@ class ConnectedMain extends React.Component {
     return new Promise((resolve, reject) => {
       const currentMinute = moment().format('mm');
       if (currentMinute === '00' || this.props.hasWeatherData === false) {
+        console.log(this.props.userCoords.lat);
+        console.log(this.props.userCoords.long);
         // Gets our weather from the weather undergound.
         fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
           .then(response => response.json())
           .then((json) => {
+            console.log(json);
+            if (json.hourly_forecast.length === 0) {
+              reject(new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.'));
+            }
             const weatherArr = [];
             // Builds out an array to list weather information.
             for (let i = 0; i < 5; i += 1) {
               weatherArr.push({
                 condition: json.hourly_forecast[i].condition,
                 time: json.hourly_forecast[i].FCTTIME.civil,
-                temp: `${json.hourly_forecast[i].temp.english}F`,
+                temp: {
+                  english: {
+                    raw: parseInt(json.hourly_forecast[i].temp.english, 10),
+                    display: `${json.hourly_forecast[i].temp.english}F`,
+                  },
+                  metric: {
+                    raw: parseInt(json.hourly_forecast[i].temp.metric, 10),
+                    display: `${json.hourly_forecast[i].temp.metric}C`,
+                  },
+                },
                 icon: this.determineWeatherIcon(
                   json.hourly_forecast[i].icon,
                   json.hourly_forecast[i].FCTTIME.civil,
@@ -166,7 +188,7 @@ class ConnectedMain extends React.Component {
             }
             resolve(weatherArr);
           })
-          .catch(err => reject(new Error(`Error Getting Weather: \n ${err.message}`)));
+          .catch(err => reject(new Error(err.message)));
       }
     });
   }
@@ -192,10 +214,11 @@ class ConnectedMain extends React.Component {
   }
 
   refineLocation(locationObject) {
+    console.log(typeof locationObject);
     return new Promise((resolve, reject) => {
       // Gets the location from the reverse geocode api provided by Google.
       // This enables us to show the actual name of the location that the user is in.
-      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true`)
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true&key=${config.google_geocode}`)
         .then(response => response.json())
         .then((geoloc) => {
           if (geoloc.error_message) {
@@ -235,6 +258,7 @@ class ConnectedMain extends React.Component {
     return weatherIcons[weatherState].day;
   }
   render() {
+    console.log(this.props.weatherArr);
     return (
       <div className="container">
         <Clock />

@@ -3,6 +3,7 @@ const initialState = {
   date: '',
   today: '',
   userLoc: '',
+  savedLocations: [],
   userCoords: {
     lat: 0,
     long: 0,
@@ -15,6 +16,10 @@ const initialState = {
   alarms: [],
   isNight: false,
   loadingMessage: '',
+  showDeltas: true,
+  celcius: false,
+  preciseTemperature: true,
+  coloredIcons: true,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -78,10 +83,30 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         locationError: action.payload,
       };
+    case 'ADJUST_DELTAS':
+      return {
+        ...state,
+        showDeltas: action.payload,
+      };
     case 'ADJUST_LOADING_STATUS':
       return {
         ...state,
         loadingMessage: action.payload,
+      };
+    case 'SHOW_CELCIUS':
+      return {
+        ...state,
+        celcius: action.payload,
+      };
+    case 'SHOW_COLORED_ICONS':
+      return {
+        ...state,
+        coloredIcons: action.payload,
+      };
+    case 'ADD_LOCATION':
+      return {
+        ...state,
+        savedLocations: [...state.savedLocations, action.payload],
       };
     default:
       return state;

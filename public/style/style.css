@@ -1,61 +1,76 @@
 .verticalCenter{
 	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  	min-height: 100vh; /* These two lines are counted as one :-)       */
-  	display: flex;
-		align-items: center;
-		text-align: center;
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+	align-items: center;
+	text-align: center;
 }
+
 .container {
 	width: 80%;
 	margin: auto;
 	text-align: center;
+	max-width: 900px;
 }
+
 h1{
 	color: white;
 	font-size: 102px;
 	margin: 1%
 }
+
 p{
 	color: white;
 	margin: 0;
 }
+
 body{
 	background-color: black;
 	background-size: cover;
 	font-family: 'Roboto', sans-serif;
 }
+
 i {
 	color: white;
 	font-size: 550%;
 }
+
 a{
 	color:white;
 }
+
 .wi-day-sunny{
 	color: #fed039;
 }
+
 .wi-night-clear {
   color: #FAD976
 }
+
 .yellow {
 	color: #FAD976
 }
+
 .error {
 	color: red;
 }
+
 .weatherDescription{
 	margin-top: 15%;
 }
+
 .allWeather{
 		display: flex;
 		text-align: center;
 		align-items: center;
 		margin: 5% 0;
 	}
+	
 .weatherPerDay{
 	max-height:100%;
 	width: 20%;
 }
+
 .unselectable {
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -63,59 +78,83 @@ a{
     user-select: none;
     display: inline;
 }
+
 .dayOfWeek{
 	display: inline;
 	margin-right: 2%;
 }
+
 .glyphicon-trash{
 	color: red;
 }
+
 .loading {
 	margin: 5%;
 }
+
 .material-icons {
 	font-size: 12px;
 	color: white;
 }
+
 #up {
 	color: orange;
 }
+
 #down {
 	color: lightblue;
 }
+
 #loadingText{
 	margin: 2%;
 }
+
 #unselected{
 	color: grey;
 }
+
 #selected{
 	color: #FFFFFF;
 }
+
 #displayBlock{
 	display: block;
 }
+
 #setAlarm{
 	color:white;
 }
+
 #dayAndLoc{
 	font-size: 120%;
+	user-select: none;
 }
+
 #alarms{
 	display: flex;
 }
+
 #alarmTime{
 	color: white;
 }
+
 #alarmDay{
 	color: white;
 }
+
 #alarmManagerPrompt{
 	color:white;
 }
+
 #alarm {
 	margin: 0 1%;
 }
+
 #settings{
+	color: white;
+}
+
+#modal-button {
+	background-color: black;
 	color: white;
 }

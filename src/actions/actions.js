@@ -4,14 +4,17 @@ export const adjustTime = time => ({
   type: types.ADJUST_TIME,
   payload: time,
 });
+
 export const adjustDate = date => ({
   type: types.ADJUST_DATE,
   payload: date,
 });
+
 export const adjustToday = today => ({
   type: types.ADJUST_TODAY,
   payload: today,
 });
+
 export const adjustWeather = weather => ({
   type: types.ADJUST_WEATHER,
   payload: weather,
@@ -55,4 +58,24 @@ export const adjustWeatherStatus = weatherStatus => ({
 export const adjustLoadingStatus = status => ({
   type: types.ADJUST_LOADING_STATUS,
   payload: status,
+});
+
+export const adjustDeltas = delta => ({
+  type: types.ADJUST_DELTAS,
+  payload: delta,
+});
+
+export const showCelcius = celcius => ({
+  type: types.SHOW_CELCIUS,
+  payload: celcius,
+});
+
+export const showColoredIcons = showIcons => ({
+  type: types.SHOW_COLORED_ICONS,
+  payload: showIcons,
+});
+
+export const addLocation = location => ({
+  types: types.ADD_LOCATION,
+  payload: location,
 });
