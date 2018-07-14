@@ -48,97 +48,33 @@ const mapStateToProps = state => ({
 class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
-    this.getTime = this.getTime.bind(this);
+    this.setTime = this.setTime.bind(this);
     this.getWeather = this.getWeather.bind(this);
-    this.getLocation = this.getLocation.bind(this);
-    this.refineLocation = this.refineLocation.bind(this);
+    this.getUserCoordinates = this.getUserCoordinates.bind(this);
+    this.getUserCity = this.getUserCity.bind(this);
     this.determineWeatherIcon = this.determineWeatherIcon.bind(this);
+    this.determineNightState = this.determineNightState.bind(this);
     this.adjustBrightness = this.adjustBrightness.bind(this);
   }
-  async componentDidMount() {
-    this.getTime();
-    timeInterval = setInterval(this.getTime, 100);
-    // This is practically callback hell, what can we do here?
-    this.props.adjustLoadingStatus('Getting Location...');
-    const userLoc = await this.getLocation().catch(err => err);
-    if (userLoc instanceof Error) {
-      this.props.reportError(`Geolocation failed! \n ${userLoc.message}`);
-    } else {
-      this.props.adjustLoadingStatus('Refining Location...');
-      this.props.adjustUserCoords(userLoc);
-      const refinedLoc = await this.refineLocation(userLoc).catch(err => err);
-      if (refinedLoc instanceof Error) {
-        this.props.reportError(`Location Refinement Failed! \n ${refinedLoc.message}`);
-      } else {
-        this.props.adjustLoadingStatus('Getting Solar Information...');
-        this.props.adjustUserLoc(refinedLoc);
-        const sunData = await this.getSunData().catch(err => err);
-        this.props.adjustSunData(sunData);
-        if (sunData instanceof Error) {
-          this.props.reportError(`Error Getting SunData: ${sunData.message}`);
-        } else {
-          this.props.adjustLoadingStatus('Getting weather...');
-          const weather = await this.getWeather().catch(err => err);
-          if (weather instanceof Error) {
-            this.props.reportError(`Error Getting Weather: ${weather.message}`);
-          } else {
-            this.props.adjustWeather(weather);
-            // Runs the locationThenWeather function every 60 seconds.
-            weatherInterval = setInterval(this.getWeather, 60000);
-            if (this.props.hasWeatherData === false) {
-              this.props.adjustWeatherStatus(true);
-            }
-            this.props.adjustLoadingStatus('Done!');
-          }
-        }
-      }
-    }
-    // this.adjustBrightness();
+
+  componentDidMount() {
+    this.setTime();
+    timeInterval = setInterval(this.setTime, 100);
+    this.initializeApp();
   }
   componentWillUnmount() {
     clearInterval(weatherInterval);
     clearInterval(timeInterval);
   }
 
-  // Gets the time for the alarm clock.
-  getTime() {
-    if (this.props.time !== moment().format('hh:mma')) {
-      const time = moment().format('hh:mma');
-      this.props.adjustTime(time);
-    }
-    if (this.props.date !== moment().format('MMMM Do YYYY')) {
-      const date = moment().format('MMMM Do YYYY');
-      this.props.adjustDate(date);
-    }
-    if (this.props.today !== moment().format('dddd')) {
-      const today = moment().format('dddd');
-      this.props.adjustToday(today);
-    }
-    // Need to work with this. Currently semi-broken anyway.
-    // If time is equal to sunset, set to night.
-    // If time is after sunset and before sunrise, set to night.
-    // Only set to night if our isNight changes.
-
-    const time = moment(this.props.time, 'hh:mm:a');
-    const sunset = moment(this.props.sunset, 'hh:mm:a');
-    const sunrise = moment(this.props.sunrise, 'hh:mm:a');
-    if (time === sunset ||
-      (time.isAfter(sunset) && time.isBefore(sunrise))) {
-      if (this.props.isNight !== true) {
-        this.props.adjustNight(true);
-        this.adjustBrightness(true);
-      }
-    }
-    if (time === sunrise ||
-      (time.isAfter(sunrise) && time.isBefore(sunset))) {
-      if (this.props.isNight !== false) {
-        this.props.adjustNight(false);
-        this.adjustBrightness(false);
-      }
-    }
+  setTime() {
+    this.props.adjustTime(moment().format('hh:mma'));
+    this.props.adjustDate(moment().format('MMMM Do YYYY'));
+    this.props.adjustToday(moment().format('dddd'));
+    this.determineNightState();
   }
 
-  getLocation() {
+  getUserCoordinates() {
     // Gets our location by coordinates using the geolocation api.
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
@@ -151,16 +87,12 @@ class ConnectedMain extends React.Component {
 
   // Gets the weather if we are at an 'oclock' or if we do not already have weatherData.
   getWeather() {
-    return new Promise((resolve, reject) => {
-      const currentMinute = moment().format('mm');
-      if (currentMinute === '00' || this.props.hasWeatherData === false) {
-        console.log(this.props.userCoords.lat);
-        console.log(this.props.userCoords.long);
-        // Gets our weather from the weather undergound.
+    if (moment().format('mm') === '00' || this.props.hasWeatherData === false) {
+      return new Promise((resolve, reject) => {
+      // Gets our weather from the weather undergound.
         fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
           .then(response => response.json())
           .then((json) => {
-            console.log(json);
             if (json.hourly_forecast.length === 0) {
               reject(new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.'));
             }
@@ -189,8 +121,8 @@ class ConnectedMain extends React.Component {
             resolve(weatherArr);
           })
           .catch(err => reject(new Error(err.message)));
-      }
-    });
+      });
+    } return this.props.weatherArr;
   }
 
   getSunData() {
@@ -199,25 +131,17 @@ class ConnectedMain extends React.Component {
       fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
         .then(response => response.json())
         .then((sundata) => {
-          const sunriseString = `0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`;
-          const sunsetString = `0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`;
-          const sunriseMoment = moment(sunriseString, 'hh:mm:a');
-          const sunsetMoment = moment(sunsetString, 'hh:mm:a');
-          const sunObject = {
-            sunrise: sunriseMoment,
-            sunset: sunsetMoment,
-          };
-          resolve(sunObject);
+          resolve({
+            sunrise: moment(`0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`, 'hh:mm:a'),
+            sunset: moment(`0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`, 'hh:mm:a'),
+          });
         })
         .catch(err => reject(new Error(err.message)));
     });
   }
 
-  refineLocation(locationObject) {
-    console.log(typeof locationObject);
+  getUserCity(locationObject) {
     return new Promise((resolve, reject) => {
-      // Gets the location from the reverse geocode api provided by Google.
-      // This enables us to show the actual name of the location that the user is in.
       fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true&key=${config.google_geocode}`)
         .then(response => response.json())
         .then((geoloc) => {
@@ -228,6 +152,38 @@ class ConnectedMain extends React.Component {
         })
         .catch(err => reject(err));
     });
+  }
+
+  determineNightState() {
+    if (moment(this.props.time, 'hh:mm:a').isBetween(
+      moment(this.props.sunset, 'hh:mm:a'),
+      moment(this.props.sunrise, 'hh:mm:a'),
+    ) && !this.props.isNight) {
+      this.props.adjustNight(true);
+      this.adjustBrightness(true);
+    } else if (this.props.isNight) {
+      this.props.adjustNight(false);
+      this.adjustBrightness(false);
+    }
+  }
+
+  async initializeApp() {
+    this.props.adjustLoadingStatus('Getting Location...');
+    const userCoordinates = await this.getUserCoordinates().catch(err => this.props.reportError(`Geolocation failed! \n ${err.message}`));
+    this.props.adjustLoadingStatus('Refining Location...');
+    this.props.adjustUserCoords(userCoordinates);
+    const userCity = await this.getUserCity(userCoordinates).catch(err => this.props.reportError(`Location Refinement Failed! \n ${err.message}`));
+    this.props.adjustLoadingStatus('Getting Solar Information...');
+    this.props.adjustUserLoc(userCity);
+    const sunData = await this.getSunData().catch(err => this.props.reportError(`Sunrise/sunset retrieval failed! \n ${err.message}`));
+    this.props.adjustSunData(sunData);
+    this.props.adjustLoadingStatus('Getting weather...');
+    const weather = await this.getWeather().catch(err => this.props.reportError(`Weather retrieval failed! \n ${err.message}`));
+    this.props.adjustWeather(weather);
+    weatherInterval = setInterval(this.getWeather, 60000);
+    this.props.adjustWeatherStatus(true);
+    this.props.adjustLoadingStatus('Done!');
+    this.adjustBrightness();
   }
 
   adjustBrightness(isNight) {
@@ -258,7 +214,6 @@ class ConnectedMain extends React.Component {
     return weatherIcons[weatherState].day;
   }
   render() {
-    console.log(this.props.weatherArr);
     return (
       <div className="container">
         <Clock />
