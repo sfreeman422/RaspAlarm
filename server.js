@@ -8,12 +8,14 @@ const { exec } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-// Connect to mongo and let us know that we are successfully connected or there was an error.
+
 mongoose.connect(process.env.RaspAlarmMongoDB);
+
 const db = mongoose.connection;
 db.on('open', () => {
   console.log('Connected to MongoDB on port 27017.');
 });
+
 db.on('error', (err) => {
   console.log(`An error has occurred: ${err}`);
 });
@@ -23,16 +25,13 @@ app.use(bodyParser());
 app.use(express.static('./public'));
 app.use(methodOverride('_method'));
 
-// Initial route to load the page for the Timer, weather information, etc.
 app.get('/', (req, res) => {
   res.sendFile('./public/index.html');
 });
 
-// Route to grab the set alarms from the mongoDB.
 app.get('/alarms', (req, res) => {
-  // Mongoose method to retrieve all
   Alarm.find({}, (err, docs) => {
-    if (!err && docs) {
+    if (!err) {
       res.json(docs);
     } else {
       throw err;
@@ -40,7 +39,7 @@ app.get('/alarms', (req, res) => {
   });
 });
 
-// Adjusted brightness when running on a pi.
+// Adjusts brightness when running on a pi.
 app.post('/brightness', (req, res) => {
   if (process.env.isRaspberryPi === 'true') {
     if (req.body.isNight === 'true') {
