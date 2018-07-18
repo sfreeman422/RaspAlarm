@@ -143,7 +143,7 @@ export default class AlarmManager extends React.Component {
     }
   }
   incrementMinute() {
-    if (this.state.minute === 55) {
+    if (this.state.minute >= 55 && this.state.minute <= 59) {
       this.setState({
         minute: 0,
         minuteDisplay: '00',

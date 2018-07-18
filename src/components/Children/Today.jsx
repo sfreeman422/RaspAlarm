@@ -37,25 +37,20 @@ class ConnectedToday extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsOpen: false,
+      isModalOpen: false,
       temperaturePrecision: true,
     };
 
     this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
   openModal() {
-    this.setState({ modalIsOpen: true });
-  }
-
-  afterOpenModal() {
-    console.log('afterOpenModal triggered');
+    this.setState({ isModalOpen: true });
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ isModalOpen: false });
   }
 
   render() {
@@ -79,7 +74,8 @@ class ConnectedToday extends React.Component {
             <i className="material-icons" onClick={() => this.openModal()}> settings </i>
           </p>
         </div>
-        <Modal isOpen={this.state.modalIsOpen} style={modalStyle}>
+        { /* This should be moved out to a separate modal component */}
+        <Modal isOpen={this.state.isModalOpen} style={modalStyle}>
           <h1>Settings</h1>
           <table>
             <tbody>
