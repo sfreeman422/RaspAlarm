@@ -59,7 +59,7 @@ class ConnectedMain extends React.Component {
   componentDidMount() {
     this.setTime();
     timeInterval = setInterval(this.setTime, 100);
-    this.initializeApp();
+    this.initializeApp().catch(err => this.props.reportError(err.message));
   }
   componentWillUnmount() {
     clearInterval(weatherInterval);
@@ -77,7 +77,7 @@ class ConnectedMain extends React.Component {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
         position => resolve({ lat: position.coords.latitude, long: position.coords.longitude }),
-        error => reject(new Error(error.message)),
+        error => reject(new Error(`Geolocation failed! \n ${error.message}`)),
         { timeout: 30000 },
       );
     });
@@ -116,7 +116,7 @@ class ConnectedMain extends React.Component {
           }
           resolve(weatherArr);
         })
-        .catch(err => reject(new Error(err.message)));
+        .catch(err => reject(new Error(`Weather retrieval failed! \n ${err.message}`)));
     });
   }
 
@@ -131,7 +131,7 @@ class ConnectedMain extends React.Component {
             sunset: moment(`0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`, 'hh:mm:a'),
           });
         })
-        .catch(err => reject(new Error(err.message)));
+        .catch(err => reject(new Error(`Sunrise/sunset retrieval failed! \n ${err.message}`)));
     });
   }
 
@@ -141,11 +141,11 @@ class ConnectedMain extends React.Component {
         .then(response => response.json())
         .then((geoloc) => {
           if (geoloc.error_message) {
-            reject(new Error(geoloc.error_message));
+            reject(new Error(`Location Refinement Failed! \n ${geoloc.error_message}`));
           }
           resolve(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`);
         })
-        .catch(err => reject(err));
+        .catch(err => reject(new Error(`Location Refinement Failed! \n Unknown error: ${err}`)));
     });
   }
 
@@ -164,22 +164,22 @@ class ConnectedMain extends React.Component {
 
   async initializeApp() {
     this.props.adjustLoadingStatus('Getting Location...');
-    const userCoordinates = await this.getUserCoordinates().catch(err => this.props.reportError(`Geolocation failed! \n ${err.message}`));
+    const userCoordinates = await this.getUserCoordinates();
     this.props.adjustLoadingStatus('Refining Location...');
     this.props.adjustUserCoords(userCoordinates);
-    const userCity = await this.getUserCity(userCoordinates).catch(err => this.props.reportError(`Location Refinement Failed! \n ${err.message}`));
+    const userCity = await this.getUserCity(userCoordinates);
     this.props.adjustLoadingStatus('Getting Solar Information...');
     this.props.adjustUserLoc(userCity);
-    const sunData = await this.getSunData().catch(err => this.props.reportError(`Sunrise/sunset retrieval failed! \n ${err.message}`));
+    const sunData = await this.getSunData();
     this.props.adjustSunData(sunData);
     this.props.adjustLoadingStatus('Getting weather...');
-    const weather = await this.getWeather().catch(err => this.props.reportError(`Weather retrieval failed! \n ${err.message}`));
+    const weather = await this.getWeather();
     this.props.adjustWeather(weather);
     weatherInterval = setInterval(() => {
       if (this.props.userCoords && (moment().format('mm') === '00' || this.props.hasWeatherData === false)) {
         this.getWeather();
       }
-    }, 60000);
+    }, 30000);
     this.props.adjustWeatherStatus(true);
     this.props.adjustLoadingStatus('Done!');
     this.adjustBrightness();
