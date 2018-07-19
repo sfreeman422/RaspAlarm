@@ -34,8 +34,6 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   time: state.time,
-  date: state.date,
-  today: state.today,
   isNight: state.isNight,
   sunset: state.sunset,
   sunrise: state.sunrise,
@@ -235,8 +233,6 @@ ConnectedMain.propTypes = {
   reportError: PropTypes.func.isRequired,
   hasWeatherData: PropTypes.bool.isRequired,
   time: PropTypes.string.isRequired,
-  date: PropTypes.object.isRequired,
-  today: PropTypes.string.isRequired,
   sunset: PropTypes.object.isRequired,
   sunrise: PropTypes.object.isRequired,
   isNight: PropTypes.bool.isRequired,

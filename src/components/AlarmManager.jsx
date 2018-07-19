@@ -4,8 +4,6 @@ import fetch from 'isomorphic-fetch';
 import moment from 'moment';
 import CurrentAlarms from './Children/CurrentAlarms';
 
-let daysOfWeek = [];
-
 export default class AlarmManager extends React.Component {
   constructor() {
     super();
@@ -22,6 +20,7 @@ export default class AlarmManager extends React.Component {
       Sunday: false,
       alarms: [],
     };
+    this.daysOfWeek = [];
     this.incrementHour = this.incrementHour.bind(this);
     this.incrementMinute = this.incrementMinute.bind(this);
     this.changeAMPM = this.changeAMPM.bind(this);
@@ -50,7 +49,7 @@ export default class AlarmManager extends React.Component {
       hour: this.state.hour < 10 ? `0${hour}` : hour,
       minute: this.state.minute < 10 ? `0${minute}` : minute,
       ampm,
-      dayOfWeek: daysOfWeek,
+      dayOfWeek: this.daysOfWeek,
     };
 
     fetch(
@@ -72,7 +71,7 @@ export default class AlarmManager extends React.Component {
         Saturday: false,
         Sunday: false,
       });
-      daysOfWeek = [];
+      this.daysOfWeek = [];
       this.getAlarms();
     });
   }
@@ -119,14 +118,14 @@ export default class AlarmManager extends React.Component {
       this.setState({
         [day]: true,
       });
-      daysOfWeek.push(day);
+      this.daysOfWeek.push(day);
     } else {
       this.setState({
         [day]: false,
       });
-      for (let i = 0; i < daysOfWeek.length; i += 1) {
-        if (daysOfWeek[i] === day) {
-          daysOfWeek.splice(i, 1);
+      for (let i = 0; i < this.daysOfWeek.length; i += 1) {
+        if (this.daysOfWeek[i] === day) {
+          this.daysOfWeek.splice(i, 1);
         }
       }
     }
