@@ -35,7 +35,7 @@ class ConnectedToday extends React.Component {
       <div className="today">
         <div className="weekday">
           <p id="dayAndLoc">{day}, {date}
-            {userLoc !== '' ? <span onClick={() => console.log('user location was clicked.')}> in {userLoc} </span> : null}
+            {userLoc !== '' ? <span> in {userLoc} </span> : null}
             <i className="material-icons" onClick={() => this.toggleModal()}> settings </i>
           </p>
         </div>

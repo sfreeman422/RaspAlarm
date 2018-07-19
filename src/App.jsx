@@ -194,7 +194,7 @@ class ConnectedMain extends React.Component {
     })
       .then(res => res.json())
       .then(resp => console.log(resp))
-      .catch(e => console.log(e));
+      .catch(e => console.error(e));
   }
 
   determineWeatherIcon(weatherState, hour) {
