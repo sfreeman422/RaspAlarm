@@ -68,7 +68,6 @@ class ConnectedMain extends React.Component {
 
   setTime() {
     this.props.setTime(moment().format('hh:mma'));
-    console.log('Setting time of ', moment().format('hh:mma'));
     this.props.setDate(moment().format('MMMM Do YYYY'));
     this.props.setToday(moment().format('dddd'));
     this.determineNightState();
@@ -150,17 +149,16 @@ class ConnectedMain extends React.Component {
     });
   }
 
-  determineNightState() {
-    if (moment(this.props.time, 'hh:mm:a').isBetween(
-      moment(this.props.sunset, 'hh:mm:a'),
-      moment(this.props.sunrise, 'hh:mm:a'),
-    ) && !this.props.isNight) {
-      this.props.setNight(true);
-      this.setBrightness(true);
-    } else if (this.props.isNight) {
-      this.props.setNight(false);
-      this.setBrightness(false);
-    }
+  setBrightness(isNight) {
+    fetch('/brightness', {
+      method: 'POST',
+      body: {
+        isNight,
+      },
+    })
+      .then(res => res.json())
+      .then(resp => console.log(resp))
+      .catch(e => console.error(e));
   }
 
   async initializeApp() {
@@ -186,16 +184,17 @@ class ConnectedMain extends React.Component {
     this.setBrightness();
   }
 
-  setBrightness(isNight) {
-    fetch('/brightness', {
-      method: 'POST',
-      body: {
-        isNight,
-      },
-    })
-      .then(res => res.json())
-      .then(resp => console.log(resp))
-      .catch(e => console.error(e));
+  determineNightState() {
+    if (moment(this.props.time, 'hh:mm:a').isBetween(
+      moment(this.props.sunset, 'hh:mm:a'),
+      moment(this.props.sunrise, 'hh:mm:a'),
+    ) && !this.props.isNight) {
+      this.props.setNight(true);
+      this.setBrightness(true);
+    } else if (this.props.isNight) {
+      this.props.setNight(false);
+      this.setBrightness(false);
+    }
   }
 
   determineWeatherIcon(weatherState, hour) {
