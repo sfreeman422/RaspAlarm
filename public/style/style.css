@@ -97,6 +97,11 @@ a{
 	color: white;
 }
 
+.clock {
+	display: flex;
+	justify-content: center;
+}
+
 #up {
 	color: orange;
 }
@@ -160,5 +165,9 @@ a{
 }
 
 #timeSet > h1 {
+	margin: 0;
+}
+
+#blink {
 	margin: 0;
 }

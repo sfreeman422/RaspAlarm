@@ -9,12 +9,14 @@ const mapStateToProps = state => ({
   celcius: state.celcius,
   coloredIcons: state.coloredIcons,
   userLoc: state.userLoc,
+  blinkTime: state.blinkTime,
 });
 
 const mapDispatchToProps = dispatch => ({
-  adjustDeltas: delta => dispatch(actions.adjustDeltas(delta)),
+  setDeltas: delta => dispatch(actions.setDeltas(delta)),
   showCelcius: celcius => dispatch(actions.showCelcius(celcius)),
   showColoredIcons: showIcons => dispatch(actions.showColoredIcons(showIcons)),
+  setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
 });
 
 Modal.setAppElement('#root');
@@ -44,11 +46,13 @@ class ConnectedSettings extends React.Component {
       celcius,
       showCelcius,
       showDeltas,
-      adjustDeltas,
+      setDeltas,
       coloredIcons,
       showColoredIcons,
       isOpen,
       toggleModal,
+      setBlinkTime,
+      blinkTime,
     } = this.props;
     return (
       <Modal isOpen={isOpen} style={modalStyle}>
@@ -68,7 +72,11 @@ class ConnectedSettings extends React.Component {
             </tr>
             <tr>
               <td>Show Temperature Delta Indicators? </td>
-              <td><input type="checkbox" checked={showDeltas} onChange={() => adjustDeltas(!showDeltas)} /></td>
+              <td><input type="checkbox" checked={showDeltas} onChange={() => setDeltas(!showDeltas)} /></td>
+            </tr>
+            <tr>
+              <td>Blink Time Colon</td>
+              <td><input type="checkbox" checked={blinkTime} onChange={() => setBlinkTime(!blinkTime)} /></td>
             </tr>
             <tr>
               <td>Show Colored Sun Icon? (WIP)</td>
@@ -90,11 +98,13 @@ ConnectedSettings.propTypes = {
   celcius: PropTypes.bool.isRequired,
   showCelcius: PropTypes.func.isRequired,
   showDeltas: PropTypes.bool.isRequired,
-  adjustDeltas: PropTypes.func.isRequired,
+  setDeltas: PropTypes.func.isRequired,
   coloredIcons: PropTypes.bool.isRequired,
   showColoredIcons: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
+  setBlinkTime: PropTypes.func.isRequired,
+  blinkTime: PropTypes.bool.isRequired,
 };
 
 const SettingsModal = connect(mapStateToProps, mapDispatchToProps)(ConnectedSettings);

@@ -18,16 +18,16 @@ let weatherInterval;
 let timeInterval;
 
 const mapDispatchToProps = dispatch => ({
-  adjustTime: time => dispatch(actions.adjustTime(time)),
-  adjustDate: date => dispatch(actions.adjustDate(date)),
-  adjustToday: today => dispatch(actions.adjustToday(today)),
-  adjustNight: night => dispatch(actions.adjustNight(night)),
-  adjustWeather: weatherArr => dispatch(actions.adjustWeather(weatherArr)),
-  adjustUserLoc: userLoc => dispatch(actions.adjustUserLoc(userLoc)),
-  adjustUserCoords: userCoords => dispatch(actions.adjustUserCoords(userCoords)),
-  adjustSunData: sunData => dispatch(actions.adjustSunData(sunData)),
-  adjustWeatherStatus: status => dispatch(actions.adjustWeatherStatus(status)),
-  adjustLoadingStatus: status => dispatch(actions.adjustLoadingStatus(status)),
+  setTime: time => dispatch(actions.setTime(time)),
+  setDate: date => dispatch(actions.setDate(date)),
+  setToday: today => dispatch(actions.setToday(today)),
+  setNight: night => dispatch(actions.setNight(night)),
+  setWeather: weatherArr => dispatch(actions.setWeather(weatherArr)),
+  setUserLoc: userLoc => dispatch(actions.setUserLoc(userLoc)),
+  setUserCoords: userCoords => dispatch(actions.setUserCoords(userCoords)),
+  setSunData: sunData => dispatch(actions.setSunData(sunData)),
+  setWeatherStatus: status => dispatch(actions.setWeatherStatus(status)),
+  setLoadingStatus: status => dispatch(actions.setLoadingStatus(status)),
   reportError: error => dispatch(actions.reportError(error)),
   addLocation: location => dispatch(actions.addLocation(location)),
 });
@@ -53,7 +53,7 @@ class ConnectedMain extends React.Component {
     this.getUserCity = this.getUserCity.bind(this);
     this.determineWeatherIcon = this.determineWeatherIcon.bind(this);
     this.determineNightState = this.determineNightState.bind(this);
-    this.adjustBrightness = this.adjustBrightness.bind(this);
+    this.setBrightness = this.setBrightness.bind(this);
   }
 
   componentDidMount() {
@@ -67,9 +67,10 @@ class ConnectedMain extends React.Component {
   }
 
   setTime() {
-    this.props.adjustTime(moment().format('hh:mma'));
-    this.props.adjustDate(moment().format('MMMM Do YYYY'));
-    this.props.adjustToday(moment().format('dddd'));
+    this.props.setTime(moment().format('hh:mma'));
+    console.log('Setting time of ', moment().format('hh:mma'));
+    this.props.setDate(moment().format('MMMM Do YYYY'));
+    this.props.setToday(moment().format('dddd'));
     this.determineNightState();
   }
 
@@ -154,38 +155,38 @@ class ConnectedMain extends React.Component {
       moment(this.props.sunset, 'hh:mm:a'),
       moment(this.props.sunrise, 'hh:mm:a'),
     ) && !this.props.isNight) {
-      this.props.adjustNight(true);
-      this.adjustBrightness(true);
+      this.props.setNight(true);
+      this.setBrightness(true);
     } else if (this.props.isNight) {
-      this.props.adjustNight(false);
-      this.adjustBrightness(false);
+      this.props.setNight(false);
+      this.setBrightness(false);
     }
   }
 
   async initializeApp() {
-    this.props.adjustLoadingStatus('Getting Location...');
+    this.props.setLoadingStatus('Getting Location...');
     const userCoordinates = await this.getUserCoordinates();
-    this.props.adjustLoadingStatus('Refining Location...');
-    this.props.adjustUserCoords(userCoordinates);
+    this.props.setLoadingStatus('Refining Location...');
+    this.props.setUserCoords(userCoordinates);
     const userCity = await this.getUserCity(userCoordinates);
-    this.props.adjustLoadingStatus('Getting Solar Information...');
-    this.props.adjustUserLoc(userCity);
+    this.props.setLoadingStatus('Getting Solar Information...');
+    this.props.setUserLoc(userCity);
     const sunData = await this.getSunData();
-    this.props.adjustSunData(sunData);
-    this.props.adjustLoadingStatus('Getting weather...');
+    this.props.setSunData(sunData);
+    this.props.setLoadingStatus('Getting weather...');
     const weather = await this.getWeather();
-    this.props.adjustWeather(weather);
+    this.props.setWeather(weather);
     weatherInterval = setInterval(() => {
       if (this.props.userCoords && (moment().format('mm') === '00' || this.props.hasWeatherData === false)) {
         this.getWeather();
       }
     }, 30000);
-    this.props.adjustWeatherStatus(true);
-    this.props.adjustLoadingStatus('Done!');
-    this.adjustBrightness();
+    this.props.setWeatherStatus(true);
+    this.props.setLoadingStatus('Done!');
+    this.setBrightness();
   }
 
-  adjustBrightness(isNight) {
+  setBrightness(isNight) {
     fetch('/brightness', {
       method: 'POST',
       body: {
@@ -220,16 +221,16 @@ class ConnectedMain extends React.Component {
 }
 
 ConnectedMain.propTypes = {
-  adjustLoadingStatus: PropTypes.func.isRequired,
-  adjustUserCoords: PropTypes.func.isRequired,
-  adjustUserLoc: PropTypes.func.isRequired,
-  adjustWeather: PropTypes.func.isRequired,
-  adjustWeatherStatus: PropTypes.func.isRequired,
-  adjustSunData: PropTypes.func.isRequired,
-  adjustTime: PropTypes.func.isRequired,
-  adjustDate: PropTypes.func.isRequired,
-  adjustToday: PropTypes.func.isRequired,
-  adjustNight: PropTypes.func.isRequired,
+  setLoadingStatus: PropTypes.func.isRequired,
+  setUserCoords: PropTypes.func.isRequired,
+  setUserLoc: PropTypes.func.isRequired,
+  setWeather: PropTypes.func.isRequired,
+  setWeatherStatus: PropTypes.func.isRequired,
+  setSunData: PropTypes.func.isRequired,
+  setTime: PropTypes.func.isRequired,
+  setDate: PropTypes.func.isRequired,
+  setToday: PropTypes.func.isRequired,
+  setNight: PropTypes.func.isRequired,
   reportError: PropTypes.func.isRequired,
   hasWeatherData: PropTypes.bool.isRequired,
   time: PropTypes.string.isRequired,
