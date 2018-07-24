@@ -10,7 +10,7 @@ import Today from './components/Children/Today';
 import Weather from './components/Children/Weather';
 import Alarm from './components/Children/Alarm';
 import Loading from './components/Children/Loading';
-import weatherIcons from './components/weatherIcons.json';
+import * as weatherIcons from './components/weatherIcons.json';
 
 const config = require('./private/config.json');
 
