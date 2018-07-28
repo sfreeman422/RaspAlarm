@@ -84,69 +84,61 @@ class ConnectedMain extends React.Component {
   }
 
   getWeather() {
-    return new Promise((resolve, reject) => {
-      // Gets our weather from the weather undergound.
-      fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
-        .then(response => response.json())
-        .then((json) => {
-          if (json.hourly_forecast.length === 0) {
-            reject(new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.'));
-          }
-          const weatherArr = [];
-          // Builds out an array to list weather information.
-          for (let i = 0; i < 5; i += 1) {
-            weatherArr.push({
-              condition: json.hourly_forecast[i].condition,
-              time: json.hourly_forecast[i].FCTTIME.civil,
-              temp: {
-                english: {
-                  raw: parseInt(json.hourly_forecast[i].temp.english, 10),
-                  display: `${json.hourly_forecast[i].temp.english}F`,
-                },
-                metric: {
-                  raw: parseInt(json.hourly_forecast[i].temp.metric, 10),
-                  display: `${json.hourly_forecast[i].temp.metric}C`,
-                },
+    // Gets our weather from the weather undergound.
+    return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
+      .then(response => response.json())
+      .then((json) => {
+        if (json.hourly_forecast.length === 0) {
+          throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
+        }
+        const weatherArr = [];
+        // Builds out an array to list weather information.
+        for (let i = 0; i < 5; i += 1) {
+          weatherArr.push({
+            condition: json.hourly_forecast[i].condition,
+            time: json.hourly_forecast[i].FCTTIME.civil,
+            temp: {
+              english: {
+                raw: parseInt(json.hourly_forecast[i].temp.english, 10),
+                display: `${json.hourly_forecast[i].temp.english}F`,
               },
-              icon: this.determineWeatherIcon(
-                json.hourly_forecast[i].icon,
-                json.hourly_forecast[i].FCTTIME.civil,
-              ),
-            });
-          }
-          resolve(weatherArr);
-        })
-        .catch(err => reject(new Error(`Weather retrieval failed! \n ${err.message}`)));
-    });
+              metric: {
+                raw: parseInt(json.hourly_forecast[i].temp.metric, 10),
+                display: `${json.hourly_forecast[i].temp.metric}C`,
+              },
+            },
+            icon: this.determineWeatherIcon(
+              json.hourly_forecast[i].icon,
+              json.hourly_forecast[i].FCTTIME.civil,
+            ),
+          });
+        }
+        return weatherArr;
+      })
+      .catch(err => new Error(`Weather retrieval failed! \n ${err.message}`));
   }
 
   getSunData() {
-    return new Promise((resolve, reject) => {
-      // Get the sunrise/sunset data
-      fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
-        .then(response => response.json())
-        .then((sundata) => {
-          resolve({
-            sunrise: moment(`0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`, 'hh:mm:a'),
-            sunset: moment(`0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`, 'hh:mm:a'),
-          });
-        })
-        .catch(err => reject(new Error(`Sunrise/sunset retrieval failed! \n ${err.message}`)));
-    });
+    // Get the sunrise/sunset data
+    return fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
+      .then(response => response.json())
+      .then(sundata => ({
+        sunrise: moment(`0${sundata.sun_phase.sunrise.hour}:${sundata.sun_phase.sunrise.minute}am`, 'hh:mm:a'),
+        sunset: moment(`0${sundata.sun_phase.sunset.hour - 12}:${sundata.sun_phase.sunset.minute}pm`, 'hh:mm:a'),
+      }))
+      .catch(err => new Error(`Sunrise/sunset retrieval failed! \n ${err.message}`));
   }
 
   getUserCity(locationObject) {
-    return new Promise((resolve, reject) => {
-      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true&key=${config.google_geocode}`)
-        .then(response => response.json())
-        .then((geoloc) => {
-          if (geoloc.error_message) {
-            reject(new Error(`Location Refinement Failed! \n ${geoloc.error_message}`));
-          }
-          resolve(`${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`);
-        })
-        .catch(err => reject(new Error(`Location Refinement Failed! \n Unknown error: ${err}`)));
-    });
+    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${locationObject.lat},${locationObject.long}&sensor=true&key=${config.google_geocode}`)
+      .then(response => response.json())
+      .then((geoloc) => {
+        if (geoloc.error_message) {
+          throw new Error(`Location Refinement Failed! \n ${geoloc.error_message}`);
+        }
+        return `${geoloc.results[0].address_components[2].short_name}, ${geoloc.results[0].address_components[4].short_name}`;
+      })
+      .catch(err => new Error(`Location Refinement Failed! \n Unknown error: ${err}`));
   }
 
   setBrightness(isNight) {
@@ -175,10 +167,10 @@ class ConnectedMain extends React.Component {
     const weather = await this.getWeather();
     this.props.setWeather(weather);
     weatherInterval = setInterval(() => {
-      if (this.props.userCoords && (moment().format('mm') === '00' || this.props.hasWeatherData === false)) {
+      if ((this.props.userCoords && moment().format('mm') === '00') || this.props.hasWeatherData === false) {
         this.getWeather();
       }
-    }, 30000);
+    }, 60000);
     this.props.setWeatherStatus(true);
     this.props.setLoadingStatus('Done!');
     this.setBrightness();
