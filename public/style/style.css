@@ -97,6 +97,11 @@ a{
 	color: white;
 }
 
+.clock {
+	display: flex;
+	justify-content: center;
+}
+
 #up {
 	color: orange;
 }
@@ -157,4 +162,12 @@ a{
 #modal-button {
 	background-color: black;
 	color: white;
+}
+
+#timeSet > h1 {
+	margin: 0;
+}
+
+#blink {
+	margin: 1% 0;
 }

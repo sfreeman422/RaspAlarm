@@ -4,28 +4,13 @@ import fetch from 'isomorphic-fetch';
 import moment from 'moment';
 import CurrentAlarms from './Children/CurrentAlarms';
 
-let daysOfWeek = [];
-
 export default class AlarmManager extends React.Component {
   constructor() {
     super();
-    const now = moment();
-    let minute = parseInt(now.format('mm'), 10);
-    let minuteDisplay;
-    if (minute < 10 && minute > 0) {
-      minute = 10;
-    } else if (minute === 0) {
-      minute = 0;
-      minuteDisplay = '00';
-    } else {
-      minute = Math.ceil(minute / 5) * 5;
-    }
     this.state = {
-      hour: parseInt(now.format('h'), 10),
-      minute,
-      ampm: now.format('a'),
-      hourDisplay: now.format('hh'),
-      minuteDisplay: minuteDisplay || minute,
+      hour: parseInt(moment().format('h'), 10),
+      minute: undefined,
+      ampm: moment().format('a'),
       Monday: false,
       Tuesday: false,
       Wednesday: false,
@@ -35,6 +20,7 @@ export default class AlarmManager extends React.Component {
       Sunday: false,
       alarms: [],
     };
+    this.daysOfWeek = [];
     this.incrementHour = this.incrementHour.bind(this);
     this.incrementMinute = this.incrementMinute.bind(this);
     this.changeAMPM = this.changeAMPM.bind(this);
@@ -42,10 +28,14 @@ export default class AlarmManager extends React.Component {
     this.getAlarms = this.getAlarms.bind(this);
     this.setAlarm = this.setAlarm.bind(this);
     this.removeAlarm = this.removeAlarm.bind(this);
+    this.setMinute = this.setMinute.bind(this);
   }
+
   componentDidMount() {
+    this.setMinute();
     this.getAlarms();
   }
+
   getAlarms() {
     fetch('/alarms')
       .then(res => res.json())
@@ -53,16 +43,16 @@ export default class AlarmManager extends React.Component {
         this.setState({ alarms });
       });
   }
+
   setAlarm() {
-    const hour = this.state.hourDisplay;
-    const minute = this.state.minuteDisplay;
-    const { ampm } = this.state;
+    const { ampm, hour, minute } = this.state;
     const data = {
-      hour,
-      minute,
+      hour: this.state.hour < 10 ? `0${hour}` : hour,
+      minute: this.state.minute < 10 ? `0${minute}` : minute,
       ampm,
-      dayOfWeek: daysOfWeek,
+      dayOfWeek: this.daysOfWeek,
     };
+
     fetch(
       '/setAlarm',
       {
@@ -72,48 +62,46 @@ export default class AlarmManager extends React.Component {
           'Content-Type': 'application/json',
         }),
       },
-    )
-      .then(() => {
-        this.setState({
-          Monday: false,
-          Tuesday: false,
-          Wednesday: false,
-          Thursday: false,
-          Friday: false,
-          Saturday: false,
-          Sunday: false,
-        });
-        daysOfWeek = [];
-        this.getAlarms();
+    ).then(() => {
+      this.setState({
+        Monday: false,
+        Tuesday: false,
+        Wednesday: false,
+        Thursday: false,
+        Friday: false,
+        Saturday: false,
+        Sunday: false,
       });
+      this.daysOfWeek = [];
+      this.getAlarms();
+    });
   }
+
+  setMinute() {
+    const minute = parseInt(moment().format('mm'), 10);
+    if (minute < 10 && minute > 0) {
+      this.setState({ minute: 10 });
+    } else if (minute >= 55 && minute <= 59) {
+      this.setState({ minute: 0, hour: this.state.hour + 1 });
+    } else if (minute === 0) {
+      this.setState({ minute: 0 });
+    } else {
+      this.setState({ minute: Math.ceil(minute / 5) * 5 });
+    }
+  }
+
   incrementHour() {
     if (this.state.hour === 12) {
       this.setState({
         hour: 1,
-        hourDisplay: '01',
       });
-    } else if (this.state.hour < 10) {
-      // Grab what our hour will be.
-      const stringHour = this.state.hour + 1;
-      if (stringHour === 10) {
-        this.setState({
-          hour: 10,
-          hourDisplay: 10,
-        });
-      } else {
-        this.setState({
-          hour: this.state.hour + 1,
-          hourDisplay: `0${stringHour.toString()}`,
-        });
-      }
     } else {
       this.setState({
         hour: this.state.hour + 1,
-        hourDisplay: this.state.hour + 1,
       });
     }
   }
+
   changeAMPM() {
     if (this.state.ampm === 'am') {
       this.setState({
@@ -125,31 +113,31 @@ export default class AlarmManager extends React.Component {
       });
     }
   }
+
   chooseDay(day) {
     if (!this.state[day]) {
       this.setState({
         [day]: true,
       });
-      daysOfWeek.push(day);
+      this.daysOfWeek.push(day);
     } else {
       this.setState({
         [day]: false,
       });
-      for (let i = 0; i < daysOfWeek.length; i += 1) {
-        if (daysOfWeek[i] === day) {
-          daysOfWeek.splice(i, 1);
+      for (let i = 0; i < this.daysOfWeek.length; i += 1) {
+        if (this.daysOfWeek[i] === day) {
+          this.daysOfWeek.splice(i, 1);
         }
       }
     }
   }
   incrementMinute() {
-    if (this.state.minute === 55) {
+    if (this.state.minute >= 55 && this.state.minute <= 59) {
       this.setState({
         minute: 0,
         minuteDisplay: '00',
       });
     } else if (this.state.minute < 10) {
-      // Grab what the minute will be for the minuteDisplay
       const stringMinute = this.state.minute + 5;
       if (stringMinute === 10) {
         this.setState({
@@ -191,9 +179,9 @@ export default class AlarmManager extends React.Component {
       <div className="container" id="alarmManager">
         <div className="row">
           <div className="col-xs-12" id="timeSet">
-            <h1 className="unselectable" id="hour" onClick={this.incrementHour}>{this.state.hourDisplay}</h1>
+            <h1 className="unselectable" id="hour" onClick={this.incrementHour}>{this.state.hour < 10 ? `0${this.state.hour}` : this.state.hour}</h1>
             <h1 className="unselectable">:</h1>
-            <h1 className="unselectable" id="minute" onClick={this.incrementMinute}>{this.state.minuteDisplay}</h1>
+            <h1 className="unselectable" id="minute" onClick={this.incrementMinute}>{this.state.minute < 10 ? `0${this.state.minute}` : this.state.minute}</h1>
             <h1 className="unselectable" id="ampm" onClick={this.changeAMPM}>{this.state.ampm}</h1>
           </div>
         </div>

@@ -5,9 +5,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 
-const alarmSound = new Audio('./sounds/alarm.mp3');
-let alarmInterval;
-
 const mapStateToProps = state => ({
   currentTime: state.time,
 });
@@ -16,7 +13,7 @@ class ConnectedAlarm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      alarmStatus: 'not ringing',
+      isRinging: false,
       awake: false,
       alarms: [],
       ringingAlarm: {},
@@ -25,14 +22,19 @@ class ConnectedAlarm extends React.Component {
     this.checkAlarm = this.checkAlarm.bind(this);
     this.awake = this.awake.bind(this);
     this.removeAlarm = this.removeAlarm.bind(this);
+    this.alarmInterval = undefined;
+    this.alarmSound = new Audio('./sounds/alarm.mp3');
   }
+
   componentDidMount() {
     this.getAlarms();
-    alarmInterval = setInterval(this.checkAlarm, 1000);
+    this.alarmInterval = setInterval(this.checkAlarm, 1000);
   }
+
   componentWillUnmount() {
-    clearInterval(alarmInterval);
+    clearInterval(this.alarmInterval);
   }
+
   getAlarms() {
     fetch('/alarms')
       .then(res => res.json())
@@ -41,26 +43,27 @@ class ConnectedAlarm extends React.Component {
         this.checkAlarm();
       });
   }
-  // Function to check whether its time for an alarm to go off or not.
+
   checkAlarm() {
     const dayOfWeek = moment().format('dddd');
     for (let i = 0; i < this.state.alarms.length; i += 1) {
       if (
         this.props.currentTime === this.state.alarms[i].time
-        && this.state.alarmStatus !== 'ringing'
+        && !this.state.isRinging
         && !this.state.awake
         && (this.state.alarms[i].dayOfWeek.includes(dayOfWeek) || this.state.alarms[i].oneTimeUse)
       ) {
-        alarmSound.play();
+        this.alarmSound.play();
         this.setState({
-          alarmStatus: 'ringing',
+          isRinging: true,
           ringingAlarm: this.state.alarms[i],
         });
-      } else if (this.state.alarmStatus === 'ringing') {
-        alarmSound.play();
+      } else if (this.state.isRinging) {
+        this.alarmSound.play();
       }
     }
   }
+
   removeAlarm(id) {
     fetch(
       '/deleteAlarm',
@@ -78,23 +81,22 @@ class ConnectedAlarm extends React.Component {
       this.getAlarms();
     });
   }
+
   awake() {
     this.setState({
-      alarmStatus: 'not ringing',
+      isRinging: false,
       awake: true,
     });
     if (this.state.ringingAlarm.oneTimeUse) {
       this.removeAlarm(this.state.ringingAlarm._id);
     }
-    // After 60 seconds, this will revert awake to false.
-    // We wait 60 to prevent the alarm from continously going off
-    // even when the user is awake.
     setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
   }
+
   render() {
     return (
       <div id="alarm">
-        {this.state.alarmStatus === 'ringing' ?
+        {this.state.isRinging ?
           <button
             className="btn-lg btn-success"
             id="wakeUp"

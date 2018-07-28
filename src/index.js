@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import store from './store/store';
-// Import the children
+
 import Main from './App';
 import AlarmManager from './components/AlarmManager';
 

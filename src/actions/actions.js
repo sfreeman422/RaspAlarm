@@ -1,32 +1,32 @@
 import * as types from '../constants/action-types';
 
-export const adjustTime = time => ({
-  type: types.ADJUST_TIME,
+export const setTime = time => ({
+  type: types.SET_TIME,
   payload: time,
 });
 
-export const adjustDate = date => ({
-  type: types.ADJUST_DATE,
+export const setDate = date => ({
+  type: types.SET_DATE,
   payload: date,
 });
 
-export const adjustToday = today => ({
-  type: types.ADJUST_TODAY,
+export const setToday = today => ({
+  type: types.SET_TODAY,
   payload: today,
 });
 
-export const adjustWeather = weather => ({
-  type: types.ADJUST_WEATHER,
+export const setWeather = weather => ({
+  type: types.SET_WEATHER,
   payload: weather,
 });
 
-export const adjustUserLoc = userLoc => ({
-  type: types.ADJUST_USERLOC,
+export const setUserLoc = userLoc => ({
+  type: types.SET_USERLOC,
   payload: userLoc,
 });
 
-export const adjustSunData = sunData => ({
-  type: types.ADJUST_SUNDATA,
+export const setSunData = sunData => ({
+  type: types.SET_SUNDATA,
   payload: sunData,
 });
 
@@ -35,8 +35,8 @@ export const getAlarms = alarms => ({
   payload: alarms,
 });
 
-export const adjustNight = night => ({
-  type: types.ADJUST_NIGHT,
+export const setNight = night => ({
+  type: types.SET_NIGHT,
   payload: night,
 });
 
@@ -45,23 +45,23 @@ export const reportError = error => ({
   payload: error,
 });
 
-export const adjustUserCoords = location => ({
-  type: types.ADJUST_USERCOORDS,
+export const setUserCoords = location => ({
+  type: types.SET_USERCOORDS,
   payload: location,
 });
 
-export const adjustWeatherStatus = weatherStatus => ({
-  type: types.ADJUST_WEATHER_STATUS,
+export const setWeatherStatus = weatherStatus => ({
+  type: types.SET_WEATHER_STATUS,
   payload: weatherStatus,
 });
 
-export const adjustLoadingStatus = status => ({
-  type: types.ADJUST_LOADING_STATUS,
+export const setLoadingStatus = status => ({
+  type: types.SET_LOADING_STATUS,
   payload: status,
 });
 
-export const adjustDeltas = delta => ({
-  type: types.ADJUST_DELTAS,
+export const setDeltas = delta => ({
+  type: types.SET_DELTAS,
   payload: delta,
 });
 
@@ -73,6 +73,11 @@ export const showCelcius = celcius => ({
 export const showColoredIcons = showIcons => ({
   type: types.SHOW_COLORED_ICONS,
   payload: showIcons,
+});
+
+export const setBlinkTime = blinkTime => ({
+  type: types.SET_BLINK_TIME,
+  payload: blinkTime,
 });
 
 export const addLocation = location => ({

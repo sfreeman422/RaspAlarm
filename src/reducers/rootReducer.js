@@ -20,36 +20,37 @@ const initialState = {
   celcius: false,
   preciseTemperature: true,
   coloredIcons: true,
+  blinkTime: true,
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADJUST_TIME':
+    case 'SET_TIME':
       return {
         ...state,
         time: action.payload,
       };
-    case 'ADJUST_DATE':
+    case 'SET_DATE':
       return {
         ...state,
         date: action.payload,
       };
-    case 'ADJUST_WEATHER':
+    case 'SET_WEATHER':
       return {
         ...state,
         weatherArr: action.payload,
       };
-    case 'ADJUST_WEATHER_STATUS':
+    case 'SET_WEATHER_STATUS':
       return {
         ...state,
         hasWeatherData: action.payload,
       };
-    case 'ADJUST_USERLOC':
+    case 'SET_USERLOC':
       return {
         ...state,
         userLoc: action.payload,
       };
-    case 'ADJUST_USERCOORDS':
+    case 'SET_USERCOORDS':
       return {
         ...state,
         userCoords: {
@@ -57,7 +58,7 @@ const rootReducer = (state = initialState, action) => {
           long: action.payload.long,
         },
       };
-    case 'ADJUST_SUNDATA':
+    case 'SET_SUNDATA':
       return {
         ...state,
         sunrise: action.payload.sunrise,
@@ -68,12 +69,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         alarms: action.payload,
       };
-    case 'ADJUST_NIGHT':
+    case 'SET_NIGHT':
       return {
         ...state,
         isNight: action.payload,
       };
-    case 'ADJUST_TODAY':
+    case 'SET_TODAY':
       return {
         ...state,
         today: action.payload,
@@ -83,12 +84,12 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         locationError: action.payload,
       };
-    case 'ADJUST_DELTAS':
+    case 'SET_DELTAS':
       return {
         ...state,
         showDeltas: action.payload,
       };
-    case 'ADJUST_LOADING_STATUS':
+    case 'SET_LOADING_STATUS':
       return {
         ...state,
         loadingMessage: action.payload,
@@ -107,6 +108,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         savedLocations: [...state.savedLocations, action.payload],
+      };
+    case 'SET_BLINK_TIME':
+      return {
+        ...state,
+        blinkTime: action.payload,
       };
     default:
       return state;

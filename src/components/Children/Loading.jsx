@@ -54,6 +54,7 @@ class ConnectedLoading extends React.Component {
       'wi wi-moon-waxing-crescent-1 yellow',
       'wi wi-moon-new yellow',
     ];
+
     if (iconPosition > icons.length - 1) {
       iconPosition = 0;
     }
@@ -62,12 +63,13 @@ class ConnectedLoading extends React.Component {
     });
     iconPosition += 1;
   }
+
   render() {
     return (
       this.props.locationError !== '' ?
-        <div>
+        <React.Fragment>
           <p className="error">Error: {this.props.locationError}</p>
-        </div>
+        </React.Fragment>
         :
         <div className="loading">
           <i className={this.state.icon} id="loading" />
