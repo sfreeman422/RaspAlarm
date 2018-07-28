@@ -25,13 +25,16 @@ class ConnectedAlarm extends React.Component {
     this.alarmInterval = undefined;
     this.alarmSound = new Audio('./sounds/alarm.mp3');
   }
+
   componentDidMount() {
     this.getAlarms();
     this.alarmInterval = setInterval(this.checkAlarm, 1000);
   }
+
   componentWillUnmount() {
     clearInterval(this.alarmInterval);
   }
+
   getAlarms() {
     fetch('/alarms')
       .then(res => res.json())
@@ -40,7 +43,7 @@ class ConnectedAlarm extends React.Component {
         this.checkAlarm();
       });
   }
-  // Function to check whether its time for an alarm to go off or not.
+
   checkAlarm() {
     const dayOfWeek = moment().format('dddd');
     for (let i = 0; i < this.state.alarms.length; i += 1) {
@@ -60,6 +63,7 @@ class ConnectedAlarm extends React.Component {
       }
     }
   }
+
   removeAlarm(id) {
     fetch(
       '/deleteAlarm',
@@ -77,6 +81,7 @@ class ConnectedAlarm extends React.Component {
       this.getAlarms();
     });
   }
+
   awake() {
     this.setState({
       isRinging: false,
@@ -87,6 +92,7 @@ class ConnectedAlarm extends React.Component {
     }
     setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
   }
+
   render() {
     return (
       <div id="alarm">

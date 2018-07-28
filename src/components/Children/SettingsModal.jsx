@@ -40,6 +40,7 @@ class ConnectedSettings extends React.Component {
       temperaturePrecision: true,
     };
   }
+
   render() {
     const {
       userLoc,

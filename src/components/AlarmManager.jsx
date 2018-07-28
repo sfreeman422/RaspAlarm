@@ -30,6 +30,7 @@ export default class AlarmManager extends React.Component {
     this.removeAlarm = this.removeAlarm.bind(this);
     this.setMinute = this.setMinute.bind(this);
   }
+
   componentDidMount() {
     this.setMinute();
     this.getAlarms();
@@ -137,7 +138,6 @@ export default class AlarmManager extends React.Component {
         minuteDisplay: '00',
       });
     } else if (this.state.minute < 10) {
-      // Grab what the minute will be for the minuteDisplay
       const stringMinute = this.state.minute + 5;
       if (stringMinute === 10) {
         this.setState({

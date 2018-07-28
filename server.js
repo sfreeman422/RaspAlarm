@@ -17,7 +17,7 @@ db.on('open', () => {
 });
 
 db.on('error', (err) => {
-  console.log(`An error has occurred: ${err}`);
+  console.log(`Error on DB:\n${err}`);
 });
 
 app.use(logger('dev'));
@@ -83,18 +83,15 @@ app.post('/setAlarm', (req, res) => {
     oneTimeUse,
   });
 
-  newAlarm.save((err, completed) => {
-    if (err) res.status(500).send('Error occurred during setting of alarm.');
-    console.log(`Alarm saved as : ${completed}`);
+  newAlarm.save((err) => {
+    if (err) res.status(500).send(`Error occurred during setting of alarm. \n ${err}`);
     res.status(200).json('Alarm successfully saved.');
   });
 });
 
 // Route to delete alarms
 app.delete('/deleteAlarm', (req, res) => {
-  console.log(req.body);
   Alarm.find({ _id: req.body.id }).remove(() => {
-    console.log('Successfully removed.');
     res.status(200).json('Successfully removed.');
   });
 });
