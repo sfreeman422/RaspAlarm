@@ -66,13 +66,14 @@ class ConnectedMain extends React.Component {
     clearInterval(timeInterval);
   }
 
-  setTime() {
+  async setTime() {
     this.props.setTime(moment().format('hh:mma'));
     this.props.setDate(moment().format('MMMM Do YYYY'));
     this.props.setToday(moment().format('dddd'));
     this.determineNightState();
     if (moment().format('mm') === '00') {
-      this.getWeather();
+      const weather = await this.getWeather();
+      this.props.setWeather(weather);
     }
   }
 
