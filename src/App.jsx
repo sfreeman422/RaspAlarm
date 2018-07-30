@@ -66,15 +66,11 @@ class ConnectedMain extends React.Component {
     clearInterval(timeInterval);
   }
 
-  async setTime() {
+  setTime() {
     this.props.setTime(moment().format('hh:mma'));
     this.props.setDate(moment().format('MMMM Do YYYY'));
     this.props.setToday(moment().format('dddd'));
     this.determineNightState();
-    if (moment().format('mm') === '00') {
-      const weather = await this.getWeather();
-      this.props.setWeather(weather);
-    }
   }
 
   getUserCoordinates() {
@@ -88,37 +84,40 @@ class ConnectedMain extends React.Component {
   }
 
   getWeather() {
-    return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
-      .then(response => response.json())
-      .then((json) => {
-        if (json.hourly_forecast.length === 0) {
-          throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
-        }
-        const weatherArr = [];
-        // Builds out an array to list weather information.
-        for (let i = 0; i < 5; i += 1) {
-          weatherArr.push({
-            condition: json.hourly_forecast[i].condition,
-            time: json.hourly_forecast[i].FCTTIME.civil,
-            temp: {
-              english: {
-                raw: parseInt(json.hourly_forecast[i].temp.english, 10),
-                display: `${json.hourly_forecast[i].temp.english}F`,
+    if (moment().format('mm') === '00' || !this.props.hasWeatherData) {
+      return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
+        .then(response => response.json())
+        .then((json) => {
+          if (json.hourly_forecast.length === 0) {
+            throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
+          }
+          const weatherArr = [];
+          // Builds out an array to list weather information.
+          for (let i = 0; i < 5; i += 1) {
+            weatherArr.push({
+              condition: json.hourly_forecast[i].condition,
+              time: json.hourly_forecast[i].FCTTIME.civil,
+              temp: {
+                english: {
+                  raw: parseInt(json.hourly_forecast[i].temp.english, 10),
+                  display: `${json.hourly_forecast[i].temp.english}F`,
+                },
+                metric: {
+                  raw: parseInt(json.hourly_forecast[i].temp.metric, 10),
+                  display: `${json.hourly_forecast[i].temp.metric}C`,
+                },
               },
-              metric: {
-                raw: parseInt(json.hourly_forecast[i].temp.metric, 10),
-                display: `${json.hourly_forecast[i].temp.metric}C`,
-              },
-            },
-            icon: this.determineWeatherIcon(
-              json.hourly_forecast[i].icon,
-              json.hourly_forecast[i].FCTTIME.civil,
-            ),
-          });
-        }
-        return weatherArr;
-      })
-      .catch(err => new Error(`Weather retrieval failed! \n ${err.message}`));
+              icon: this.determineWeatherIcon(
+                json.hourly_forecast[i].icon,
+                json.hourly_forecast[i].FCTTIME.civil,
+              ),
+            });
+          }
+          return weatherArr;
+        })
+        .catch(err => new Error(`Weather retrieval failed! \n ${err.message}`));
+    }
+    return this.props.weatherArr;
   }
 
   getSunData() {
@@ -169,6 +168,10 @@ class ConnectedMain extends React.Component {
     this.props.setLoadingStatus('Getting weather...');
     const weather = await this.getWeather();
     this.props.setWeather(weather);
+    weatherInterval = setInterval(async () => {
+      const weather = await this.getWeather();
+      this.props.setWeather(weather);
+    }, 60000);
     this.props.setWeatherStatus(true);
     this.props.setLoadingStatus('Done!');
     this.setBrightness();
