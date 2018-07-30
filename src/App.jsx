@@ -193,10 +193,16 @@ class ConnectedMain extends React.Component {
   determineWeatherIcon(weatherState, hour) {
     const sunrise = moment(this.props.sunrise, 'hh:mm:a');
     const sunset = moment(this.props.sunset, 'hh:mm:a');
-    const isHour = moment(hour, 'hh:mm:a');
-    if (isHour.isAfter(sunset) || isHour.isBefore(sunrise)) {
+    const currentHour = moment(hour, 'hh:mm:a');
+    console.debug('Time: ', currentHour);
+    console.debug('sunrise: ', sunrise);
+    console.debug('Sunset: ', sunset);
+    if (currentHour.isBetween(sunset, sunrise)) {
+      console.debug('Returning night');
       return weatherIcons[weatherState].night;
-    } return weatherIcons[weatherState].day;
+    }
+    console.debug('Returning day');
+    return weatherIcons[weatherState].day;
   }
 
   render() {
