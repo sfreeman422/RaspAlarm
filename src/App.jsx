@@ -81,7 +81,9 @@ class ConnectedMain extends React.Component {
     this.props.setTime(moment().format('hh:mma'));
     this.props.setDate(moment().format('MMMM Do YYYY'));
     this.props.setToday(moment().format('dddd'));
-    this.determineNightState();
+    if (this.props.sunrise && this.props.sunset) {
+      this.determineNightState();
+    }
   }
 
   getUserCoordinates() {
