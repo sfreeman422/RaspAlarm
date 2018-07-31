@@ -66,8 +66,8 @@ class ConnectedMain extends React.Component {
       this.props.setSunData(sunData);
     } else if (this.props.time !== prevProps.time && moment(this.props.time, 'mm') === '00') {
       console.log('should get weather');
-      // const weather = await this.getWeather();
-      // this.props.setWeather(weather);
+      const weather = await this.getWeather();
+      this.props.setWeather(weather);
     }
   }
 
