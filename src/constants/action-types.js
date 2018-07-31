@@ -2,7 +2,6 @@ export const SET_TIME = 'SET_TIME';
 export const SET_DATE = 'SET_DATE';
 export const SET_TODAY = 'SET_TODAY';
 export const SET_WEATHER = 'SET_WEATHER';
-export const SET_WEATHER_STATUS = 'SET_WEATHER_STATUS';
 export const SET_USERLOC = 'SET_USERLOC';
 export const SET_USERCOORDS = 'SET_USERCOORDS';
 export const SET_SUNDATA = 'SET_SUNDATA';

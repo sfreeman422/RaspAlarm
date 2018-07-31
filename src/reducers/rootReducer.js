@@ -9,7 +9,6 @@ const initialState = {
     long: 0,
   },
   locationError: '',
-  hasWeatherData: false,
   weatherArr: [],
   sunrise: {},
   sunset: {},
@@ -39,11 +38,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         weatherArr: action.payload,
-      };
-    case 'SET_WEATHER_STATUS':
-      return {
-        ...state,
-        hasWeatherData: action.payload,
       };
     case 'SET_USERLOC':
       return {

@@ -50,11 +50,6 @@ export const setUserCoords = location => ({
   payload: location,
 });
 
-export const setWeatherStatus = weatherStatus => ({
-  type: types.SET_WEATHER_STATUS,
-  payload: weatherStatus,
-});
-
 export const setLoadingStatus = status => ({
   type: types.SET_LOADING_STATUS,
   payload: status,
