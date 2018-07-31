@@ -178,13 +178,13 @@ class ConnectedMain extends React.Component {
   }
 
   determineNightState() {
-    if (moment(this.props.time, 'hh:mm:a').isBetween(
-      moment(this.props.sunset, 'hh:mm:a'),
-      moment(this.props.sunrise, 'hh:mm:a'),
-    ) && !this.props.isNight) {
+    const sunrise = moment(this.props.sunrise, 'hh:mm:a');
+    const sunset = moment(this.props.sunset, 'hh:mm:a');
+    const currentTime = moment();
+    if ((currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) && !this.props.isNight) {
       this.props.setNight(true);
       this.setBrightness(true);
-    } else if (this.props.isNight) {
+    } else if ((currentTime.isBefore(sunset) && currentTime.isAfter(sunrise)) && this.props.isNight) {
       this.props.setNight(false);
       this.setBrightness(false);
     }
@@ -194,10 +194,7 @@ class ConnectedMain extends React.Component {
     const sunrise = moment(this.props.sunrise, 'hh:mm:a');
     const sunset = moment(this.props.sunset, 'hh:mm:a');
     const currentHour = moment(hour, 'hh:mm:a');
-    console.debug('Time: ', currentHour);
-    console.debug('sunrise: ', sunrise);
-    console.debug('Sunset: ', sunset);
-    if (currentHour.isBetween(sunset, sunrise)) {
+    if (currentHour.isBefore(sunrise) || currentHour.isAfter(sunset)) {
       console.debug('Returning night');
       return weatherIcons[weatherState].night;
     }
