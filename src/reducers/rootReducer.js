@@ -13,7 +13,7 @@ const initialState = {
   sunrise: {},
   sunset: {},
   alarms: [],
-  isNight: false,
+  isNight: undefined,
   loadingMessage: '',
   showDeltas: true,
   celcius: false,
