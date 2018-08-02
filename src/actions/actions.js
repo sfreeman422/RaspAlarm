@@ -76,11 +76,11 @@ export const setBlinkTime = blinkTime => ({
 });
 
 export const addLocation = location => ({
-  types: types.ADD_LOCATION,
+  type: types.ADD_LOCATION,
   payload: location,
 });
 
 export const setLastTemperature = temperature => ({
-  types: types.SET_LAST_TEMPERATURE,
+  type: types.SET_LAST_TEMPERATURE,
   payload: temperature,
 });

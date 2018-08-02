@@ -31,7 +31,11 @@ ConnectedWeather.propTypes = {
   weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
   showDeltas: PropTypes.bool.isRequired,
   celcius: PropTypes.bool.isRequired,
-  lastTemperature: PropTypes.number.isRequired,
+  lastTemperature: PropTypes.number,
+};
+
+ConnectedWeather.defaultProps = {
+  lastTemperature: undefined,
 };
 
 const Weather = connect(mapStateToProps)(ConnectedWeather);

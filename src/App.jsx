@@ -246,7 +246,7 @@ ConnectedMain.propTypes = {
   sunset: PropTypes.object,
   sunrise: PropTypes.object,
   date: PropTypes.string.isRequired,
-  isNight: PropTypes.bool.isRequired,
+  isNight: PropTypes.bool,
   userCoords: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     long: PropTypes.number.isRequired,
@@ -257,6 +257,7 @@ ConnectedMain.propTypes = {
 ConnectedMain.defaultProps = {
   sunset: {},
   sunrise: {},
+  isNight: undefined,
 };
 
 const Main = connect(mapStateToProps, mapDispatchToProps)(ConnectedMain);
