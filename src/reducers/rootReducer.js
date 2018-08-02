@@ -10,6 +10,7 @@ const initialState = {
   },
   locationError: '',
   weatherArr: [],
+  lastTemperature: undefined,
   sunrise: {},
   sunset: {},
   alarms: [],
@@ -107,6 +108,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         blinkTime: action.payload,
+      };
+    case 'SET_LAST_TEMPERATURE':
+      return {
+        ...state,
+        lastTemperature: action.payload,
       };
     default:
       return state;

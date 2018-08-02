@@ -79,3 +79,8 @@ export const addLocation = location => ({
   types: types.ADD_LOCATION,
   payload: location,
 });
+
+export const setLastTemperature = temperature => ({
+  types: types.SET_LAST_TEMPERATURE,
+  payload: temperature,
+});

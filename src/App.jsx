@@ -26,6 +26,7 @@ const mapDispatchToProps = dispatch => ({
   setLoadingStatus: status => dispatch(actions.setLoadingStatus(status)),
   reportError: error => dispatch(actions.reportError(error)),
   addLocation: location => dispatch(actions.addLocation(location)),
+  setLastTemperature: temperature => dispatch(actions.setLastTemperature(temperature)),
 });
 
 const mapStateToProps = state => ({
@@ -36,6 +37,7 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   userCoords: state.userCoords,
   weatherArr: state.weatherArr,
+  lastTemperature: state.lastTemperature,
   coloredIcons: state.coloredIcons,
   date: state.date,
 });
@@ -97,6 +99,9 @@ class ConnectedMain extends React.Component {
   }
 
   getWeather() {
+    if (this.props.weatherArr && this.props.weatherArr.length > 0) {
+      this.props.setLastTemperature(this.props.weatherArr[4]);
+    }
     return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
       .then(response => response.json())
       .then((json) => {
@@ -235,6 +240,7 @@ ConnectedMain.propTypes = {
   setDate: PropTypes.func.isRequired,
   setToday: PropTypes.func.isRequired,
   setNight: PropTypes.func.isRequired,
+  setLastTemperature: PropTypes.func.isRequired,
   reportError: PropTypes.func.isRequired,
   time: PropTypes.string.isRequired,
   sunset: PropTypes.object,
