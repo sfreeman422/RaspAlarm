@@ -27,6 +27,7 @@ const mapDispatchToProps = dispatch => ({
   reportError: error => dispatch(actions.reportError(error)),
   addLocation: location => dispatch(actions.addLocation(location)),
   setLastTemperature: temperature => dispatch(actions.setLastTemperature(temperature)),
+  setInitialized: initialized => dispatch(actions.setInitialized(initialized)),
 });
 
 const mapStateToProps = state => ({
@@ -40,6 +41,7 @@ const mapStateToProps = state => ({
   lastTemperature: state.lastTemperature,
   coloredIcons: state.coloredIcons,
   date: state.date,
+  initialized: state.initialized,
 });
 
 class ConnectedMain extends React.Component {
@@ -58,7 +60,10 @@ class ConnectedMain extends React.Component {
   componentDidMount() {
     this.setTime();
     this.timeInterval = setInterval(this.setTime, 1000);
-    this.initializeApp().catch(err => this.props.reportError(err.message));
+    console.log(this.props.initialized);
+    if (!this.props.initialized) {
+      this.initializeApp().catch(err => this.props.reportError(err.message));
+    }
   }
 
   async componentDidUpdate(prevProps) {
@@ -106,10 +111,17 @@ class ConnectedMain extends React.Component {
       .then(response => response.json())
       .then((json) => {
         let weather = json.hourly_forecast;
+        let firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
+        if (firstWeatherHour > 12) {
+          firstWeatherHour -= 12;
+        } else if (firstWeatherHour === 0) {
+          firstWeatherHour = 12;
+        }
         console.log('weather from server', weather);
+        console.log(firstWeatherHour);
         if (weather.length === 0) {
           throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
-        } else if (moment(weather[0].FCTTIME.civil).format('h') === moment().format('h')) {
+        } else if (firstWeatherHour === moment().format('h')) {
           console.log('first Weather: ', moment(weather[0].time).format('h'));
           console.log('current Time: ', moment().format('h'));
           weather = weather.slice(1, 6);
@@ -194,6 +206,7 @@ class ConnectedMain extends React.Component {
     this.props.setLoadingStatus('Getting weather...');
     const weather = await this.getWeather();
     this.props.setWeather(weather);
+    this.props.setInitialized(true);
   }
 
   determineNightState() {
@@ -249,8 +262,10 @@ ConnectedMain.propTypes = {
   setToday: PropTypes.func.isRequired,
   setNight: PropTypes.func.isRequired,
   setLastTemperature: PropTypes.func.isRequired,
+  setInitialized: PropTypes.func.isRequired,
   reportError: PropTypes.func.isRequired,
   time: PropTypes.string.isRequired,
+  initialized: PropTypes.bool.isRequired,
   sunset: PropTypes.object,
   sunrise: PropTypes.object,
   date: PropTypes.string.isRequired,

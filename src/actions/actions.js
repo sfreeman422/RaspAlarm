@@ -84,3 +84,8 @@ export const setLastTemperature = temperature => ({
   type: types.SET_LAST_TEMPERATURE,
   payload: temperature,
 });
+
+export const setInitialized = initialized => ({
+  type: types.SET_INITIALIZED,
+  payload: initialized,
+});
