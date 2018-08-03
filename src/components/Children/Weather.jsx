@@ -31,7 +31,7 @@ ConnectedWeather.propTypes = {
   weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
   showDeltas: PropTypes.bool.isRequired,
   celcius: PropTypes.bool.isRequired,
-  lastTemperature: PropTypes.number,
+  lastTemperature: PropTypes.object,
 };
 
 ConnectedWeather.defaultProps = {
