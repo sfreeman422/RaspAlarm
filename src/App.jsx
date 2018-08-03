@@ -105,34 +105,35 @@ class ConnectedMain extends React.Component {
     return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
       .then(response => response.json())
       .then((json) => {
-        const weather = json.hourly_forecast;
-        let subsetArray = weather;
+        let weather = json.hourly_forecast;
+        console.log('weather from server', weather);
         if (weather.length === 0) {
           throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
-        } else if (moment(weather[0].time).format('h') === moment().format('h')) {
+        } else if (moment(weather[0].FCTTIME.civil).format('h') === moment().format('h')) {
           console.log('first Weather: ', moment(weather[0].time).format('h'));
           console.log('current Time: ', moment().format('h'));
-          subsetArray = weather.slice(0, 6);
+          weather = weather.slice(1, 6);
+          console.log('weather should be: ', weather);
         }
 
         const weatherArr = [];
         for (let i = 0; i < 5; i += 1) {
           weatherArr.push({
-            condition: subsetArray[i].condition,
-            time: subsetArray[i].FCTTIME.civil,
+            condition: weather[i].condition,
+            time: weather[i].FCTTIME.civil,
             temp: {
               english: {
-                raw: parseInt(subsetArray[i].temp.english, 10),
-                display: `${subsetArray[i].temp.english}F`,
+                raw: parseInt(weather[i].temp.english, 10),
+                display: `${weather[i].temp.english}F`,
               },
               metric: {
-                raw: parseInt(subsetArray[i].temp.metric, 10),
-                display: `${subsetArray[i].temp.metric}C`,
+                raw: parseInt(weather[i].temp.metric, 10),
+                display: `${weather[i].temp.metric}C`,
               },
             },
             icon: this.determineWeatherIcon(
-              subsetArray[i].icon,
-              subsetArray[i].FCTTIME.civil,
+              weather[i].icon,
+              weather[i].FCTTIME.civil,
             ),
           });
         }
