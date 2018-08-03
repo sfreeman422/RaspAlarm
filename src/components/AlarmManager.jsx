@@ -41,7 +41,8 @@ export default class AlarmManager extends React.Component {
       .then(res => res.json())
       .then((alarms) => {
         this.setState({ alarms });
-      });
+      })
+      .catch(err => console.log(err));
   }
 
   setAlarm() {
