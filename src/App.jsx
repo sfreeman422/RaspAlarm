@@ -14,9 +14,6 @@ import * as weatherIcons from './components/weatherIcons.json';
 
 const config = require('./private/config.json');
 
-let weatherInterval;
-let timeInterval;
-
 const mapDispatchToProps = dispatch => ({
   setTime: time => dispatch(actions.setTime(time)),
   setDate: date => dispatch(actions.setDate(date)),
@@ -26,10 +23,11 @@ const mapDispatchToProps = dispatch => ({
   setUserLoc: userLoc => dispatch(actions.setUserLoc(userLoc)),
   setUserCoords: userCoords => dispatch(actions.setUserCoords(userCoords)),
   setSunData: sunData => dispatch(actions.setSunData(sunData)),
-  setWeatherStatus: status => dispatch(actions.setWeatherStatus(status)),
   setLoadingStatus: status => dispatch(actions.setLoadingStatus(status)),
   reportError: error => dispatch(actions.reportError(error)),
   addLocation: location => dispatch(actions.addLocation(location)),
+  setLastTemperature: temperature => dispatch(actions.setLastTemperature(temperature)),
+  setInitialized: initialized => dispatch(actions.setInitialized(initialized)),
 });
 
 const mapStateToProps = state => ({
@@ -39,9 +37,11 @@ const mapStateToProps = state => ({
   sunrise: state.sunrise,
   userLoc: state.userLoc,
   userCoords: state.userCoords,
-  hasWeatherData: state.hasWeatherData,
   weatherArr: state.weatherArr,
+  lastTemperature: state.lastTemperature,
   coloredIcons: state.coloredIcons,
+  date: state.date,
+  initialized: state.initialized,
 });
 
 class ConnectedMain extends React.Component {
@@ -54,23 +54,43 @@ class ConnectedMain extends React.Component {
     this.determineWeatherIcon = this.determineWeatherIcon.bind(this);
     this.determineNightState = this.determineNightState.bind(this);
     this.setBrightness = this.setBrightness.bind(this);
+    this.timeInterval = undefined;
   }
 
   componentDidMount() {
     this.setTime();
-    timeInterval = setInterval(this.setTime, 100);
-    this.initializeApp().catch(err => this.props.reportError(err.message));
+    this.timeInterval = setInterval(this.setTime, 1000);
+    console.log(this.props.initialized);
+    if (!this.props.initialized) {
+      this.initializeApp().catch(err => this.props.reportError(err.message));
+    }
   }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.date !== prevProps.date) {
+      console.log('getting sundata...');
+      const sunData = await this.getSunData();
+      this.props.setSunData(sunData);
+    } else if (this.props.time !== prevProps.time && moment().format('mm') === '00') {
+      console.log('updating weather...');
+      const weather = await this.getWeather();
+      console.log('new weather is');
+      console.log(weather);
+      this.props.setWeather(weather);
+    }
+  }
+
   componentWillUnmount() {
-    clearInterval(weatherInterval);
-    clearInterval(timeInterval);
+    clearInterval(this.timeInterval);
   }
 
   setTime() {
     this.props.setTime(moment().format('hh:mma'));
     this.props.setDate(moment().format('MMMM Do YYYY'));
     this.props.setToday(moment().format('dddd'));
-    this.determineNightState();
+    if (this.props.sunrise && this.props.sunset) {
+      this.determineNightState();
+    }
   }
 
   getUserCoordinates() {
@@ -84,44 +104,57 @@ class ConnectedMain extends React.Component {
   }
 
   getWeather() {
-    if (moment().format('mm') === '00' || !this.props.hasWeatherData) {
-      return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
-        .then(response => response.json())
-        .then((json) => {
-          if (json.hourly_forecast.length === 0) {
-            throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
-          }
-          const weatherArr = [];
-          // Builds out an array to list weather information.
-          for (let i = 0; i < 5; i += 1) {
-            weatherArr.push({
-              condition: json.hourly_forecast[i].condition,
-              time: json.hourly_forecast[i].FCTTIME.civil,
-              temp: {
-                english: {
-                  raw: parseInt(json.hourly_forecast[i].temp.english, 10),
-                  display: `${json.hourly_forecast[i].temp.english}F`,
-                },
-                metric: {
-                  raw: parseInt(json.hourly_forecast[i].temp.metric, 10),
-                  display: `${json.hourly_forecast[i].temp.metric}C`,
-                },
-              },
-              icon: this.determineWeatherIcon(
-                json.hourly_forecast[i].icon,
-                json.hourly_forecast[i].FCTTIME.civil,
-              ),
-            });
-          }
-          return weatherArr;
-        })
-        .catch(err => new Error(`Weather retrieval failed! \n ${err.message}`));
+    if (this.props.weatherArr && this.props.weatherArr.length > 0) {
+      this.props.setLastTemperature(this.props.weatherArr[4]);
     }
-    return this.props.weatherArr;
+    return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
+      .then(response => response.json())
+      .then((json) => {
+        let weather = json.hourly_forecast;
+        let firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
+        if (firstWeatherHour > 12) {
+          firstWeatherHour -= 12;
+        } else if (firstWeatherHour === 0) {
+          firstWeatherHour = 12;
+        }
+        console.log('weather from server', weather);
+        console.log(firstWeatherHour);
+        if (weather.length === 0) {
+          throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
+        } else if (firstWeatherHour === moment().format('h')) {
+          console.log('first Weather: ', moment(weather[0].time).format('h'));
+          console.log('current Time: ', moment().format('h'));
+          weather = weather.slice(1, 6);
+          console.log('weather should be: ', weather);
+        }
+
+        const weatherArr = [];
+        for (let i = 0; i < 5; i += 1) {
+          weatherArr.push({
+            condition: weather[i].condition,
+            time: weather[i].FCTTIME.civil,
+            temp: {
+              english: {
+                raw: parseInt(weather[i].temp.english, 10),
+                display: `${weather[i].temp.english}F`,
+              },
+              metric: {
+                raw: parseInt(weather[i].temp.metric, 10),
+                display: `${weather[i].temp.metric}C`,
+              },
+            },
+            icon: this.determineWeatherIcon(
+              weather[i].icon,
+              weather[i].FCTTIME.civil,
+            ),
+          });
+        }
+        return weatherArr;
+      })
+      .catch(err => new Error(`Weather retrieval failed! \n ${err.message}`));
   }
 
   getSunData() {
-    // Get the sunrise/sunset data
     return fetch(`https://api.wunderground.com/api/${config.wunderground}/astronomy/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
       .then(response => response.json())
       .then(sundata => ({
@@ -144,11 +177,16 @@ class ConnectedMain extends React.Component {
   }
 
   setBrightness(isNight) {
+    console.debug(`setBrightness was called with ${isNight}`);
+    console.debug(`isNight is a ${typeof isNight}`);
     fetch('/brightness', {
       method: 'POST',
-      body: {
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
         isNight,
-      },
+      }),
     })
       .then(res => res.json())
       .then(resp => console.log(resp))
@@ -168,23 +206,20 @@ class ConnectedMain extends React.Component {
     this.props.setLoadingStatus('Getting weather...');
     const weather = await this.getWeather();
     this.props.setWeather(weather);
-    weatherInterval = setInterval(async () => {
-      const weather = await this.getWeather();
-      this.props.setWeather(weather);
-    }, 60000);
-    this.props.setWeatherStatus(true);
-    this.props.setLoadingStatus('Done!');
-    this.setBrightness();
+    this.props.setInitialized(true);
   }
 
   determineNightState() {
-    if (moment(this.props.time, 'hh:mm:a').isBetween(
-      moment(this.props.sunset, 'hh:mm:a'),
-      moment(this.props.sunrise, 'hh:mm:a'),
-    ) && !this.props.isNight) {
+    const sunrise = moment(this.props.sunrise, 'hh:mm:a');
+    const sunset = moment(this.props.sunset, 'hh:mm:a');
+    const currentTime = moment();
+    console.debug('Checking night state...');
+    if ((currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) && !this.props.isNight) {
+      console.debug('Night time is detected');
       this.props.setNight(true);
       this.setBrightness(true);
-    } else if (this.props.isNight) {
+    } else if ((currentTime.isBefore(sunset) && currentTime.isAfter(sunrise)) && (this.props.isNight || this.props.isNight === undefined)) {
+      console.debug('day time is detected');
       this.props.setNight(false);
       this.setBrightness(false);
     }
@@ -193,13 +228,17 @@ class ConnectedMain extends React.Component {
   determineWeatherIcon(weatherState, hour) {
     const sunrise = moment(this.props.sunrise, 'hh:mm:a');
     const sunset = moment(this.props.sunset, 'hh:mm:a');
-    const isHour = moment(hour, 'hh:mm:a');
-    if (isHour.isAfter(sunset) || isHour.isBefore(sunrise)) {
+    const currentHour = moment(hour, 'hh:mm:a');
+    if (currentHour.isBefore(sunrise) || currentHour.isAfter(sunset)) {
+      console.debug('Returning night');
       return weatherIcons[weatherState].night;
-    } return weatherIcons[weatherState].day;
+    }
+    console.debug('Returning day');
+    return weatherIcons[weatherState].day;
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className="container">
         <Clock />
@@ -217,23 +256,31 @@ ConnectedMain.propTypes = {
   setUserCoords: PropTypes.func.isRequired,
   setUserLoc: PropTypes.func.isRequired,
   setWeather: PropTypes.func.isRequired,
-  setWeatherStatus: PropTypes.func.isRequired,
   setSunData: PropTypes.func.isRequired,
   setTime: PropTypes.func.isRequired,
   setDate: PropTypes.func.isRequired,
   setToday: PropTypes.func.isRequired,
   setNight: PropTypes.func.isRequired,
+  setLastTemperature: PropTypes.func.isRequired,
+  setInitialized: PropTypes.func.isRequired,
   reportError: PropTypes.func.isRequired,
-  hasWeatherData: PropTypes.bool.isRequired,
   time: PropTypes.string.isRequired,
-  sunset: PropTypes.object.isRequired,
-  sunrise: PropTypes.object.isRequired,
-  isNight: PropTypes.bool.isRequired,
+  initialized: PropTypes.bool.isRequired,
+  sunset: PropTypes.object,
+  sunrise: PropTypes.object,
+  date: PropTypes.string.isRequired,
+  isNight: PropTypes.bool,
   userCoords: PropTypes.shape({
     lat: PropTypes.number.isRequired,
     long: PropTypes.number.isRequired,
   }).isRequired,
   weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+ConnectedMain.defaultProps = {
+  sunset: {},
+  sunrise: {},
+  isNight: undefined,
 };
 
 const Main = connect(mapStateToProps, mapDispatchToProps)(ConnectedMain);

@@ -9,18 +9,19 @@ const initialState = {
     long: 0,
   },
   locationError: '',
-  hasWeatherData: false,
   weatherArr: [],
+  lastTemperature: undefined,
   sunrise: {},
   sunset: {},
   alarms: [],
-  isNight: false,
+  isNight: undefined,
   loadingMessage: '',
   showDeltas: true,
   celcius: false,
   preciseTemperature: true,
   coloredIcons: true,
   blinkTime: true,
+  initialized: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -39,11 +40,6 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         weatherArr: action.payload,
-      };
-    case 'SET_WEATHER_STATUS':
-      return {
-        ...state,
-        hasWeatherData: action.payload,
       };
     case 'SET_USERLOC':
       return {
@@ -113,6 +109,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         blinkTime: action.payload,
+      };
+    case 'SET_LAST_TEMPERATURE':
+      return {
+        ...state,
+        lastTemperature: action.payload,
+      };
+    case 'SET_INITIALIZED':
+      return {
+        ...state,
+        initialized: action.payload,
       };
     default:
       return state;

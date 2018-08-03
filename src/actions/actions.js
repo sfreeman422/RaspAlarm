@@ -50,11 +50,6 @@ export const setUserCoords = location => ({
   payload: location,
 });
 
-export const setWeatherStatus = weatherStatus => ({
-  type: types.SET_WEATHER_STATUS,
-  payload: weatherStatus,
-});
-
 export const setLoadingStatus = status => ({
   type: types.SET_LOADING_STATUS,
   payload: status,
@@ -81,6 +76,16 @@ export const setBlinkTime = blinkTime => ({
 });
 
 export const addLocation = location => ({
-  types: types.ADD_LOCATION,
+  type: types.ADD_LOCATION,
   payload: location,
+});
+
+export const setLastTemperature = temperature => ({
+  type: types.SET_LAST_TEMPERATURE,
+  payload: temperature,
+});
+
+export const setInitialized = initialized => ({
+  type: types.SET_INITIALIZED,
+  payload: initialized,
 });

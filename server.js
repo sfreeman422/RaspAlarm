@@ -21,7 +21,8 @@ db.on('error', (err) => {
 });
 
 app.use(logger('dev'));
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.static('./public'));
 app.use(methodOverride('_method'));
 
@@ -42,7 +43,7 @@ app.get('/alarms', (req, res) => {
 // Adjusts brightness when running on a pi.
 app.post('/brightness', (req, res) => {
   if (process.env.isRaspberryPi === 'true') {
-    if (req.body.isNight === 'true') {
+    if (req.body.isNight) {
       exec(
         'echo 20 > /sys/class/backlight/rpi_backlight/brightness',
         (error) => {
@@ -53,7 +54,7 @@ app.post('/brightness', (req, res) => {
           }
         },
       );
-    } else if (req.body.isNight !== 'true') {
+    } else if (!req.body.isNight) {
       exec(
         'echo 255 > /sys/class/backlight/rpi_backlight/brightness',
         (error) => {
@@ -65,7 +66,7 @@ app.post('/brightness', (req, res) => {
         },
       );
     }
-  } else {
+  } else if (!process.env.isRaspberryPi || process.env.isRaspberryPi === 'false') {
     res.json('RaspberryPi env variable not set. No changes made');
   }
 });
