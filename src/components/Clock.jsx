@@ -11,7 +11,11 @@ class ConnectedClock extends React.Component {
       isColonVisible: false,
     };
     this.blinkColon = this.blinkColon.bind(this);
-    setInterval(this.blinkColon, 1000);
+    this.blinkInterval = setInterval(this.blinkColon, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.blinkInterval);
   }
 
   blinkColon() {
