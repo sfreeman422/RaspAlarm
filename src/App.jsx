@@ -5,11 +5,11 @@ import fetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from './actions/actions';
-import Clock from './components/Children/Clock';
-import Today from './components/Children/Today';
-import Weather from './components/Children/Weather';
-import Alarm from './components/Children/Alarm';
-import Loading from './components/Children/Loading';
+import Clock from './components/Clock';
+import Today from './components/Today';
+import Weather from './components/Weather';
+import Alarm from './components/Alarm';
+import Loading from './components/Loading';
 import * as weatherIcons from './components/weatherIcons.json';
 
 const config = require('./private/config.json');
