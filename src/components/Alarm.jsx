@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
   currentTime: state.time,
 });
 
-class ConnectedAlarm extends React.Component {
+export class Alarm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,10 +18,6 @@ class ConnectedAlarm extends React.Component {
       alarms: [],
       ringingAlarm: {},
     };
-    this.getAlarms = this.getAlarms.bind(this);
-    this.checkAlarm = this.checkAlarm.bind(this);
-    this.awake = this.awake.bind(this);
-    this.removeAlarm = this.removeAlarm.bind(this);
     this.alarmInterval = undefined;
     this.alarmSound = new Audio('./sounds/alarm.mp3');
   }
@@ -35,7 +31,7 @@ class ConnectedAlarm extends React.Component {
     clearInterval(this.alarmInterval);
   }
 
-  getAlarms() {
+  getAlarms = () => {
     fetch('/alarms')
       .then(res => res.json())
       .then((alarms) => {
@@ -44,7 +40,7 @@ class ConnectedAlarm extends React.Component {
       });
   }
 
-  checkAlarm() {
+  checkAlarm = () => {
     const dayOfWeek = moment().format('dddd');
     for (let i = 0; i < this.state.alarms.length; i += 1) {
       if (
@@ -64,7 +60,7 @@ class ConnectedAlarm extends React.Component {
     }
   }
 
-  removeAlarm(id) {
+  removeAlarm = (id) => {
     fetch(
       '/deleteAlarm',
       {
@@ -82,7 +78,7 @@ class ConnectedAlarm extends React.Component {
     });
   }
 
-  awake() {
+  awake = () => {
     this.setState({
       isRinging: false,
       awake: true,
@@ -112,10 +108,8 @@ class ConnectedAlarm extends React.Component {
   }
 }
 
-const Alarm = connect(mapStateToProps)(ConnectedAlarm);
-
-ConnectedAlarm.propTypes = {
+Alarm.propTypes = {
   currentTime: PropTypes.string.isRequired,
 };
 
-export default Alarm;
+export default connect(mapStateToProps)(Alarm);

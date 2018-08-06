@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
   lastTemperature: state.lastTemperature,
 });
 
-const ConnectedWeather = ({
+export const Weather = ({
   weatherArr, showDeltas, celcius, lastTemperature,
 }) => (
   <div className="allWeather">
@@ -27,17 +27,15 @@ const ConnectedWeather = ({
   </div>
 );
 
-ConnectedWeather.propTypes = {
+Weather.propTypes = {
   weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
   showDeltas: PropTypes.bool.isRequired,
   celcius: PropTypes.bool.isRequired,
   lastTemperature: PropTypes.object,
 };
 
-ConnectedWeather.defaultProps = {
+Weather.defaultProps = {
   lastTemperature: undefined,
 };
 
-const Weather = connect(mapStateToProps)(ConnectedWeather);
-
-export default Weather;
+export default connect(mapStateToProps)(Weather);

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const mapStateToProps = state => ({ time: state.time, blinkTime: state.blinkTime });
 
-class ConnectedClock extends React.Component {
+export class Clock extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +18,7 @@ class ConnectedClock extends React.Component {
     clearInterval(this.blinkInterval);
   }
 
-  blinkColon() {
+  blinkColon = () => {
     if (this.props.blinkTime) {
       this.setState({
         isColonVisible: !this.state.isColonVisible,
@@ -42,11 +42,9 @@ class ConnectedClock extends React.Component {
   }
 }
 
-const Clock = connect(mapStateToProps)(ConnectedClock);
-
-ConnectedClock.propTypes = {
+Clock.propTypes = {
   time: PropTypes.string.isRequired,
   blinkTime: PropTypes.bool.isRequired,
 };
 
-export default Clock;
+export default connect(mapStateToProps)(Clock);

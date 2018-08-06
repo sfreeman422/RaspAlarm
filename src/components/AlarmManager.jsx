@@ -21,14 +21,6 @@ export default class AlarmManager extends React.Component {
       alarms: [],
     };
     this.daysOfWeek = [];
-    this.incrementHour = this.incrementHour.bind(this);
-    this.incrementMinute = this.incrementMinute.bind(this);
-    this.changeAMPM = this.changeAMPM.bind(this);
-    this.chooseDay = this.chooseDay.bind(this);
-    this.getAlarms = this.getAlarms.bind(this);
-    this.setAlarm = this.setAlarm.bind(this);
-    this.removeAlarm = this.removeAlarm.bind(this);
-    this.setMinute = this.setMinute.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +28,7 @@ export default class AlarmManager extends React.Component {
     this.getAlarms();
   }
 
-  getAlarms() {
+  getAlarms = () => {
     fetch('/alarms')
       .then(res => res.json())
       .then((alarms) => {
@@ -45,7 +37,7 @@ export default class AlarmManager extends React.Component {
       .catch(err => console.log(err));
   }
 
-  setAlarm() {
+  setAlarm = () => {
     const { ampm, hour, minute } = this.state;
     const data = {
       hour: this.state.hour < 10 ? `0${hour}` : hour,
@@ -78,7 +70,7 @@ export default class AlarmManager extends React.Component {
     });
   }
 
-  setMinute() {
+  setMinute = () => {
     const minute = parseInt(moment().format('mm'), 10);
     if (minute < 10 && minute > 0) {
       this.setState({ minute: 10 });
@@ -91,7 +83,7 @@ export default class AlarmManager extends React.Component {
     }
   }
 
-  incrementHour() {
+  incrementHour = () => {
     if (this.state.hour === 12) {
       this.setState({
         hour: 1,
@@ -103,7 +95,7 @@ export default class AlarmManager extends React.Component {
     }
   }
 
-  changeAMPM() {
+  changeAMPM = () => {
     if (this.state.ampm === 'am') {
       this.setState({
         ampm: 'pm',
@@ -115,7 +107,7 @@ export default class AlarmManager extends React.Component {
     }
   }
 
-  chooseDay(day) {
+  chooseDay = (day) => {
     if (!this.state[day]) {
       this.setState({
         [day]: true,
@@ -132,7 +124,7 @@ export default class AlarmManager extends React.Component {
       }
     }
   }
-  incrementMinute() {
+  incrementMinute = () => {
     if (this.state.minute >= 55 && this.state.minute <= 59) {
       this.setState({
         minute: 0,
@@ -158,7 +150,7 @@ export default class AlarmManager extends React.Component {
       });
     }
   }
-  removeAlarm(id) {
+  removeAlarm = (id) => {
     fetch(
       '/deleteAlarm',
       {

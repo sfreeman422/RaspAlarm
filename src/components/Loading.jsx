@@ -9,13 +9,12 @@ const mapStateToProps = state => ({
   loadingMessage: state.loadingMessage,
 });
 
-class ConnectedLoading extends React.Component {
+export class Loading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       icon: 'wi wi-moon-waning-crescent-6 yellow',
     };
-    this.changeIcon = this.changeIcon.bind(this);
   }
   componentDidMount() {
     animateInterval = setInterval(this.changeIcon, 100);
@@ -23,7 +22,7 @@ class ConnectedLoading extends React.Component {
   componentWillUnmount() {
     clearInterval(animateInterval);
   }
-  changeIcon() {
+  changeIcon = () => {
     const icons = [
       'wi wi-moon-waning-crescent-6 yellow',
       'wi wi-moon-waning-crescent-5 yellow',
@@ -78,15 +77,13 @@ class ConnectedLoading extends React.Component {
   }
 }
 
-const Loading = connect(mapStateToProps)(ConnectedLoading);
-
-ConnectedLoading.propTypes = {
+Loading.propTypes = {
   locationError: PropTypes.string,
   loadingMessage: PropTypes.string.isRequired,
 };
 
-ConnectedLoading.defaultProps = {
+Loading.defaultProps = {
   locationError: '',
 };
 
-export default Loading;
+export default connect(mapStateToProps)(Loading);

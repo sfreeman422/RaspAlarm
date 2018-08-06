@@ -9,17 +9,15 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
 });
 
-class ConnectedToday extends React.Component {
+export class Today extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isModalOpen: false,
     };
-
-    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  toggleModal() {
+  toggleModal = () => {
     this.setState({
       isModalOpen: !this.state.isModalOpen,
     });
@@ -45,15 +43,14 @@ class ConnectedToday extends React.Component {
   }
 }
 
-ConnectedToday.propTypes = {
+Today.propTypes = {
   day: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   userLoc: PropTypes.string,
 };
 
-ConnectedToday.defaultProps = {
+Today.defaultProps = {
   userLoc: '',
 };
 
-const Today = connect(mapStateToProps)(ConnectedToday);
-export default Today;
+export default connect(mapStateToProps)(Today);

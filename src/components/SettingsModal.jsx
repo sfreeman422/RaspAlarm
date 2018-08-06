@@ -33,7 +33,7 @@ const modalStyle = {
   },
 };
 
-class ConnectedSettings extends React.Component {
+export class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -94,7 +94,7 @@ class ConnectedSettings extends React.Component {
   }
 }
 
-ConnectedSettings.propTypes = {
+Settings.propTypes = {
   userLoc: PropTypes.string.isRequired,
   celcius: PropTypes.bool.isRequired,
   showCelcius: PropTypes.func.isRequired,
@@ -108,6 +108,4 @@ ConnectedSettings.propTypes = {
   blinkTime: PropTypes.bool.isRequired,
 };
 
-const SettingsModal = connect(mapStateToProps, mapDispatchToProps)(ConnectedSettings);
-
-export default SettingsModal;
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);
