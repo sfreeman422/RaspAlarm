@@ -14,7 +14,10 @@ describe('AlarmManager', () => {
   });
   it('should initialize with the proper state', () => {
     const expectedHour = parseInt(moment().format('mm'), 10) > 55 ? parseInt(moment().format('h'), 10) + 1 : parseInt(moment().format('h'), 10);
-    const expectedMinute = Math.ceil((parseInt(moment().format('mm'), 10) / 5)) * 5;
+    let expectedMinute = Math.ceil((parseInt(moment().format('mm'), 10) / 5)) * 5;
+    if (expectedMinute === 60) {
+      expectedMinute = 0;
+    }
     expect(alarmManager.state(['hour'])).toEqual(expectedHour);
     expect(alarmManager.state(['minute'])).toEqual(expectedMinute);
     expect(alarmManager.state(['ampm'])).toEqual(moment().format('a'));
@@ -31,30 +34,31 @@ describe('AlarmManager', () => {
   });
 
   it('should increment by one hour per click', () => {
+    const expected = parseInt(alarmManager.state(['hour'])) + 1
     alarmManager.instance().incrementHour();
-    expect(alarmManager.state(['hour'])).toBe(parseInt(alarmManager.state(['hour']), 10) + 1);
+    expect(alarmManager.state(['hour'])).toBe(expected);
   });
 
   it('should increment hour 12 to 1', () => {
-    alarmManager.state.hour = 12;
-    alarmManager.incrementHour();
-    expect(alarmManager.state.hour).toBe(1);
+    alarmManager.setState({ hour: 12 });
+    alarmManager.instance().incrementHour();
+    expect(alarmManager.state(['hour'])).toBe(1);
   });
 
   it('should toggle ampm', () => {
-    alarmManager.state.ampm = 'am';
-    alarmManager.changeAMPM();
-    expect(alarmManager.state.ampm).toBe('pm');
-    alarmManager.changeAMPM();
-    expect(alarmManager.state.ampm).toBe('am');
+    alarmManager.setState({ ampm: 'am' });
+    alarmManager.instance().changeAMPM();
+    expect(alarmManager.state(['ampm'])).toBe('pm');
+    alarmManager.instance().changeAMPM();
+    expect(alarmManager.state(['ampm'])).toBe('am');
   });
 
   it('should allow a user to select a day and unselect a day', () => {
-    alarmManager.chooseDay('Monday');
-    expect(alarmManager.state.Monday).toBe(true);
-    expect(alarmManager.state.daysOfWeek).toBe(['Monday']);
-    alarmManager.chooseDay('Monday');
-    expect(alarmManager.state.Monday).toBe(false);
-    expect(alarmManager.state.daysOfWeek).toBe([]);
+    alarmManager.instance().chooseDay('Monday');
+    expect(alarmManager.state(['Monday'])).toBe(true);
+    expect(alarmManager.state(['daysOfWeek'])).toBe('Monday');
+    alarmManager.instance().chooseDay('Monday');
+    expect(alarmManager.state(['Monday'])).toBe(false);
+    expect(alarmManager.state(['daysOfWeek'])).toBeEmpty();
   });
 });
