@@ -101,7 +101,7 @@ class ConnectedMain extends React.Component {
 
   getWeather() {
     if (this.props.weatherArr && this.props.weatherArr.length > 0) {
-      this.props.setLastTemperature(this.props.weatherArr[4]);
+      this.props.setLastTemperature(this.props.weatherArr[1]);
     }
     return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
       .then(response => response.json())
