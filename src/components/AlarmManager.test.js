@@ -28,9 +28,8 @@ describe('AlarmManager', () => {
     expect(alarmManager.state(['Friday'])).toEqual(false);
     expect(alarmManager.state(['Saturday'])).toEqual(false);
     expect(alarmManager.state(['Sunday'])).toEqual(false);
-    // These are both failing, need to test an empty array somehow
-    // expect(alarmManager.state(['alarms'])).toEqual([]);
-    // expect(alarmManager.state(['daysOfWeek'])).toEqual([]);
+    expect(alarmManager.state(['alarms'])).toEqual(expect.arrayContaining([]));
+    expect(alarmManager.state(['daysOfWeek'])).toEqual(expect.arrayContaining([]));
   });
 
   it('should increment by one hour per click', () => {
@@ -56,9 +55,9 @@ describe('AlarmManager', () => {
   it('should allow a user to select a day and unselect a day', () => {
     alarmManager.instance().chooseDay('Monday');
     expect(alarmManager.state(['Monday'])).toBe(true);
-    expect(alarmManager.state(['daysOfWeek'])).toBe('Monday');
+    expect(alarmManager.instance().daysOfWeek).toEqual(expect.arrayContaining(['Monday']));
     alarmManager.instance().chooseDay('Monday');
     expect(alarmManager.state(['Monday'])).toBe(false);
-    expect(alarmManager.state(['daysOfWeek'])).toBeEmpty();
+    expect(alarmManager.instance().daysOfWeek).toEqual(expect.arrayContaining([]));
   });
 });
