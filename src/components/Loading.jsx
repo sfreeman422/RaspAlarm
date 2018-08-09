@@ -16,12 +16,15 @@ export class Loading extends React.Component {
       icon: 'wi wi-moon-waning-crescent-6 yellow',
     };
   }
+  
   componentDidMount() {
     animateInterval = setInterval(this.changeIcon, 100);
   }
+
   componentWillUnmount() {
     clearInterval(animateInterval);
   }
+
   changeIcon = () => {
     const icons = [
       'wi wi-moon-waning-crescent-6 yellow',
