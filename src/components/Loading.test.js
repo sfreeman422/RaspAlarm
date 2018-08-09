@@ -1,11 +1,11 @@
 import 'jest';
 import React from 'react';
 import * as Enzyme from 'enzyme';
-import * as mocks from '../constants/mocks';
-import * as actions from '../actions/actions';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
-import Loading from './Loading';
+import * as mocks from '../constants/mocks';
+import * as actions from '../actions/actions';
+import { Loading } from './Loading';
 
 Enzyme.configure({ adapter: new Adapter() });
 

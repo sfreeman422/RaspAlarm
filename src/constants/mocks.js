@@ -79,8 +79,8 @@ export const weatherArr = [
 export const mockStore = {
   time: '7:00am',
   date: 'August 1, 2018',
-  today: '',
-  userLoc: '',
+  today: 'Monday',
+  userLoc: 'Test, Test',
   savedLocations: [],
   userCoords: {
     lat: 0,

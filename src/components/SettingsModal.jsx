@@ -19,7 +19,7 @@ const mapDispatchToProps = dispatch => ({
   setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
 });
 
-Modal.setAppElement('#root');
+// Modal.setAppElement('#root');
 
 const modalStyle = {
   content: {
