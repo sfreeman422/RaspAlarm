@@ -56,7 +56,7 @@ export class Settings extends React.Component {
       blinkTime,
     } = this.props;
     return (
-      <Modal isOpen={isOpen} style={modalStyle}>
+      <Modal ariaHideApp={false} isOpen={isOpen} style={modalStyle}>
         <h1>Settings</h1>
         <table>
           <tbody>
