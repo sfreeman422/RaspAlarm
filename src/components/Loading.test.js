@@ -13,15 +13,15 @@ describe('Loading', () => {
   let store;
   const mockStore = configureStore();
 
-  it('should render a loading state when there is no error', () => {
+  it('should initialize properly without an error', () => {
     store = mockStore(mocks.mockStore);
     loading = Enzyme.shallow(<Loading store={mocks.mockStore} loadingMessage="Test" />);
     expect(loading).toBeDefined();
     expect(loading.state()).toBeDefined();
-    // Broken why? expect(loading.state('icon')).toBeDefined();
+    expect(loading.state('icon')).toBeDefined();
   });
 
-  it('should render an error when we have one', () => {
+  it('should initialize properly with an error', () => {
     store = mockStore(mocks.mockStoreWithError);
     loading = Enzyme.shallow(<Loading store={mocks.mockStoreWithError} loadingMessage="Failure" />);
     const loadingProps = loading.instance().props.store;
