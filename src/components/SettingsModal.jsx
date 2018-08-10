@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   coloredIcons: state.coloredIcons,
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
+  temperaturePrecision: state.temperaturePrecision,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -34,13 +35,6 @@ const modalStyle = {
 };
 
 export class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      temperaturePrecision: true,
-    };
-  }
-
   render() {
     const {
       userLoc,
@@ -54,6 +48,7 @@ export class Settings extends React.Component {
       toggleModal,
       setBlinkTime,
       blinkTime,
+      temperaturePrecision,
     } = this.props;
     return (
       <Modal ariaHideApp={false} isOpen={isOpen} style={modalStyle}>
@@ -85,7 +80,7 @@ export class Settings extends React.Component {
             </tr>
             <tr>
               <td>Precise Temperatures? (WIP)</td>
-              <td><input type="checkbox" checked={this.state.temperaturePrecision} onChange={() => this.setState({ temperaturePrecision: !this.state.temperaturePrecision })} /></td>
+              <td><input type="checkbox" checked={temperaturePrecision} onChange={() => this.setState({ temperaturePrecision: !this.props.temperaturePrecision })} /></td>
             </tr>
           </tbody>
         </table>
@@ -106,6 +101,7 @@ Settings.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   setBlinkTime: PropTypes.func.isRequired,
   blinkTime: PropTypes.bool.isRequired,
+  temperaturePrecision: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);
