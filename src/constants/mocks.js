@@ -79,7 +79,7 @@ export const weatherArr = [
 export const mockStore = {
   time: '7:00am',
   date: 'August 1, 2018',
-  today: 'Monday',
+  day: 'Monday',
   userLoc: 'Test, Test',
   savedLocations: [],
   userCoords: {
@@ -87,6 +87,32 @@ export const mockStore = {
     long: 0,
   },
   locationError: '',
+  weatherArr,
+  lastTemperature: undefined,
+  sunrise: {},
+  sunset: {},
+  alarms: [],
+  isNight: false,
+  loadingMessage: '',
+  showDeltas: true,
+  celcius: false,
+  preciseTemperature: true,
+  coloredIcons: true,
+  blinkTime: true,
+  initialized: false,
+};
+
+export const mockStoreWithError = {
+  time: '7:00am',
+  date: 'August 1, 2018',
+  day: 'Monday',
+  userLoc: 'Test, Test',
+  savedLocations: [],
+  userCoords: {
+    lat: 0,
+    long: 0,
+  },
+  locationError: 'Test Error',
   weatherArr,
   lastTemperature: undefined,
   sunrise: {},

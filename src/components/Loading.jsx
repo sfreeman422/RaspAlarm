@@ -69,9 +69,7 @@ export class Loading extends React.Component {
   render() {
     return (
       this.props.locationError !== '' ?
-        <React.Fragment>
           <p className="error">Error: {this.props.locationError}</p>
-        </React.Fragment>
         :
         <div className="loading">
           <i className={this.state.icon} id="loading" />

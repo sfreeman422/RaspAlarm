@@ -1,10 +1,10 @@
 import 'jest';
 import React from 'react';
 import * as Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import Weather from './Weather';
 import configureStore from 'redux-mock-store';
+import Adapter from 'enzyme-adapter-react-16';
 import * as mocks from '../constants/mocks';
+import Weather from './Weather';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -23,7 +23,6 @@ describe('Weather', () => {
   });
 
   it('should receive mock weather objects', () => {
-    weather = Enzyme.shallow(<Weather store={store} />);
     expect(weather.props().weatherArr).toEqual(expect.arrayContaining(mocks.weatherArr));
   });
 });

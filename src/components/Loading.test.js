@@ -4,7 +4,6 @@ import * as Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import * as mocks from '../constants/mocks';
-import * as actions from '../actions/actions';
 import { Loading } from './Loading';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -14,20 +13,18 @@ describe('Loading', () => {
   let store;
   const mockStore = configureStore();
 
-  beforeEach(() => {
-    store = mockStore(mocks.mockStore);
-    loading = Enzyme.shallow(<Loading store={store} />);
-  });
-
   it('should render a loading state when there is no error', () => {
+    store = mockStore(mocks.mockStore);
+    loading = Enzyme.shallow(<Loading store={mocks.mockStore} loadingMessage="Test" />);
     expect(loading).toBeDefined();
     expect(loading.state()).toBeDefined();
     // Broken why? expect(loading.state('icon')).toBeDefined();
   });
 
   it('should render an error when we have one', () => {
-    // This dispatch is not doing anything. Why?
-    store.dispatch(actions.reportError('Test error'));
-    expect(loading.props().locationError).toBe('Test error');
+    store = mockStore(mocks.mockStoreWithError);
+    loading = Enzyme.shallow(<Loading store={mocks.mockStoreWithError} loadingMessage="Failure" />);
+    const loadingProps = loading.instance().props.store;
+    expect(loadingProps.locationError).toBe('Test Error');
   });
 });
