@@ -44,7 +44,7 @@ const mapStateToProps = state => ({
   initialized: state.initialized,
 });
 
-class ConnectedMain extends React.Component {
+export class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
     this.setTime = this.setTime.bind(this);

@@ -76,6 +76,34 @@ export const weatherArr = [
   },
 ];
 
+export const mockAlarms = [
+  {
+    time: '7:00am',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    _id: 0,
+  },
+  {
+    time: '7:30am',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    _id: 1,
+  },
+  {
+    time: '7:45am',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    _id: 2,
+  },
+  {
+    time: '8:00am',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    _id: 3,
+  },
+  {
+    time: '9:00am',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    _id: 4,
+  },
+];
+
 export const mockStore = {
   time: '7:00am',
   date: 'August 1, 2018',
