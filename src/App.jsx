@@ -38,7 +38,6 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   userCoords: state.userCoords,
   weatherArr: state.weatherArr,
-  lastTemperature: state.lastTemperature,
   coloredIcons: state.coloredIcons,
   date: state.date,
   initialized: state.initialized,
@@ -101,7 +100,7 @@ class ConnectedMain extends React.Component {
 
   getWeather() {
     if (this.props.weatherArr && this.props.weatherArr.length > 0) {
-      this.props.setLastTemperature(this.props.weatherArr[1]);
+      this.props.setLastTemperature(this.props.weatherArr[0]);
     }
     return fetch(`https://api.wunderground.com/api/${config.wunderground}/hourly/q/${this.props.userCoords.lat},${this.props.userCoords.long}.json`)
       .then(response => response.json())
