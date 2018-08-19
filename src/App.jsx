@@ -154,7 +154,7 @@ class ConnectedMain extends React.Component {
 
     const firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
 
-    if (firstWeatherHour === moment().format('h')) {
+    if (firstWeatherHour === moment().format('H')) {
       weather = weather.slice(1, 6);
     }
 
