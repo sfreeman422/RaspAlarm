@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import moment from 'moment';
-import CurrentAlarms from './Children/CurrentAlarms';
+import CurrentAlarms from './CurrentAlarms';
 
 export default class AlarmManager extends React.Component {
   constructor() {

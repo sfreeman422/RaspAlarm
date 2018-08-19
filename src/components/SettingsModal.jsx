@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as actions from '../../actions/actions';
+import * as actions from '../actions/actions';
 
 const mapStateToProps = state => ({
   showDeltas: state.showDeltas,
