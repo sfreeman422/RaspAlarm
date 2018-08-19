@@ -153,12 +153,7 @@ class ConnectedMain extends React.Component {
       throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
     }
 
-    let firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
-    if (firstWeatherHour > 12) {
-      firstWeatherHour -= 12;
-    } else if (firstWeatherHour === 0) {
-      firstWeatherHour = 12;
-    }
+    const firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
 
     if (firstWeatherHour === moment().format('h')) {
       weather = weather.slice(1, 6);
