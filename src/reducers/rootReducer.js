@@ -8,7 +8,7 @@ const initialState = {
     lat: 0,
     long: 0,
   },
-  locationError: '',
+  error: '',
   weatherArr: [],
   lastTemperature: undefined,
   sunrise: {},
@@ -79,7 +79,12 @@ const rootReducer = (state = initialState, action) => {
     case 'REPORT_ERROR':
       return {
         ...state,
-        locationError: action.payload,
+        error: action.payload,
+      };
+    case 'CLEAR_ERROR':
+      return {
+        ...state,
+        error: undefined,
       };
     case 'SET_DELTAS':
       return {

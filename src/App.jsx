@@ -61,16 +61,16 @@ class ConnectedMain extends React.Component {
     this.setTime();
     this.timeInterval = setInterval(this.setTime, 1000);
     if (!this.props.initialized) {
-      this.initializeApp().catch(err => this.props.reportError(err.message));
+      this.initializeApp();
     }
   }
 
   async componentDidUpdate(prevProps) {
     if (this.props.date !== prevProps.date) {
-      const sunData = await this.getSunData();
+      const sunData = await this.getSunData().catch(err => this.props.reportError(err.message));
       this.props.setSunData(sunData);
     } else if (this.props.time !== prevProps.time && moment().format('mm') === '00') {
-      const weather = await this.getWeather();
+      const weather = await this.getWeather().catch(err => this.props.reportError(err.message));
       this.props.setWeather(weather);
     }
   }
@@ -183,16 +183,16 @@ class ConnectedMain extends React.Component {
 
   async initializeApp() {
     this.props.setLoadingStatus('Getting Location...');
-    const userCoordinates = await this.getUserCoordinates();
+    const userCoordinates = await this.getUserCoordinates().catch(err => this.props.reportError(err.message));
     this.props.setLoadingStatus('Refining Location...');
     this.props.setUserCoords(userCoordinates);
-    const userCity = await this.getUserCity(userCoordinates);
+    const userCity = await this.getUserCity(userCoordinates).catch(err => this.props.reportError(err.message));
     this.props.setLoadingStatus('Getting Solar Information...');
     this.props.setUserLoc(userCity);
-    const sunData = await this.getSunData();
+    const sunData = await this.getSunData().catch(err => this.props.reportError(err.message));
     this.props.setSunData(sunData);
     this.props.setLoadingStatus('Getting weather...');
-    const weather = await this.getWeather();
+    const weather = await this.getWeather().catch(err => this.props.reportError(err.message));
     this.props.setWeather(weather);
     this.props.setInitialized(true);
   }
