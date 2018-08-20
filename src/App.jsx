@@ -153,8 +153,13 @@ class ConnectedMain extends React.Component {
     }
 
     const firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
-
-    if (firstWeatherHour === moment().format('H')) {
+    console.debug('firstWeatherHour is ', firstWeatherHour);
+    console.debug('currentHour is ', moment().format('H'));
+    console.debug('typeof firstWeatherHour is ', typeof firstWeatherHour);
+    console.debug('typeof currentHour is ', typeof parseInt(moment().format('H'), 10));
+    if (firstWeatherHour === parseInt(moment().format('H'), 10)) {
+      console.debug('firstWeatherHour is ', firstWeatherHour);
+      console.debug('currentHour is ', moment().format('H'));
       weather = weather.slice(1, 6);
     }
 
