@@ -70,7 +70,7 @@ class ConnectedMain extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.date !== prevProps.date) {
+    if (this.props.date !== prevProps.date && this.props.initialized) {
       const sunData = await this.getSunData();
       this.props.setSunData(sunData);
     } else if (this.props.time !== prevProps.time && moment().format('mm') === '00') {
@@ -102,6 +102,8 @@ class ConnectedMain extends React.Component {
         },
         (error) => {
           this.errorInterval = (this.getUserCoordinates, RETRY_INTERVAL);
+          console.error(`getUserCoordinates - Geolocation failed! \n ${error.message}`);
+          this.props.reportError(`Geolocation failed! \n ${error.message}`);
           reject(new Error(`Geolocation failed! \n ${error.message}`));
         },
         { timeout: 30000 },
@@ -209,19 +211,24 @@ class ConnectedMain extends React.Component {
   }
 
   async initializeApp() {
-    this.props.setLoadingStatus('Getting Location...');
-    const userCoordinates = await this.getUserCoordinates();
-    this.props.setLoadingStatus('Refining Location...');
-    this.props.setUserCoords(userCoordinates);
-    const userCity = await this.getUserCity(userCoordinates);
-    this.props.setLoadingStatus('Getting Solar Information...');
-    this.props.setUserLoc(userCity);
-    const sunData = await this.getSunData();
-    this.props.setSunData(sunData);
-    this.props.setLoadingStatus('Getting weather...');
-    const weather = await this.getWeather();
-    this.props.setWeather(weather);
-    this.props.setInitialized(true);
+    try {
+      this.props.setLoadingStatus('Getting Location...');
+      const userCoordinates = await this.getUserCoordinates();
+      this.props.setLoadingStatus('Refining Location...');
+      this.props.setUserCoords(userCoordinates);
+      const userCity = await this.getUserCity(userCoordinates);
+      this.props.setLoadingStatus('Getting Solar Information...');
+      this.props.setUserLoc(userCity);
+      const sunData = await this.getSunData();
+      this.props.setSunData(sunData);
+      this.props.setLoadingStatus('Getting weather...');
+      const weather = await this.getWeather();
+      this.props.setWeather(weather);
+      this.props.setInitialized(true);
+    } catch (err) {
+      console.error(`initializeApp - ${err}`);
+      this.errorInterval = setInterval(this.initializeApp, RETRY_INTERVAL);
+    }
   }
 
   determineNightState() {

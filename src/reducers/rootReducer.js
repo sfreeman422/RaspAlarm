@@ -8,7 +8,7 @@ const initialState = {
     lat: 0,
     long: 0,
   },
-  error: '',
+  error: undefined,
   weatherArr: [],
   lastTemperature: undefined,
   sunrise: {},

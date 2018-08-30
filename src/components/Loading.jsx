@@ -66,9 +66,9 @@ class ConnectedLoading extends React.Component {
 
   render() {
     return (
-      this.props.locationError !== '' ?
+      this.props.error ?
         <React.Fragment>
-          <p className="error">Error: {this.props.locationError}</p>
+          <p className="error">Error: {this.props.error}</p>
         </React.Fragment>
         :
         <div className="loading">
@@ -81,12 +81,12 @@ class ConnectedLoading extends React.Component {
 const Loading = connect(mapStateToProps)(ConnectedLoading);
 
 ConnectedLoading.propTypes = {
-  locationError: PropTypes.string,
+  error: PropTypes.string,
   loadingMessage: PropTypes.string.isRequired,
 };
 
 ConnectedLoading.defaultProps = {
-  locationError: '',
+  error: '',
 };
 
 export default Loading;
