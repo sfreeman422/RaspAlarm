@@ -152,8 +152,8 @@ class ConnectedMain extends React.Component {
       throw new Error('Unable to retrieve weather from WeatherUnderground. Please check your API key.');
     }
 
-    const firstWeatherHour = parseInt(weather[0].FCTTIME.hour, 10);
-    if (firstWeatherHour === parseInt(moment().format('H'), 10)) {
+    const firstWeatherHour = parseFloat(weather[0].FCTTIME.hour, 10);
+    if (firstWeatherHour === parseFloat(moment().format('H'), 10)) {
       weather = weather.slice(1, 6);
     }
 
@@ -164,11 +164,11 @@ class ConnectedMain extends React.Component {
         time: weather[i].FCTTIME.civil,
         temp: {
           english: {
-            raw: parseInt(weather[i].temp.english, 10),
+            raw: parseFloat(weather[i].temp.english, 10),
             display: `${weather[i].temp.english}F`,
           },
           metric: {
-            raw: parseInt(weather[i].temp.metric, 10),
+            raw: parseFloat(weather[i].temp.metric, 10),
             display: `${weather[i].temp.metric}C`,
           },
         },
