@@ -53,7 +53,6 @@ export default class AlarmManager extends React.Component {
       ampm,
       dayOfWeek: this.daysOfWeek,
     };
-
     fetch(
       '/setAlarm',
       {
