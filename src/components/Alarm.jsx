@@ -126,7 +126,7 @@ class ConnectedAlarm extends React.Component {
               id="wakeUp"
               onClick={() => { this.snooze(); }}
             >
-            Wake Up
+            Snooze
             </button>
             <button
               className="btn-lg btn-success"
