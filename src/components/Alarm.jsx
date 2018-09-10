@@ -82,6 +82,29 @@ class ConnectedAlarm extends React.Component {
     });
   }
 
+  snooze() {
+    this.setState({
+      isRinging: false,
+      awake: true,
+    });
+    // Add an alarm at the current time + 5 minutes. To be added: custom snoozes
+    fetch('/setAlarm', {
+      method: 'POST',
+      body: JSON.stringify({
+        hour: moment().format('hh'),
+        minute: moment().add(5, 'minutes').format('mm'),
+        ampm: moment().format('a'),
+        dayOfWeek: [],
+      }),
+      headers: new Headers({
+        'Content-type': 'application/json',
+      }),
+    }).then(() => this.getAlarms());
+    if (this.state.ringingAlarm.oneTimeUse) {
+      this.removeAlarm(this.state.ringingAlarm._id);
+    }
+  }
+
   awake() {
     this.setState({
       isRinging: false,
@@ -97,13 +120,22 @@ class ConnectedAlarm extends React.Component {
     return (
       <div id="alarm">
         {this.state.isRinging ?
-          <button
-            className="btn-lg btn-success"
-            id="wakeUp"
-            onClick={() => { this.awake(); }}
-          >
+          <React.Fragment>
+            <button
+              className="btn-lg btn-danger"
+              id="wakeUp"
+              onClick={() => { this.snooze(); }}
+            >
             Wake Up
-          </button> :
+            </button>
+            <button
+              className="btn-lg btn-success"
+              id="wakeUp"
+              onClick={() => { this.awake(); }}
+            >
+            Wake Up
+            </button>
+          </React.Fragment> :
           <h3>
             <Link to="/AlarmManager">Set an alarm</Link>
           </h3>}
