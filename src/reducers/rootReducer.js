@@ -22,6 +22,7 @@ const initialState = {
   coloredIcons: true,
   blinkTime: true,
   initialized: false,
+  showPadded: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -109,6 +110,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         blinkTime: action.payload,
+      };
+    case 'SET_SHOW_PADDED':
+      return {
+        ...state,
+        showPadded: action.payload,
       };
     case 'SET_LAST_TEMPERATURE':
       return {
