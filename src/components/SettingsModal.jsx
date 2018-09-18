@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   coloredIcons: state.coloredIcons,
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
+  showPadded: state.showPadded,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,6 +18,7 @@ const mapDispatchToProps = dispatch => ({
   showCelcius: celcius => dispatch(actions.showCelcius(celcius)),
   showColoredIcons: showIcons => dispatch(actions.showColoredIcons(showIcons)),
   setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
+  setShowPadded: showPadded => dispatch(actions.setShowPadded(showPadded)),
 });
 
 Modal.setAppElement('#root');
@@ -43,13 +45,12 @@ class ConnectedSettings extends React.Component {
 
   render() {
     const {
-      userLoc,
+      setShowPadded,
+      showPadded,
       celcius,
       showCelcius,
       showDeltas,
       setDeltas,
-      coloredIcons,
-      showColoredIcons,
       isOpen,
       toggleModal,
       setBlinkTime,
@@ -60,13 +61,6 @@ class ConnectedSettings extends React.Component {
         <h1>Settings</h1>
         <table>
           <tbody>
-            <tr>
-              <td>Locations: </td>
-              <td>{userLoc} </td>
-              <td />
-              <td>Add Location: </td>
-              <td><input type="text" placeholder="Zip Code" /></td>
-            </tr>
             <tr>
               <td>Prefer Celcius? </td>
               <td><input type="checkbox" checked={celcius} onChange={() => showCelcius(!celcius)} /></td>
@@ -80,12 +74,12 @@ class ConnectedSettings extends React.Component {
               <td><input type="checkbox" checked={blinkTime} onChange={() => setBlinkTime(!blinkTime)} /></td>
             </tr>
             <tr>
-              <td>Show Colored Sun Icon? (WIP)</td>
-              <td><input type="checkbox" checked={coloredIcons} onChange={() => showColoredIcons(!coloredIcons)} /></td>
-            </tr>
-            <tr>
               <td>Precise Temperatures? (WIP)</td>
               <td><input type="checkbox" checked={this.state.temperaturePrecision} onChange={() => this.setState({ temperaturePrecision: !this.state.temperaturePrecision })} /></td>
+            </tr>
+            <tr>
+              <td>Show padded zeroes?</td>
+              <td><input type="checkbox" checked={showPadded} onChange={() => setShowPadded(!showPadded)} /></td>
             </tr>
           </tbody>
         </table>
@@ -95,13 +89,12 @@ class ConnectedSettings extends React.Component {
 }
 
 ConnectedSettings.propTypes = {
-  userLoc: PropTypes.string.isRequired,
+  setShowPadded: PropTypes.func.isRequired,
+  showPadded: PropTypes.bool.isRequired,
   celcius: PropTypes.bool.isRequired,
   showCelcius: PropTypes.func.isRequired,
   showDeltas: PropTypes.bool.isRequired,
   setDeltas: PropTypes.func.isRequired,
-  coloredIcons: PropTypes.bool.isRequired,
-  showColoredIcons: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   toggleModal: PropTypes.func.isRequired,
   setBlinkTime: PropTypes.func.isRequired,

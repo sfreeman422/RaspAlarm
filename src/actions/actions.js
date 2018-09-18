@@ -89,3 +89,8 @@ export const setInitialized = initialized => ({
   type: types.SET_INITIALIZED,
   payload: initialized,
 });
+
+export const setShowPadded = showPadded => ({
+  type: types.SET_SHOW_PADDED,
+  payload: showPadded,
+});
