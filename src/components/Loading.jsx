@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 let animateInterval;
 let iconPosition = 1;
 const mapStateToProps = state => ({
-  locationError: state.locationError,
+  error: state.error,
   loadingMessage: state.loadingMessage,
 });
 
