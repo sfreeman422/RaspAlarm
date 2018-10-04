@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
   showPadded: state.showPadded,
+  show24Hour: state.show24Hour,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -55,6 +56,7 @@ class ConnectedSettings extends React.Component {
       toggleModal,
       setBlinkTime,
       blinkTime,
+      show24Hour,
     } = this.props;
     return (
       <Modal isOpen={isOpen} style={modalStyle}>
@@ -80,6 +82,10 @@ class ConnectedSettings extends React.Component {
             <tr>
               <td>Show padded zeroes?</td>
               <td><input type="checkbox" checked={showPadded} onChange={() => setShowPadded(!showPadded)} /></td>
+            </tr>
+            <tr>
+              <td>24 hour clock?</td>
+              <td><input type="checkbox" checked={show24Hour} onChange={() => actions.setShow24HourClock(!show24Hour)} /></td>
             </tr>
           </tbody>
         </table>
