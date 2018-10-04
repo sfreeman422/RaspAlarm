@@ -8,7 +8,7 @@ const initialState = {
     lat: 0,
     long: 0,
   },
-  locationError: '',
+  error: undefined,
   weatherArr: [],
   lastTemperature: undefined,
   sunrise: {},
@@ -22,6 +22,7 @@ const initialState = {
   coloredIcons: true,
   blinkTime: true,
   initialized: false,
+  showPadded: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -78,7 +79,12 @@ const rootReducer = (state = initialState, action) => {
     case 'REPORT_ERROR':
       return {
         ...state,
-        locationError: action.payload,
+        error: action.payload,
+      };
+    case 'CLEAR_ERROR':
+      return {
+        ...state,
+        error: undefined,
       };
     case 'SET_DELTAS':
       return {
@@ -109,6 +115,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         blinkTime: action.payload,
+      };
+    case 'SET_SHOW_PADDED':
+      return {
+        ...state,
+        showPadded: action.payload,
       };
     case 'SET_LAST_TEMPERATURE':
       return {
