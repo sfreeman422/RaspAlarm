@@ -87,7 +87,8 @@ class ConnectedAlarm extends React.Component {
       isRinging: false,
       awake: true,
     });
-    // Add an alarm at the current time + 5 minutes. To be added: custom snoozes
+    // Add an alarm at the current time + 5 minutes.
+    // To be added: custom snoozes
     fetch('/setAlarm', {
       method: 'POST',
       body: JSON.stringify({
