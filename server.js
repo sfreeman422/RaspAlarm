@@ -35,7 +35,7 @@ app.get('/alarms', (req, res) => {
     if (!err) {
       res.json(docs);
     } else {
-      throw err;
+      res.json(err);
     }
   });
 });
