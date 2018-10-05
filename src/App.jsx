@@ -60,7 +60,7 @@ class ConnectedMain extends React.Component {
     this.initializeApp = this.initializeApp.bind(this);
     this.runUpdate = this.runUpdate.bind(this);
     this.timeInterval = undefined;
-    this.errorInterval = undefined;
+    this.errorTimeout = undefined;
   }
 
   componentDidMount() {
@@ -77,7 +77,7 @@ class ConnectedMain extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.timeInterval);
-    clearInterval(this.errorInterval);
+    clearTimeout(this.errorInterval);
   }
 
   setTime() {
@@ -158,19 +158,17 @@ class ConnectedMain extends React.Component {
 
   async runUpdate(prevProps) {
     try {
+      this.props.clearError();
       if (this.props.date !== prevProps.date && this.props.initialized) {
-        clearInterval(this.errorInterval);
         const sunData = await this.getSunData();
         this.props.setSunData(sunData);
       } else if (this.props.time !== prevProps.time && moment().format('mm') === '00') {
-        clearInterval(this.errorInterval);
         const weather = await this.getWeather();
         this.props.setWeather(weather);
-        this.props.clearError();
       }
     } catch (err) {
       console.error('Error on runUpdate - ', err.message);
-      this.errorInterval = setInterval(this.runUpdate, RETRY_INTERVAL);
+      this.errorTimeout = setTimeout(this.runUpdate, RETRY_INTERVAL);
       this.props.reportError(err.message);
     }
   }
@@ -209,6 +207,7 @@ class ConnectedMain extends React.Component {
 
   async initializeApp() {
     try {
+      this.props.clearError();
       this.props.setLoadingStatus('Getting Location...');
       const userCoordinates = await this.getUserCoordinates();
       this.props.setLoadingStatus('Refining Location...');
@@ -222,12 +221,10 @@ class ConnectedMain extends React.Component {
       const weather = await this.getWeather();
       this.props.setWeather(weather);
       this.props.setInitialized(true);
-      this.props.clearError();
-      clearInterval(this.errorInterval);
     } catch (err) {
       console.error('Error on intiailizeApp - ', err.message);
       this.props.reportError(err.message);
-      this.errorInterval = setInterval(this.initializeApp, RETRY_INTERVAL);
+      this.errorTimeout = setTimeout(this.initializeApp, RETRY_INTERVAL);
     }
   }
 
