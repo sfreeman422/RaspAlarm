@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const mapStateToProps = state => ({ time: state.time, blinkTime: state.blinkTime });
+const mapStateToProps = state => ({ time: state.time, blinkTime: state.blinkTime, showPadded: state.showPadded });
 
 class ConnectedClock extends React.Component {
   constructor(props) {
