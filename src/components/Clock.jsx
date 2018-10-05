@@ -3,7 +3,9 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const mapStateToProps = state => ({ time: state.time, blinkTime: state.blinkTime, showPadded: state.showPadded });
+const mapStateToProps = state => ({
+  time: state.time, blinkTime: state.blinkTime, showPadded: state.showPadded, is24HourClock: state.is24HourClock,
+});
 
 class ConnectedClock extends React.Component {
   constructor(props) {
@@ -28,12 +30,17 @@ class ConnectedClock extends React.Component {
   }
 
   render() {
-    const { blinkTime, showPadded } = this.props;
+    const { is24HourClock, blinkTime, showPadded } = this.props;
     return (
       <div className="clock">
         {blinkTime ?
           <React.Fragment>
-            <h1 className="time" id="blink">{!showPadded ? moment().format('h') : moment().format('hh')}</h1>
+            <h1 className="time" id="blink">
+              {is24HourClock && showPadded && moment().format('HH')}
+              {is24HourClock && !showPadded && moment().format('H')}
+              {!is24HourClock && showPadded && moment().format('hh')}
+              {!is24HourClock && !showPadded && moment().format('h')}
+            </h1>
             <h1 className="time" id="blink" style={{ visibility: this.props.blinkTime && !this.state.isColonVisible ? 'hidden' : 'visible' }}>:</h1>
             <h1 className="time" id="blink">{moment().format('mma')}</h1>
           </React.Fragment> : <h1 className="time">{moment().format('hh:mma')}</h1>
@@ -46,9 +53,9 @@ class ConnectedClock extends React.Component {
 const Clock = connect(mapStateToProps)(ConnectedClock);
 
 ConnectedClock.propTypes = {
-  time: PropTypes.string.isRequired,
   blinkTime: PropTypes.bool.isRequired,
   showPadded: PropTypes.bool.isRequired,
+  is24HourClock: PropTypes.bool.isRequired,
 };
 
 export default Clock;
