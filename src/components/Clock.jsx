@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -27,16 +28,15 @@ class ConnectedClock extends React.Component {
   }
 
   render() {
-    const { time, blinkTime, showPadded } = this.props;
-    const isPadded = time.startsWith('0');
+    const { blinkTime, showPadded } = this.props;
     return (
       <div className="clock">
         {blinkTime ?
           <React.Fragment>
-            <h1 className="time" id="blink">{isPadded && !showPadded ? time.slice(1, 2) : time.slice(0, 2)}</h1>
-            <h1 className="time" id="blink" style={{ visibility: this.props.blinkTime && !this.state.isColonVisible ? 'hidden' : 'visible' }}>{time.charAt(2)}</h1>
-            <h1 className="time" id="blink">{time.slice(3, time.length)}</h1>
-          </React.Fragment> : <h1 className="time">{time}</h1>
+            <h1 className="time" id="blink">{!showPadded ? moment().format('h') : moment().format('hh')}</h1>
+            <h1 className="time" id="blink" style={{ visibility: this.props.blinkTime && !this.state.isColonVisible ? 'hidden' : 'visible' }}>:</h1>
+            <h1 className="time" id="blink">{moment().format('mma')}</h1>
+          </React.Fragment> : <h1 className="time">{moment().format('hh:mma')}</h1>
         }
       </div>
     );
