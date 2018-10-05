@@ -100,7 +100,7 @@ export const setShowPadded = showPadded => ({
   payload: showPadded,
 });
 
-export const setShow24HourClock = is24 => ({
-  type: types.SET_SHOW_24_HOUR_CLOCK,
+export const setIs24HourClock = is24 => ({
+  type: types.SET_IS_24_HOUR_CLOCK,
   payload: is24,
 });

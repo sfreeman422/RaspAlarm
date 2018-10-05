@@ -23,7 +23,7 @@ const initialState = {
   blinkTime: true,
   initialized: false,
   showPadded: false,
-  show24HourClock: false,
+  is24HourClock: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -132,10 +132,10 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         initialized: action.payload,
       };
-    case 'SET_SHOW_24_HOUR_CLOCK':
+    case 'SET_IS_24_HOUR_CLOCK':
       return {
         ...state,
-        show24HourClock: action.payload,
+        is24HourClock: action.payload,
       };
     default:
       return state;

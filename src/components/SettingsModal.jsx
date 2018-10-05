@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
   showPadded: state.showPadded,
-  show24Hour: state.show24Hour,
+  is24HourClock: state.is24HourClock,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -20,6 +20,7 @@ const mapDispatchToProps = dispatch => ({
   showColoredIcons: showIcons => dispatch(actions.showColoredIcons(showIcons)),
   setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
   setShowPadded: showPadded => dispatch(actions.setShowPadded(showPadded)),
+  setIs24HourClock: is24 => dispatch(actions.setIs24HourClock(is24)),
 });
 
 Modal.setAppElement('#root');
@@ -56,7 +57,8 @@ class ConnectedSettings extends React.Component {
       toggleModal,
       setBlinkTime,
       blinkTime,
-      show24Hour,
+      is24HourClock,
+      setIs24HourClock,
     } = this.props;
     return (
       <Modal isOpen={isOpen} style={modalStyle}>
@@ -85,7 +87,7 @@ class ConnectedSettings extends React.Component {
             </tr>
             <tr>
               <td>24 hour clock?</td>
-              <td><input type="checkbox" checked={show24Hour} onChange={() => actions.setShow24HourClock(!show24Hour)} /></td>
+              <td><input type="checkbox" checked={is24HourClock} onChange={() => setIs24HourClock(!is24HourClock)} /></td>
             </tr>
           </tbody>
         </table>
@@ -105,6 +107,8 @@ ConnectedSettings.propTypes = {
   toggleModal: PropTypes.func.isRequired,
   setBlinkTime: PropTypes.func.isRequired,
   blinkTime: PropTypes.bool.isRequired,
+  is24HourClock: PropTypes.bool.isRequired,
+  setIs24HourClock: PropTypes.func.isRequired,
 };
 
 const SettingsModal = connect(mapStateToProps, mapDispatchToProps)(ConnectedSettings);
