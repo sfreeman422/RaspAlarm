@@ -14,21 +14,16 @@ const ConnectedWeather = ({
   weatherArr, showDeltas, celcius, lastTemperature,
 }) => (
   <div className="allWeather">
-    {weatherArr.map((weatherItem, index) => {
-      console.warn('weatherItem temp :', weatherItem.temp.english.raw);
-      console.warn('previous weatherItemTemp: ', index > 0 ? weatherArr[index - 1].temp.english.raw : 'first index, doesnt matter');
-      console.warn('should be up', index > 0 ? weatherItem.temp.english.raw > weatherArr[index - 1].temp.english.raw : 'first index doesnt matter');
-      return (<WeatherPerDay
-        key={`weather-${index}`}
-        weatherItem={weatherItem}
-        up={index > 0 ?
+    {weatherArr.map((weatherItem, index) => (<WeatherPerDay
+      key={`weather-${index}`}
+      weatherItem={weatherItem}
+      up={index > 0 ?
         weatherItem.temp.english.raw > weatherArr[index - 1].temp.english.raw
         : weatherItem.temp.english.raw > lastTemperature}
-        showDeltas={showDeltas}
-        ignoreUpIndicator={index === 0 && !lastTemperature}
-        celcius={celcius}
-      />);
-    })}
+      showDeltas={showDeltas}
+      ignoreUpIndicator={index === 0 && !lastTemperature}
+      celcius={celcius}
+    />))}
   </div>
 );
 

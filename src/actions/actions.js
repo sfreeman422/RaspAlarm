@@ -45,6 +45,11 @@ export const reportError = error => ({
   payload: error,
 });
 
+export const clearError = () => ({
+  type: types.CLEAR_ERROR,
+  payload: undefined,
+});
+
 export const setUserCoords = location => ({
   type: types.SET_USERCOORDS,
   payload: location,
@@ -88,4 +93,14 @@ export const setLastTemperature = temperature => ({
 export const setInitialized = initialized => ({
   type: types.SET_INITIALIZED,
   payload: initialized,
+});
+
+export const setShowPadded = showPadded => ({
+  type: types.SET_SHOW_PADDED,
+  payload: showPadded,
+});
+
+export const setIs24HourClock = is24 => ({
+  type: types.SET_IS_24_HOUR_CLOCK,
+  payload: is24,
 });
