@@ -35,7 +35,7 @@ app.get('/alarms', (req, res) => {
     if (!err) {
       res.json(docs);
     } else {
-      throw err;
+      res.json(err);
     }
   });
 });
@@ -75,7 +75,7 @@ app.post('/brightness', (req, res) => {
 app.post('/setAlarm', (req, res) => {
   const userTime = `${req.body.hour}:${req.body.minute}${req.body.ampm}`;
   let oneTimeUse = false;
-  if (req.body.dayOfWeek.length === 0) {
+  if (!req.body.dayOfWeek || req.body.dayOfWeek.length === 0) {
     oneTimeUse = true;
   }
   const newAlarm = new Alarm({

@@ -8,7 +8,7 @@ const initialState = {
     lat: 0,
     long: 0,
   },
-  locationError: '',
+  error: undefined,
   weatherArr: [],
   lastTemperature: undefined,
   sunrise: {},
@@ -23,6 +23,7 @@ const initialState = {
   blinkTime: true,
   initialized: false,
   showPadded: false,
+  is24HourClock: false,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -79,7 +80,12 @@ const rootReducer = (state = initialState, action) => {
     case 'REPORT_ERROR':
       return {
         ...state,
-        locationError: action.payload,
+        error: action.payload,
+      };
+    case 'CLEAR_ERROR':
+      return {
+        ...state,
+        error: undefined,
       };
     case 'SET_DELTAS':
       return {
@@ -125,6 +131,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         initialized: action.payload,
+      };
+    case 'SET_IS_24_HOUR_CLOCK':
+      return {
+        ...state,
+        is24HourClock: action.payload,
       };
     default:
       return state;
