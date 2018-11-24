@@ -11,7 +11,10 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
   showPadded: state.showPadded,
+<<<<<<< HEAD
+=======
   is24HourClock: state.is24HourClock,
+>>>>>>> d28feca57a361b1938517445645b29a19b1694ae
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -20,7 +23,10 @@ const mapDispatchToProps = dispatch => ({
   showColoredIcons: showIcons => dispatch(actions.showColoredIcons(showIcons)),
   setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
   setShowPadded: showPadded => dispatch(actions.setShowPadded(showPadded)),
+<<<<<<< HEAD
+=======
   setIs24HourClock: is24 => dispatch(actions.setIs24HourClock(is24)),
+>>>>>>> d28feca57a361b1938517445645b29a19b1694ae
 });
 
 Modal.setAppElement('#root');
