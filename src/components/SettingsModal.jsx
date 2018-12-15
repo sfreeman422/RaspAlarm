@@ -11,10 +11,7 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
   showPadded: state.showPadded,
-<<<<<<< HEAD
-=======
   is24HourClock: state.is24HourClock,
->>>>>>> d28feca57a361b1938517445645b29a19b1694ae
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,10 +20,7 @@ const mapDispatchToProps = dispatch => ({
   showColoredIcons: showIcons => dispatch(actions.showColoredIcons(showIcons)),
   setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
   setShowPadded: showPadded => dispatch(actions.setShowPadded(showPadded)),
-<<<<<<< HEAD
-=======
   setIs24HourClock: is24 => dispatch(actions.setIs24HourClock(is24)),
->>>>>>> d28feca57a361b1938517445645b29a19b1694ae
 });
 
 Modal.setAppElement('#root');
@@ -73,32 +67,75 @@ class ConnectedSettings extends React.Component {
           <tbody>
             <tr>
               <td>Prefer Celcius? </td>
-              <td><input type="checkbox" checked={celcius} onChange={() => showCelcius(!celcius)} /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={celcius}
+                  onChange={() => showCelcius(!celcius)}
+                />
+              </td>
             </tr>
             <tr>
               <td>Show Temperature Delta Indicators? </td>
-              <td><input type="checkbox" checked={showDeltas} onChange={() => setDeltas(!showDeltas)} /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={showDeltas}
+                  onChange={() => setDeltas(!showDeltas)}
+                />
+              </td>
             </tr>
             <tr>
               <td>Blink Time Colon</td>
-              <td><input type="checkbox" checked={blinkTime} onChange={() => setBlinkTime(!blinkTime)} /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={blinkTime}
+                  onChange={() => setBlinkTime(!blinkTime)}
+                />
+              </td>
             </tr>
             <tr>
               <td>Precise Temperatures? (WIP)</td>
-              <td><input type="checkbox" checked={this.state.temperaturePrecision} onChange={() => this.setState({ temperaturePrecision: !this.state.temperaturePrecision })} /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={this.state.temperaturePrecision}
+                  onChange={() =>
+                    this.setState({
+                      temperaturePrecision: !this.state.temperaturePrecision,
+                    })
+                  }
+                />
+              </td>
             </tr>
             <tr>
               <td>Show padded zeroes?</td>
-              <td><input type="checkbox" checked={showPadded} onChange={() => setShowPadded(!showPadded)} /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={showPadded}
+                  onChange={() => setShowPadded(!showPadded)}
+                />
+              </td>
             </tr>
             <tr>
               <td>24 hour clock?</td>
-              <td><input type="checkbox" checked={is24HourClock} onChange={() => setIs24HourClock(!is24HourClock)} /></td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={is24HourClock}
+                  onChange={() => setIs24HourClock(!is24HourClock)}
+                />
+              </td>
             </tr>
           </tbody>
         </table>
-        <button id="modal-button" onClick={() => toggleModal()}>Close</button>
-      </Modal>);
+        <button id="modal-button" onClick={() => toggleModal()}>
+          Close
+        </button>
+      </Modal>
+    );
   }
 }
 
@@ -117,6 +154,9 @@ ConnectedSettings.propTypes = {
   setIs24HourClock: PropTypes.func.isRequired,
 };
 
-const SettingsModal = connect(mapStateToProps, mapDispatchToProps)(ConnectedSettings);
+const SettingsModal = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ConnectedSettings);
 
 export default SettingsModal;
