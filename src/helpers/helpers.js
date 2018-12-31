@@ -1,6 +1,8 @@
 import moment from "moment";
 import fetch from "isomorphic-fetch";
 import * as config from "../private/config";
+import * as huePowerSchedule from "../constants/hue-power-schedule";
+import * as hueSunColors from "../constants/hue-sun-colors";
 
 export function getUserCoordinates() {
   return new Promise((resolve, reject) => {
@@ -80,13 +82,44 @@ export function setBrightness(isNight) {
     .catch(e => console.error(e));
 }
 
-export function adjustLighting(light, lightData) {
-  console.log(
-    "Attempting to change light: ",
-    light,
-    " with lightData: ",
-    lightData
-  );
+export function adjustLighting(time, sunData, day) {
+  const formattedTime = moment(time, "hh:mm:a");
+  const currentHour = formattedTime.format("hh:00a");
+  const formattedSunData = {
+    sunrise: moment(sunData.sunrise, "hh:mm:a"),
+    sunset: moment(sunData.sunset, "hh:mm:a")
+  };
+  const { sunrise, sunset } = formattedSunData;
+  const timeToSunset =
+    Math.floor(formattedTime.diff(sunset, "minutes") / 10) * 10;
+  const timeToSunrise =
+    Math.floor(formattedTime.diff(sunrise, "minutes") / 10) * 10;
+  console.log(timeToSunrise);
+  console.log(timeToSunset);
+  console.log(typeof timeToSunrise);
+  console.log(typeof timeToSunset);
+  console.log(timeToSunset < -60);
+
+  const lightRequest = {
+    on: huePowerSchedule.default[currentHour][day]
+  };
+
+  if (timeToSunset >= -60 && timeToSunset <= 0) {
+    lightRequest.color =
+      hueSunColors.sunset[Math.abs(timeToSunset).toString()].color;
+    lightRequest.saturation =
+      hueSunColors.sunset[Math.abs(timeToSunset).toString()].saturation;
+    lightRequest.brightness =
+      hueSunColors.sunset[Math.abs(timeToSunset).toString()].brightness;
+  } else if (timeToSunrise >= -60 && timeToSunrise <= 0) {
+    lightRequest.color =
+      hueSunColors.sunrise[Math.abs(timeToSunrise).toString()].color;
+    lightRequest.saturation =
+      hueSunColors.sunrise[Math.abs(timeToSunrise).toString()].saturation;
+    lightRequest.brightness =
+      hueSunColors.sunset[Math.abs(timeToSunrise).toString()].brightness;
+  }
+  console.log("lightRequest - ", lightRequest);
 }
 
 export function getLightData() {

@@ -1,0 +1,118 @@
+{
+  "sunrise": {
+    "60": {
+      "color": "60color",
+      "brightness": "60brightness",
+      "saturation": "60saturation"
+    },
+    "50": {
+      "color": "50color",
+      "brightness": "50brightness",
+      "saturation": "50saturation"
+    },
+    "40": {
+      "color": "40color",
+      "brightness": "40brightness",
+      "saturation": "40saturation"
+    },
+    "30": {
+      "color": "30color",
+      "brightness": "30brightness",
+      "saturation": "30saturation"
+    },
+    "20": {
+      "color": "20color",
+      "brightness": "20brightness",
+      "saturation": "20saturation"
+    },
+    "10": {
+      "color": "10color",
+      "brightness": "10brightness",
+      "saturation": "10saturation"
+    },
+    "0": {
+      "color": "0color",
+      "brightness": "0brightness",
+      "saturation": "0saturation"
+    }
+  },
+  "day": {
+    "60": {
+      "color": "60color",
+      "brightness": "60brightness",
+      "saturation": "60saturation"
+    },
+    "50": {
+      "color": "50color",
+      "brightness": "50brightness",
+      "saturation": "50saturation"
+    },
+    "40": {
+      "color": "40color",
+      "brightness": "40brightness",
+      "saturation": "40saturation"
+    },
+    "30": {
+      "color": "30color",
+      "brightness": "30brightness",
+      "saturation": "30saturation"
+    },
+    "20": {
+      "color": "20color",
+      "brightness": "20brightness",
+      "saturation": "20saturation"
+    },
+    "10": {
+      "color": "10color",
+      "brightness": "10brightness",
+      "saturation": "10saturation"
+    },
+    "0": {
+      "color": "0color",
+      "brightness": "0brightness",
+      "saturation": "0saturation"
+    }
+  },
+  "sunset": {
+    "60": {
+      "color": "60color",
+      "brightness": "60brightness",
+      "saturation": "60saturation"
+    },
+    "50": {
+      "color": "50color",
+      "brightness": "50brightness",
+      "saturation": "50saturation"
+    },
+    "40": {
+      "color": "40color",
+      "brightness": "40brightness",
+      "saturation": "40saturation"
+    },
+    "30": {
+      "color": "30color",
+      "brightness": "30brightness",
+      "saturation": "30saturation"
+    },
+    "20": {
+      "color": "20color",
+      "brightness": "20brightness",
+      "saturation": "20saturation"
+    },
+    "10": {
+      "color": "10color",
+      "brightness": "10brightness",
+      "saturation": "10saturation"
+    },
+    "0": {
+      "color": "0color",
+      "brightness": "0brightness",
+      "saturation": "0saturation"
+    }
+  },
+  "night": {
+    "color": "0color",
+    "brightness": "0brightness",
+    "saturation": "0saturation"
+  }
+}

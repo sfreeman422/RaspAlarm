@@ -1,0 +1,218 @@
+{
+  "12:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "01:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "02:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "03:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "04:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "05:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  },
+  "06:00am": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "07:00am": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "08:00am": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "09:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "10:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "11:00am": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "12:00pm": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "01:00pm": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "02:00pm": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "03:00pm": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "04:00pm": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "05:00pm": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "06:00pm": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "07:00pm": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "08:00pm": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "09:00pm": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "10:00om": {
+    "Monday": true,
+    "Tuesday": true,
+    "Wednesday": true,
+    "Thursday": true,
+    "Friday": true,
+    "Saturday": true,
+    "Sunday": true
+  },
+  "11:00pm": {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false
+  }
+}

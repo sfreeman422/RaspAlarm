@@ -48,7 +48,8 @@ const mapStateToProps = state => ({
   weatherArr: state.weatherArr,
   coloredIcons: state.coloredIcons,
   date: state.date,
-  initialized: state.initialized
+  initialized: state.initialized,
+  today: state.today
 });
 
 const RETRY_INTERVAL = 5000;
@@ -86,8 +87,11 @@ class ConnectedMain extends React.Component {
     this.props.setTime(moment().format("hh:mma"));
     this.props.setDate(moment().format("MMMM Do YYYY"));
     this.props.setToday(moment().format("dddd"));
-    if (this.props.sunrise && this.props.sunset) {
+    if (this.props.sunData) {
       this.determineNightState();
+      if (this.props.time && this.props.sunData && this.props.today) {
+        adjustLighting(this.props.time, this.props.sunData, this.props.today);
+      }
     }
   }
 
