@@ -103,11 +103,7 @@ class ConnectedSettings extends React.Component {
                   checked={this.state.temperaturePrecision}
                   onChange={() =>
                     this.setState({
-<<<<<<< HEAD
-                      temperaturePrecision: !this.state.temperaturePrecision,
-=======
                       temperaturePrecision: !this.state.temperaturePrecision
->>>>>>> Fixed security vulnerabilities and removed accidentally pushed HEAD
                     })
                   }
                 />
@@ -160,11 +156,7 @@ ConnectedSettings.propTypes = {
 
 const SettingsModal = connect(
   mapStateToProps,
-<<<<<<< HEAD
-  mapDispatchToProps,
-=======
   mapDispatchToProps
->>>>>>> Fixed security vulnerabilities and removed accidentally pushed HEAD
 )(ConnectedSettings);
 
 export default SettingsModal;
