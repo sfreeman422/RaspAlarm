@@ -1,8 +1,8 @@
-import React from 'react';
-import Modal from 'react-modal';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import * as actions from '../actions/actions';
+import React from "react";
+import Modal from "react-modal";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as actions from "../actions/actions";
 
 const mapStateToProps = state => ({
   showDeltas: state.showDeltas,
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
   userLoc: state.userLoc,
   blinkTime: state.blinkTime,
   showPadded: state.showPadded,
-  is24HourClock: state.is24HourClock,
+  is24HourClock: state.is24HourClock
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -20,28 +20,28 @@ const mapDispatchToProps = dispatch => ({
   showColoredIcons: showIcons => dispatch(actions.showColoredIcons(showIcons)),
   setBlinkTime: blinkTime => dispatch(actions.setBlinkTime(blinkTime)),
   setShowPadded: showPadded => dispatch(actions.setShowPadded(showPadded)),
-  setIs24HourClock: is24 => dispatch(actions.setIs24HourClock(is24)),
+  setIs24HourClock: is24 => dispatch(actions.setIs24HourClock(is24))
 });
 
-Modal.setAppElement('#root');
+Modal.setAppElement("#root");
 
 const modalStyle = {
   content: {
-    backgroundColor: 'black',
-    color: 'white',
-    width: '80%',
-    height: '40%',
-    margin: 'auto auto',
-    textAlign: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: "black",
+    color: "white",
+    width: "80%",
+    height: "40%",
+    margin: "auto auto",
+    textAlign: "center",
+    justifyContent: "center"
+  }
 };
 
 class ConnectedSettings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      temperaturePrecision: true,
+      temperaturePrecision: true
     };
   }
 
@@ -58,7 +58,7 @@ class ConnectedSettings extends React.Component {
       setBlinkTime,
       blinkTime,
       is24HourClock,
-      setIs24HourClock,
+      setIs24HourClock
     } = this.props;
     return (
       <Modal isOpen={isOpen} style={modalStyle}>
@@ -103,7 +103,7 @@ class ConnectedSettings extends React.Component {
                   checked={this.state.temperaturePrecision}
                   onChange={() =>
                     this.setState({
-                      temperaturePrecision: !this.state.temperaturePrecision,
+                      temperaturePrecision: !this.state.temperaturePrecision
                     })
                   }
                 />
@@ -151,12 +151,12 @@ ConnectedSettings.propTypes = {
   setBlinkTime: PropTypes.func.isRequired,
   blinkTime: PropTypes.bool.isRequired,
   is24HourClock: PropTypes.bool.isRequired,
-  setIs24HourClock: PropTypes.func.isRequired,
+  setIs24HourClock: PropTypes.func.isRequired
 };
 
 const SettingsModal = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(ConnectedSettings);
 
 export default SettingsModal;

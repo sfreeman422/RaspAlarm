@@ -4,24 +4,23 @@
   "description": "A Raspberry Pi Controlled Alarm Clock",
   "main": "server.js",
   "dependencies": {
-    "ajv": "^6.4.0",
+    "ajv": "^6.5.5",
     "body-parser": "^1.18.2",
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "isomorphic-fetch": "^2.2.1",
     "json-loader": "^0.5.7",
     "method-override": "^2.3.10",
     "moment": "^2.21.0",
-    "mongoose": "^5.0.11",
-    "morgan": "^1.9.0",
+    "mongoose": "^5.3.14",
+    "morgan": "^1.9.1",
     "prop-types": "^15.6.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-modal": "^3.4.4",
-    "react-redux": "^5.0.7",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-modal": "^3.6.1",
+    "react-redux": "^5.1.1",
     "react-router": "^3.0.2",
-    "react-scripts": "1.1.1",
-    "redux": "^3.7.2",
-    "webpack": "^3.11.0"
+    "react-scripts": "^2.1.1",
+    "redux": "^3.7.2"
   },
   "proxy": "http://localhost:3000/",
   "scripts": {
@@ -40,11 +39,10 @@
     "url": "https://github.com/sfreeman422/RaspAlarm/issues"
   },
   "homepage": "http://localhost:3000/",
-  "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0"
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
