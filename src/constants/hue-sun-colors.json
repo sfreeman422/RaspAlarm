@@ -1,118 +1,118 @@
 {
   "sunrise": {
     "60": {
-      "color": "60color",
-      "brightness": "60brightness",
-      "saturation": "60saturation"
+      "hue": "60hue",
+      "bri": "60bri",
+      "sat": "60sat"
     },
     "50": {
-      "color": "50color",
-      "brightness": "50brightness",
-      "saturation": "50saturation"
+      "hue": "50hue",
+      "bri": "50bri",
+      "sat": "50sat"
     },
     "40": {
-      "color": "40color",
-      "brightness": "40brightness",
-      "saturation": "40saturation"
+      "hue": "40hue",
+      "bri": "40bri",
+      "sat": "40sat"
     },
     "30": {
-      "color": "30color",
-      "brightness": "30brightness",
-      "saturation": "30saturation"
+      "hue": "30hue",
+      "bri": "30bri",
+      "sat": "30sat"
     },
     "20": {
-      "color": "20color",
-      "brightness": "20brightness",
-      "saturation": "20saturation"
+      "hue": "20hue",
+      "bri": "20bri",
+      "sat": "20sat"
     },
     "10": {
-      "color": "10color",
-      "brightness": "10brightness",
-      "saturation": "10saturation"
+      "hue": "10hue",
+      "bri": "10bri",
+      "sat": "10sat"
     },
     "0": {
-      "color": "0color",
-      "brightness": "0brightness",
-      "saturation": "0saturation"
+      "hue": "0hue",
+      "bri": "0bri",
+      "sat": "0sat"
     }
   },
   "day": {
     "60": {
-      "color": "60color",
-      "brightness": "60brightness",
-      "saturation": "60saturation"
+      "hue": "60hue",
+      "bri": "60bri",
+      "sat": "60sat"
     },
     "50": {
-      "color": "50color",
-      "brightness": "50brightness",
-      "saturation": "50saturation"
+      "hue": "50hue",
+      "bri": "50bri",
+      "sat": "50sat"
     },
     "40": {
-      "color": "40color",
-      "brightness": "40brightness",
-      "saturation": "40saturation"
+      "hue": "40hue",
+      "bri": "40bri",
+      "sat": "40sat"
     },
     "30": {
-      "color": "30color",
-      "brightness": "30brightness",
-      "saturation": "30saturation"
+      "hue": "30hue",
+      "bri": "30bri",
+      "sat": "30sat"
     },
     "20": {
-      "color": "20color",
-      "brightness": "20brightness",
-      "saturation": "20saturation"
+      "hue": "20hue",
+      "bri": "20bri",
+      "sat": "20sat"
     },
     "10": {
-      "color": "10color",
-      "brightness": "10brightness",
-      "saturation": "10saturation"
+      "hue": "10hue",
+      "bri": "10bri",
+      "sat": "10sat"
     },
     "0": {
-      "color": "0color",
-      "brightness": "0brightness",
-      "saturation": "0saturation"
+      "hue": "0hue",
+      "bri": "0bri",
+      "sat": "0sat"
     }
   },
   "sunset": {
     "60": {
-      "color": "60color",
-      "brightness": "60brightness",
-      "saturation": "60saturation"
+      "hue": "60hue",
+      "bri": "60bri",
+      "sat": "60sat"
     },
     "50": {
-      "color": "50color",
-      "brightness": "50brightness",
-      "saturation": "50saturation"
+      "hue": "50hue",
+      "bri": "50bri",
+      "sat": "50sat"
     },
     "40": {
-      "color": "40color",
-      "brightness": "40brightness",
-      "saturation": "40saturation"
+      "hue": "40hue",
+      "bri": "40bri",
+      "sat": "40sat"
     },
     "30": {
-      "color": "30color",
-      "brightness": "30brightness",
-      "saturation": "30saturation"
+      "hue": "30hue",
+      "bri": "30bri",
+      "sat": "30sat"
     },
     "20": {
-      "color": "20color",
-      "brightness": "20brightness",
-      "saturation": "20saturation"
+      "hue": "20hue",
+      "bri": "20bri",
+      "sat": "20sat"
     },
     "10": {
-      "color": "10color",
-      "brightness": "10brightness",
-      "saturation": "10saturation"
+      "hue": "10hue",
+      "bri": "10bri",
+      "sat": "10sat"
     },
     "0": {
-      "color": "0color",
-      "brightness": "0brightness",
-      "saturation": "0saturation"
+      "hue": "0hue",
+      "bri": "0bri",
+      "sat": "0sat"
     }
   },
   "night": {
-    "color": "0color",
-    "brightness": "0brightness",
-    "saturation": "0saturation"
+    "hue": "0hue",
+    "bri": "0bri",
+    "sat": "0sat"
   }
 }

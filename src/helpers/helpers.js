@@ -94,32 +94,25 @@ export function adjustLighting(time, sunData, day) {
     Math.floor(formattedTime.diff(sunset, "minutes") / 10) * 10;
   const timeToSunrise =
     Math.floor(formattedTime.diff(sunrise, "minutes") / 10) * 10;
-  console.log(timeToSunrise);
-  console.log(timeToSunset);
-  console.log(typeof timeToSunrise);
-  console.log(typeof timeToSunset);
-  console.log(timeToSunset < -60);
 
   const lightRequest = {
-    on: huePowerSchedule.default[currentHour][day]
+    state: {
+      on: huePowerSchedule.default[currentHour][day]
+    }
   };
-
+  const formattedTimeToSunset = Math.abs(timeToSunset).toString();
+  const formattedTimeToSunrise = Math.abs(timeToSunrise).toString();
   if (timeToSunset >= -60 && timeToSunset <= 0) {
-    lightRequest.color =
-      hueSunColors.sunset[Math.abs(timeToSunset).toString()].color;
-    lightRequest.saturation =
-      hueSunColors.sunset[Math.abs(timeToSunset).toString()].saturation;
-    lightRequest.brightness =
-      hueSunColors.sunset[Math.abs(timeToSunset).toString()].brightness;
+    lightRequest.state.hue = hueSunColors.sunset[formattedTimeToSunset].hue;
+    lightRequest.state.sat = hueSunColors.sunset[formattedTimeToSunset].sat;
+    lightRequest.state.bri = hueSunColors.sunset[formattedTimeToSunset].bri;
   } else if (timeToSunrise >= -60 && timeToSunrise <= 0) {
-    lightRequest.color =
-      hueSunColors.sunrise[Math.abs(timeToSunrise).toString()].color;
-    lightRequest.saturation =
-      hueSunColors.sunrise[Math.abs(timeToSunrise).toString()].saturation;
-    lightRequest.brightness =
-      hueSunColors.sunset[Math.abs(timeToSunrise).toString()].brightness;
+    lightRequest.hue = hueSunColors.sunrise[formattedTimeToSunrise].hue;
+    lightRequest.state.sat = hueSunColors.sunrise[formattedTimeToSunrise].sat;
+    lightRequest.state.bri = hueSunColors.sunset[formattedTimeToSunrise].bri;
   }
   console.log("lightRequest - ", lightRequest);
+  // fetch(`http://${config.hue_ip}/api/${config.hue_id}/groups/0/action`, { method: 'PUT', body: JSON.stringify(lightRequest) }).then(res => console.log(res.json())).catch(e => console.error(e));
 }
 
 export function getLightData() {
