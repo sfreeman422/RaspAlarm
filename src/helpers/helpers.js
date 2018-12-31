@@ -96,23 +96,27 @@ export function adjustLighting(time, sunData, day) {
     Math.floor(formattedTime.diff(sunrise, "minutes") / 10) * 10;
 
   const lightRequest = {
-    state: {
-      on: huePowerSchedule.default[currentHour][day]
-    }
+    on: huePowerSchedule.default[currentHour][day]
   };
   const formattedTimeToSunset = Math.abs(timeToSunset).toString();
   const formattedTimeToSunrise = Math.abs(timeToSunrise).toString();
   if (timeToSunset >= -60 && timeToSunset <= 0) {
-    lightRequest.state.hue = hueSunColors.sunset[formattedTimeToSunset].hue;
-    lightRequest.state.sat = hueSunColors.sunset[formattedTimeToSunset].sat;
-    lightRequest.state.bri = hueSunColors.sunset[formattedTimeToSunset].bri;
+    lightRequest.hue = hueSunColors.sunset[formattedTimeToSunset].hue;
+    lightRequest.sat = hueSunColors.sunset[formattedTimeToSunset].sat;
+    lightRequest.bri = hueSunColors.sunset[formattedTimeToSunset].bri;
   } else if (timeToSunrise >= -60 && timeToSunrise <= 0) {
     lightRequest.hue = hueSunColors.sunrise[formattedTimeToSunrise].hue;
-    lightRequest.state.sat = hueSunColors.sunrise[formattedTimeToSunrise].sat;
-    lightRequest.state.bri = hueSunColors.sunset[formattedTimeToSunrise].bri;
+    lightRequest.sat = hueSunColors.sunrise[formattedTimeToSunrise].sat;
+    lightRequest.bri = hueSunColors.sunset[formattedTimeToSunrise].bri;
   }
   console.log("lightRequest - ", lightRequest);
-  // fetch(`http://${config.hue_ip}/api/${config.hue_id}/groups/0/action`, { method: 'PUT', body: JSON.stringify(lightRequest) }).then(res => console.log(res.json())).catch(e => console.error(e));
+  fetch(`http://${config.hue_ip}/api/${config.hue_id}/groups/0/action`, {
+    method: "PUT",
+    body: JSON.stringify(lightRequest)
+  })
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(e => console.error(e));
 }
 
 export function getLightData() {

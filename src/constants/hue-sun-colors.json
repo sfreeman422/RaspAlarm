@@ -1,118 +1,86 @@
 {
   "sunrise": {
     "60": {
-      "hue": "60hue",
-      "bri": "60bri",
-      "sat": "60sat"
+      "hue": 65535,
+      "bri": 0,
+      "sat": 254
     },
     "50": {
-      "hue": "50hue",
-      "bri": "50bri",
-      "sat": "50sat"
+      "hue": 60000,
+      "bri": 20,
+      "sat": 234
     },
     "40": {
-      "hue": "40hue",
-      "bri": "40bri",
-      "sat": "40sat"
+      "hue": 40000,
+      "bri": 40,
+      "sat": 214
     },
     "30": {
-      "hue": "30hue",
-      "bri": "30bri",
-      "sat": "30sat"
+      "hue": 30000,
+      "bri": 60,
+      "sat": 194
     },
     "20": {
-      "hue": "20hue",
-      "bri": "20bri",
-      "sat": "20sat"
+      "hue": 20000,
+      "bri": 80,
+      "sat": 174
     },
     "10": {
-      "hue": "10hue",
-      "bri": "10bri",
-      "sat": "10sat"
+      "hue": 10000,
+      "bri": 100,
+      "sat": 154
     },
     "0": {
-      "hue": "0hue",
-      "bri": "0bri",
-      "sat": "0sat"
+      "hue": 1000,
+      "bri": 120,
+      "sat": 134
     }
   },
   "day": {
-    "60": {
-      "hue": "60hue",
-      "bri": "60bri",
-      "sat": "60sat"
-    },
-    "50": {
-      "hue": "50hue",
-      "bri": "50bri",
-      "sat": "50sat"
-    },
-    "40": {
-      "hue": "40hue",
-      "bri": "40bri",
-      "sat": "40sat"
-    },
-    "30": {
-      "hue": "30hue",
-      "bri": "30bri",
-      "sat": "30sat"
-    },
-    "20": {
-      "hue": "20hue",
-      "bri": "20bri",
-      "sat": "20sat"
-    },
-    "10": {
-      "hue": "10hue",
-      "bri": "10bri",
-      "sat": "10sat"
-    },
-    "0": {
-      "hue": "0hue",
-      "bri": "0bri",
-      "sat": "0sat"
-    }
+    "hue": 40000,
+    "bri": 254,
+    "sat": 254
   },
   "sunset": {
     "60": {
-      "hue": "60hue",
-      "bri": "60bri",
-      "sat": "60sat"
+      "hue": 60000,
+      "bri": 254,
+      "sat": 254
     },
     "50": {
-      "hue": "50hue",
-      "bri": "50bri",
-      "sat": "50sat"
+      "hue": 50000,
+      "bri": 234,
+      "sat": 234
     },
     "40": {
-      "hue": "40hue",
-      "bri": "40bri",
-      "sat": "40sat"
+      "hue": 40000,
+      "bri": 214,
+      "sat": 214
     },
     "30": {
-      "hue": "30hue",
-      "bri": "30bri",
-      "sat": "30sat"
+      "hue": 30000,
+      "bri": 194,
+      "sat": 194
     },
     "20": {
-      "hue": "20hue",
-      "bri": "20bri",
-      "sat": "20sat"
+      "hue": 20000,
+      "bri": 174,
+      "sat": 174
     },
     "10": {
-      "hue": "10hue",
-      "bri": "10bri",
-      "sat": "10sat"
+      "hue": 10000,
+      "bri": 154,
+      "sat": 154
     },
     "0": {
-      "hue": "0hue",
-      "bri": "0bri",
-      "sat": "0sat"
+      "hue": 1000,
+      "bri": 124,
+      "sat": 124
     }
   },
   "night": {
-    "hue": "0hue",
-    "bri": "0bri",
-    "sat": "0sat"
+    "hue": 0,
+    "bri": 0,
+    "sat": 0
   }
 }
