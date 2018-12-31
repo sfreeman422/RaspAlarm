@@ -24,7 +24,7 @@ My girlfriend and I watched a YouTube video about how technology rules people's 
 - Visit https://www.wunderground.com/weather/api/ and sign up for an API Key.
 - Visit https://developers.google.com/maps/documentation/geocoding/get-api-key and sign up for an API key.
 - If you wish to use Phillips Hue automation, retrieve your Phillips Hue Username as listed here: https://developers.meethue.com/develop/get-started-2.
-- Create src/private/config.json with key `wunderground` that includes your API key for wunderground and `google_geocode` that includes you geocoding api.
+- Create src/private/config.json with key `wunderground` that includes your API key for wunderground, `google_geocode` that includes you geocoding api and `hue_id` if you intend to use the home automation aspects of RaspAlarm.
 - Set up `RaspAlarmMongoDB`, and `isRaspberryPi` as environment variables where RaspAlarmMongoDB is your Mongo instance you would like to use, and isRaspberryPi is a boolean describing whether or not this project is running on a Raspberry Pi.
 - If you are running on a Raspberry Pi on Raspbian, be sure to run `chmod 777 /sys/class/backlight/rpi_backlight/brightness` in order to take advantage of the auto-dim/brighten feature.
 - `npm install`
