@@ -286,10 +286,6 @@ class ConnectedMain extends React.Component {
     if (currentHour.isBefore(sunrise) || currentHour.isAfter(sunset)) {
       return weatherIcons[weatherState].night;
     }
-    console.log(weatherIcons);
-    console.log(weatherState);
-    console.log(weatherIcons[weatherState]);
-    console.log(weatherIcons[weatherState].day);
     return weatherIcons[weatherState].day;
   }
 
