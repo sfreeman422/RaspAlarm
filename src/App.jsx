@@ -15,7 +15,9 @@ import {
   getUserCoordinates,
   getSunData,
   getUserCity,
-  setBrightness
+  setBrightness,
+  adjustLighting,
+  getLightData
 } from "./helpers/helpers";
 
 const mapDispatchToProps = dispatch => ({
@@ -33,7 +35,8 @@ const mapDispatchToProps = dispatch => ({
   addLocation: location => dispatch(actions.addLocation(location)),
   setLastTemperature: temperature =>
     dispatch(actions.setLastTemperature(temperature)),
-  setInitialized: initialized => dispatch(actions.setInitialized(initialized))
+  setInitialized: initialized => dispatch(actions.setInitialized(initialized)),
+  setHueData: data => dispatch(actions.setHueData(data))
 });
 
 const mapStateToProps = state => ({
@@ -126,6 +129,16 @@ class ConnectedMain extends React.Component {
 
   async initializeApp() {
     try {
+      if (config.hue_id && config.hue_ip) {
+        this.props.setLoadingStatus("Getting Phillips Hue Data...");
+        const hueData = await getLightData();
+        console.log("Hue data retrieved: ", hueData);
+        this.props.setHueData(hueData);
+      } else {
+        console.warn(
+          "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
+        );
+      }
       this.props.clearError();
       this.props.setLoadingStatus("Getting Location...");
       const userCoordinates = await getUserCoordinates();

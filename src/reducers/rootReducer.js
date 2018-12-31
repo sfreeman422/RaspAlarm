@@ -22,7 +22,8 @@ const initialState = {
   blinkTime: true,
   initialized: false,
   showPadded: false,
-  is24HourClock: false
+  is24HourClock: false,
+  hueData: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -134,6 +135,11 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         is24HourClock: action.payload
+      };
+    case "SET_HUE_DATA":
+      return {
+        ...state,
+        hueData: action.payload
       };
     default:
       return state;

@@ -79,3 +79,18 @@ export function setBrightness(isNight) {
     .then(resp => console.log(resp))
     .catch(e => console.error(e));
 }
+
+export function adjustLighting(light, lightData) {
+  console.log(
+    "Attempting to change light: ",
+    light,
+    " with lightData: ",
+    lightData
+  );
+}
+
+export function getLightData() {
+  return fetch(`http://${config.hue_ip}/api/${config.hue_id}`)
+    .then(res => res.json())
+    .catch(e => console.error("Error retrieving Phillips Hue Data: ", e));
+}

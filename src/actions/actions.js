@@ -1,106 +1,111 @@
-import * as types from '../constants/action-types';
+import * as types from "../constants/action-types";
 
 export const setTime = time => ({
   type: types.SET_TIME,
-  payload: time,
+  payload: time
 });
 
 export const setDate = date => ({
   type: types.SET_DATE,
-  payload: date,
+  payload: date
 });
 
 export const setToday = today => ({
   type: types.SET_TODAY,
-  payload: today,
+  payload: today
 });
 
 export const setWeather = weather => ({
   type: types.SET_WEATHER,
-  payload: weather,
+  payload: weather
 });
 
 export const setUserLoc = userLoc => ({
   type: types.SET_USERLOC,
-  payload: userLoc,
+  payload: userLoc
 });
 
 export const setSunData = sunData => ({
   type: types.SET_SUNDATA,
-  payload: sunData,
+  payload: sunData
 });
 
 export const getAlarms = alarms => ({
   type: types.GET_ALARMS,
-  payload: alarms,
+  payload: alarms
 });
 
 export const setNight = night => ({
   type: types.SET_NIGHT,
-  payload: night,
+  payload: night
 });
 
 export const reportError = error => ({
   type: types.REPORT_ERROR,
-  payload: error,
+  payload: error
 });
 
 export const clearError = () => ({
   type: types.CLEAR_ERROR,
-  payload: undefined,
+  payload: undefined
 });
 
 export const setUserCoords = location => ({
   type: types.SET_USERCOORDS,
-  payload: location,
+  payload: location
 });
 
 export const setLoadingStatus = status => ({
   type: types.SET_LOADING_STATUS,
-  payload: status,
+  payload: status
 });
 
 export const setDeltas = delta => ({
   type: types.SET_DELTAS,
-  payload: delta,
+  payload: delta
 });
 
 export const showCelcius = celcius => ({
   type: types.SHOW_CELCIUS,
-  payload: celcius,
+  payload: celcius
 });
 
 export const showColoredIcons = showIcons => ({
   type: types.SHOW_COLORED_ICONS,
-  payload: showIcons,
+  payload: showIcons
 });
 
 export const setBlinkTime = blinkTime => ({
   type: types.SET_BLINK_TIME,
-  payload: blinkTime,
+  payload: blinkTime
 });
 
 export const addLocation = location => ({
   type: types.ADD_LOCATION,
-  payload: location,
+  payload: location
 });
 
 export const setLastTemperature = temperature => ({
   type: types.SET_LAST_TEMPERATURE,
-  payload: temperature,
+  payload: temperature
 });
 
 export const setInitialized = initialized => ({
   type: types.SET_INITIALIZED,
-  payload: initialized,
+  payload: initialized
 });
 
 export const setShowPadded = showPadded => ({
   type: types.SET_SHOW_PADDED,
-  payload: showPadded,
+  payload: showPadded
 });
 
 export const setIs24HourClock = is24 => ({
   type: types.SET_IS_24_HOUR_CLOCK,
-  payload: is24,
+  payload: is24
+});
+
+export const setHueData = data => ({
+  type: types.SET_HUE_DATA,
+  payload: data
 });
