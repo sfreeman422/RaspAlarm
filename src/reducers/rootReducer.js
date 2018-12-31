@@ -1,21 +1,20 @@
 const initialState = {
-  time: '',
-  date: '',
-  today: '',
-  userLoc: '',
+  time: "",
+  date: "",
+  today: "",
+  userLoc: "",
   savedLocations: [],
   userCoords: {
     lat: 0,
-    long: 0,
+    long: 0
   },
   error: undefined,
   weatherArr: [],
   lastTemperature: undefined,
-  sunrise: {},
-  sunset: {},
+  sunData: {},
   alarms: [],
   isNight: undefined,
-  loadingMessage: '',
+  loadingMessage: "",
   showDeltas: true,
   celcius: false,
   preciseTemperature: true,
@@ -23,119 +22,118 @@ const initialState = {
   blinkTime: true,
   initialized: false,
   showPadded: false,
-  is24HourClock: false,
+  is24HourClock: false
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_TIME':
+    case "SET_TIME":
       return {
         ...state,
-        time: action.payload,
+        time: action.payload
       };
-    case 'SET_DATE':
+    case "SET_DATE":
       return {
         ...state,
-        date: action.payload,
+        date: action.payload
       };
-    case 'SET_WEATHER':
+    case "SET_WEATHER":
       return {
         ...state,
-        weatherArr: action.payload,
+        weatherArr: action.payload
       };
-    case 'SET_USERLOC':
+    case "SET_USERLOC":
       return {
         ...state,
-        userLoc: action.payload,
+        userLoc: action.payload
       };
-    case 'SET_USERCOORDS':
+    case "SET_USERCOORDS":
       return {
         ...state,
         userCoords: {
           lat: action.payload.lat,
-          long: action.payload.long,
-        },
+          long: action.payload.long
+        }
       };
-    case 'SET_SUNDATA':
+    case "SET_SUNDATA":
       return {
         ...state,
-        sunrise: action.payload.sunrise,
-        sunset: action.payload.sunset,
+        sunData: action.payload
       };
-    case 'GET_ALARMS':
+    case "GET_ALARMS":
       return {
         ...state,
-        alarms: action.payload,
+        alarms: action.payload
       };
-    case 'SET_NIGHT':
+    case "SET_NIGHT":
       return {
         ...state,
-        isNight: action.payload,
+        isNight: action.payload
       };
-    case 'SET_TODAY':
+    case "SET_TODAY":
       return {
         ...state,
-        today: action.payload,
+        today: action.payload
       };
-    case 'REPORT_ERROR':
+    case "REPORT_ERROR":
       return {
         ...state,
-        error: action.payload,
+        error: action.payload
       };
-    case 'CLEAR_ERROR':
+    case "CLEAR_ERROR":
       return {
         ...state,
-        error: undefined,
+        error: undefined
       };
-    case 'SET_DELTAS':
+    case "SET_DELTAS":
       return {
         ...state,
-        showDeltas: action.payload,
+        showDeltas: action.payload
       };
-    case 'SET_LOADING_STATUS':
+    case "SET_LOADING_STATUS":
       return {
         ...state,
-        loadingMessage: action.payload,
+        loadingMessage: action.payload
       };
-    case 'SHOW_CELCIUS':
+    case "SHOW_CELCIUS":
       return {
         ...state,
-        celcius: action.payload,
+        celcius: action.payload
       };
-    case 'SHOW_COLORED_ICONS':
+    case "SHOW_COLORED_ICONS":
       return {
         ...state,
-        coloredIcons: action.payload,
+        coloredIcons: action.payload
       };
-    case 'ADD_LOCATION':
+    case "ADD_LOCATION":
       return {
         ...state,
-        savedLocations: [...state.savedLocations, action.payload],
+        savedLocations: [...state.savedLocations, action.payload]
       };
-    case 'SET_BLINK_TIME':
+    case "SET_BLINK_TIME":
       return {
         ...state,
-        blinkTime: action.payload,
+        blinkTime: action.payload
       };
-    case 'SET_SHOW_PADDED':
+    case "SET_SHOW_PADDED":
       return {
         ...state,
-        showPadded: action.payload,
+        showPadded: action.payload
       };
-    case 'SET_LAST_TEMPERATURE':
+    case "SET_LAST_TEMPERATURE":
       return {
         ...state,
-        lastTemperature: action.payload,
+        lastTemperature: action.payload
       };
-    case 'SET_INITIALIZED':
+    case "SET_INITIALIZED":
       return {
         ...state,
-        initialized: action.payload,
+        initialized: action.payload
       };
-    case 'SET_IS_24_HOUR_CLOCK':
+    case "SET_IS_24_HOUR_CLOCK":
       return {
         ...state,
-        is24HourClock: action.payload,
+        is24HourClock: action.payload
       };
     default:
       return state;
