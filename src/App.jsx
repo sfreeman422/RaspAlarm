@@ -16,7 +16,7 @@ import {
   getSunData,
   getUserCity,
   setBrightness,
-  adjustLighting,
+  getLightRequest,
   getLightData
 } from "./helpers/helpers";
 
@@ -87,10 +87,10 @@ class ConnectedMain extends React.Component {
     this.props.setTime(moment().format("hh:mma"));
     this.props.setDate(moment().format("MMMM Do YYYY"));
     this.props.setToday(moment().format("dddd"));
-    if (this.props.sunData) {
+    if (!!this.props.sunData) {
       this.determineNightState();
-      if (this.props.time && this.props.sunData && this.props.today) {
-        adjustLighting(this.props.time, this.props.sunData, this.props.today);
+      if (!!this.props.sunData && !!this.props.today) {
+        getLightRequest(this.props.sunData, this.props.today, [1, 2, 3]);
       }
     }
   }
