@@ -68,9 +68,10 @@ class ConnectedMain extends React.Component {
   }
 
   componentDidMount() {
+    const { initialized } = this.props;
     this.setTime();
     this.timeInterval = setInterval(this.setTime, 1000);
-    if (!this.props.initialized) {
+    if (!initialized) {
       this.initializeApp();
     }
   }
@@ -86,22 +87,24 @@ class ConnectedMain extends React.Component {
   }
 
   setTime() {
-    this.props.setTime(moment().format("hh:mma"));
-    this.props.setDate(moment().format("MMMM Do YYYY"));
-    this.props.setToday(moment().format("dddd"));
-    if (!!this.props.sunData) {
+    const { setTime, setDate, setToday, sunData } = this.props;
+    setTime(moment().format("hh:mma"));
+    setDate(moment().format("MMMM Do YYYY"));
+    setToday(moment().format("dddd"));
+    if (sunData) {
       this.determineNightState();
     }
   }
 
   getWeather() {
-    if (this.props.weatherArr && this.props.weatherArr.length > 0) {
-      this.props.setLastTemperature(this.props.weatherArr[0].temp.english.raw);
+    const { weatherArr, userCoords, setLastTemperature } = this.props;
+    if (weatherArr && weatherArr.length > 0) {
+      setLastTemperature(weatherArr[0].temp.english.raw);
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        this.props.userCoords.lat
-      },${this.props.userCoords.long}.json`
+        userCoords.lat
+      },${userCoords.long}.json`
     )
       .then(response => response.json())
       .then(json => this.generateWeatherState(json.hourly_forecast))
@@ -111,78 +114,97 @@ class ConnectedMain extends React.Component {
   }
 
   async runUpdate(prevProps) {
+    const {
+      clearError,
+      date,
+      initialized,
+      setSunData,
+      time,
+      setWeather,
+      reportError
+    } = this.props;
     try {
-      this.props.clearError();
-      if (this.props.date !== prevProps.date && this.props.initialized) {
+      clearError();
+      if (date !== prevProps.date && initialized) {
         const sunData = await getSunData();
-        this.props.setSunData(sunData);
-      } else if (
-        this.props.time !== prevProps.time &&
-        moment().format("mm") === "00"
-      ) {
+        setSunData(sunData);
+      } else if (time !== prevProps.time && moment().format("mm") === "00") {
         const weather = await this.getWeather();
-        this.props.setWeather(weather);
+        setWeather(weather);
       }
     } catch (err) {
       console.error("Error on runUpdate - ", err.message);
       this.errorTimeout = setTimeout(this.runUpdate, RETRY_INTERVAL);
-      this.props.reportError(err.message);
+      reportError(err.message);
     }
   }
 
   async initializeApp() {
+    const {
+      setLoadingStatus,
+      setHueData,
+      clearError,
+      setUserCoords,
+      setUserLoc,
+      setSunData,
+      setWeather,
+      setInitialized,
+      reportError,
+      today
+    } = this.props;
     try {
       if (config.hue_id && config.hue_ip) {
-        this.props.setLoadingStatus("Getting Phillips Hue Data...");
+        setLoadingStatus("Getting Phillips Hue Data...");
         const hueData = await getLightData();
         console.log("Hue data retrieved: ", hueData);
-        this.props.setHueData(hueData);
+        setHueData(hueData);
       } else {
         console.warn(
           "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
         );
       }
-      this.props.clearError();
-      this.props.setLoadingStatus("Getting Location...");
+      clearError();
+      setLoadingStatus("Getting Location...");
       const userCoordinates = await getUserCoordinates();
-      this.props.setLoadingStatus("Refining Location...");
-      this.props.setUserCoords(userCoordinates);
+      setLoadingStatus("Refining Location...");
+      setUserCoords(userCoordinates);
       const userCity = await getUserCity(userCoordinates);
-      this.props.setLoadingStatus("Getting Solar Information...");
-      this.props.setUserLoc(userCity);
+      setLoadingStatus("Getting Solar Information...");
+      setUserLoc(userCity);
       const sunData = await getSunData(userCoordinates);
-      this.props.setSunData(sunData);
-      this.props.setLoadingStatus("Getting weather...");
+      setSunData(sunData);
+      setLoadingStatus("Getting weather...");
       const weather = await this.getWeather();
-      this.props.setWeather(weather);
+      setWeather(weather);
       this.lightingInterval = setInterval(
-        () => getLightRequest(this.props.sunData, this.props.today, [1, 2, 3]),
+        () => getLightRequest(sunData, today, [1, 2, 3]),
         30000
       );
-      this.props.setInitialized(true);
+      setInitialized(true);
     } catch (err) {
       console.error("Error on intiailizeApp - ", err.message);
-      this.props.reportError(err.message);
+      reportError(err.message);
       this.errorTimeout = setTimeout(this.initializeApp, RETRY_INTERVAL);
     }
   }
 
   determineNightState() {
-    const sunrise = moment(this.props.sunData.sunrise, "hh:mm:a");
-    const sunset = moment(this.props.sunData.sunset, "hh:mm:a");
+    const { sunData, isNight, setNight } = this.props;
+    const sunrise = moment(sunData.sunrise, "hh:mm:a");
+    const sunset = moment(sunData.sunset, "hh:mm:a");
     const currentTime = moment();
     if (
       (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) &&
-      !this.props.isNight
+      !isNight
     ) {
-      this.props.setNight(true);
+      setNight(true);
       setBrightness(true);
     } else if (
       currentTime.isBefore(sunset) &&
       currentTime.isAfter(sunrise) &&
-      (this.props.isNight || this.props.isNight === undefined)
+      (isNight || isNight === undefined)
     ) {
-      this.props.setNight(false);
+      setNight(false);
       setBrightness(false);
     }
   }
@@ -222,15 +244,12 @@ class ConnectedMain extends React.Component {
   }
 
   render() {
+    const { initialized } = this.props;
     return (
       <div className="container">
         <Clock />
         <Today />
-        {this.props.weatherArr && this.props.weatherArr.length > 0 ? (
-          <Weather />
-        ) : (
-          <Loading />
-        )}
+        {initialized ? <Weather /> : <Loading />}
         <Alarm />
       </div>
     );
