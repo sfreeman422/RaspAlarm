@@ -138,7 +138,7 @@ export function getLightRequest(sunData, day, groups) {
     on: shouldBeOn(huePowerSchedule.default[day].off, groups)
   };
   const isDay = time.isAfter(sunrise) && time.isBefore(sunset);
-  const isNight = time.isBefore(sunrise) && time.isAfter(sunset);
+  const isNight = time.isBefore(sunrise) || time.isAfter(sunset);
   if (withinOneHourOfSunset) {
     lightRequest.ct = hueColors.sunset[formattedTimeToSunset].ct;
     lightRequest.bri = hueColors.sunset[formattedTimeToSunset].bri;
