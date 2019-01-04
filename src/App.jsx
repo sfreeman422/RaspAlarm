@@ -63,6 +63,7 @@ class ConnectedMain extends React.Component {
     this.initializeApp = this.initializeApp.bind(this);
     this.runUpdate = this.runUpdate.bind(this);
     this.timeInterval = undefined;
+    this.lightingInterval = undefined;
     this.errorTimeout = undefined;
   }
 
@@ -80,6 +81,7 @@ class ConnectedMain extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.timeInterval);
+    clearInterval(this.lightingInterval);
     clearTimeout(this.errorInterval);
   }
 
@@ -89,9 +91,6 @@ class ConnectedMain extends React.Component {
     this.props.setToday(moment().format("dddd"));
     if (!!this.props.sunData) {
       this.determineNightState();
-      if (!!this.props.sunData && !!this.props.today) {
-        getLightRequest(this.props.sunData, this.props.today, [1, 2, 3]);
-      }
     }
   }
 
@@ -156,6 +155,10 @@ class ConnectedMain extends React.Component {
       this.props.setLoadingStatus("Getting weather...");
       const weather = await this.getWeather();
       this.props.setWeather(weather);
+      this.lightingInterval = setInterval(
+        () => getLightRequest(this.props.sunData, this.props.today, [1, 2, 3]),
+        30000
+      );
       this.props.setInitialized(true);
     } catch (err) {
       console.error("Error on intiailizeApp - ", err.message);
