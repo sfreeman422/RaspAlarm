@@ -1,32 +1,37 @@
 {
   "Monday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1, 2, 3] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] }
+      { "start": "12:00am", "end": "6:00am", "groups": [1] },
+      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
+      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
     ]
   },
   "Tuesday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1, 2, 3] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] }
+      { "start": "12:00am", "end": "6:00am", "groups": [1] },
+      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
+      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
     ]
   },
   "Wednesday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1, 2, 3] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] }
+      { "start": "12:00am", "end": "6:00am", "groups": [1] },
+      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
+      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
     ]
   },
   "Thursday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1, 2, 3] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] }
+      { "start": "12:00am", "end": "6:00am", "groups": [1] },
+      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
+      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
     ]
   },
   "Friday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1, 2, 3] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] }
+      { "start": "12:00am", "end": "6:00am", "groups": [1] },
+      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
+      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
     ]
   },
   "Saturday": {},
