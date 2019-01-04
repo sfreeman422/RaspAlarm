@@ -124,6 +124,12 @@ export function shouldBeOn(scheduleArray, groups) {
   return returnVal;
 }
 
+export function getData(url, errorHandler) {
+  return fetch(url)
+    .then(res => res.json())
+    .catch(e => errorHandler(e));
+}
+
 export function getLightRequest(sunData, day, groups) {
   const { sunrise, sunset } = sunData;
   const rawTime = moment();
