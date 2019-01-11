@@ -103,7 +103,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -149,8 +149,7 @@ class ConnectedMain extends React.Component {
       setSunData,
       setWeather,
       setInitialized,
-      reportError,
-      today
+      reportError
     } = this.props;
     try {
       if (config.hue_id && config.hue_ip) {
@@ -177,7 +176,7 @@ class ConnectedMain extends React.Component {
       const weather = await this.getWeather();
       setWeather(weather);
       this.lightingInterval = setInterval(
-        () => getLightRequest(sunData, today),
+        () => getLightRequest(sunData, this.props.today),
         30000
       );
       setInitialized(true);

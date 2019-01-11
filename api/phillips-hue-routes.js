@@ -46,6 +46,19 @@ router.get("/lights", (_req, res) => {
 });
 
 /**
+ * Gets light information by dayOfWeek which should be a capitalized day of the week.
+ */
+router.get("/lights/:dayOfWeek", (req, res) => {
+  LightSchedule.findOne({ dayOfWeek: req.params.dayOfWeek }, (err, doc) => {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      res.json(doc);
+    }
+  });
+});
+
+/**
  * This route is used to both add a new light schedule if one does not exist
  * and also overwrite existing light schedules.
  * This use case works because we are intending to only have our users use one DB for all of their
