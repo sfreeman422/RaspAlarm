@@ -103,7 +103,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -177,7 +177,7 @@ class ConnectedMain extends React.Component {
       const weather = await this.getWeather();
       setWeather(weather);
       this.lightingInterval = setInterval(
-        () => getLightRequest(sunData, today, [1, 2, 3]),
+        () => getLightRequest(sunData, today),
         30000
       );
       setInitialized(true);

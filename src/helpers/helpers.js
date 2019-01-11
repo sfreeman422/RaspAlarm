@@ -130,8 +130,11 @@ export function getData(url, errorHandler) {
     .catch(e => errorHandler(e));
 }
 
-export function getLightRequest(sunData, day, groups) {
+export async function getLightRequest(sunData, day) {
   const { sunrise, sunset } = sunData;
+  const lightData = getLightData();
+  const lightGroups = lightData.groups;
+  console.log(lightGroups);
   const rawTime = moment();
   const time = moment(rawTime, "hh:mm:a");
   const timeToSunset = Math.floor(time.diff(sunset, "minutes") / 10) * 10;
@@ -141,7 +144,7 @@ export function getLightRequest(sunData, day, groups) {
   const withinOneHourOfSunset = timeToSunset >= -60 && timeToSunset <= 0;
   const withinOneHourOfSunrise = timeToSunrise >= -60 && timeToSunrise <= 0;
   const lightRequest = {
-    on: shouldBeOn(huePowerSchedule.default[day].off, groups)
+    on: shouldBeOn(huePowerSchedule.default[day].off, lightGroups)
   };
   const isDay = time.isAfter(sunrise) && time.isBefore(sunset);
   const isNight = time.isBefore(sunrise) || time.isAfter(sunset);
@@ -159,8 +162,8 @@ export function getLightRequest(sunData, day, groups) {
     lightRequest.bri = hueColors.night.bri;
   }
   console.log("lightRequest - ", lightRequest);
-  for (let i = 0; i < groups.length; i += 1) {
-    changeLightingByGroup(lightRequest, groups[i]);
+  for (let i = 1; i < lightGroups.length; i += 1) {
+    changeLightingByGroup(lightRequest, lightGroups[i]);
   }
 }
 

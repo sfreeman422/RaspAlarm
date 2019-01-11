@@ -26,6 +26,7 @@ function updateSchedule(schedule) {
       } else {
         doc.off = schedule.off;
         doc.bedtime = schedule.bedtime;
+        doc.colors = schedule.colors;
         doc.save();
         resolve();
       }
@@ -36,10 +37,10 @@ function updateSchedule(schedule) {
 // Retrieves all light schedules.
 router.get("/lights", (_req, res) => {
   LightSchedule.find({}, (err, docs) => {
-    if (!err) {
-      res.json(docs);
-    } else {
+    if (err) {
       res.json(err);
+    } else {
+      res.json(docs);
     }
   });
 });
@@ -56,13 +57,23 @@ router.post("/lights", async (req, res) => {
     const newSchedule = new LightSchedule({
       dayOfWeek: req.body[i].dayOfWeek,
       off: req.body[i].off,
-      bedtime: req.body[i].bedtime
+      bedtime: req.body[i].bedtime,
+      colors: req.body[i].colors
     });
     updateArray.push(updateSchedule(newSchedule));
   }
   await Promise.all(updateArray)
     .then(() => res.status(200).json(`Successfully updated schedule.`))
     .catch(e => res.status(500).json(e));
+});
+
+router.delete("/lights", (req, res) => {
+  console.log(req);
+  LightSchedule.remove({}, (err, docs) => {
+    console.log(err);
+    console.log(docs);
+  });
+  res.send(200);
 });
 
 module.exports = router;
