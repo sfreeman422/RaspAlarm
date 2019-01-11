@@ -37,7 +37,7 @@ export default class AlarmManager extends React.Component {
   }
 
   getAlarms() {
-    fetch("/alarms")
+    fetch("/alarm")
       .then(res => res.json())
       .then(alarms => {
         this.setState({ alarms });
@@ -53,7 +53,7 @@ export default class AlarmManager extends React.Component {
       ampm,
       dayOfWeek: this.daysOfWeek
     };
-    fetch("/setAlarm", {
+    fetch("/alarm", {
       method: "POST",
       body: JSON.stringify(data),
       headers: new Headers({
@@ -155,7 +155,7 @@ export default class AlarmManager extends React.Component {
     }
   }
   removeAlarm(id) {
-    fetch("/deleteAlarm", {
+    fetch("/alarm", {
       method: "DELETE",
       body: JSON.stringify({
         id,

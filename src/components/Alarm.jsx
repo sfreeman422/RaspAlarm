@@ -36,7 +36,7 @@ class ConnectedAlarm extends React.Component {
   }
 
   getAlarms() {
-    fetch("/alarms")
+    fetch("/alarm")
       .then(res => res.json())
       .then(alarms => {
         this.setState({ alarms });
@@ -66,7 +66,7 @@ class ConnectedAlarm extends React.Component {
   }
 
   removeAlarm(id) {
-    fetch("/deleteAlarm", {
+    fetch("/alarm", {
       method: "DELETE",
       body: JSON.stringify({
         id,
@@ -87,7 +87,7 @@ class ConnectedAlarm extends React.Component {
     });
     // Add an alarm at the current time + 5 minutes.
     // To be added: custom snoozes
-    fetch("/setAlarm", {
+    fetch("/alarm", {
       method: "POST",
       body: JSON.stringify({
         hour: moment().format("hh"),

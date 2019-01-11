@@ -2,10 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const Alarm = require("./models/Alarms.js");
-const LightSchedules = require("./models/LightSchedule.js");
 const methodOverride = require("method-override");
-const { exec } = require("child_process");
+const brightnessRoutes = require("./api/brightness-route");
+const lightRoutes = require("./api/phillips-hue-routes");
+const alarmRoutes = require("./api/alarm-routes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -26,102 +26,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("./public"));
 app.use(methodOverride("_method"));
+app.use(brightnessRoutes);
+app.use(lightRoutes);
+app.use(alarmRoutes);
 
 app.get("/", (_req, res) => {
   res.sendFile("./public/index.html");
-});
-
-app.get("/alarms", (_req, res) => {
-  Alarm.find({}, (err, docs) => {
-    if (!err) {
-      res.json(docs);
-    } else {
-      res.json(err);
-    }
-  });
-});
-
-app.get("/lightSchedules", (_req, res) => {
-  LightSchedules.find({}, (err, docs) => {
-    if (!err) {
-      res.json(docs);
-    } else {
-      res.json(err);
-    }
-  });
-});
-
-app.post("/lightSchedules", (req, res) => {
-  const newSchedule = new LightSchedules({
-    dayOfWeek: req.body.dayOfWeek,
-    off: req.body.off,
-    bedtime: req.body.bedtime
-  });
-  newSchedule.save(err => {
-    if (err) {
-      res.status(500).json(err);
-    } else {
-      res.status(200).json("Successfully added new schedule");
-    }
-  });
-});
-
-// Adjusts brightness when running on a pi.
-app.post("/brightness", (req, res) => {
-  if (process.env.isRaspberryPi === "true") {
-    if (req.body.isNight) {
-      exec("echo 20 > /sys/class/backlight/rpi_backlight/brightness", error => {
-        if (error) {
-          res.json(`execError: ${error}`);
-        } else {
-          res.json("Successfully set brighness to night mode!");
-        }
-      });
-    } else if (!req.body.isNight) {
-      exec(
-        "echo 255 > /sys/class/backlight/rpi_backlight/brightness",
-        error => {
-          if (error) {
-            res.json(`execError: ${error}`);
-          } else {
-            res.json("Successfully set brightness to day mode!");
-          }
-        }
-      );
-    }
-  } else if (
-    !process.env.isRaspberryPi ||
-    process.env.isRaspberryPi === "false"
-  ) {
-    res.json("RaspberryPi env variable not set. No changes made");
-  }
-});
-
-// Route to set alarms.
-app.post("/setAlarm", (req, res) => {
-  const userTime = `${req.body.hour}:${req.body.minute}${req.body.ampm}`;
-  let oneTimeUse = false;
-  if (!req.body.dayOfWeek || req.body.dayOfWeek.length === 0) {
-    oneTimeUse = true;
-  }
-  const newAlarm = new Alarm({
-    time: userTime,
-    dayOfWeek: req.body.dayOfWeek,
-    oneTimeUse
-  });
-
-  newAlarm.save(err => {
-    if (err)
-      res.status(500).send(`Error occurred during setting of alarm. \n ${err}`);
-    res.status(200).json("Alarm successfully saved.");
-  });
-});
-
-// Route to delete alarms
-app.delete("/deleteAlarm", (req, res) => {
-  Alarm.find({ _id: req.body.id }).remove(() => {
-    res.status(200).json("Successfully removed.");
-  });
 });
 
 // Listen to the port.
