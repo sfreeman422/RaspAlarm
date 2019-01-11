@@ -34,7 +34,9 @@ function updateSchedule(schedule) {
   });
 }
 
-// Retrieves all light schedules.
+/**
+ * This route gets the light schedule for all days of the week.
+ */
 router.get("/lights", (_req, res) => {
   LightSchedule.find({}, (err, docs) => {
     if (err) {
