@@ -11,7 +11,7 @@
     "json-loader": "^0.5.7",
     "method-override": "^2.3.10",
     "moment": "^2.21.0",
-    "mongoose": "^5.3.14",
+    "mongoose": "^5.4.3",
     "morgan": "^1.9.1",
     "prop-types": "^15.6.1",
     "react": "^16.6.3",

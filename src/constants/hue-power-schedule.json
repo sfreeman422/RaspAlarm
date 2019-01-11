@@ -1,38 +1,148 @@
 {
   "Monday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
-      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
-    ]
+      {
+        "start": "12:00am",
+        "end": "6:00am",
+        "groups": [
+          1
+        ]
+      },
+      {
+        "start": "9:00am",
+        "end": "5:00pm",
+        "groups": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "start": "10:00pm",
+        "end": "7:00am",
+        "groups": [
+          2,
+          3
+        ]
+      }
+    ],
+    "bedtime": "10:00pm"
   },
   "Tuesday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
-      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
-    ]
+      {
+        "start": "12:00am",
+        "end": "6:00am",
+        "groups": [
+          1
+        ]
+      },
+      {
+        "start": "9:00am",
+        "end": "5:00pm",
+        "groups": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "start": "10:00pm",
+        "end": "7:00am",
+        "groups": [
+          2,
+          3
+        ]
+      }
+    ],
+    "bedtime": "10:00pm"
   },
   "Wednesday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
-      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
-    ]
+      {
+        "start": "12:00am",
+        "end": "6:00am",
+        "groups": [
+          1
+        ]
+      },
+      {
+        "start": "9:00am",
+        "end": "5:00pm",
+        "groups": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "start": "10:00pm",
+        "end": "7:00am",
+        "groups": [
+          2,
+          3
+        ]
+      }
+    ],
+    "bedtime": "10:00pm"
   },
   "Thursday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
-      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
-    ]
+      {
+        "start": "12:00am",
+        "end": "6:00am",
+        "groups": [
+          1
+        ]
+      },
+      {
+        "start": "9:00am",
+        "end": "5:00pm",
+        "groups": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "start": "10:00pm",
+        "end": "7:00am",
+        "groups": [
+          2,
+          3
+        ]
+      }
+    ],
+    "bedtime": "10:00pm"
   },
   "Friday": {
     "off": [
-      { "start": "12:00am", "end": "6:00am", "groups": [1] },
-      { "start": "9:00am", "end": "5:00pm", "groups": [1, 2, 3] },
-      { "start": "10:00pm", "end": "7:00am", "groups": [2, 3] }
-    ]
+      {
+        "start": "12:00am",
+        "end": "6:00am",
+        "groups": [
+          1
+        ]
+      },
+      {
+        "start": "9:00am",
+        "end": "5:00pm",
+        "groups": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "start": "10:00pm",
+        "end": "7:00am",
+        "groups": [
+          2,
+          3
+        ]
+      }
+    ],
+    "bedtime": "11:00pm"
   },
   "Saturday": {},
   "Sunday": {}

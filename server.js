@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const Alarm = require("./models/Alarms.js");
+const LightSchedules = require("./models/LightSchedule.js");
 const methodOverride = require("method-override");
 const { exec } = require("child_process");
 
@@ -26,16 +27,41 @@ app.use(bodyParser.json());
 app.use(express.static("./public"));
 app.use(methodOverride("_method"));
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.sendFile("./public/index.html");
 });
 
-app.get("/alarms", (req, res) => {
+app.get("/alarms", (_req, res) => {
   Alarm.find({}, (err, docs) => {
     if (!err) {
       res.json(docs);
     } else {
       res.json(err);
+    }
+  });
+});
+
+app.get("/lightSchedules", (_req, res) => {
+  LightSchedules.find({}, (err, docs) => {
+    if (!err) {
+      res.json(docs);
+    } else {
+      res.json(err);
+    }
+  });
+});
+
+app.post("/lightSchedules", (req, res) => {
+  const newSchedule = new LightSchedules({
+    dayOfWeek: req.body.dayOfWeek,
+    off: req.body.off,
+    bedtime: req.body.bedtime
+  });
+  newSchedule.save(err => {
+    if (err) {
+      res.status(500).json(err);
+    } else {
+      res.status(200).json("Successfully added new schedule");
     }
   });
 });
