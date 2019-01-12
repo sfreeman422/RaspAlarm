@@ -1,4 +1,4 @@
-import * as types from "../../constants/action-types";
+import * as types from "../action-types";
 export const getAlarms = alarms => ({
   type: types.GET_ALARMS,
   payload: alarms

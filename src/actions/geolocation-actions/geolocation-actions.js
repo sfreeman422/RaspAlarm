@@ -1,4 +1,4 @@
-import * as types from "../../constants/action-types";
+import * as types from "../action-types";
 
 export const setUserLoc = userLoc => ({
   type: types.SET_USERLOC,

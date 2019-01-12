@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment";
 import fetch from "isomorphic-fetch";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-import PropTypes from "prop-types";
 
 const mapStateToProps = state => ({
   currentTime: state.time
