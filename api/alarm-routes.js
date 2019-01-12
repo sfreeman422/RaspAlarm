@@ -3,7 +3,9 @@ const Alarm = require("../models/Alarms.js");
 
 const router = Router();
 
-// Retrieves all alarms in the db.
+/**
+ * Retrieves all the alarms in the db.
+ */
 router.get("/alarm", (_req, res) => {
   Alarm.find({}, (err, docs) => {
     if (!err) {
@@ -14,7 +16,9 @@ router.get("/alarm", (_req, res) => {
   });
 });
 
-// Sets an alarm
+/**
+ * Creates a new alarm in the db.
+ */
 router.post("/alarm", (req, res) => {
   const userTime = `${req.body.hour}:${req.body.minute}${req.body.ampm}`;
   let oneTimeUse = false;
@@ -34,7 +38,9 @@ router.post("/alarm", (req, res) => {
   });
 });
 
-// Deletes the specified alarm.
+/**
+ * Deletes the specified alarm.
+ */
 router.delete("/alarm", (req, res) => {
   Alarm.find({ _id: req.body.id }).remove(() => {
     res.status(200).json("Successfully removed.");
