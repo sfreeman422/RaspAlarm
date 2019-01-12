@@ -4,7 +4,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as config from "./private/config";
-import * as actions from "./actions/actions";
+import * as actions from "./actions";
 import Clock from "./components/Clock";
 import Today from "./components/Today";
 import Weather from "./components/Weather";
@@ -103,7 +103,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
