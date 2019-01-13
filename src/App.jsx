@@ -77,7 +77,9 @@ class ConnectedMain extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.runUpdate(prevProps);
+    if (prevProps) {
+      this.runUpdate(prevProps);
+    }
   }
 
   componentWillUnmount() {
@@ -103,7 +105,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -191,7 +193,8 @@ class ConnectedMain extends React.Component {
     const { sunData, isNight, setNight } = this.props;
     const sunrise = moment(sunData.sunrise, "hh:mm:a");
     const sunset = moment(sunData.sunset, "hh:mm:a");
-    const currentTime = moment();
+    const rawTime = moment();
+    const currentTime = moment(rawTime, "hh:mm:a");
     if (
       (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) &&
       !isNight

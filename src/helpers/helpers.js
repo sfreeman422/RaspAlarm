@@ -105,6 +105,17 @@ export function setBrightness(isNight) {
     .catch(e => console.error(e));
 }
 
+/**
+ * Searches a given array to determine whether the current time
+ * is between the start and end of the Off Schedule.
+ * Off schedules are used to tell our Phillips Hue Bridge
+ * when to turn specific groups on or off.
+ *
+ * @export
+ * @param {*} scheduleArray - An Off Schedule that contains start and end times.
+ * @param {*} groups - The groups that we are concerned with adjusting.
+ * @returns boolean - telling us whether or not specific groups should be on or off.
+ */
 export function shouldBeOn(scheduleArray, groups) {
   const time = moment();
   const formattedTime = moment(time, "hh:mm:a");
@@ -122,6 +133,14 @@ export function shouldBeOn(scheduleArray, groups) {
   return returnVal;
 }
 
+/**
+ * Generic data retrieval function that can be passed its on error handlers.
+ *
+ * @export
+ * @param {*} url - url that we wish to get data from.
+ * @param {*} [errorHandler=e => console.log(e)] - Error handler function, be default, simply logs.
+ * @returns
+ */
 export function getData(url, errorHandler = e => console.log(e)) {
   return fetch(url)
     .then(res => res.json())
@@ -158,6 +177,14 @@ function getLightGradientColor(timeTo, visual) {
   }
 }
 
+/**
+ * Generates a request for our Phillips Hue Bridge based on
+ * the current day, sunrise and sunset.
+ *
+ * @export
+ * @param {*} sunData - Sunrise and sunset data as moment objects.
+ * @param {*} day - The current day of the week.
+ */
 export async function getLightRequest(sunData, day) {
   const { sunrise, sunset } = sunData;
   const lightData = await getLightData();
@@ -223,6 +250,13 @@ export async function getLightRequest(sunData, day) {
   }
 }
 
+/**
+ * Called by getLightRequest, this function adjusts the groups lighting color/on status accordingly.
+ *
+ * @export
+ * @param {*} lightConfig
+ * @param {*} group
+ */
 export function changeLightingByGroup(lightConfig, group) {
   fetch(`http://${config.hue_ip}/api/${config.hue_id}/groups/${group}/action`, {
     method: "PUT",
