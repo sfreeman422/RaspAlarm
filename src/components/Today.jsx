@@ -15,15 +15,13 @@ class ConnectedToday extends React.Component {
     this.state = {
       isModalOpen: false
     };
-
-    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  toggleModal() {
+  toggleModal = () => {
     this.setState({
       isModalOpen: !this.state.isModalOpen
     });
-  }
+  };
 
   render() {
     const { day, date, userLoc } = this.props;

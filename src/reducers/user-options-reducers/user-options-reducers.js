@@ -7,7 +7,7 @@ const initialState = {
   blinkTime: true,
   showPadded: false,
   is24HourClock: false,
-  preciseTemperature: true // Currently not configurable.
+  preciseTemperature: true
 };
 
 const userOptionsReducer = (state = initialState, action) => {
@@ -41,6 +41,11 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         is24HourClock: action.payload
+      };
+    case types.SET_PRECISE_TEMPERATURE:
+      return {
+        ...state,
+        preciseTemperature: action.payload
       };
     default:
       return state;

@@ -15,7 +15,6 @@ class ConnectedLoading extends React.Component {
     this.state = {
       icon: "wi wi-moon-waning-crescent-6 yellow"
     };
-    this.changeIcon = this.changeIcon.bind(this);
   }
   componentDidMount() {
     animateInterval = setInterval(this.changeIcon, 100);
@@ -23,7 +22,7 @@ class ConnectedLoading extends React.Component {
   componentWillUnmount() {
     clearInterval(animateInterval);
   }
-  changeIcon() {
+  changeIcon = () => {
     const icons = [
       "wi wi-moon-waning-crescent-6 yellow",
       "wi wi-moon-waning-crescent-5 yellow",
@@ -62,7 +61,7 @@ class ConnectedLoading extends React.Component {
       icon: icons[iconPosition]
     });
     iconPosition += 1;
-  }
+  };
 
   render() {
     return this.props.error ? (
@@ -70,11 +69,11 @@ class ConnectedLoading extends React.Component {
         <p className="error">Error: {this.props.error}</p>
       </React.Fragment>
     ) : (
-        <div className="loading">
-          <i className={this.state.icon} id="loading" />
-          <p>{this.props.loadingMessage}</p>
-        </div>
-      );
+      <div className="loading">
+        <i className={this.state.icon} id="loading" />
+        <p>{this.props.loadingMessage}</p>
+      </div>
+    );
   }
 }
 

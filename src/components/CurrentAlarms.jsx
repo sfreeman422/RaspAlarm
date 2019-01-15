@@ -14,11 +14,8 @@ function displayLetterForDayOfWeek(days) {
   };
   let responseString = "";
   for (let i = 0; i < days.length; i += 1) {
-    if (i < days.length - 1) {
-      responseString += `${dayOfWeek[days[i]]} | `;
-    } else {
-      responseString += dayOfWeek[days[i]];
-    }
+    responseString +=
+      i < days.length - 1 ? `${dayOfWeek[days[i]]} | ` : dayOfWeek[days[i]];
   }
   return responseString;
 }

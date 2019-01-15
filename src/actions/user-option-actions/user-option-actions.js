@@ -29,3 +29,8 @@ export const setIs24HourClock = is24 => ({
   type: types.SET_IS_24_HOUR_CLOCK,
   payload: is24
 });
+
+export const setPreciseTemperature = showPreciseTemperature => ({
+  type: types.SET_PRECISE_TEMPERATURE,
+  payload: showPreciseTemperature
+});

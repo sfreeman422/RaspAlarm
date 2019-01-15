@@ -16,7 +16,6 @@ class ConnectedClock extends React.Component {
     this.state = {
       isColonVisible: false
     };
-    this.blinkColon = this.blinkColon.bind(this);
     this.blinkInterval = setInterval(this.blinkColon, 1000);
   }
 
@@ -24,13 +23,13 @@ class ConnectedClock extends React.Component {
     clearInterval(this.blinkInterval);
   }
 
-  blinkColon() {
+  blinkColon = () => {
     if (this.props.blinkTime) {
       this.setState({
         isColonVisible: !this.state.isColonVisible
       });
     }
-  }
+  };
 
   render() {
     const { is24HourClock, blinkTime, showPadded } = this.props;
