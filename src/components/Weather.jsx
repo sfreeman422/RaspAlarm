@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import WeatherPerDay from "./WeatherPerDay";
 
 const mapStateToProps = state => ({
-  weatherArr: state.weatherArr,
-  showDeltas: state.showDeltas,
-  celcius: state.celcius,
-  lastTemperature: state.lastTemperature
+  weatherArr: state.weather.weatherArr,
+  showDeltas: state.userOptions.showDeltas,
+  celcius: state.userOptions.celcius,
+  lastTemperature: state.weather.lastTemperature
 });
 
 const ConnectedWeather = ({

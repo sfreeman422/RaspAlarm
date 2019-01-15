@@ -14,3 +14,8 @@ export const setNight = night => ({
   type: types.SET_NIGHT,
   payload: night
 });
+
+export const setLastTemperature = temperature => ({
+  type: types.SET_LAST_TEMPERATURE,
+  payload: temperature
+});

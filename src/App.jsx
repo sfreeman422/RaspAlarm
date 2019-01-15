@@ -40,16 +40,16 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  time: state.time,
-  isNight: state.isNight,
-  sunData: state.sunData,
-  userLoc: state.userLoc,
-  userCoords: state.userCoords,
-  weatherArr: state.weatherArr,
-  coloredIcons: state.coloredIcons,
-  date: state.date,
-  initialized: state.initialized,
-  today: state.today
+  time: state.dateTime.time,
+  isNight: state.dateTime.isNight,
+  sunData: state.weather.sunData,
+  userLoc: state.location.userLoc,
+  userCoords: state.location.userCoords,
+  weatherArr: state.weather.weatherArr,
+  coloredIcons: state.userOptions.coloredIcons,
+  date: state.dateTime.date,
+  initialized: state.applicationState.initialized,
+  today: state.dateTime.today
 });
 
 const RETRY_INTERVAL = 5000;
@@ -105,7 +105,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())

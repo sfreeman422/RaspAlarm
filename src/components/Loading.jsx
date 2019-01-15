@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 let animateInterval;
 let iconPosition = 1;
 const mapStateToProps = state => ({
-  error: state.error,
-  loadingMessage: state.loadingMessage
+  error: state.applicationState.error,
+  loadingMessage: state.applicationState.loadingMessage
 });
 
 class ConnectedLoading extends React.Component {
@@ -70,11 +70,11 @@ class ConnectedLoading extends React.Component {
         <p className="error">Error: {this.props.error}</p>
       </React.Fragment>
     ) : (
-      <div className="loading">
-        <i className={this.state.icon} id="loading" />
-        <p>{this.props.loadingMessage}</p>
-      </div>
-    );
+        <div className="loading">
+          <i className={this.state.icon} id="loading" />
+          <p>{this.props.loadingMessage}</p>
+        </div>
+      );
   }
 }
 

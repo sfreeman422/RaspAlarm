@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router";
 
 const mapStateToProps = state => ({
-  currentTime: state.time
+  currentTime: state.dateTime.time
 });
 
 class ConnectedAlarm extends React.Component {

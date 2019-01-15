@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const mapStateToProps = state => ({
-  time: state.time,
-  blinkTime: state.blinkTime,
-  showPadded: state.showPadded,
-  is24HourClock: state.is24HourClock
+  time: state.dateTime.time,
+  blinkTime: state.userOptions.blinkTime,
+  showPadded: state.userOptions.showPadded,
+  is24HourClock: state.userOptions.is24HourClock
 });
 
 class ConnectedClock extends React.Component {

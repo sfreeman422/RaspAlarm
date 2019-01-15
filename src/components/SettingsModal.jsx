@@ -5,13 +5,13 @@ import PropTypes from "prop-types";
 import * as actions from "../actions";
 
 const mapStateToProps = state => ({
-  showDeltas: state.showDeltas,
-  celcius: state.celcius,
-  coloredIcons: state.coloredIcons,
-  userLoc: state.userLoc,
-  blinkTime: state.blinkTime,
-  showPadded: state.showPadded,
-  is24HourClock: state.is24HourClock
+  showDeltas: state.userOptions.showDeltas,
+  celcius: state.userOptions.celcius,
+  coloredIcons: state.userOptions.coloredIcons,
+  userLoc: state.location.userLoc,
+  blinkTime: state.userOptions.blinkTime,
+  showPadded: state.userOptions.showPadded,
+  is24HourClock: state.userOptions.is24HourClock
 });
 
 const mapDispatchToProps = dispatch => ({
