@@ -1,24 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import PropTypes from "prop-types";
-
-function displayLetterForDayOfWeek(days) {
-  const dayOfWeek = {
-    Monday: "M",
-    Tuesday: "T",
-    Wednesday: "W",
-    Thursday: "Th",
-    Friday: "F",
-    Saturday: "Sat",
-    Sunday: "Sun"
-  };
-  let responseString = "";
-  for (let i = 0; i < days.length; i += 1) {
-    responseString +=
-      i < days.length - 1 ? `${dayOfWeek[days[i]]} | ` : dayOfWeek[days[i]];
-  }
-  return responseString;
-}
+import { displayLetterForDayOfWeek } from "../helpers/helpers";
 
 const CurrentAlarms = ({ alarms, removeAlarm }) => (
   <div id="alarms">
