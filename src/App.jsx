@@ -159,6 +159,12 @@ class ConnectedMain extends React.Component {
         const hueData = await getLightData();
         console.log("Hue data retrieved: ", hueData);
         setHueData(hueData);
+        if (hueData) {
+          this.lightingInterval = setInterval(
+            () => getLightRequest(sunData, this.props.today),
+            30000
+          );
+        }
       } else {
         console.warn(
           "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
@@ -177,10 +183,6 @@ class ConnectedMain extends React.Component {
       setLoadingStatus("Getting weather...");
       const weather = await this.getWeather();
       setWeather(weather);
-      this.lightingInterval = setInterval(
-        () => getLightRequest(sunData, this.props.today),
-        30000
-      );
       setInitialized(true);
     } catch (err) {
       console.error("Error on intiailizeApp - ", err.message);
