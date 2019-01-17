@@ -41,7 +41,7 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         showDeltas: {
-          ...state.showDeltas.friendlyName,
+          friendlyName: state.showDeltas.friendlyName,
           isEnabled: action.payload
         }
       };
@@ -49,7 +49,7 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         showCelcius: {
-          ...state.showCelcius.friendlyName,
+          friendlyName: state.showCelcius.friendlyName,
           isEnabled: action.payload
         }
       };
@@ -57,7 +57,7 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         coloredIcons: {
-          ...state.showColoredIcons.friendlyName,
+          friendlyName: state.showColoredIcons.friendlyName,
           isEnabled: action.payload
         }
       };
@@ -65,15 +65,15 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         blinkTime: {
-          ...state.blinkTime.friendlyName,
+          friendlyName: state.blinkTime.friendlyName,
           isEnabled: action.payload
         }
       };
     case types.SET_SHOW_PADDED_ZEROES:
       return {
         ...state,
-        showPadded: {
-          ...state.showPadded.friendlyName,
+        showPaddedZeroes: {
+          friendlyName: state.showPaddedZeroes.friendlyName,
           isEnabled: action.payload
         }
       };
@@ -81,7 +81,7 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         is24HourClock: {
-          ...state.is24HourClock.friendlyName,
+          friendlyName: state.is24HourClock.friendlyName,
           isEnabled: action.payload
         }
       };
@@ -89,7 +89,7 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         showPreciseTemperature: {
-          ...state.showPreciseTemperature.friendlyName,
+          friendlyName: state.showPreciseTemperature.friendlyName,
           isEnabled: action.payload
         }
       };
@@ -97,7 +97,7 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         isPhillipsHueEnabled: {
-          ...state.isPhillipsHueEnabled.friendlyName,
+          friendlyName: state.isPhillipsHueEnabled.friendlyName,
           isEnabled: action.payload
         }
       };

@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDeltas: delta => dispatch(actions.setShowDeltas(delta)),
+  setShowDeltas: delta => dispatch(actions.setShowDeltas(delta)),
   setShowCelcius: celcius => dispatch(actions.setShowCelcius(celcius)),
   setShowColoredIcons: showIcons =>
     dispatch(actions.setShowColoredIcons(showIcons)),
@@ -45,7 +45,7 @@ const ConnectedSettings = ({
       </span>
     </div>
     <div>
-      <span>Show Temperature Delta Indicators? </span>
+      <span>{userOptions.showDeltas.friendlyName}</span>
       <span>
         <input
           type="checkbox"
@@ -55,7 +55,7 @@ const ConnectedSettings = ({
       </span>
     </div>
     <div>
-      <span>Blink Time Colon</span>
+      <span>{userOptions.blinkTime.friendlyName}</span>
       <span>
         <input
           type="checkbox"
@@ -65,7 +65,7 @@ const ConnectedSettings = ({
       </span>
     </div>
     <div>
-      <span>Precise Temperatures? (WIP)</span>
+      <span>{userOptions.showPreciseTemperature.friendlyName}</span>
       <span>
         <input
           type="checkbox"
@@ -79,7 +79,7 @@ const ConnectedSettings = ({
       </span>
     </div>
     <div>
-      <span>Show padded zeroes?</span>
+      <span>{userOptions.showPaddedZeroes.friendlyName}</span>
       <span>
         <input
           type="checkbox"
@@ -91,7 +91,7 @@ const ConnectedSettings = ({
       </span>
     </div>
     <div>
-      <span>24 hour clock?</span>
+      <span>{userOptions.is24HourClock.friendlyName}</span>
       <span>
         <input
           type="checkbox"
@@ -110,21 +110,37 @@ const ConnectedSettings = ({
 
 ConnectedSettings.propTypes = {
   userOptions: PropTypes.shape({
-    showPadded: PropTypes.bool.isRequired,
-    showCelcius: PropTypes.bool.isRequired,
-    showPaddedZeroes: PropTypes.bool.isRequired,
-    showCelcisu: PropTypes.bool.isRequired,
-    showDeltas: PropTypes.bool.isRequired,
-    blinkTime: PropTypes.bool.isRequired,
-    is24HourClock: PropTypes.bool.isRequired,
-    showPreciseTemperature: PropTypes.bool.isRequired
+    showCelcius: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
+    }).isRequired,
+    showPaddedZeroes: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
+    }).isRequired,
+    showDeltas: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
+    }),
+    blinkTime: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
+    }),
+    is24HourClock: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
+    }),
+    showPreciseTemperature: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
+    })
   }),
-  setShowPadded: PropTypes.func.isRequired,
+  setShowPaddedZeroes: PropTypes.func.isRequired,
   setShowCelcius: PropTypes.func.isRequired,
   setShowDeltas: PropTypes.func.isRequired,
   setBlinkTime: PropTypes.func.isRequired,
   setIs24HourClock: PropTypes.func.isRequired,
-  setShowPriceTemperature: PropTypes.func.isRequired
+  setShowPreciseTemperature: PropTypes.func.isRequired
 };
 
 const SettingsModal = connect(

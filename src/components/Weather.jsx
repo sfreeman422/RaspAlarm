@@ -5,15 +5,15 @@ import WeatherPerDay from "./WeatherPerDay";
 
 const mapStateToProps = state => ({
   weatherArr: state.weather.weatherArr,
-  showDeltas: state.userOptions.showDeltas,
-  celcius: state.userOptions.celcius,
+  showDeltas: state.userOptions.showDeltas.isEnabled,
+  showCelcius: state.userOptions.showCelcius.isEnabled,
   lastTemperature: state.weather.lastTemperature
 });
 
 const ConnectedWeather = ({
   weatherArr,
   showDeltas,
-  celcius,
+  showCelcius,
   lastTemperature
 }) => (
   <div className="allWeather">
@@ -29,7 +29,7 @@ const ConnectedWeather = ({
         }
         showDeltas={showDeltas}
         ignoreUpIndicator={index === 0 && !lastTemperature}
-        celcius={celcius}
+        celcius={showCelcius}
       />
     ))}
   </div>
@@ -38,7 +38,7 @@ const ConnectedWeather = ({
 ConnectedWeather.propTypes = {
   weatherArr: PropTypes.arrayOf(PropTypes.object).isRequired,
   showDeltas: PropTypes.bool.isRequired,
-  celcius: PropTypes.bool.isRequired,
+  showCelcius: PropTypes.bool.isRequired,
   lastTemperature: PropTypes.number
 };
 
