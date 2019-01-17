@@ -35,7 +35,7 @@ export const setShowPreciseTemperature = showPreciseTemperature => ({
   payload: showPreciseTemperature
 });
 
-export const setIsPhillipsHueEnabled = isPhillipsHueEnabled => ({
-  type: types.SET_IS_PHILLIPS_HUE_ENABLED,
-  payload: isPhillipsHueEnabled
+export const setIsPhillipsHue = isPhillipsHue => ({
+  type: types.SET_IS_PHILLIPS_HUE,
+  payload: isPhillipsHue
 });

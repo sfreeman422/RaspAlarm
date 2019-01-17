@@ -29,7 +29,7 @@ const initialState = {
     friendlyName: "Show Decimals on Temperature",
     isEnabled: true
   },
-  isPhillipsHueEnabled: {
+  isPhillipsHue: {
     friendlyName: "Enable Home Automation with Phillips Hue",
     isEnabled: false
   }
@@ -93,11 +93,11 @@ const userOptionsReducer = (state = initialState, action) => {
           isEnabled: action.payload
         }
       };
-    case types.SET_IS_PHILLIPS_HUE_ENABLED:
+    case types.SET_IS_PHILLIPS_HUE:
       return {
         ...state,
-        isPhillipsHueEnabled: {
-          friendlyName: state.isPhillipsHueEnabled.friendlyName,
+        isPhillipsHue: {
+          friendlyName: state.isPhillipsHue.friendlyName,
           isEnabled: action.payload
         }
       };

@@ -17,8 +17,8 @@ const mapDispatchToProps = dispatch => ({
   setShowPaddedZeroes: showPaddedZeroes =>
     dispatch(actions.setShowPaddedZeroes(showPaddedZeroes)),
   setIs24HourClock: is24 => dispatch(actions.setIs24HourClock(is24)),
-  setIsPhillipsHueEnabled: isPhillipsHueEnabled =>
-    dispatch(actions.setIsPhillipsHueEnabled(isPhillipsHueEnabled)),
+  setIsPhillipsHue: isPhillipsHue =>
+    dispatch(actions.setIsPhillipsHue(isPhillipsHue)),
   setShowPreciseTemperature: showPreciseTemperature =>
     dispatch(actions.setShowPreciseTemperature(showPreciseTemperature))
 });
@@ -30,6 +30,7 @@ const ConnectedSettings = ({
   setBlinkTime,
   setIs24HourClock,
   setShowPreciseTemperature,
+  setIsPhillipsHue,
   userOptions
 }) => (
   <div className="container" id="settings">
@@ -102,6 +103,18 @@ const ConnectedSettings = ({
         />
       </span>
     </div>
+    <div>
+      <span>{userOptions.isPhillipsHue.friendlyName}</span>
+      <span>
+        <input
+          type="checkbox"
+          checked={userOptions.isPhillipsHue.isEnabled}
+          onChange={() =>
+            setIsPhillipsHue(!userOptions.isPhillipsHue.isEnabled)
+          }
+        />
+      </span>
+    </div>
     <Link to="/">
       <button id="modal-button">Back to Clock</button>
     </Link>
@@ -133,6 +146,10 @@ ConnectedSettings.propTypes = {
     showPreciseTemperature: PropTypes.shape({
       friendlyName: PropTypes.string.isRequired,
       isEnabled: PropTypes.bool.isRequired
+    }),
+    isPhillipsHue: PropTypes.shape({
+      friendlyName: PropTypes.string.isRequired,
+      isEnabled: PropTypes.bool.isRequired
     })
   }),
   setShowPaddedZeroes: PropTypes.func.isRequired,
@@ -140,7 +157,8 @@ ConnectedSettings.propTypes = {
   setShowDeltas: PropTypes.func.isRequired,
   setBlinkTime: PropTypes.func.isRequired,
   setIs24HourClock: PropTypes.func.isRequired,
-  setShowPreciseTemperature: PropTypes.func.isRequired
+  setShowPreciseTemperature: PropTypes.func.isRequired,
+  setIsPhillipsHue: PropTypes.func.isRequired
 };
 
 const SettingsModal = connect(
