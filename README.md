@@ -1,7 +1,7 @@
 # RaspAlarm
 
 A MERN Stack, Raspberry Pi Controlled Alarm Clock.
-![RaspAlarm](https://github.com/sfreeman422/RaspAlarm/raw/master/Images/cropped.jpg "RaspAlarm")
+![RaspAlarm](https://github.com/sfreeman422/RaspAlarm/raw/master/public/images/cropped.jpg "RaspAlarm")
 
 # Purpose
 

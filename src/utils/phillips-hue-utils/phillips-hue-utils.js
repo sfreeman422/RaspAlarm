@@ -44,9 +44,9 @@ export async function getLightRequest(sunData, day) {
   const { sunrise, sunset } = sunData;
   const lightData = await getLightData();
   const lightGroups = generateGroupValues(lightData.groups);
-  const lightSchedule = await fetch(`/lights/${day}`).catch(e =>
-    console.error(e)
-  );
+  const lightSchedule = await fetch(`/lights/${day}`)
+    .then(res => res.json())
+    .catch(e => console.error(e));
   console.log(lightSchedule);
   const bedTime = moment(lightSchedule.bedtime, "hh:mm:a");
   const rawTime = moment();
