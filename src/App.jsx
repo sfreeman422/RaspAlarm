@@ -91,14 +91,14 @@ class ConnectedMain extends React.Component {
     }
   };
 
-  getWeather = () => {
-    const { weatherArr, userCoords, setLastTemperature } = this.props;
+  getWeather = userCoords => {
+    const { weatherArr, setLastTemperature } = this.props;
     if (weatherArr && weatherArr.length > 0) {
       setLastTemperature(weatherArr[0].temp.english.raw);
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -124,7 +124,7 @@ class ConnectedMain extends React.Component {
         const sunData = await getSunData();
         setSunData(sunData);
       } else if (time !== prevProps.time && moment().format("mm") === "00") {
-        const weather = await this.getWeather();
+        const weather = await this.getWeather(this.props.userCoords);
         setWeather(weather);
       }
     } catch (err) {
@@ -175,11 +175,11 @@ class ConnectedMain extends React.Component {
       const sunData = await getSunData(userCoordinates);
       setSunData(sunData);
       setLoadingStatus("Getting weather...");
-      const weather = await this.getWeather();
+      const weather = await this.getWeather(userCoordinates);
       setWeather(weather);
       setInitialized(true);
     } catch (err) {
-      console.error("Error on intiailizeApp - ", err.message);
+      console.error("Error on initializeApp - ", err.message);
       reportError(err.message);
       this.errorTimeout = setTimeout(
         () => this.initializeApp(),

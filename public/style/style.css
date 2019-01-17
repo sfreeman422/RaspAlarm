@@ -105,6 +105,10 @@ button{
 	justify-content: center;
 }
 
+#settings {
+	color: white;
+}
+
 #up {
 	color: orange;
 }
