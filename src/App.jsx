@@ -57,11 +57,6 @@ const RETRY_INTERVAL = 5000;
 class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
-    this.setTime = this.setTime.bind(this);
-    this.generateWeatherState = this.generateWeatherState.bind(this);
-    this.determineNightState = this.determineNightState.bind(this);
-    this.initializeApp = this.initializeApp.bind(this);
-    this.runUpdate = this.runUpdate.bind(this);
     this.timeInterval = undefined;
     this.lightingInterval = undefined;
     this.errorTimeout = undefined;
@@ -69,8 +64,8 @@ class ConnectedMain extends React.Component {
 
   componentDidMount() {
     const { initialized } = this.props;
-    this.setTime();
-    this.timeInterval = setInterval(this.setTime, 1000);
+    this.setDateAndTime();
+    this.timeInterval = setInterval(this.setDateAndTime, 1000);
     if (!initialized) {
       this.initializeApp();
     }
@@ -88,7 +83,7 @@ class ConnectedMain extends React.Component {
     clearTimeout(this.errorInterval);
   }
 
-  setTime() {
+  setDateAndTime = () => {
     const { setTime, setDate, setToday, sunData } = this.props;
     setTime(moment().format("hh:mma"));
     setDate(moment().format("MMMM Do YYYY"));
@@ -96,16 +91,16 @@ class ConnectedMain extends React.Component {
     if (sunData) {
       this.determineNightState();
     }
-  }
+  };
 
-  getWeather() {
+  getWeather = () => {
     const { weatherArr, userCoords, setLastTemperature } = this.props;
     if (weatherArr && weatherArr.length > 0) {
       setLastTemperature(weatherArr[0].temp.english.raw);
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -113,9 +108,9 @@ class ConnectedMain extends React.Component {
       .catch(err => {
         throw new Error(`Weather retrieval failed! \n ${err.message}`);
       });
-  }
+  };
 
-  async runUpdate(prevProps) {
+  runUpdate = async prevProps => {
     const {
       clearError,
       date,
@@ -139,9 +134,9 @@ class ConnectedMain extends React.Component {
       this.errorTimeout = setTimeout(this.runUpdate, RETRY_INTERVAL);
       reportError(err.message);
     }
-  }
+  };
 
-  async initializeApp() {
+  initializeApp = async () => {
     const {
       setLoadingStatus,
       setHueData,
@@ -188,9 +183,9 @@ class ConnectedMain extends React.Component {
       reportError(err.message);
       this.errorTimeout = setTimeout(this.initializeApp, RETRY_INTERVAL);
     }
-  }
+  };
 
-  determineNightState() {
+  determineNightState = () => {
     const { sunData, isNight, setNight } = this.props;
     const sunrise = moment(sunData.sunrise, "hh:mm:a");
     const sunset = moment(sunData.sunset, "hh:mm:a");
@@ -210,9 +205,9 @@ class ConnectedMain extends React.Component {
       setNight(false);
       setBrightness(false);
     }
-  }
+  };
 
-  generateWeatherState(weatherArr) {
+  generateWeatherState = weatherArr => {
     let weather = weatherArr;
     const sunrise = moment(this.props.sunData.sunrise, "hh:mm:a");
     const sunset = moment(this.props.sunData.sunset, "hh:mm:a");
@@ -244,7 +239,7 @@ class ConnectedMain extends React.Component {
       });
     }
     return weatherState;
-  }
+  };
 
   render() {
     const { initialized } = this.props;
