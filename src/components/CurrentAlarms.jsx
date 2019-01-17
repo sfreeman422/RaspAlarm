@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import PropTypes from "prop-types";
-import { displayLetterForDayOfWeek } from "../helpers/helpers";
+import { displayLetterForDayOfWeek } from "../utils";
 
 const CurrentAlarms = ({ alarms, removeAlarm }) => (
   <div id="alarms">

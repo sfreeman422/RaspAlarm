@@ -18,7 +18,7 @@ import {
   setBrightness,
   getLightRequest,
   getLightData
-} from "./helpers/helpers";
+} from "./utils";
 
 const mapDispatchToProps = dispatch => ({
   setTime: time => dispatch(actions.setTime(time)),
@@ -157,7 +157,6 @@ class ConnectedMain extends React.Component {
       if (config.hue_id && config.hue_ip) {
         setLoadingStatus("Getting Phillips Hue Data...");
         const hueData = await getLightData();
-        console.log("Hue data retrieved: ", hueData);
         setHueData(hueData);
         if (hueData) {
           this.lightingInterval = setInterval(
