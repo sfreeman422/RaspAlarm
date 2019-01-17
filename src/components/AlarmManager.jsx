@@ -21,14 +21,6 @@ export default class AlarmManager extends React.Component {
       alarms: []
     };
     this.daysOfWeek = [];
-    this.incrementHour = this.incrementHour.bind(this);
-    this.incrementMinute = this.incrementMinute.bind(this);
-    this.changeAMPM = this.changeAMPM.bind(this);
-    this.chooseDay = this.chooseDay.bind(this);
-    this.getAlarms = this.getAlarms.bind(this);
-    this.setAlarm = this.setAlarm.bind(this);
-    this.removeAlarm = this.removeAlarm.bind(this);
-    this.setMinute = this.setMinute.bind(this);
   }
 
   componentDidMount() {
@@ -36,16 +28,16 @@ export default class AlarmManager extends React.Component {
     this.getAlarms();
   }
 
-  getAlarms() {
+  getAlarms = () => {
     fetch("/alarm")
       .then(res => res.json())
       .then(alarms => {
         this.setState({ alarms });
       })
       .catch(err => console.log(err));
-  }
+  };
 
-  setAlarm() {
+  setAlarm = () => {
     const { ampm, hour, minute } = this.state;
     const data = {
       hour: this.state.hour < 10 ? `0${hour}` : hour,
@@ -72,9 +64,9 @@ export default class AlarmManager extends React.Component {
       this.daysOfWeek = [];
       this.getAlarms();
     });
-  }
+  };
 
-  setMinute() {
+  setMinute = () => {
     const minute = parseInt(moment().format("mm"), 10);
     if (minute < 10 && minute > 0) {
       this.setState({ minute: 10 });
@@ -85,9 +77,9 @@ export default class AlarmManager extends React.Component {
     } else {
       this.setState({ minute: Math.ceil(minute / 5) * 5 });
     }
-  }
+  };
 
-  incrementHour() {
+  incrementHour = () => {
     if (this.state.hour === 12) {
       this.setState({
         hour: 1
@@ -97,9 +89,9 @@ export default class AlarmManager extends React.Component {
         hour: this.state.hour + 1
       });
     }
-  }
+  };
 
-  changeAMPM() {
+  changeAMPM = () => {
     if (this.state.ampm === "am") {
       this.setState({
         ampm: "pm"
@@ -109,9 +101,9 @@ export default class AlarmManager extends React.Component {
         ampm: "am"
       });
     }
-  }
+  };
 
-  chooseDay(day) {
+  chooseDay = day => {
     if (!this.state[day]) {
       this.setState({
         [day]: true
@@ -127,8 +119,8 @@ export default class AlarmManager extends React.Component {
         }
       }
     }
-  }
-  incrementMinute() {
+  };
+  incrementMinute = () => {
     if (this.state.minute >= 55 && this.state.minute <= 59) {
       this.setState({
         minute: 0,
@@ -153,8 +145,8 @@ export default class AlarmManager extends React.Component {
         minuteDisplay: this.state.minute + 5
       });
     }
-  }
-  removeAlarm(id) {
+  };
+  removeAlarm = id => {
     fetch("/alarm", {
       method: "DELETE",
       body: JSON.stringify({
@@ -167,7 +159,7 @@ export default class AlarmManager extends React.Component {
     }).then(() => {
       this.getAlarms();
     });
-  }
+  };
   render() {
     return (
       <div className="container" id="alarmManager">

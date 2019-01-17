@@ -4,7 +4,7 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as config from "./private/config";
-import * as actions from "./actions/actions";
+import * as actions from "./actions";
 import Clock from "./components/Clock";
 import Today from "./components/Today";
 import Weather from "./components/Weather";
@@ -18,7 +18,7 @@ import {
   setBrightness,
   getLightRequest,
   getLightData
-} from "./helpers/helpers";
+} from "./utils";
 
 const mapDispatchToProps = dispatch => ({
   setTime: time => dispatch(actions.setTime(time)),
@@ -40,16 +40,16 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  time: state.time,
-  isNight: state.isNight,
-  sunData: state.sunData,
-  userLoc: state.userLoc,
-  userCoords: state.userCoords,
-  weatherArr: state.weatherArr,
-  coloredIcons: state.coloredIcons,
-  date: state.date,
-  initialized: state.initialized,
-  today: state.today
+  time: state.dateTime.time,
+  isNight: state.dateTime.isNight,
+  sunData: state.weather.sunData,
+  userLoc: state.location.userLoc,
+  userCoords: state.location.userCoords,
+  weatherArr: state.weather.weatherArr,
+  coloredIcons: state.userOptions.coloredIcons,
+  date: state.dateTime.date,
+  initialized: state.applicationState.initialized,
+  today: state.dateTime.today
 });
 
 const RETRY_INTERVAL = 5000;
@@ -77,7 +77,9 @@ class ConnectedMain extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.runUpdate(prevProps);
+    if (prevProps) {
+      this.runUpdate(prevProps);
+    }
   }
 
   componentWillUnmount() {
@@ -103,7 +105,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -155,8 +157,13 @@ class ConnectedMain extends React.Component {
       if (config.hue_id && config.hue_ip) {
         setLoadingStatus("Getting Phillips Hue Data...");
         const hueData = await getLightData();
-        console.log("Hue data retrieved: ", hueData);
         setHueData(hueData);
+        if (hueData) {
+          this.lightingInterval = setInterval(
+            () => getLightRequest(sunData, this.props.today),
+            30000
+          );
+        }
       } else {
         console.warn(
           "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
@@ -175,10 +182,6 @@ class ConnectedMain extends React.Component {
       setLoadingStatus("Getting weather...");
       const weather = await this.getWeather();
       setWeather(weather);
-      this.lightingInterval = setInterval(
-        () => getLightRequest(sunData, this.props.today),
-        30000
-      );
       setInitialized(true);
     } catch (err) {
       console.error("Error on intiailizeApp - ", err.message);
@@ -191,7 +194,8 @@ class ConnectedMain extends React.Component {
     const { sunData, isNight, setNight } = this.props;
     const sunrise = moment(sunData.sunrise, "hh:mm:a");
     const sunset = moment(sunData.sunset, "hh:mm:a");
-    const currentTime = moment();
+    const rawTime = moment();
+    const currentTime = moment(rawTime, "hh:mm:a");
     if (
       (currentTime.isAfter(sunset) || currentTime.isBefore(sunrise)) &&
       !isNight

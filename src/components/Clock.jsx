@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const mapStateToProps = state => ({
-  time: state.time,
-  blinkTime: state.blinkTime,
-  showPadded: state.showPadded,
-  is24HourClock: state.is24HourClock
+  time: state.dateTime.time,
+  blinkTime: state.userOptions.blinkTime,
+  showPadded: state.userOptions.showPadded,
+  is24HourClock: state.userOptions.is24HourClock
 });
 
 class ConnectedClock extends React.Component {
@@ -16,7 +16,6 @@ class ConnectedClock extends React.Component {
     this.state = {
       isColonVisible: false
     };
-    this.blinkColon = this.blinkColon.bind(this);
     this.blinkInterval = setInterval(this.blinkColon, 1000);
   }
 
@@ -24,13 +23,13 @@ class ConnectedClock extends React.Component {
     clearInterval(this.blinkInterval);
   }
 
-  blinkColon() {
+  blinkColon = () => {
     if (this.props.blinkTime) {
       this.setState({
         isColonVisible: !this.state.isColonVisible
       });
     }
-  }
+  };
 
   render() {
     const { is24HourClock, blinkTime, showPadded } = this.props;

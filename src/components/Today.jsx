@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import SettingsModal from "./SettingsModal";
 
 const mapStateToProps = state => ({
-  day: state.today,
-  date: state.date,
-  userLoc: state.userLoc
+  day: state.dateTime.today,
+  date: state.dateTime.date,
+  userLoc: state.location.userLoc
 });
 
 class ConnectedToday extends React.Component {
@@ -15,15 +15,13 @@ class ConnectedToday extends React.Component {
     this.state = {
       isModalOpen: false
     };
-
-    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  toggleModal() {
+  toggleModal = () => {
     this.setState({
       isModalOpen: !this.state.isModalOpen
     });
-  }
+  };
 
   render() {
     const { day, date, userLoc } = this.props;

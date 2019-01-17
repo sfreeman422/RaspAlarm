@@ -1,12 +1,12 @@
 import React from "react";
 import moment from "moment";
 import fetch from "isomorphic-fetch";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-import PropTypes from "prop-types";
 
 const mapStateToProps = state => ({
-  currentTime: state.time
+  currentTime: state.dateTime.time
 });
 
 class ConnectedAlarm extends React.Component {
@@ -18,10 +18,6 @@ class ConnectedAlarm extends React.Component {
       alarms: [],
       ringingAlarm: {}
     };
-    this.getAlarms = this.getAlarms.bind(this);
-    this.checkAlarm = this.checkAlarm.bind(this);
-    this.awake = this.awake.bind(this);
-    this.removeAlarm = this.removeAlarm.bind(this);
     this.alarmInterval = undefined;
     this.alarmSound = new Audio("./sounds/alarm.mp3");
   }
@@ -35,16 +31,16 @@ class ConnectedAlarm extends React.Component {
     clearInterval(this.alarmInterval);
   }
 
-  getAlarms() {
+  getAlarms = () => {
     fetch("/alarm")
       .then(res => res.json())
       .then(alarms => {
         this.setState({ alarms });
         this.checkAlarm();
       });
-  }
+  };
 
-  checkAlarm() {
+  checkAlarm = () => {
     const dayOfWeek = moment().format("dddd");
     for (let i = 0; i < this.state.alarms.length; i += 1) {
       if (
@@ -63,9 +59,9 @@ class ConnectedAlarm extends React.Component {
         this.alarmSound.play();
       }
     }
-  }
+  };
 
-  removeAlarm(id) {
+  removeAlarm = id => {
     fetch("/alarm", {
       method: "DELETE",
       body: JSON.stringify({
@@ -78,9 +74,9 @@ class ConnectedAlarm extends React.Component {
     }).then(() => {
       this.getAlarms();
     });
-  }
+  };
 
-  snooze() {
+  snooze = () => {
     this.setState({
       isRinging: false,
       awake: true
@@ -104,9 +100,9 @@ class ConnectedAlarm extends React.Component {
     if (this.state.ringingAlarm.oneTimeUse) {
       this.removeAlarm(this.state.ringingAlarm._id);
     }
-  }
+  };
 
-  awake() {
+  awake = () => {
     this.setState({
       isRinging: false,
       awake: true
@@ -115,7 +111,7 @@ class ConnectedAlarm extends React.Component {
       this.removeAlarm(this.state.ringingAlarm._id);
     }
     setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
-  }
+  };
 
   render() {
     return (

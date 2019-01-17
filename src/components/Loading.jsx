@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 let animateInterval;
 let iconPosition = 1;
 const mapStateToProps = state => ({
-  error: state.error,
-  loadingMessage: state.loadingMessage
+  error: state.applicationState.error,
+  loadingMessage: state.applicationState.loadingMessage
 });
 
 class ConnectedLoading extends React.Component {
@@ -15,7 +15,6 @@ class ConnectedLoading extends React.Component {
     this.state = {
       icon: "wi wi-moon-waning-crescent-6 yellow"
     };
-    this.changeIcon = this.changeIcon.bind(this);
   }
   componentDidMount() {
     animateInterval = setInterval(this.changeIcon, 100);
@@ -23,7 +22,7 @@ class ConnectedLoading extends React.Component {
   componentWillUnmount() {
     clearInterval(animateInterval);
   }
-  changeIcon() {
+  changeIcon = () => {
     const icons = [
       "wi wi-moon-waning-crescent-6 yellow",
       "wi wi-moon-waning-crescent-5 yellow",
@@ -62,7 +61,7 @@ class ConnectedLoading extends React.Component {
       icon: icons[iconPosition]
     });
     iconPosition += 1;
-  }
+  };
 
   render() {
     return this.props.error ? (
