@@ -56,11 +56,15 @@ class ConnectedClock extends React.Component {
               :
             </h1>
             <h1 className="time" id="blink">
-              {moment().format("mma")}
+              {moment().format(is24HourClock ? "mm" : "mma")}
             </h1>
           </React.Fragment>
         ) : (
-          <h1 className="time">{moment().format("hh:mma")}</h1>
+          <h1 className="time">
+            {is24HourClock
+              ? moment().format("HH:mm")
+              : moment().format("hh:mma")}
+          </h1>
         )}
       </div>
     );

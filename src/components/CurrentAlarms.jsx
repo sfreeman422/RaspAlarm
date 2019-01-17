@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router";
 import PropTypes from "prop-types";
 import { displayLetterForDayOfWeek } from "../utils";
 
@@ -9,11 +8,13 @@ const CurrentAlarms = ({ alarms, removeAlarm }) => (
       <div id="alarm" key={`alarm-${i}`}>
         <h3 id="alarmTime">{alarm.time}</h3>
         <p id="alarmDay">{displayLetterForDayOfWeek(alarm.dayOfWeek)}</p>
-        <h3 onClick={() => removeAlarm(alarm._id)}>
-          <span className="glyphicon glyphicon-trash">
-            <Link to="/alarmManager" />
-          </span>
-        </h3>
+        <i
+          className="material-icons"
+          id="cancelAlarm"
+          onClick={() => removeAlarm(alarm._id)}
+        >
+          cancel
+        </i>
       </div>
     ))}
   </div>

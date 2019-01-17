@@ -120,6 +120,7 @@ export default class AlarmManager extends React.Component {
       }
     }
   };
+
   incrementMinute = () => {
     if (this.state.minute >= 55 && this.state.minute <= 59) {
       this.setState({
@@ -146,6 +147,7 @@ export default class AlarmManager extends React.Component {
       });
     }
   };
+
   removeAlarm = id => {
     fetch("/alarm", {
       method: "DELETE",
@@ -160,6 +162,7 @@ export default class AlarmManager extends React.Component {
       this.getAlarms();
     });
   };
+
   render() {
     return (
       <div className="container" id="alarmManager">
