@@ -129,7 +129,6 @@ class ConnectedMain extends React.Component {
       }
     } catch (err) {
       console.error("Error on runUpdate - ", err.message);
-      this.errorTimeout = setTimeout(this.runUpdate, RETRY_INTERVAL);
       reportError(err.message);
     }
   };
@@ -179,7 +178,10 @@ class ConnectedMain extends React.Component {
     } catch (err) {
       console.error("Error on intiailizeApp - ", err.message);
       reportError(err.message);
-      this.errorTimeout = setTimeout(this.initializeApp, RETRY_INTERVAL);
+      this.errorTimeout = setTimeout(
+        () => this.initializeApp(),
+        RETRY_INTERVAL
+      );
     }
   };
 
