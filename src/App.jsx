@@ -72,9 +72,7 @@ class ConnectedMain extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps) {
-      this.runUpdate(prevProps);
-    }
+    this.runUpdate(prevProps);
   }
 
   componentWillUnmount() {
@@ -100,7 +98,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
