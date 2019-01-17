@@ -1,17 +1,17 @@
 import * as types from "../action-types";
 
-export const setDeltas = delta => ({
-  type: types.SET_DELTAS,
+export const setShowDeltas = delta => ({
+  type: types.SET_SHOW_DELTAS,
   payload: delta
 });
 
-export const showCelcius = celcius => ({
-  type: types.SHOW_CELCIUS,
+export const setShowCelcius = celcius => ({
+  type: types.SET_SHOW_CELCIUS,
   payload: celcius
 });
 
-export const showColoredIcons = showIcons => ({
-  type: types.SHOW_COLORED_ICONS,
+export const setShowColoredIcons = showIcons => ({
+  type: types.SET_SHOW_COLORED_ICONS,
   payload: showIcons
 });
 
@@ -20,8 +20,8 @@ export const setBlinkTime = blinkTime => ({
   payload: blinkTime
 });
 
-export const setShowPadded = showPadded => ({
-  type: types.SET_SHOW_PADDED,
+export const setShowPaddedZeroes = showPadded => ({
+  type: types.SET_SHOW_PADDED_ZEROES,
   payload: showPadded
 });
 
@@ -30,8 +30,8 @@ export const setIs24HourClock = is24 => ({
   payload: is24
 });
 
-export const setPreciseTemperature = showPreciseTemperature => ({
-  type: types.SET_PRECISE_TEMPERATURE,
+export const setShowPreciseTemperature = showPreciseTemperature => ({
+  type: types.SET_SHOW_PRECISE_TEMPERATURE,
   payload: showPreciseTemperature
 });
 

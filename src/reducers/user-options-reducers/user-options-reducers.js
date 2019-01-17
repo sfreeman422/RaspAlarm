@@ -1,57 +1,105 @@
 import * as types from "../../actions/action-types";
 
 const initialState = {
-  showDeltas: true,
-  celcius: false,
-  coloredIcons: true,
-  blinkTime: true,
-  showPadded: false,
-  is24HourClock: false,
-  preciseTemperature: true,
-  isPhillipsHueEnabled: false
+  showDeltas: {
+    friendlyName: "Display Temperature Deltas",
+    isEnabled: true
+  },
+  showCelcius: {
+    friendlyName: "Display Temperature in Celcius",
+    isEnabled: false
+  },
+  showColoredIcons: {
+    friendlyName: "Display Colored Icons",
+    isEnabled: true
+  },
+  blinkTime: {
+    friendlyName: "Blink Colon on Clock",
+    isEnabled: true
+  },
+  showPaddedZeroes: {
+    friendlyName: "Show Padded Zeroes",
+    isEnabled: false
+  },
+  is24HourClock: {
+    friendlyName: "User 24 Hour Clock",
+    isEnabled: false
+  },
+  showPreciseTemperature: {
+    friendlyName: "Show Decimals on Temperature",
+    isEnabled: true
+  },
+  isPhillipsHueEnabled: {
+    friendlyName: "Enable Home Automation with Phillips Hue",
+    isEnabled: false
+  }
 };
 
 const userOptionsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.SET_DELTAS:
+    case types.SET_SHOW_DELTAS:
       return {
         ...state,
-        showDeltas: action.payload
+        showDeltas: {
+          ...state.showDeltas.friendlyName,
+          isEnabled: action.payload
+        }
       };
-    case types.SHOW_CELCIUS:
+    case types.SET_SHOW_CELCIUS:
       return {
         ...state,
-        celcius: action.payload
+        showCelcius: {
+          ...state.showCelcius.friendlyName,
+          isEnabled: action.payload
+        }
       };
-    case types.SHOW_COLORED_ICONS:
+    case types.SET_SHOW_COLORED_ICONS:
       return {
         ...state,
-        coloredIcons: action.payload
+        coloredIcons: {
+          ...state.showColoredIcons.friendlyName,
+          isEnabled: action.payload
+        }
       };
     case types.SET_BLINK_TIME:
       return {
         ...state,
-        blinkTime: action.payload
+        blinkTime: {
+          ...state.blinkTime.friendlyName,
+          isEnabled: action.payload
+        }
       };
-    case types.SET_SHOW_PADDED:
+    case types.SET_SHOW_PADDED_ZEROES:
       return {
         ...state,
-        showPadded: action.payload
+        showPadded: {
+          ...state.showPadded.friendlyName,
+          isEnabled: action.payload
+        }
       };
     case types.SET_IS_24_HOUR_CLOCK:
       return {
         ...state,
-        is24HourClock: action.payload
+        is24HourClock: {
+          ...state.is24HourClock.friendlyName,
+          isEnabled: action.payload
+        }
       };
-    case types.SET_PRECISE_TEMPERATURE:
+    case types.SET_SHOW_PRECISE_TEMPERATURE:
       return {
         ...state,
-        preciseTemperature: action.payload
+        showPreciseTemperature: {
+          ...state.showPreciseTemperature.friendlyName,
+          isEnabled: action.payload
+        }
       };
     case types.SET_IS_PHILLIPS_HUE_ENABLED:
       return {
         ...state,
-        isPhillipsHueEnabled: action.payload
+        isPhillipsHueEnabled: {
+          ...state.isPhillipsHueEnabled.friendlyName,
+          isEnabled: action.payload
+        }
       };
     default:
       return state;

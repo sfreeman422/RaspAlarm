@@ -5,9 +5,7 @@ import PropTypes from "prop-types";
 
 const mapStateToProps = state => ({
   time: state.dateTime.time,
-  blinkTime: state.userOptions.blinkTime,
-  showPadded: state.userOptions.showPadded,
-  is24HourClock: state.userOptions.is24HourClock
+  userOptions: state.userOptions
 });
 
 class ConnectedClock extends React.Component {
@@ -16,7 +14,7 @@ class ConnectedClock extends React.Component {
     this.state = {
       isColonVisible: false
     };
-    this.blinkInterval = setInterval(this.blinkColon, 1000);
+    this.blinkInterval = setInterval(() => this.blinkColon(), 1000);
   }
 
   componentWillUnmount() {
@@ -24,7 +22,7 @@ class ConnectedClock extends React.Component {
   }
 
   blinkColon = () => {
-    if (this.props.blinkTime) {
+    if (this.props.userOptions.blinkTime.isEnabled) {
       this.setState({
         isColonVisible: !this.state.isColonVisible
       });
@@ -32,25 +30,27 @@ class ConnectedClock extends React.Component {
   };
 
   render() {
-    const { is24HourClock, blinkTime, showPadded } = this.props;
+    const {
+      is24HourClock: { isEnabled: is24HourClock },
+      blinkTime: { isEnabled: blinkTime },
+      showPaddedZeroes: { isEnabled: showPaddedZeroes }
+    } = this.props.userOptions;
     return (
       <div className="clock">
         {blinkTime ? (
           <React.Fragment>
             <h1 className="time" id="blink">
-              {is24HourClock && showPadded && moment().format("HH")}
-              {is24HourClock && !showPadded && moment().format("H")}
-              {!is24HourClock && showPadded && moment().format("hh")}
-              {!is24HourClock && !showPadded && moment().format("h")}
+              {is24HourClock && showPaddedZeroes && moment().format("HH")}
+              {is24HourClock && !showPaddedZeroes && moment().format("H")}
+              {!is24HourClock && showPaddedZeroes && moment().format("hh")}
+              {!is24HourClock && !showPaddedZeroes && moment().format("h")}
             </h1>
             <h1
               className="time"
               id="blink"
               style={{
                 visibility:
-                  this.props.blinkTime && !this.state.isColonVisible
-                    ? "hidden"
-                    : "visible"
+                  blinkTime && !this.state.isColonVisible ? "hidden" : "visible"
               }}
             >
               :
@@ -74,9 +74,20 @@ class ConnectedClock extends React.Component {
 const Clock = connect(mapStateToProps)(ConnectedClock);
 
 ConnectedClock.propTypes = {
-  blinkTime: PropTypes.bool.isRequired,
-  showPadded: PropTypes.bool.isRequired,
-  is24HourClock: PropTypes.bool.isRequired
+  userOptions: PropTypes.shape({
+    blinkTime: PropTypes.shape({
+      isEnabled: PropTypes.bool.isRequired,
+      friendlyName: PropTypes.string.isRequired
+    }),
+    showPaddedZeroes: PropTypes.shape({
+      isEnabled: PropTypes.bool.isRequired,
+      friendlyName: PropTypes.string.isRequired
+    }),
+    is24HourClock: PropTypes.shape({
+      isEnabled: PropTypes.bool.isRequired,
+      friendlyName: PropTypes.string.isRequired
+    })
+  })
 };
 
 export default Clock;

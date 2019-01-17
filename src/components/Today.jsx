@@ -1,7 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import SettingsModal from "./SettingsModal";
+import { connect } from "react-redux";
+import { Link } from "react-router";
 
 const mapStateToProps = state => ({
   day: state.dateTime.today,
@@ -9,42 +9,19 @@ const mapStateToProps = state => ({
   userLoc: state.location.userLoc
 });
 
-class ConnectedToday extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isModalOpen: false
-    };
-  }
-
-  toggleModal = () => {
-    this.setState({
-      isModalOpen: !this.state.isModalOpen
-    });
-  };
-
-  render() {
-    const { day, date, userLoc } = this.props;
-    return (
-      <div className="today">
-        <div className="weekday">
-          <p id="dayAndLoc">
-            {day}, {date}
-            {userLoc !== "" ? <span> in {userLoc} </span> : null}
-            <i className="material-icons" onClick={() => this.toggleModal()}>
-              {" "}
-              settings{" "}
-            </i>
-          </p>
-        </div>
-        <SettingsModal
-          isOpen={this.state.isModalOpen}
-          toggleModal={() => this.toggleModal()}
-        />
-      </div>
-    );
-  }
-}
+export const ConnectedToday = ({ day, date, userLoc }) => (
+  <div className="today">
+    <div className="weekday">
+      <p id="dayAndLoc">
+        {day}, {date}
+        {userLoc !== "" ? <span> in {userLoc} </span> : null}
+        <Link to="/settings">
+          <i className="material-icons">settings</i>
+        </Link>
+      </p>
+    </div>
+  </div>
+);
 
 ConnectedToday.propTypes = {
   day: PropTypes.string.isRequired,
