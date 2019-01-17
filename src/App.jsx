@@ -71,7 +71,7 @@ class ConnectedMain extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, _prevState) {
     this.runUpdate(prevProps);
   }
 
@@ -98,7 +98,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -151,12 +151,12 @@ class ConnectedMain extends React.Component {
         setLoadingStatus("Getting Phillips Hue Data...");
         const hueData = await getLightData();
         setHueData(hueData);
-        if (hueData) {
-          this.lightingInterval = setInterval(
-            () => getLightRequest(sunData, this.props.today),
-            30000
-          );
-        }
+        // if (hueData) {
+        //   this.lightingInterval = setInterval(
+        //     () => getLightRequest(sunData, this.props.today),
+        //     30000
+        //   );
+        // }
       } else {
         console.warn(
           "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
