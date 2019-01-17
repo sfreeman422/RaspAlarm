@@ -98,7 +98,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -143,22 +143,25 @@ class ConnectedMain extends React.Component {
       setSunData,
       setWeather,
       setInitialized,
-      reportError
+      reportError,
+      isPhillipsHueEnabled
     } = this.props;
     try {
-      if (config.hue_id && config.hue_ip) {
+      if (config.hue_id && config.hue_ip && isPhillipsHueEnabled) {
         setLoadingStatus("Getting Phillips Hue Data...");
         const hueData = await getLightData();
         setHueData(hueData);
-        // if (hueData) {
-        //   this.lightingInterval = setInterval(
-        //     () => getLightRequest(sunData, this.props.today),
-        //     30000
-        //   );
-        // }
+        if (hueData) {
+          this.lightingInterval = setInterval(
+            () => getLightRequest(sunData, this.props.today),
+            30000
+          );
+        }
       } else {
         console.warn(
-          "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
+          !isPhillipsHueEnabled
+            ? "Phillips Hue support is not enabled in settings. Please enable if you wish to take advantage of home automation features!"
+            : "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
         );
       }
       clearError();

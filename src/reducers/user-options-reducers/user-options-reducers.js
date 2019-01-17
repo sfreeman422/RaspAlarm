@@ -7,7 +7,8 @@ const initialState = {
   blinkTime: true,
   showPadded: false,
   is24HourClock: false,
-  preciseTemperature: true
+  preciseTemperature: true,
+  isPhillipsHueEnabled: false
 };
 
 const userOptionsReducer = (state = initialState, action) => {
@@ -46,6 +47,11 @@ const userOptionsReducer = (state = initialState, action) => {
       return {
         ...state,
         preciseTemperature: action.payload
+      };
+    case types.SET_IS_PHILLIPS_HUE_ENABLED:
+      return {
+        ...state,
+        isPhillipsHueEnabled: action.payload
       };
     default:
       return state;
