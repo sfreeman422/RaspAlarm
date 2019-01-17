@@ -10,14 +10,14 @@ import Today from "./components/Today";
 import Weather from "./components/Weather";
 import Alarm from "./components/Alarm";
 import Loading from "./components/Loading";
-import weatherIcons from "./components/weatherIcons";
 import {
   getUserCoordinates,
   getSunData,
   getUserCity,
   setBrightness,
   getLightRequest,
-  getLightData
+  getLightData,
+  generateWeatherState
 } from "./utils";
 
 const mapDispatchToProps = dispatch => ({
@@ -98,11 +98,13 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
-      .then(json => this.generateWeatherState(json.hourly_forecast))
+      .then(json =>
+        generateWeatherState(json.hourly_forecast, this.props.sunData)
+      )
       .catch(err => {
         throw new Error(`Weather retrieval failed! \n ${err.message}`);
       });
@@ -208,49 +210,6 @@ class ConnectedMain extends React.Component {
       setNight(false);
       setBrightness(false);
     }
-  };
-
-  generateWeatherState = weatherArr => {
-    let weather = weatherArr;
-    const sunrise = moment(this.props.sunData.sunrise, "hh:mm:a");
-    const sunset = moment(this.props.sunData.sunset, "hh:mm:a");
-    const firstWeatherHour = parseFloat(weather[0].FCTTIME.hour, 10);
-    if (firstWeatherHour === parseFloat(moment().format("H"), 10)) {
-      weather = weather.slice(1, 6);
-    }
-
-    const weatherState = [];
-    for (let i = 0; i < 5; i += 1) {
-      const currentHour = moment(weather[i].FCTTIME.civil, "hh:mm:a");
-      console.debug("currentHour: ", currentHour);
-      console.debug("sunrise", sunrise);
-      console.debug("sunset", sunset);
-      console.debug("before sunrise: ", currentHour.isBefore(sunrise));
-      console.debug("after sunrise: ", currentHour.isAfter(sunrise));
-      console.debug("before sunset: ", currentHour.isBefore(sunset));
-      console.debug("after sunset: ", currentHour.isAfter(sunset));
-      const weatherIcon =
-        currentHour.isBefore(sunrise) || currentHour.isAfter(sunset)
-          ? weatherIcons[weather[i].icon].night
-          : weatherIcons[weather[i].icon].day;
-      console.debug("Returning weather icon ", weatherIcon);
-      weatherState.push({
-        condition: weather[i].condition,
-        time: weather[i].FCTTIME.civil,
-        temp: {
-          english: {
-            raw: parseFloat(weather[i].temp.english, 10),
-            display: `${weather[i].temp.english}F`
-          },
-          metric: {
-            raw: parseFloat(weather[i].temp.metric, 10),
-            display: `${weather[i].temp.metric}C`
-          }
-        },
-        icon: weatherIcon
-      });
-    }
-    return weatherState;
   };
 
   render() {
