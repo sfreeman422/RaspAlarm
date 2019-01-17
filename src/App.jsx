@@ -1,4 +1,3 @@
-/* react/jsx-filename-extension */
 import React from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
@@ -98,7 +97,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
