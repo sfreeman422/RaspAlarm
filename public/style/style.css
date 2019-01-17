@@ -37,6 +37,13 @@ i {
 
 a{
 	color:white;
+	text-decoration: none;
+}
+
+button{
+	border: none;
+	color: white;
+	padding: 2%;
 }
 
 .wi-day-sunny{
@@ -84,10 +91,6 @@ a{
 	margin-right: 2%;
 }
 
-.glyphicon-trash{
-	color: red;
-}
-
 .loading {
 	margin: 5%;
 }
@@ -130,6 +133,11 @@ a{
 	color:white;
 }
 
+#cancelAlarm {
+	color: red;
+	font-size: 150%;
+}
+
 #dayAndLoc{
 	font-size: 120%;
 	user-select: none;
@@ -141,6 +149,8 @@ a{
 
 #alarmTime{
 	color: white;
+	margin: 0;
+	font-size: 150%;
 }
 
 #alarmDay{
@@ -173,5 +183,13 @@ a{
 }
 
 #wakeUp {
-	margin: 0 2%;
+	background-color: green;
+	margin: 1%;
+	border-radius: 12px;
+}
+
+#snooze {
+	background-color: blue;
+	margin: 1%;
+	border-radius: 12px;
 }

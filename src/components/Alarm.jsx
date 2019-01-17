@@ -119,8 +119,7 @@ class ConnectedAlarm extends React.Component {
         {this.state.isRinging ? (
           <React.Fragment>
             <button
-              className="btn-lg btn-danger"
-              id="wakeUp"
+              id="snooze"
               onClick={() => {
                 this.snooze();
               }}
@@ -128,7 +127,6 @@ class ConnectedAlarm extends React.Component {
               Snooze
             </button>
             <button
-              className="btn-lg btn-success"
               id="wakeUp"
               onClick={() => {
                 this.awake();
