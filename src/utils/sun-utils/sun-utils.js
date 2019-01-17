@@ -1,6 +1,6 @@
 import fetch from "isomorphic-fetch";
 import moment from "moment";
-import * as config from "../private/config";
+import * as config from "../../private/config";
 
 /**
  * Gets the sunrise and sunset data for the user's current position.

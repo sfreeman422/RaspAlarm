@@ -1,6 +1,6 @@
 import fetch from "isomorphic-fetch";
 import moment from "moment";
-import * as config from "../private/config";
+import * as config from "../../private/config";
 
 /**
  * Generates an array of the numeric id's of each group from Phillip's Hue Bridge.

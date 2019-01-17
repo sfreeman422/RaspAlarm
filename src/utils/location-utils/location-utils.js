@@ -1,5 +1,5 @@
 import fetch from "isomorphic-fetch";
-import * as config from "../private/config";
+import * as config from "../../private/config";
 
 /**
  * Gets the longitude and latitude of the user's current position.
