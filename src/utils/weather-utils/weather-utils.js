@@ -1,7 +1,15 @@
 import moment from "moment";
 import weatherIcons from "./weatherIcons";
 
-export const generateWeatherState = (weatherArr, sunData) => {
+/**
+ * Generates the information necessary to display weather on the page.
+ *
+ * @export
+ * @param {*} weatherArr - The result of a successful call to weather API.
+ * @param {*} sunData - The result of a successful call to get sunrise and sunset data from weather API.
+ * @returns An array including all weather related data the app s concerned with.
+ */
+export function generateWeatherState(weatherArr, sunData) {
   let weather = weatherArr;
   const sunrise = moment(sunData.sunrise, "hh:mm:a");
   const sunset = moment(sunData.sunset, "hh:mm:a");
@@ -42,4 +50,4 @@ export const generateWeatherState = (weatherArr, sunData) => {
     });
   }
   return weatherState;
-};
+}
