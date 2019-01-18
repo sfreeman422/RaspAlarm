@@ -97,7 +97,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-        userCoords.lat
+      userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -122,7 +122,7 @@ class ConnectedMain extends React.Component {
     try {
       clearError();
       if (date !== prevProps.date && initialized) {
-        const sunData = await getSunData();
+        const sunData = await getSunData(this.props.userCoords);
         setSunData(sunData);
       } else if (time !== prevProps.time && moment().format("mm") === "00") {
         const weather = await this.getWeather(this.props.userCoords);
