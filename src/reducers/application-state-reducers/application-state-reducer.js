@@ -5,7 +5,7 @@ const initialState = {
   error: undefined,
   loadingMessage: "",
   initialized: false,
-  hueData: {}
+  hueData: undefined
 };
 
 const applicationStateReducer = (state = initialState, action) => {

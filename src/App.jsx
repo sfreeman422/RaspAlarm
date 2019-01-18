@@ -48,7 +48,9 @@ const mapStateToProps = state => ({
   coloredIcons: state.userOptions.coloredIcons,
   date: state.dateTime.date,
   initialized: state.applicationState.initialized,
-  today: state.dateTime.today
+  today: state.dateTime.today,
+  isPhillipsHueEnabled: state.userOptions.isPhillipsHue.isEnabled,
+  hueData: state.applicationState.hueData
 });
 
 const RETRY_INTERVAL = 5000;
@@ -64,7 +66,7 @@ class ConnectedMain extends React.Component {
   componentDidMount() {
     const { initialized } = this.props;
     this.setDateAndTime();
-    this.timeInterval = setInterval(this.setDateAndTime, 1000);
+    this.timeInterval = setInterval(() => this.setDateAndTime(), 1000);
     if (!initialized) {
       this.initializeApp();
     }
@@ -97,7 +99,7 @@ class ConnectedMain extends React.Component {
     }
     return fetch(
       `https://api.wunderground.com/api/${config.wunderground}/hourly/q/${
-      userCoords.lat
+        userCoords.lat
       },${userCoords.long}.json`
     )
       .then(response => response.json())
@@ -130,12 +132,20 @@ class ConnectedMain extends React.Component {
         setWeather(weather);
       }
       if (
-        !this.lightInterval &&
+        !this.lightingInterval &&
         this.props.isPhillipsHueEnabled &&
         config.hue_id &&
         config.hue_ip &&
         this.props.hueData
       ) {
+        this.lightingInterval = setInterval(
+          () => getLightRequest(this.props.sunData, this.props.today),
+          30000
+        );
+      }
+
+      if (!this.props.hueData && this.props.isPhillipsHueEnabled) {
+        await getLightData();
         this.lightingInterval = setInterval(
           () => getLightRequest(this.props.sunData, this.props.today),
           30000
@@ -147,37 +157,46 @@ class ConnectedMain extends React.Component {
     }
   };
 
+  hueHandler = async () => {
+    const {
+      isPhillipsHueEnabled,
+      setLoadingStatus,
+      setHueData,
+      sunData,
+      initialized
+    } = this.props;
+    if (config.hue_id && config.hue_ip && isPhillipsHueEnabled) {
+      initialized && setLoadingStatus("Getting Phillips Hue Data...");
+      const hueData = await getLightData();
+      setHueData(hueData);
+      if (hueData) {
+        this.lightingInterval = setInterval(
+          () => getLightRequest(sunData, this.props.today),
+          30000
+        );
+      }
+    } else {
+      console.warn(
+        !isPhillipsHueEnabled && initialized
+          ? "Phillips Hue support is not enabled in settings. Please enable if you wish to take advantage of home automation features!"
+          : "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
+      );
+    }
+  };
+
   initializeApp = async () => {
     const {
       setLoadingStatus,
-      setHueData,
       clearError,
       setUserCoords,
       setUserLoc,
       setSunData,
       setWeather,
       setInitialized,
-      reportError,
-      isPhillipsHueEnabled
+      reportError
     } = this.props;
     try {
-      if (config.hue_id && config.hue_ip && isPhillipsHueEnabled) {
-        setLoadingStatus("Getting Phillips Hue Data...");
-        const hueData = await getLightData();
-        setHueData(hueData);
-        if (hueData) {
-          this.lightingInterval = setInterval(
-            () => getLightRequest(sunData, this.props.today),
-            30000
-          );
-        }
-      } else {
-        console.warn(
-          !isPhillipsHueEnabled
-            ? "Phillips Hue support is not enabled in settings. Please enable if you wish to take advantage of home automation features!"
-            : "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
-        );
-      }
+      this.hueHandler();
       clearError();
       setLoadingStatus("Getting Location...");
       const userCoordinates = await getUserCoordinates();

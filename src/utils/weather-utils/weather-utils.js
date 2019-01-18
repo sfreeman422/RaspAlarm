@@ -21,13 +21,6 @@ export function generateWeatherState(weatherArr, sunData) {
   const weatherState = [];
   for (let i = 0; i < 5; i += 1) {
     const currentHour = moment(weather[i].FCTTIME.civil, "hh:mm:a");
-    console.debug("currentHour: ", currentHour);
-    console.debug("sunrise", sunrise);
-    console.debug("sunset", sunset);
-    console.debug("before sunrise: ", currentHour.isBefore(sunrise));
-    console.debug("after sunrise: ", currentHour.isAfter(sunrise));
-    console.debug("before sunset: ", currentHour.isBefore(sunset));
-    console.debug("after sunset: ", currentHour.isAfter(sunset));
     const weatherIcon =
       currentHour.isBefore(sunrise) || currentHour.isAfter(sunset)
         ? weatherIcons[weather[i].icon].night
