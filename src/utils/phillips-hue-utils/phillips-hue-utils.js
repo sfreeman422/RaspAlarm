@@ -5,10 +5,10 @@ import * as config from "../../private/config";
 /**
  * Generates an array of the numeric id's of each group from Phillip's Hue Bridge.
  * Note: We have to parseInt here because the Bridge API returns stringified values.
- * @param {*} lightData
+ * @param {*} lightData - An object containing light groups.
  * @returns
  */
-function generateGroupValues(lightData) {
+export function generateGroupValues(lightData) {
   const groups = [];
   Object.keys(lightData).forEach(key => {
     groups.push(parseInt(key));
@@ -19,15 +19,16 @@ function generateGroupValues(lightData) {
 /**
  * Determines what percentage of our target brightness/ct we should show.
  *
- * @param {*} timeTo - Time to either bedTime, sunrise, or sunset.
+ * @param {*} time - Time to either bedTime, sunrise, or sunset.
  * @param {*} visual - The ct or brightness number that we are concerned with.
  * @returns The integer value of the visual * the percentage of the hour we are close to.
  */
-function getLightGradientColor(timeTo, visual) {
-  if (timeTo === 0) {
+export function getLightGradient(time, visual) {
+  if (time <= 0) {
     return Math.floor(visual);
   } else {
-    const percentAwayFromTime = 1 - Math.floor(timeTo / 60);
+    const percentAwayFromTime = 1 - time / 60;
+    console.log(percentAwayFromTime);
     return Math.floor(visual * percentAwayFromTime);
   }
 }
@@ -66,31 +67,31 @@ export async function getLightRequest(sunData, day) {
   // This is so gnar fix this wtf.
   if (withinOneHourOfSunset) {
     const absTimeToSunset = Math.abs(timeToSunset);
-    lightRequest.ct = getLightGradientColor(
+    lightRequest.ct = getLightGradient(
       absTimeToSunset,
       lightSchedule.colors.sunset.ct
     );
-    lightRequest.bri = getLightGradientColor(
+    lightRequest.bri = getLightGradient(
       absTimeToSunset,
       lightSchedule.colors.sunset.bri
     );
   } else if (withinOneHourOfSunrise) {
     const absTimeToSunrise = Math.abs(timeToSunrise);
-    lightRequest.ct = getLightGradientColor(
+    lightRequest.ct = getLightGradient(
       absTimeToSunrise,
       lightSchedule.colors.sunset.ct
     );
-    lightRequest.bri = getLightGradientColor(
+    lightRequest.bri = getLightGradient(
       absTimeToSunrise,
       lightSchedule.colors.sunset.bri
     );
   } else if (withinOneHourOfBedTime) {
     const absTimeToBed = Math.abs(timeToBed);
-    lightRequest.ct = getLightGradientColor(
+    lightRequest.ct = getLightGradient(
       absTimeToBed,
       lightSchedule.colors.bedtime.ct
     );
-    lightRequest.bri = getLightGradientColor(
+    lightRequest.bri = getLightGradient(
       absTimeToBed,
       lightSchedule.colors.bedtime.bri
     );
