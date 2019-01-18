@@ -105,6 +105,10 @@ button{
 	margin: 5%;
 }
 
+.loadingMessage {
+	color: white;
+}
+
 .material-icons {
 	font-size: 12px;
 	color: white;
