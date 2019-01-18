@@ -124,9 +124,22 @@ class ConnectedMain extends React.Component {
       if (date !== prevProps.date && initialized) {
         const sunData = await getSunData(this.props.userCoords);
         setSunData(sunData);
-      } else if (time !== prevProps.time && moment().format("mm") === "00") {
+      }
+      if (time !== prevProps.time && moment().format("mm") === "00") {
         const weather = await this.getWeather(this.props.userCoords);
         setWeather(weather);
+      }
+      if (
+        !this.lightInterval &&
+        this.props.isPhillipsHueEnabled &&
+        config.hue_id &&
+        config.hue_ip &&
+        this.props.hueData
+      ) {
+        this.lightingInterval = setInterval(
+          () => getLightRequest(this.props.sunData, this.props.today),
+          30000
+        );
       }
     } catch (err) {
       console.error("Error on runUpdate - ", err.message);
