@@ -8,7 +8,7 @@ import * as config from "../../private/config";
  * @param {*} lightData - An object containing light groups.
  * @returns
  */
-export function generateGroupValues(lightData) {
+export function generateGroupArray(lightData) {
   const groups = [];
   Object.keys(lightData).forEach(key => {
     groups.push({
@@ -48,7 +48,7 @@ export function getLightGradient(time, target, current) {
  */
 export async function changeLightingForGroups(day, sunData) {
   const lightData = await getLightData();
-  const lightGroups = generateGroupValues(lightData.groups);
+  const lightGroups = generateGroupArray(lightData.groups);
   const lightSchedule = await fetch(`/lights/${day}`)
     .then(res => res.json())
     .catch(e => console.error(e));
@@ -171,10 +171,10 @@ export function getLightData() {
  *
  * @export
  * @param {*} scheduleArray - An Off Schedule that contains start and end times.
- * @param {*} groups - The groups that we are concerned with adjusting.
+ * @param {*} group - The groupId that we are concerned with.
  * @returns boolean - telling us whether or not specific groups should be on or off.
  */
-export function shouldBeOn(scheduleArray, groups) {
+export function shouldBeOn(scheduleArray, group) {
   const time = moment();
   const formattedTime = moment(time, "hh:mm:a");
   let returnVal = true;
@@ -183,7 +183,7 @@ export function shouldBeOn(scheduleArray, groups) {
     const end = moment(scheduleArray[i].end, "hh:mm:a");
     if (
       formattedTime.isBetween(start, end) &&
-      groups.some(group => scheduleArray[i].groups.includes(group))
+      scheduleArray[i].groups.includes(group)
     ) {
       returnVal = false;
     }
