@@ -20,7 +20,7 @@ html body {
 	margin: auto;
 	text-align: center;
 	max-width: 900px;
-	min-width: 780px;
+	min-width: 600px;
 }
 
 h1{
@@ -103,6 +103,10 @@ button{
 
 .loading {
 	margin: 5%;
+}
+
+.loadingMessage {
+	color: white;
 }
 
 .material-icons {

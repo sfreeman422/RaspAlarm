@@ -14,9 +14,9 @@ import {
   getSunData,
   getUserCity,
   setBrightness,
-  getLightRequest,
   getLightData,
-  generateWeatherState
+  generateWeatherState,
+  changeLightingForGroups
 } from "./utils";
 
 const mapDispatchToProps = dispatch => ({
@@ -59,7 +59,6 @@ class ConnectedMain extends React.Component {
   constructor(props) {
     super(props);
     this.timeInterval = undefined;
-    this.lightingInterval = undefined;
     this.errorTimeout = undefined;
   }
 
@@ -78,7 +77,6 @@ class ConnectedMain extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.timeInterval);
-    clearInterval(this.lightingInterval);
     clearTimeout(this.errorInterval);
   }
 
@@ -119,37 +117,24 @@ class ConnectedMain extends React.Component {
       setSunData,
       time,
       setWeather,
-      reportError
+      reportError,
+      isPhillipsHueEnabled,
+      userCoords,
+      today,
+      sunData
     } = this.props;
     try {
       clearError();
       if (date !== prevProps.date && initialized) {
-        const sunData = await getSunData(this.props.userCoords);
+        const sunData = await getSunData(userCoords);
         setSunData(sunData);
       }
       if (time !== prevProps.time && moment().format("mm") === "00") {
-        const weather = await this.getWeather(this.props.userCoords);
+        const weather = await this.getWeather(userCoords);
         setWeather(weather);
       }
-      if (
-        !this.lightingInterval &&
-        this.props.isPhillipsHueEnabled &&
-        config.hue_id &&
-        config.hue_ip &&
-        this.props.hueData
-      ) {
-        this.lightingInterval = setInterval(
-          () => getLightRequest(this.props.sunData, this.props.today),
-          30000
-        );
-      }
-
-      if (!this.props.hueData && this.props.isPhillipsHueEnabled) {
-        await getLightData();
-        this.lightingInterval = setInterval(
-          () => getLightRequest(this.props.sunData, this.props.today),
-          30000
-        );
+      if (isPhillipsHueEnabled && config.hue_id && config.hue_ip) {
+        changeLightingForGroups(today, sunData);
       }
     } catch (err) {
       console.error("Error on runUpdate - ", err.message);
@@ -170,14 +155,11 @@ class ConnectedMain extends React.Component {
       const hueData = await getLightData();
       setHueData(hueData);
       if (hueData) {
-        this.lightingInterval = setInterval(
-          () => getLightRequest(sunData, this.props.today),
-          30000
-        );
+        changeLightingForGroups(sunData, this.props.today);
       }
     } else {
       console.warn(
-        !isPhillipsHueEnabled && initialized
+        !isPhillipsHueEnabled && config.hue_ip && config.hue_id
           ? "Phillips Hue support is not enabled in settings. Please enable if you wish to take advantage of home automation features!"
           : "No hue_id or hue_ip found in config! If you wish to use this, please add these keys to your config.json"
       );
