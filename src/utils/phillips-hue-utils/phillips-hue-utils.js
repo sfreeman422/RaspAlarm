@@ -23,13 +23,12 @@ export function generateGroupValues(lightData) {
  * @param {*} visual - The ct or brightness number that we are concerned with.
  * @returns The integer value of the visual * the percentage of the hour we are close to.
  */
-export function getLightGradient(time, visual) {
+export function getLightGradient(time, target, current) {
   if (time <= 0) {
-    return Math.floor(visual);
+    return Math.floor(target);
   } else {
-    const percentAwayFromTime = 1 - time / 60;
-    console.log(percentAwayFromTime);
-    return Math.floor(visual * percentAwayFromTime);
+    const diff = (current - target) * (1 - time / 60);
+    return Math.floor(current - diff);
   }
 }
 
