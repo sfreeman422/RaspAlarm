@@ -91,7 +91,7 @@ class ConnectedMain extends React.Component {
   };
 
   getWeather = userCoords => {
-    const { weatherArr, setLastTemperature } = this.props;
+    const { weatherArr, setLastTemperature, sunData } = this.props;
     if (weatherArr && weatherArr.length > 0) {
       setLastTemperature(weatherArr[0].temp.english.raw);
     }
@@ -101,9 +101,7 @@ class ConnectedMain extends React.Component {
       },${userCoords.long}.json`
     )
       .then(response => response.json())
-      .then(json =>
-        generateWeatherState(json.hourly_forecast, this.props.sunData)
-      )
+      .then(json => generateWeatherState(json.hourly_forecast, sunData))
       .catch(err => {
         throw new Error(`Weather retrieval failed! \n ${err.message}`);
       });
@@ -126,8 +124,8 @@ class ConnectedMain extends React.Component {
     try {
       clearError();
       if (date !== prevProps.date && initialized) {
-        const sunData = await getSunData(userCoords);
-        setSunData(sunData);
+        const updatedSunData = await getSunData(userCoords);
+        setSunData(updatedSunData);
       }
       if (time !== prevProps.time && moment().format("mm") === "00") {
         const weather = await this.getWeather(userCoords);
@@ -148,14 +146,17 @@ class ConnectedMain extends React.Component {
       setLoadingStatus,
       setHueData,
       sunData,
-      initialized
+      initialized,
+      today
     } = this.props;
     if (config.hue_id && config.hue_ip && isPhillipsHueEnabled) {
-      initialized && setLoadingStatus("Getting Phillips Hue Data...");
+      if (initialized) {
+        setLoadingStatus("Getting Phillips Hue Data...");
+      }
       const hueData = await getLightData();
       setHueData(hueData);
       if (hueData) {
-        changeLightingForGroups(sunData, this.props.today);
+        changeLightingForGroups(sunData, today);
       }
     } else {
       console.warn(
@@ -268,8 +269,10 @@ ConnectedMain.propTypes = {
 };
 
 ConnectedMain.defaultProps = {
-  sunset: {},
-  sunrise: {},
+  sunData: {
+    sunset: {},
+    sunrise: {}
+  },
   isNight: undefined
 };
 

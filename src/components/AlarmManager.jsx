@@ -40,8 +40,8 @@ export default class AlarmManager extends React.Component {
   setAlarm = () => {
     const { ampm, hour, minute } = this.state;
     const data = {
-      hour: this.state.hour < 10 ? `0${hour}` : hour,
-      minute: this.state.minute < 10 ? `0${minute}` : minute,
+      hour: hour < 10 ? `0${hour}` : hour,
+      minute: minute < 10 ? `0${minute}` : minute,
       ampm,
       dayOfWeek: this.daysOfWeek
     };
@@ -67,11 +67,12 @@ export default class AlarmManager extends React.Component {
   };
 
   setMinute = () => {
+    const { hour } = this.state;
     const minute = parseInt(moment().format("mm"), 10);
     if (minute < 10 && minute > 0) {
       this.setState({ minute: 10 });
     } else if (minute >= 55 && minute <= 59) {
-      this.setState({ minute: 0, hour: this.state.hour + 1 });
+      this.setState({ minute: 0, hour: hour + 1 });
     } else if (minute === 0) {
       this.setState({ minute: 0 });
     } else {
@@ -80,27 +81,23 @@ export default class AlarmManager extends React.Component {
   };
 
   incrementHour = () => {
-    if (this.state.hour === 12) {
+    const { hour } = this.state;
+    if (hour === 12) {
       this.setState({
         hour: 1
       });
     } else {
       this.setState({
-        hour: this.state.hour + 1
+        hour: hour + 1
       });
     }
   };
 
   changeAMPM = () => {
-    if (this.state.ampm === "am") {
-      this.setState({
-        ampm: "pm"
-      });
-    } else {
-      this.setState({
-        ampm: "am"
-      });
-    }
+    const { ampm } = this.state;
+    this.setState({
+      ampm: ampm === "am" ? "pm" : "am"
+    });
   };
 
   chooseDay = day => {

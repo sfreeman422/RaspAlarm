@@ -1,15 +1,9 @@
 import React from "react";
 import moment from "moment";
 import fetch from "isomorphic-fetch";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
 import { Link } from "react-router";
 
-const mapStateToProps = state => ({
-  currentTime: state.dateTime.time
-});
-
-class ConnectedAlarm extends React.Component {
+class Alarm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,21 +35,21 @@ class ConnectedAlarm extends React.Component {
   };
 
   checkAlarm = () => {
+    const { alarms, currentTime, isRinging, awake } = this.state;
     const dayOfWeek = moment().format("dddd");
-    for (let i = 0; i < this.state.alarms.length; i += 1) {
+    for (let i = 0; i < alarms.length; i += 1) {
       if (
-        this.props.currentTime === this.state.alarms[i].time &&
-        !this.state.isRinging &&
-        !this.state.awake &&
-        (this.state.alarms[i].dayOfWeek.includes(dayOfWeek) ||
-          this.state.alarms[i].oneTimeUse)
+        currentTime === alarms[i].time &&
+        !isRinging &&
+        !awake &&
+        (alarms[i].dayOfWeek.includes(dayOfWeek) || alarms[i].oneTimeUse)
       ) {
         this.alarmSound.play();
         this.setState({
           isRinging: true,
-          ringingAlarm: this.state.alarms[i]
+          ringingAlarm: alarms[i]
         });
-      } else if (this.state.isRinging) {
+      } else if (isRinging) {
         this.alarmSound.play();
       }
     }
@@ -77,48 +71,63 @@ class ConnectedAlarm extends React.Component {
   };
 
   snooze = () => {
-    this.setState({
-      isRinging: false,
-      awake: true
-    });
-    // Add an alarm at the current time + 5 minutes.
-    // To be added: custom snoozes
-    fetch("/alarm", {
-      method: "POST",
-      body: JSON.stringify({
-        hour: moment().format("hh"),
-        minute: moment()
-          .add(5, "minutes")
-          .format("mm"),
-        ampm: moment().format("a"),
-        dayOfWeek: []
-      }),
-      headers: new Headers({
-        "Content-type": "application/json"
-      })
-    }).then(() => this.getAlarms());
-    if (this.state.ringingAlarm.oneTimeUse) {
-      this.removeAlarm(this.state.ringingAlarm._id);
-    }
+    this.setState(
+      {
+        isRinging: false,
+        awake: true
+      },
+      () => {
+        const { ringingAlarm } = this.state;
+        // Add an alarm at the current time + 5 minutes.
+        // To be added: custom snoozes
+        fetch("/alarm", {
+          method: "POST",
+          body: JSON.stringify({
+            hour: moment().format("hh"),
+            minute: moment()
+              .add(5, "minutes")
+              .format("mm"),
+            ampm: moment().format("a"),
+            dayOfWeek: []
+          }),
+          headers: new Headers({
+            "Content-type": "application/json"
+          })
+        }).then(() => this.getAlarms());
+        if (ringingAlarm.oneTimeUse) {
+          this.removeAlarm(ringingAlarm._id);
+        }
+      }
+    );
   };
 
   awake = () => {
-    this.setState({
-      isRinging: false,
-      awake: true
-    });
-    if (this.state.ringingAlarm.oneTimeUse) {
-      this.removeAlarm(this.state.ringingAlarm._id);
-    }
-    setTimeout(() => this.setState({ awake: false, ringingAlarm: {} }), 60000);
+    this.setState(
+      {
+        isRinging: false,
+        awake: true
+      },
+      () => {
+        const { ringingAlarm } = this.state;
+        if (ringingAlarm.oneTimeUse) {
+          this.removeAlarm(ringingAlarm._id);
+        }
+        setTimeout(
+          () => this.setState({ awake: false, ringingAlarm: {} }),
+          60000
+        );
+      }
+    );
   };
 
   render() {
+    const { isRinging } = this.state;
     return (
       <div id="alarm">
-        {this.state.isRinging ? (
+        {isRinging ? (
           <React.Fragment>
             <button
+              type="button"
               id="snooze"
               onClick={() => {
                 this.snooze();
@@ -128,6 +137,7 @@ class ConnectedAlarm extends React.Component {
             </button>
             <button
               id="wakeUp"
+              type="button"
               onClick={() => {
                 this.awake();
               }}
@@ -144,11 +154,5 @@ class ConnectedAlarm extends React.Component {
     );
   }
 }
-
-const Alarm = connect(mapStateToProps)(ConnectedAlarm);
-
-ConnectedAlarm.propTypes = {
-  currentTime: PropTypes.string.isRequired
-};
 
 export default Alarm;
