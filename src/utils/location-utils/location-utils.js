@@ -17,7 +17,6 @@ export function getUserCoordinates() {
       },
       error => {
         reject(new Error(`Geolocation failed! \n ${error.message}`));
-        setTimeout(() => getUserCoordinates(), 5000);
       },
       { timeout: 30000 }
     );

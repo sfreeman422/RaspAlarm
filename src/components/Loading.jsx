@@ -64,14 +64,16 @@ class ConnectedLoading extends React.Component {
   };
 
   render() {
-    return this.props.error ? (
-      <React.Fragment>
-        <p className="error">Error: {this.props.error}</p>
-      </React.Fragment>
-    ) : (
+    return (
       <div className="loading">
         <i className={this.state.icon} id="loading" />
-        <p>{this.props.loadingMessage}</p>
+        <br />
+        <span className={this.props.error ? "error" : "loadingMessage"}>
+          {this.props.error
+            ? `${this.props.error} 
+            Retrying...`
+            : this.props.loadingMessage}
+        </span>
       </div>
     );
   }

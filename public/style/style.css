@@ -1,9 +1,18 @@
+html body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	position: absolute;
+}
+
 .verticalCenter{
-	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
   display: flex;
 	align-items: center;
 	text-align: center;
+	justify-content: center;
+	margin: auto;
+	height: 100%;
+	width: 100%;
 }
 
 .container {
@@ -11,6 +20,7 @@
 	margin: auto;
 	text-align: center;
 	max-width: 900px;
+	min-width: 600px;
 }
 
 h1{
@@ -95,6 +105,10 @@ button{
 	margin: 5%;
 }
 
+.loadingMessage {
+	color: white;
+}
+
 .material-icons {
 	font-size: 12px;
 	color: white;
@@ -103,6 +117,10 @@ button{
 .clock {
 	display: flex;
 	justify-content: center;
+}
+
+#settings {
+	color: white;
 }
 
 #up {
