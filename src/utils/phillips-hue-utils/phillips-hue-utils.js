@@ -11,7 +11,12 @@ import * as config from "../../private/config";
 export function generateGroupValues(lightData) {
   const groups = [];
   Object.keys(lightData).forEach(key => {
-    groups.push(parseInt(key));
+    groups.push({
+      groupId: parseInt(key),
+      groupName: lightData[key].name,
+      currentCt: lightData[key].action.ct,
+      currentBri: lightData[key].action.bri
+    });
   });
   return groups;
 }
@@ -33,21 +38,38 @@ export function getLightGradient(time, target, current) {
 }
 
 /**
- * Generates a request for our Phillips Hue Bridge based on
- * the current day, sunrise and sunset.
+ * Gets the current light data, generates groupings,
+ * retrieves light schedule from db,
+ * and iterates through to generate and execute light changes.
  *
  * @export
- * @param {*} sunData - Sunrise and sunset data as moment objects.
- * @param {*} day - The current day of the week.
+ * @param {*} day
+ * @param {*} sunData
  */
-export async function getLightRequest(sunData, day) {
-  const { sunrise, sunset } = sunData;
+export async function changeLightingForGroups(day, sunData) {
   const lightData = await getLightData();
   const lightGroups = generateGroupValues(lightData.groups);
   const lightSchedule = await fetch(`/lights/${day}`)
     .then(res => res.json())
     .catch(e => console.error(e));
-  console.log(lightSchedule);
+  for (let i = 0; i < lightGroups.length; i++) {
+    generateLightRequest(sunData, lightGroups[i], lightSchedule);
+  }
+}
+
+/**
+ * Generates a request for our Phillips Hue Bridge based on
+ * the lightGroup, lightSchedule and sunrise and sunset.
+ *
+ * @export
+ * @param {*} sunData - Sunrise and sunset data as moment objects.
+ * @param {*} lightGroup - The lightGroup that we are concerned with.
+ * Should be an object including groupId, currentBri and currentCt.
+ * @param {*} lightSchedule - Object containing brightness,
+ * ct, and on/off schedule.
+ */
+export async function generateLightRequest(sunData, lightGroup, lightSchedule) {
+  const { sunrise, sunset } = sunData;
   const bedTime = moment(lightSchedule.bedtime, "hh:mm:a");
   const rawTime = moment();
   const time = moment(rawTime, "hh:mm:a");
@@ -60,7 +82,7 @@ export async function getLightRequest(sunData, day) {
   const isDay = time.isAfter(sunrise) && time.isBefore(sunset);
   const isNight = time.isBefore(sunrise) || time.isAfter(sunset);
   const lightRequest = {
-    on: shouldBeOn(lightSchedule.off, lightGroups)
+    on: shouldBeOn(lightSchedule.off, lightGroup.groupId)
   };
 
   // This is so gnar fix this wtf.
@@ -98,13 +120,18 @@ export async function getLightRequest(sunData, day) {
     lightRequest.ct = parseInt(lightSchedule.colors.day.ct);
     lightRequest.bri = parseInt(lightSchedule.colors.day.bri);
   } else if (isNight) {
-    lightRequest.ct = parseInt(lightSchedule.colors.night.ct);
-    lightRequest.bri = parseInt(lightSchedule.colors.night.bri);
+    lightRequest.ct = parseInt(
+      time.isAfter(bedTime)
+        ? lightSchedule.colors.bedtime.ct
+        : lightSchedule.colors.night.ct
+    );
+    lightRequest.bri = parseInt(
+      time.isAfter(bedTime)
+        ? lightSchedule.colors.bedtime.bri
+        : lightSchedule.colors.night.bri
+    );
   }
-  console.log("lightRequest - ", lightRequest);
-  for (let i = 0; i < lightGroups.length; i++) {
-    changeLightingByGroup(lightRequest, lightGroups[i]);
-  }
+  changeLightingByGroup(lightRequest, lightGroup.groupId);
 }
 
 /**

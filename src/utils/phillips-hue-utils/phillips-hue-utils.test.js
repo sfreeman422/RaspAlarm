@@ -1,16 +1,34 @@
 import * as phillipsHueUtils from "./phillips-hue-utils";
 
-it("generateGroupValues - should return an array of numbers", () => {
-  expect(
-    phillipsHueUtils.generateGroupValues({
-      "1": "dummyGroup 1",
-      "2": "dummyGroup2",
-      "3": "dummyGroup3"
-    })
-  ).toEqual([1, 2, 3]);
+it("generateGroupValues - should return an array of groupings", () => {
+  const mockGroups = {
+    "1": {
+      action: {
+        bri: 25,
+        ct: 25
+      }
+    },
+    "2": {
+      action: {
+        bri: 50,
+        ct: 50
+      }
+    },
+    "3": {
+      action: {
+        bri: 75,
+        ct: 75
+      }
+    }
+  };
+  expect(phillipsHueUtils.generateGroupValues(mockGroups)).toEqual([
+    { groupId: 1, currentCt: 25, currentBri: 25 },
+    { groupId: 2, currentCt: 50, currentBri: 50 },
+    { groupId: 3, currentCt: 75, currentBri: 75 }
+  ]);
 });
 
-it("getLightGradient - should increment properly", () => {
+it("getLightGradient - should increment based on percentage away from time", () => {
   const mockTarget = 256;
   const mockTime = 30;
   const mockCurrent = 200;
@@ -19,7 +37,7 @@ it("getLightGradient - should increment properly", () => {
   ).toBe(228);
 });
 
-it("getLightGradient - should decrement properly", () => {
+it("getLightGradient - should decrement based on percentage away from time", () => {
   const mockTarget = 256;
   const mockTime = 45;
   const mockCurrent = 300;
@@ -28,7 +46,7 @@ it("getLightGradient - should decrement properly", () => {
   ).toBe(289);
 });
 
-it("getLightGradient - should return the target when timeTo is 0", () => {
+it("getLightGradient - should return the target when time is 0", () => {
   const mockTarget = 256;
   const mockTime = 0;
   const mockCurrent = 300;
