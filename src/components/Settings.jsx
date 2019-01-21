@@ -116,7 +116,9 @@ const ConnectedSettings = ({
       </span>
     </div>
     <Link to="/">
-      <button id="modal-button">Back to Clock</button>
+      <button type="button" id="modal-button">
+        Back to Clock
+      </button>
     </Link>
   </div>
 );
