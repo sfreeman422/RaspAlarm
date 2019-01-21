@@ -71,7 +71,7 @@ class ConnectedMain extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, _prevState) {
+  componentDidUpdate(prevProps) {
     this.runUpdate(prevProps);
   }
 

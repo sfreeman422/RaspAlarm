@@ -28,7 +28,7 @@ export default class AlarmManager extends React.Component {
       .then(alarms => {
         this.setState({ alarms });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   };
 
   setAlarm = () => {
@@ -119,7 +119,6 @@ export default class AlarmManager extends React.Component {
   };
 
   render() {
-    // Ugly day of the week stuff here. Needs refactoring.
     const { hour, minute, ampm, alarms, days } = this.state;
     return (
       <div className="container" id="alarmManager">
