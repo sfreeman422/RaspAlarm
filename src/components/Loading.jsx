@@ -16,12 +16,15 @@ class ConnectedLoading extends React.Component {
       icon: "wi wi-moon-waning-crescent-6 yellow"
     };
   }
+
   componentDidMount() {
     animateInterval = setInterval(this.changeIcon, 100);
   }
+
   componentWillUnmount() {
     clearInterval(animateInterval);
   }
+
   changeIcon = () => {
     const icons = [
       "wi wi-moon-waning-crescent-6 yellow",
@@ -64,15 +67,17 @@ class ConnectedLoading extends React.Component {
   };
 
   render() {
+    const { icon } = this.state;
+    const { error, loadingMessage } = this.props;
     return (
       <div className="loading">
-        <i className={this.state.icon} id="loading" />
+        <i className={icon} id="loading" />
         <br />
-        <span className={this.props.error ? "error" : "loadingMessage"}>
-          {this.props.error
-            ? `${this.props.error} 
+        <span className={error ? "error" : "loadingMessage"}>
+          {error
+            ? `${error} 
             Retrying...`
-            : this.props.loadingMessage}
+            : loadingMessage}
         </span>
       </div>
     );
