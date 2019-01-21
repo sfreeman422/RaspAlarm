@@ -151,7 +151,7 @@ ConnectedSettings.propTypes = {
       friendlyName: PropTypes.string.isRequired,
       isEnabled: PropTypes.bool.isRequired
     })
-  }),
+  }).isRequired,
   setShowPaddedZeroes: PropTypes.func.isRequired,
   setShowCelcius: PropTypes.func.isRequired,
   setShowDeltas: PropTypes.func.isRequired,
