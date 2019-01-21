@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as config from "./private/config";
 import * as actions from "./actions";
-import Clock from "./components/Clock";
-import Today from "./components/Today";
-import Weather from "./components/Weather";
-import Alarm from "./components/Alarm";
-import Loading from "./components/Loading";
+import Clock from "./components/Clock/Clock";
+import Today from "./components/Clock/Today";
+import Weather from "./components/Weather/Weather";
+import Alarm from "./components/Alarms/Alarm";
+import Loading from "./components/Loading/Loading";
 import {
   getUserCoordinates,
   getSunData,

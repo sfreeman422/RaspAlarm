@@ -5,8 +5,8 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 
 import Main from "./App";
-import AlarmManager from "./components/AlarmManager";
-import Settings from "./components/Settings";
+import AlarmManager from "./components/Alarms/AlarmManager";
+import Settings from "./components/Settings/Settings";
 
 ReactDOM.render(
   <Provider store={store}>
