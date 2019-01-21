@@ -12,8 +12,8 @@ import * as config from "../../private/config";
  */
 export function generateWeatherState(weatherArr, sunData) {
   let weather = weatherArr;
-  const sunrise = moment(sunData.sunrise, "hh:mm:a");
-  const sunset = moment(sunData.sunset, "hh:mm:a");
+  const sunrise = moment(sunData.sunrise, "hh:mma");
+  const sunset = moment(sunData.sunset, "hh:mma");
   const firstWeatherHour = parseFloat(weather[0].FCTTIME.hour, 10);
   if (firstWeatherHour === parseFloat(moment().format("H"), 10)) {
     weather = weather.slice(1, 6);
@@ -21,7 +21,7 @@ export function generateWeatherState(weatherArr, sunData) {
 
   const weatherState = [];
   for (let i = 0; i < 5; i += 1) {
-    const currentHour = moment(weather[i].FCTTIME.civil, "hh:mm:a");
+    const currentHour = moment(weather[i].FCTTIME.civil, "hh:mma");
     const weatherIcon =
       currentHour.isBefore(sunrise) || currentHour.isAfter(sunset)
         ? weatherIcons[weather[i].icon].night

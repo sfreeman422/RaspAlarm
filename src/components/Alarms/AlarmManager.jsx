@@ -37,7 +37,8 @@ export default class AlarmManager extends React.Component {
       hour: hour < 10 ? `0${hour}` : hour,
       minute: minute < 10 ? `0${minute}` : minute,
       ampm,
-      dayOfWeek: days
+      dayOfWeek: days,
+      oneTimeUse: days === []
     };
     fetch("/alarm", {
       method: "POST",
