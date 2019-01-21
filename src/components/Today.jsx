@@ -13,8 +13,8 @@ export const ConnectedToday = ({ day, date, userLoc }) => (
   <div className="today">
     <div className="weekday">
       <p id="dayAndLoc">
-        {day}, {date}
-        {userLoc !== "" ? <span> in {userLoc} </span> : null}
+        {`${day}, ${date} `}
+        {userLoc !== "" && <span>{`in ${userLoc}`}</span>}
         <Link to="/settings">
           <i className="material-icons">settings</i>
         </Link>

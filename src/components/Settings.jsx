@@ -116,7 +116,9 @@ const ConnectedSettings = ({
       </span>
     </div>
     <Link to="/">
-      <button id="modal-button">Back to Clock</button>
+      <button type="button" id="modal-button">
+        Back to Clock
+      </button>
     </Link>
   </div>
 );
@@ -151,7 +153,7 @@ ConnectedSettings.propTypes = {
       friendlyName: PropTypes.string.isRequired,
       isEnabled: PropTypes.bool.isRequired
     })
-  }),
+  }).isRequired,
   setShowPaddedZeroes: PropTypes.func.isRequired,
   setShowCelcius: PropTypes.func.isRequired,
   setShowDeltas: PropTypes.func.isRequired,
