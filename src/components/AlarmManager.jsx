@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import fetch from "isomorphic-fetch";
 import moment from "moment";
 import CurrentAlarms from "./CurrentAlarms";
+import DayOfWeek from "./DayOfWeek";
 
 export default class AlarmManager extends React.Component {
   constructor() {
@@ -11,16 +12,9 @@ export default class AlarmManager extends React.Component {
       hour: parseInt(moment().format("h"), 10),
       minute: undefined,
       ampm: moment().format("a"),
-      Monday: false,
-      Tuesday: false,
-      Wednesday: false,
-      Thursday: false,
-      Friday: false,
-      Saturday: false,
-      Sunday: false,
+      days: [],
       alarms: []
     };
-    this.daysOfWeek = [];
   }
 
   componentDidMount() {
@@ -38,12 +32,12 @@ export default class AlarmManager extends React.Component {
   };
 
   setAlarm = () => {
-    const { ampm, hour, minute } = this.state;
+    const { ampm, hour, minute, days } = this.state;
     const data = {
       hour: hour < 10 ? `0${hour}` : hour,
       minute: minute < 10 ? `0${minute}` : minute,
       ampm,
-      dayOfWeek: this.daysOfWeek
+      dayOfWeek: days
     };
     fetch("/alarm", {
       method: "POST",
@@ -53,15 +47,8 @@ export default class AlarmManager extends React.Component {
       })
     }).then(() => {
       this.setState({
-        Monday: false,
-        Tuesday: false,
-        Wednesday: false,
-        Thursday: false,
-        Friday: false,
-        Saturday: false,
-        Sunday: false
+        days: []
       });
-      this.daysOfWeek = [];
       this.getAlarms();
     });
   };
@@ -100,45 +87,20 @@ export default class AlarmManager extends React.Component {
     });
   };
 
+  removeDay = day => {
+    const { days } = this.state;
+    days.splice(days.indexOf(day), 1);
+    this.setState({ days });
+  };
+
   chooseDay = day => {
-    if (!this.state[day]) {
-      this.setState({
-        [day]: true
-      });
-      this.daysOfWeek.push(day);
-    } else {
-      this.setState({
-        [day]: false
-      });
-      for (let i = 0; i < this.daysOfWeek.length; i += 1) {
-        if (this.daysOfWeek[i] === day) {
-          this.daysOfWeek.splice(i, 1);
-        }
-      }
-    }
+    const { days } = this.state;
+    this.setState({ days: [...days, day] });
   };
 
   incrementMinute = () => {
     const { minute } = this.state;
-
-    if (minute >= 55 && minute <= 59) {
-      this.setState({
-        minute: 0,
-        minuteDisplay: "00"
-      });
-    } else if (minute < 10) {
-      const nextMinute = minute + 5;
-      this.setState({
-        minute: nextMinute,
-        minuteDisplay:
-          nextMinute === 10 ? nextMinute : `0${nextMinute.toString()}`
-      });
-    } else {
-      this.setState({
-        minute: minute + 5,
-        minuteDisplay: minute + 5
-      });
-    }
+    this.setState({ minute: minute >= 55 ? 0 : minute + 5 });
   };
 
   removeAlarm = id => {
@@ -158,23 +120,11 @@ export default class AlarmManager extends React.Component {
 
   render() {
     // Ugly day of the week stuff here. Needs refactoring.
-    const {
-      hour,
-      minute,
-      ampm,
-      alarms,
-      Monday,
-      Tuesday,
-      Wednesday,
-      Thursday,
-      Friday,
-      Saturday,
-      Sunday
-    } = this.state;
+    const { hour, minute, ampm, alarms, days } = this.state;
     return (
       <div className="container" id="alarmManager">
         <div className="row">
-          <div className="col-xs-12" id="timeSet">
+          <div id="timeSet">
             <h1 className="unselectable" id="hour" onClick={this.incrementHour}>
               {hour < 10 ? `0${hour}` : hour}
             </h1>
@@ -192,77 +142,63 @@ export default class AlarmManager extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-xs-12" id="daysOfWeek">
+          <div id="daysOfWeek">
             <h3 id="alarmManagerPrompt">
               Which days would you like to set this alarm for?
             </h3>
-            <h3
-              className="unselectable dayOfWeek Monday"
-              id={Monday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Monday");
-              }}
-            >
-              M
-            </h3>
-            <h3
-              className="unselectable dayOfWeek Tuesday"
-              id={Tuesday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Tuesday");
-              }}
-            >
-              T
-            </h3>
-            <h3
-              className="unselectable dayOfWeek Wednesday"
-              id={Wednesday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Wednesday");
-              }}
-            >
-              W
-            </h3>
-            <h3
-              className="unselectable dayOfWeek Thursday"
-              id={Thursday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Thursday");
-              }}
-            >
-              Th
-            </h3>
-            <h3
-              className="unselectable dayOfWeek Friday"
-              id={Friday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Friday");
-              }}
-            >
-              Fri
-            </h3>
-            <h3
-              className="unselectable dayOfWeek Saturday"
-              id={Saturday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Saturday");
-              }}
-            >
-              Sat
-            </h3>
-            <h3
-              className="unselectable dayOfWeek Sunday"
-              id={Sunday ? "selected" : "unselected"}
-              onClick={() => {
-                this.chooseDay("Sunday");
-              }}
-            >
-              Sun
-            </h3>
+            <DayOfWeek
+              day="Monday"
+              abbreviation="M"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
+            <DayOfWeek
+              day="Tuesday"
+              abbreviation="T"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
+            <DayOfWeek
+              day="Wednesday"
+              abbreviation="W"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
+            <DayOfWeek
+              day="Thursday"
+              abbreviation="Th"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
+            <DayOfWeek
+              day="Friday"
+              abbreviation="Fri"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
+            <DayOfWeek
+              day="Saturday"
+              abbreviation="Sat"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
+            <DayOfWeek
+              day="Sunday"
+              abbreviation="Sun"
+              days={days}
+              chooseDay={this.chooseDay}
+              removeDay={this.removeDay}
+            />
           </div>
         </div>
         <div className="row">
-          <div className="col-xs-12">
+          <div>
             <h3 className="unselectable" id="setAlarm" onClick={this.setAlarm}>
               Set Alarm
             </h3>
