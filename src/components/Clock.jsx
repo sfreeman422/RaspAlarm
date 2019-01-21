@@ -22,19 +22,23 @@ class ConnectedClock extends React.Component {
   }
 
   blinkColon = () => {
-    if (this.props.userOptions.blinkTime.isEnabled) {
+    const { userOptions } = this.props;
+    const { isColonVisible } = this.state;
+    if (userOptions.blinkTime.isEnabled) {
       this.setState({
-        isColonVisible: !this.state.isColonVisible
+        isColonVisible: !isColonVisible
       });
     }
   };
 
   render() {
+    const { isColonVisible } = this.state;
+    const { userOptions } = this.props;
     const {
       is24HourClock: { isEnabled: is24HourClock },
       blinkTime: { isEnabled: blinkTime },
       showPaddedZeroes: { isEnabled: showPaddedZeroes }
-    } = this.props.userOptions;
+    } = userOptions;
     return (
       <div className="clock">
         {blinkTime ? (
@@ -49,8 +53,7 @@ class ConnectedClock extends React.Component {
               className="time"
               id="blink"
               style={{
-                visibility:
-                  blinkTime && !this.state.isColonVisible ? "hidden" : "visible"
+                visibility: blinkTime && !isColonVisible ? "hidden" : "visible"
               }}
             >
               :
@@ -78,16 +81,16 @@ ConnectedClock.propTypes = {
     blinkTime: PropTypes.shape({
       isEnabled: PropTypes.bool.isRequired,
       friendlyName: PropTypes.string.isRequired
-    }),
+    }).isRequired,
     showPaddedZeroes: PropTypes.shape({
       isEnabled: PropTypes.bool.isRequired,
       friendlyName: PropTypes.string.isRequired
-    }),
+    }).isRequired,
     is24HourClock: PropTypes.shape({
       isEnabled: PropTypes.bool.isRequired,
       friendlyName: PropTypes.string.isRequired
-    })
-  })
+    }).isRequired
+  }).isRequired
 };
 
 export default Clock;
