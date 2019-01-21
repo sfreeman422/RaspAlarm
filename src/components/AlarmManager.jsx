@@ -119,28 +119,24 @@ export default class AlarmManager extends React.Component {
   };
 
   incrementMinute = () => {
-    if (this.state.minute >= 55 && this.state.minute <= 59) {
+    const { minute } = this.state;
+
+    if (minute >= 55 && minute <= 59) {
       this.setState({
         minute: 0,
         minuteDisplay: "00"
       });
-    } else if (this.state.minute < 10) {
-      const stringMinute = this.state.minute + 5;
-      if (stringMinute === 10) {
-        this.setState({
-          minute: stringMinute,
-          minuteDisplay: stringMinute
-        });
-      } else {
-        this.setState({
-          minute: this.state.minute + 5,
-          minuteDisplay: `0${stringMinute.toString()}`
-        });
-      }
+    } else if (minute < 10) {
+      const nextMinute = minute + 5;
+      this.setState({
+        minute: nextMinute,
+        minuteDisplay:
+          nextMinute === 10 ? nextMinute : `0${nextMinute.toString()}`
+      });
     } else {
       this.setState({
-        minute: this.state.minute + 5,
-        minuteDisplay: this.state.minute + 5
+        minute: minute + 5,
+        minuteDisplay: minute + 5
       });
     }
   };
@@ -161,12 +157,26 @@ export default class AlarmManager extends React.Component {
   };
 
   render() {
+    // Ugly day of the week stuff here. Needs refactoring.
+    const {
+      hour,
+      minute,
+      ampm,
+      alarms,
+      Monday,
+      Tuesday,
+      Wednesday,
+      Thursday,
+      Friday,
+      Saturday,
+      Sunday
+    } = this.state;
     return (
       <div className="container" id="alarmManager">
         <div className="row">
           <div className="col-xs-12" id="timeSet">
             <h1 className="unselectable" id="hour" onClick={this.incrementHour}>
-              {this.state.hour < 10 ? `0${this.state.hour}` : this.state.hour}
+              {hour < 10 ? `0${hour}` : hour}
             </h1>
             <h1 className="unselectable">:</h1>
             <h1
@@ -174,12 +184,10 @@ export default class AlarmManager extends React.Component {
               id="minute"
               onClick={this.incrementMinute}
             >
-              {this.state.minute < 10
-                ? `0${this.state.minute}`
-                : this.state.minute}
+              {minute < 10 ? `0${minute}` : minute}
             </h1>
             <h1 className="unselectable" id="ampm" onClick={this.changeAMPM}>
-              {this.state.ampm}
+              {ampm}
             </h1>
           </div>
         </div>
@@ -190,7 +198,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Monday"
-              id={this.state.Monday === true ? "selected" : "unselected"}
+              id={Monday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Monday");
               }}
@@ -199,7 +207,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Tuesday"
-              id={this.state.Tuesday === true ? "selected" : "unselected"}
+              id={Tuesday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Tuesday");
               }}
@@ -208,7 +216,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Wednesday"
-              id={this.state.Wednesday === true ? "selected" : "unselected"}
+              id={Wednesday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Wednesday");
               }}
@@ -217,7 +225,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Thursday"
-              id={this.state.Thursday === true ? "selected" : "unselected"}
+              id={Thursday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Thursday");
               }}
@@ -226,7 +234,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Friday"
-              id={this.state.Friday === true ? "selected" : "unselected"}
+              id={Friday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Friday");
               }}
@@ -235,7 +243,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Saturday"
-              id={this.state.Saturday === true ? "selected" : "unselected"}
+              id={Saturday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Saturday");
               }}
@@ -244,7 +252,7 @@ export default class AlarmManager extends React.Component {
             </h3>
             <h3
               className="unselectable dayOfWeek Sunday"
-              id={this.state.Sunday === true ? "selected" : "unselected"}
+              id={Sunday ? "selected" : "unselected"}
               onClick={() => {
                 this.chooseDay("Sunday");
               }}
@@ -263,10 +271,7 @@ export default class AlarmManager extends React.Component {
             </h3>
           </div>
         </div>
-        <CurrentAlarms
-          alarms={this.state.alarms}
-          removeAlarm={this.removeAlarm}
-        />
+        <CurrentAlarms alarms={alarms} removeAlarm={this.removeAlarm} />
       </div>
     );
   }
