@@ -170,15 +170,13 @@ export default class AlarmManager extends React.Component {
             ))}
           </div>
         </div>
-        <div className="row">
-          <div>
-            <h3 className="unselectable" id="setAlarm" onClick={this.setAlarm}>
-              Set Alarm
-            </h3>
-            <h3 className="unselectable" id="displayBlock">
-              <Link to="/">Back to Clock</Link>
-            </h3>
-          </div>
+        <div>
+          <h3 id="setAlarm" onClick={this.setAlarm}>
+            Set Alarm
+          </h3>
+          <h3 className="unselectable" id="displayBlock">
+            <Link to="/">Back to Clock</Link>
+          </h3>
         </div>
         <CurrentAlarms alarms={alarms} removeAlarm={this.removeAlarm} />
       </div>

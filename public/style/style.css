@@ -1,213 +1,216 @@
 html body {
-	height: 100%;
-	width: 100%;
-	margin: 0;
-	position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  position: absolute;
 }
 
-.verticalCenter{
+.verticalCenter {
   display: flex;
-	align-items: center;
-	text-align: center;
-	justify-content: center;
-	margin: auto;
-	height: 100%;
-	width: 100%;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin: auto;
+  height: 100%;
+  width: 100%;
 }
 
 .container {
-	width: 80%;
-	margin: auto;
-	text-align: center;
-	max-width: 900px;
-	min-width: 600px;
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  max-width: 900px;
+  min-width: 600px;
 }
 
-h1{
-	color: white;
-	font-size: 102px;
-	margin-bottom: 1%
+h1 {
+  color: white;
+  font-size: 102px;
+  margin-bottom: 1%;
 }
 
-p{
-	color: white;
-	margin: 0;
+p {
+  color: white;
+  margin: 0;
 }
 
-body{
-	background-color: black;
-	background-size: cover;
-	font-family: 'Roboto', sans-serif;
+body {
+  background-color: black;
+  background-size: cover;
+  font-family: "Roboto", sans-serif;
 }
 
 i {
-	color: white;
-	font-size: 550%;
+  color: white;
+  font-size: 550%;
 }
 
-a{
-	color:white;
-	text-decoration: none;
+a {
+  color: white;
+  text-decoration: none;
 }
 
-button{
-	border: none;
-	color: white;
-	padding: 2%;
+button {
+  border: none;
+  color: white;
+  padding: 2%;
 }
 
-.wi-day-sunny{
-	color: #fed039;
+.wi-day-sunny {
+  color: #fed039;
 }
 
 .wi-night-clear {
-  color: #FAD976
+  color: #fad976;
 }
 
 .yellow {
-	color: #FAD976
+  color: #fad976;
 }
 
 .error {
-	color: red;
+  color: red;
 }
 
-.weatherDescription{
-	margin-top: 15%;
+.weatherDescription {
+  margin-top: 15%;
 }
 
-.allWeather{
-		display: flex;
-		text-align: center;
-		align-items: center;
-		margin: 5% 0;
-	}
-	
-.weatherPerDay{
-	max-height:100%;
-	width: 20%;
+.allWeather {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  margin: 5% 0;
+}
+
+.weatherPerDay {
+  max-height: 100%;
+  width: 20%;
 }
 
 .unselectable {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    display: inline;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: inline;
 }
 
-.dayOfWeek{
-	display: inline;
-	margin-right: 2%;
+.dayOfWeek {
+  display: inline;
+  margin-right: 2%;
+  cursor: pointer;
 }
 
 .loading {
-	margin: 5%;
+  margin: 5%;
 }
 
 .loadingMessage {
-	color: white;
+  color: white;
 }
 
 .material-icons {
-	font-size: 12px;
-	color: white;
+  font-size: 12px;
+  color: white;
 }
 
 .clock {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 #settings {
-	color: white;
+  color: white;
 }
 
 #up {
-	color: orange;
+  color: orange;
 }
 
 #down {
-	color: lightblue;
+  color: lightblue;
 }
 
-#loadingText{
-	margin: 2%;
+#loadingText {
+  margin: 2%;
 }
 
-#unselected{
-	color: grey;
+#unselected {
+  color: grey;
 }
 
-#selected{
-	color: #FFFFFF;
+#selected {
+  color: #ffffff;
 }
 
-#displayBlock{
-	display: block;
+#displayBlock {
+  display: block;
 }
 
-#setAlarm{
-	color:white;
+#setAlarm {
+  color: white;
+  cursor: pointer;
 }
 
 #cancelAlarm {
-	color: red;
-	font-size: 150%;
+  color: red;
+  font-size: 150%;
+  cursor: pointer;
 }
 
-#dayAndLoc{
-	font-size: 120%;
-	user-select: none;
+#dayAndLoc {
+  font-size: 120%;
+  user-select: none;
 }
 
-#alarms{
-	display: flex;
+#alarms {
+  display: flex;
 }
 
-#alarmTime{
-	color: white;
-	margin: 0;
-	font-size: 150%;
+#alarmTime {
+  color: white;
+  margin: 0;
+  font-size: 150%;
 }
 
-#alarmDay{
-	color: white;
+#alarmDay {
+  color: white;
 }
 
-#alarmManagerPrompt{
-	color:white;
+#alarmManagerPrompt {
+  color: white;
 }
 
 #alarm {
-	margin: 0 1%;
+  margin: 0 1%;
 }
 
-#settings{
-	color: white;
+#settings {
+  color: white;
 }
 
 #modal-button {
-	background-color: black;
-	color: white;
+  background-color: black;
+  color: white;
 }
 
 #timeSet > h1 {
-	margin: 0;
+  margin: 0;
 }
 
 #blink {
-	margin: 1% 0;
+  margin: 1% 0;
 }
 
 #wakeUp {
-	background-color: green;
-	margin: 1%;
-	border-radius: 12px;
+  background-color: green;
+  margin: 1%;
+  border-radius: 12px;
 }
 
 #snooze {
-	background-color: blue;
-	margin: 1%;
-	border-radius: 12px;
+  background-color: blue;
+  margin: 1%;
+  border-radius: 12px;
 }
