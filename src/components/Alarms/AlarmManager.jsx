@@ -15,6 +15,15 @@ export default class AlarmManager extends React.Component {
       days: [],
       alarms: []
     };
+    this.daysOfWeek = [
+      { day: "Monday", abbrev: "M" },
+      { day: "Tuesday", abbrev: "T" },
+      { day: "Wednesday", abbrev: "W" },
+      { day: "Thursday", abbrev: "Th" },
+      { day: "Friday", abbrev: "Fri" },
+      { day: "Saturday", abbrev: "Sat" },
+      { day: "Sunday", abbrev: "Sun" }
+    ];
   }
 
   componentDidMount() {
@@ -33,25 +42,28 @@ export default class AlarmManager extends React.Component {
 
   setAlarm = () => {
     const { ampm, hour, minute, days } = this.state;
-    const data = {
-      hour: hour < 10 ? `0${hour}` : hour,
-      minute: minute < 10 ? `0${minute}` : minute,
-      ampm,
-      dayOfWeek: days,
-      oneTimeUse: days === []
-    };
     fetch("/alarm", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        hour: hour < 10 ? `0${hour}` : hour,
+        minute: minute < 10 ? `0${minute}` : minute,
+        ampm,
+        dayOfWeek: days,
+        oneTimeUse: days === []
+      }),
       headers: new Headers({
         "Content-Type": "application/json"
       })
-    }).then(() => {
-      this.setState({
-        days: []
+    })
+      .then(() => {
+        this.setState({
+          days: []
+        });
+        this.getAlarms();
+      })
+      .catch(e => {
+        console.error("Unable to set alarm. ", e);
       });
-      this.getAlarms();
-    });
   };
 
   setMinute = () => {
@@ -146,55 +158,16 @@ export default class AlarmManager extends React.Component {
             <h3 id="alarmManagerPrompt">
               Which days would you like to set this alarm for?
             </h3>
-            <DayOfWeek
-              day="Monday"
-              abbreviation="M"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
-            <DayOfWeek
-              day="Tuesday"
-              abbreviation="T"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
-            <DayOfWeek
-              day="Wednesday"
-              abbreviation="W"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
-            <DayOfWeek
-              day="Thursday"
-              abbreviation="Th"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
-            <DayOfWeek
-              day="Friday"
-              abbreviation="Fri"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
-            <DayOfWeek
-              day="Saturday"
-              abbreviation="Sat"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
-            <DayOfWeek
-              day="Sunday"
-              abbreviation="Sun"
-              days={days}
-              chooseDay={this.chooseDay}
-              removeDay={this.removeDay}
-            />
+            {this.daysOfWeek.map(day => (
+              <DayOfWeek
+                key={day.day}
+                day={day.day}
+                days={days}
+                abbreviation={day.abbrev}
+                chooseDay={this.chooseDay}
+                removeDay={this.removeDay}
+              />
+            ))}
           </div>
         </div>
         <div className="row">
