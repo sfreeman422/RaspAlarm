@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as config from "./private/config";
 import * as actions from "./actions";
-import Clock from "./components/Clock";
-import Today from "./components/Today";
-import Weather from "./components/Weather";
-import Alarm from "./components/Alarm";
-import Loading from "./components/Loading";
+import Clock from "./components/Clock/Clock";
+import Today from "./components/Clock/Today";
+import Weather from "./components/Weather/Weather";
+import Alarm from "./components/Alarms/Alarm";
+import Loading from "./components/Loading/Loading";
 import {
   getUserCoordinates,
   getSunData,
@@ -71,8 +71,37 @@ class ConnectedMain extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, _prevState) {
-    this.runUpdate(prevProps);
+  async componentDidUpdate(prevProps, _prevState) {
+    const {
+      clearError,
+      date,
+      initialized,
+      setSunData,
+      time,
+      setWeather,
+      reportError,
+      isPhillipsHueEnabled,
+      userCoords,
+      today,
+      sunData
+    } = this.props;
+    try {
+      clearError();
+      if (date !== prevProps.date && initialized) {
+        const updatedSunData = await getSunData(userCoords);
+        setSunData(updatedSunData);
+      }
+      if (time !== prevProps.time && moment().format("mm") === "00") {
+        const weather = await this.getWeather(userCoords);
+        setWeather(weather);
+      }
+      if (isPhillipsHueEnabled && config.hue_id && config.hue_ip) {
+        changeLightingForGroups(today, sunData);
+      }
+    } catch (err) {
+      console.error("Error on update - ", err.message);
+      reportError(err.message);
+    }
   }
 
   componentWillUnmount() {
@@ -105,39 +134,6 @@ class ConnectedMain extends React.Component {
       .catch(err => {
         throw new Error(`Weather retrieval failed! \n ${err.message}`);
       });
-  };
-
-  runUpdate = async prevProps => {
-    const {
-      clearError,
-      date,
-      initialized,
-      setSunData,
-      time,
-      setWeather,
-      reportError,
-      isPhillipsHueEnabled,
-      userCoords,
-      today,
-      sunData
-    } = this.props;
-    try {
-      clearError();
-      if (date !== prevProps.date && initialized) {
-        const updatedSunData = await getSunData(userCoords);
-        setSunData(updatedSunData);
-      }
-      if (time !== prevProps.time && moment().format("mm") === "00") {
-        const weather = await this.getWeather(userCoords);
-        setWeather(weather);
-      }
-      if (isPhillipsHueEnabled && config.hue_id && config.hue_ip) {
-        changeLightingForGroups(today, sunData);
-      }
-    } catch (err) {
-      console.error("Error on runUpdate - ", err.message);
-      reportError(err.message);
-    }
   };
 
   hueHandler = async () => {

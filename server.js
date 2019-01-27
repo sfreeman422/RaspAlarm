@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const logger = require("morgan");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const brightnessRoutes = require("./api/brightness-route");
@@ -21,7 +20,6 @@ db.on("error", err => {
   console.log(`Error on DB:\n${err}`);
 });
 
-app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("./public"));

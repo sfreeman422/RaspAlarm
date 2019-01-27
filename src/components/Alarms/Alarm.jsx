@@ -18,7 +18,7 @@ class Alarm extends React.Component {
 
   componentDidMount() {
     this.getAlarms();
-    this.alarmInterval = setInterval(this.checkAlarm, 1000);
+    this.alarmInterval = setInterval(() => this.checkAlarm(), 1000);
   }
 
   componentWillUnmount() {
@@ -35,8 +35,9 @@ class Alarm extends React.Component {
   };
 
   checkAlarm = () => {
-    const { alarms, currentTime, isRinging, awake } = this.state;
+    const { alarms, isRinging, awake } = this.state;
     const dayOfWeek = moment().format("dddd");
+    const currentTime = moment().format("hh:mma");
     for (let i = 0; i < alarms.length; i += 1) {
       if (
         currentTime === alarms[i].time &&
