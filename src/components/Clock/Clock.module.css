@@ -1,0 +1,8 @@
+.clock {
+  display: flex;
+  justify-content: center;
+}
+
+.time {
+  margin: 1% 0;
+}

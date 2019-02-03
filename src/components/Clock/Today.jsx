@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router";
+import * as styles from "./Today.module.css";
 
 const mapStateToProps = state => ({
   day: state.dateTime.today,
@@ -10,17 +11,12 @@ const mapStateToProps = state => ({
 });
 
 export const ConnectedToday = ({ day, date, userLoc }) => (
-  <div className="today">
-    <div className="weekday">
-      <p id="dayAndLoc">
-        {`${day}, ${date} `}
-        {userLoc !== "" && <span>{`in ${userLoc}`}</span>}
-        <Link to="/settings">
-          <i className="material-icons">settings</i>
-        </Link>
-      </p>
-    </div>
-  </div>
+  <p className={styles.today}>
+    {`${day}, ${date} ${userLoc !== "" ? `in ${userLoc}` : ""}`}
+    <Link to="/settings">
+      <i className="material-icons">settings</i>
+    </Link>
+  </p>
 );
 
 ConnectedToday.propTypes = {

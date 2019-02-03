@@ -93,11 +93,6 @@ button {
   color: white;
 }
 
-.clock {
-  display: flex;
-  justify-content: center;
-}
-
 #settings {
   color: white;
 }
@@ -114,11 +109,6 @@ button {
   margin: 2%;
 }
 
-#dayAndLoc {
-  font-size: 120%;
-  user-select: none;
-}
-
 #alarmDay {
   color: white;
 }
@@ -130,8 +120,4 @@ button {
 #modal-button {
   background-color: black;
   color: white;
-}
-
-#blink {
-  margin: 1% 0;
 }

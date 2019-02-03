@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import * as styles from "./Clock.module.css";
 
 const mapStateToProps = state => ({
   time: state.dateTime.time,
@@ -40,30 +41,29 @@ class ConnectedClock extends React.Component {
       showPaddedZeroes: { isEnabled: showPaddedZeroes }
     } = userOptions;
     return (
-      <div className="clock">
+      <div className={styles.clock}>
         {blinkTime ? (
           <React.Fragment>
-            <h1 className="time" id="blink">
+            <h1 className={styles.time}>
               {is24HourClock && showPaddedZeroes && moment().format("HH")}
               {is24HourClock && !showPaddedZeroes && moment().format("H")}
               {!is24HourClock && showPaddedZeroes && moment().format("hh")}
               {!is24HourClock && !showPaddedZeroes && moment().format("h")}
             </h1>
             <h1
-              className="time"
-              id="blink"
+              className={styles.time}
               style={{
                 visibility: blinkTime && !isColonVisible ? "hidden" : "visible"
               }}
             >
               :
             </h1>
-            <h1 className="time" id="blink">
+            <h1 className={styles.time}>
               {moment().format(is24HourClock ? "mm" : "mma")}
             </h1>
           </React.Fragment>
         ) : (
-          <h1 className="time">
+          <h1 className={styles.time}>
             {is24HourClock
               ? moment().format("HH:mm")
               : moment().format("hh:mma")}
