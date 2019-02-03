@@ -15,14 +15,6 @@ html body {
   width: 100%;
 }
 
-.container {
-  width: 80%;
-  margin: auto;
-  text-align: center;
-  max-width: 900px;
-  min-width: 600px;
-}
-
 h1 {
   color: white;
   font-size: 102px;
@@ -88,20 +80,6 @@ button {
   width: 20%;
 }
 
-.unselectable {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  display: inline;
-}
-
-.dayOfWeek {
-  display: inline;
-  margin-right: 2%;
-  cursor: pointer;
-}
-
 .loading {
   margin: 5%;
 }
@@ -136,54 +114,13 @@ button {
   margin: 2%;
 }
 
-#unselected {
-  color: grey;
-}
-
-#selected {
-  color: #ffffff;
-}
-
-#displayBlock {
-  display: block;
-}
-
-#setAlarm {
-  color: white;
-  cursor: pointer;
-}
-
-#cancelAlarm {
-  color: red;
-  font-size: 150%;
-  cursor: pointer;
-}
-
 #dayAndLoc {
   font-size: 120%;
   user-select: none;
 }
 
-#alarms {
-  display: flex;
-}
-
-#alarmTime {
-  color: white;
-  margin: 0;
-  font-size: 150%;
-}
-
 #alarmDay {
   color: white;
-}
-
-#alarmManagerPrompt {
-  color: white;
-}
-
-#alarm {
-  margin: 0 1%;
 }
 
 #settings {
@@ -195,22 +132,6 @@ button {
   color: white;
 }
 
-#timeSet > h1 {
-  margin: 0;
-}
-
 #blink {
   margin: 1% 0;
-}
-
-#wakeUp {
-  background-color: green;
-  margin: 1%;
-  border-radius: 12px;
-}
-
-#snooze {
-  background-color: blue;
-  margin: 1%;
-  border-radius: 12px;
 }

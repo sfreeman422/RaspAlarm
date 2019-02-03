@@ -2,8 +2,9 @@ import React from "react";
 import moment from "moment";
 import fetch from "isomorphic-fetch";
 import { Link } from "react-router";
+import * as styles from "./AlarmControl.module.css";
 
-class Alarm extends React.Component {
+class AlarmControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -124,12 +125,12 @@ class Alarm extends React.Component {
   render() {
     const { isRinging } = this.state;
     return (
-      <div id="alarm">
+      <div className={styles.alarmControl}>
         {isRinging ? (
           <React.Fragment>
             <button
               type="button"
-              id="snooze"
+              className={styles.snooze}
               onClick={() => {
                 this.snooze();
               }}
@@ -137,8 +138,8 @@ class Alarm extends React.Component {
               Snooze
             </button>
             <button
-              id="wakeUp"
               type="button"
+              className={styles.wakeUp}
               onClick={() => {
                 this.awake();
               }}
@@ -156,4 +157,4 @@ class Alarm extends React.Component {
   }
 }
 
-export default Alarm;
+export default AlarmControl;

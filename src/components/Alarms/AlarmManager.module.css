@@ -1,0 +1,24 @@
+.alarmManagerContainer {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+  max-width: 900px;
+  min-width: 600px;
+}
+
+.alarmManagePrompt {
+  color: white;
+}
+
+.setAlarm {
+  color: white;
+  cursor: pointer;
+}
+
+.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: inline;
+}

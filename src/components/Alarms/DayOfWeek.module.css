@@ -1,0 +1,13 @@
+.dayOfWeek {
+  display: inline;
+  margin-right: 2%;
+  cursor: pointer;
+}
+
+.selected {
+  color: #ffffff;
+}
+
+.unselected {
+  color: grey;
+}

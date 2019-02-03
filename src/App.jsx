@@ -7,7 +7,7 @@ import * as actions from "./actions";
 import Clock from "./components/Clock/Clock";
 import Today from "./components/Clock/Today";
 import Weather from "./components/Weather/Weather";
-import Alarm from "./components/Alarms/Alarm";
+import AlarmControl from "./components/Alarms/AlarmControl";
 import Loading from "./components/Loading/Loading";
 import {
   getUserCoordinates,
@@ -229,7 +229,7 @@ class ConnectedMain extends React.Component {
         <Clock />
         <Today />
         {initialized ? <Weather /> : <Loading />}
-        <Alarm />
+        <AlarmControl />
       </div>
     );
   }

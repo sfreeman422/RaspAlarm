@@ -1,0 +1,24 @@
+.alarms {
+  display: flex;
+  max-width: 100%;
+}
+
+.alarm {
+  margin: 0 2%;
+}
+
+.alarmTime {
+  color: white;
+  margin: 0;
+  font-size: 150%;
+}
+
+.alarmDay {
+  color: white;
+}
+
+.cancelAlarm {
+  color: red;
+  font-size: 150%;
+  cursor: pointer;
+}

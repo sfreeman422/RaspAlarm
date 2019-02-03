@@ -1,0 +1,12 @@
+.alarmControl {
+  margin: 1%;
+  border-radius: 12px;
+}
+
+.snooze {
+  background-color: blue;
+}
+
+.wakeUp {
+  background-color: green;
+}

@@ -4,6 +4,7 @@ import fetch from "isomorphic-fetch";
 import moment from "moment";
 import CurrentAlarms from "./CurrentAlarms";
 import DayOfWeek from "./DayOfWeek";
+import * as styles from "./AlarmManager.module.css";
 
 export default class AlarmManager extends React.Component {
   constructor() {
@@ -134,50 +135,36 @@ export default class AlarmManager extends React.Component {
   render() {
     const { hour, minute, ampm, alarms, days } = this.state;
     return (
-      <div className="container" id="alarmManager">
-        <div className="row">
-          <div id="timeSet">
-            <h1 className="unselectable" id="hour" onClick={this.incrementHour}>
-              {hour < 10 ? `0${hour}` : hour}
-            </h1>
-            <h1 className="unselectable">:</h1>
-            <h1
-              className="unselectable"
-              id="minute"
-              onClick={this.incrementMinute}
-            >
-              {minute < 10 ? `0${minute}` : minute}
-            </h1>
-            <h1 className="unselectable" id="ampm" onClick={this.changeAMPM}>
-              {ampm}
-            </h1>
-          </div>
-        </div>
-        <div className="row">
-          <div id="daysOfWeek">
-            <h3 id="alarmManagerPrompt">
-              Which days would you like to set this alarm for?
-            </h3>
-            {this.daysOfWeek.map(day => (
-              <DayOfWeek
-                key={day.day}
-                day={day.day}
-                days={days}
-                abbreviation={day.abbrev}
-                chooseDay={this.chooseDay}
-                removeDay={this.removeDay}
-              />
-            ))}
-          </div>
-        </div>
-        <div>
-          <h3 id="setAlarm" onClick={this.setAlarm}>
-            Set Alarm
-          </h3>
-          <h3 className="unselectable" id="displayBlock">
-            <Link to="/">Back to Clock</Link>
-          </h3>
-        </div>
+      <div className={styles.alarmManagerContainer}>
+        <h1 className={styles.unselectable} onClick={this.incrementHour}>
+          {hour < 10 ? `0${hour}` : hour}
+        </h1>
+        <h1 className={styles.unselectable}>:</h1>
+        <h1 className={styles.unselectable} onClick={this.incrementMinute}>
+          {minute < 10 ? `0${minute}` : minute}
+        </h1>
+        <h1 className={styles.unselectable} onClick={this.changeAMPM}>
+          {ampm}
+        </h1>
+        <h3 className={styles.alarmManagePrompt}>
+          Which days would you like to set this alarm for?
+        </h3>
+        {this.daysOfWeek.map(day => (
+          <DayOfWeek
+            key={day.day}
+            day={day.day}
+            days={days}
+            abbreviation={day.abbrev}
+            chooseDay={this.chooseDay}
+            removeDay={this.removeDay}
+          />
+        ))}
+        <h3 className={styles.setAlarm} onClick={this.setAlarm}>
+          Set Alarm
+        </h3>
+        <h3 className={styles.unselectable}>
+          <Link to="/">Back to Clock</Link>
+        </h3>
         <CurrentAlarms alarms={alarms} removeAlarm={this.removeAlarm} />
       </div>
     );
