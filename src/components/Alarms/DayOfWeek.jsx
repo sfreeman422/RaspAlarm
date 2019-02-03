@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as cn from "classnames";
 import * as styles from "./DayOfWeek.module.css";
 
 const DayOfWeek = ({ day, abbreviation, days, chooseDay, removeDay }) => (
   <h3
-    className={[
+    className={cn(
       styles.dayOfWeek,
       days.includes(day) ? styles.selected : styles.unselected
-    ].join(" ")}
+    )}
     onClick={() => {
       days.includes(day) ? removeDay(day) : chooseDay(day);
     }}

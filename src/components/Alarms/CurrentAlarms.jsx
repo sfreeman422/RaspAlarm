@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as cn from "classnames";
 import { displayLetterForDayOfWeek } from "../../utils";
-
 import * as styles from "./CurrentAlarms.module.css";
-
-const cancelIcon = ["material-icons", styles.cancelAlarm].join(" ");
 
 const CurrentAlarms = ({ alarms, removeAlarm }) => (
   <div className={styles.alarms}>
@@ -14,7 +12,10 @@ const CurrentAlarms = ({ alarms, removeAlarm }) => (
         <p className={styles.alarmDay}>
           {displayLetterForDayOfWeek(alarm.dayOfWeek)}
         </p>
-        <i className={cancelIcon} onClick={() => removeAlarm(alarm._id)}>
+        <i
+          className={cn("material-icons", styles.cancelAlarm)}
+          onClick={() => removeAlarm(alarm._id)}
+        >
           cancel
         </i>
       </div>
