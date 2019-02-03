@@ -119,7 +119,7 @@ const ConnectedSettings = ({
       </span>
     </div>
     <Link to="/">
-      <button type="button" id="modal-button">
+      <button type="button" className={styles.exitButton}>
         Back to Clock
       </button>
     </Link>

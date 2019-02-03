@@ -18,6 +18,7 @@ import {
   generateWeatherState,
   changeLightingForGroups
 } from "./utils";
+import * as styles from "./App.module.css";
 
 const mapDispatchToProps = dispatch => ({
   setTime: time => dispatch(actions.setTime(time)),
@@ -225,7 +226,7 @@ class ConnectedMain extends React.Component {
   render() {
     const { initialized } = this.props;
     return (
-      <div className="container">
+      <div className={styles.container}>
         <Clock />
         <Today />
         {initialized ? <Weather /> : <Loading />}

@@ -1,3 +1,8 @@
 .settings {
   color: white;
 }
+
+.exitButton {
+  background-color: black;
+  color: white;
+}
