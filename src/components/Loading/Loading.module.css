@@ -1,0 +1,15 @@
+.loading {
+  margin: 5%;
+}
+
+.loadingMessage {
+  color: white;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.yellow {
+  color: #fad976;
+}
