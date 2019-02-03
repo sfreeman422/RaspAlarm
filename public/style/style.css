@@ -56,44 +56,12 @@ button {
   color: #fad976;
 }
 
-.weatherDescription {
-  margin-top: 15%;
-}
-
-.allWeather {
-  display: flex;
-  text-align: center;
-  align-items: center;
-  margin: 5% 0;
-}
-
-.weatherPerDay {
-  max-height: 100%;
-  width: 20%;
-}
-
 .material-icons {
   font-size: 12px;
   color: white;
 }
 
-#settings {
-  color: white;
-}
-
-#up {
-  color: orange;
-}
-
-#down {
-  color: lightblue;
-}
-
 #alarmDay {
-  color: white;
-}
-
-#settings {
   color: white;
 }
 

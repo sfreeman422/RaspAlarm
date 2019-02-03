@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import WeatherPerDay from "./WeatherPerDay";
+import * as styles from "./Weather.module.css";
 
 const mapStateToProps = state => ({
   weatherArr: state.weather.weatherArr,
@@ -16,7 +17,7 @@ const ConnectedWeather = ({
   showCelcius,
   lastTemperature
 }) => (
-  <div className="allWeather">
+  <div className={styles.weatherContainer}>
     {weatherArr.map((weatherItem, index) => (
       <WeatherPerDay
         key={`weather-${index}`}

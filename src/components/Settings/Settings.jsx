@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router";
+import * as cn from "classnames";
 import * as actions from "../../actions";
+import * as globalStyles from "../../App.module.css";
+import * as styles from "./Settings.module.css";
 
 const mapStateToProps = state => ({
   userOptions: state.userOptions
@@ -33,7 +36,7 @@ const ConnectedSettings = ({
   setIsPhillipsHue,
   userOptions
 }) => (
-  <div className="container" id="settings">
+  <div className={cn(globalStyles.container, styles.settings)}>
     <h1>Settings</h1>
     <div>
       <span>{userOptions.showCelcius.friendlyName}</span>

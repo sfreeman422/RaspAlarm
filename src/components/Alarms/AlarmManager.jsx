@@ -5,6 +5,7 @@ import moment from "moment";
 import CurrentAlarms from "./CurrentAlarms";
 import DayOfWeek from "./DayOfWeek";
 import * as styles from "./AlarmManager.module.css";
+import * as globalStyles from "../../App.module.css";
 
 export default class AlarmManager extends React.Component {
   constructor() {
@@ -135,7 +136,7 @@ export default class AlarmManager extends React.Component {
   render() {
     const { hour, minute, ampm, alarms, days } = this.state;
     return (
-      <div className={styles.alarmManagerContainer}>
+      <div className={globalStyles.container}>
         <h1 className={styles.unselectable} onClick={this.incrementHour}>
           {hour < 10 ? `0${hour}` : hour}
         </h1>

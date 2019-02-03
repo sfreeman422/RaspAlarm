@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as cn from "classnames";
+import * as styles from "./WeatherPerDay.module.css";
 
 const WeatherPerDay = ({
   weatherItem,
@@ -8,24 +10,20 @@ const WeatherPerDay = ({
   celcius,
   ignoreUpIndicator
 }) => (
-  <div className="weatherPerDay">
-    <div className="weatherIcon">
-      <i className={weatherItem.icon} />
-    </div>
-    <div className="weatherDescription">
-      <p>
-        {celcius
-          ? weatherItem.temp.metric.display
-          : weatherItem.temp.english.display}
-        {showDeltas && !ignoreUpIndicator ? (
-          <i className="material-icons" id={up ? "up" : "down"}>
-            {up ? "arrow_upward" : "arrow_downward"}
-          </i>
-        ) : null}
-      </p>
-      <p>{weatherItem.condition}</p>
-      <p>{weatherItem.time}</p>
-    </div>
+  <div className={styles.weatherPerDay}>
+    <i className={weatherItem.icon} />
+    <p className={styles.weatherDescription}>
+      {celcius
+        ? weatherItem.temp.metric.display
+        : weatherItem.temp.english.display}
+      {showDeltas && !ignoreUpIndicator ? (
+        <i className={cn("material-icons", up ? styles.up : styles.down)}>
+          {up ? "arrow_upward" : "arrow_downward"}
+        </i>
+      ) : null}
+    </p>
+    <p>{weatherItem.condition}</p>
+    <p>{weatherItem.time}</p>
   </div>
 );
 

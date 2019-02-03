@@ -1,0 +1,16 @@
+.weatherPerDay {
+  max-height: 100%;
+  width: 20%;
+}
+
+.weatherDescription {
+  margin-top: 15%;
+}
+
+.up {
+  color: orange;
+}
+
+.down {
+  color: lightblue;
+}
