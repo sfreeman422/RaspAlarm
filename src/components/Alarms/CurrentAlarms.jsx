@@ -8,15 +8,18 @@ const CurrentAlarms = ({
   alarms,
   removeAlarm,
   incrementPage,
-  decrementPage
+  decrementPage,
+  shouldRenderArrows
 }) => (
   <div className={styles.alarms}>
-    <i
-      className={cn("material-icons", styles.arrow)}
-      onClick={() => decrementPage()}
-    >
-      arrow_back_ios
-    </i>
+    {shouldRenderArrows ? (
+      <i
+        className={cn("material-icons", styles.arrow)}
+        onClick={() => decrementPage()}
+      >
+        arrow_back_ios
+      </i>
+    ) : null}
     {alarms.map((alarm, i) => (
       <div className={styles.alarm} key={`alarm-${i}`}>
         <h3 className={styles.alarmTime}>{alarm.time}</h3>
@@ -31,12 +34,14 @@ const CurrentAlarms = ({
         </i>
       </div>
     ))}
-    <i
-      className={cn("material-icons", styles.arrow)}
-      onClick={() => incrementPage()}
-    >
-      arrow_forward_ios
-    </i>
+    {shouldRenderArrows ? (
+      <i
+        className={cn("material-icons", styles.arrow)}
+        onClick={() => incrementPage()}
+      >
+        arrow_forward_ios
+      </i>
+    ) : null}
   </div>
 );
 
@@ -44,6 +49,7 @@ CurrentAlarms.propTypes = {
   alarms: PropTypes.arrayOf(PropTypes.object).isRequired,
   removeAlarm: PropTypes.func.isRequired,
   incrementPage: PropTypes.func.isRequired,
-  decrementPage: PropTypes.func.isRequired
+  decrementPage: PropTypes.func.isRequired,
+  shouldRenderArrows: PropTypes.bool.isRequired
 };
 export default CurrentAlarms;

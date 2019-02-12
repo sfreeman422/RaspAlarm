@@ -1,6 +1,9 @@
 .alarms {
   display: flex;
   max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 1% 0;
 }
 
 .alarm {
@@ -16,6 +19,7 @@
 .arrow {
   font-size: 150%;
   color: white;
+  cursor: pointer;
 }
 
 .alarmDay {

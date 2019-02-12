@@ -120,13 +120,6 @@ export default class AlarmManager extends React.Component {
     this.setState({ minute: minute >= 55 ? 0 : minute + 5 });
   };
 
-  alarmPage = () => {
-    const { alarms } = this.state;
-    const pages = Math.ceil(alarms.length / 5);
-    console.log(pages);
-    console.log();
-  };
-
   retrieveAlarmsByPage = () => {
     const { alarms, page } = this.state;
     const start = (page - 1) * 5;
@@ -171,7 +164,7 @@ export default class AlarmManager extends React.Component {
   };
 
   render() {
-    const { hour, minute, ampm, days } = this.state;
+    const { hour, minute, ampm, days, maxPages } = this.state;
     return (
       <div className={globalStyles.container}>
         <h1 className={styles.unselectable} onClick={this.incrementHour}>
@@ -208,6 +201,7 @@ export default class AlarmManager extends React.Component {
           removeAlarm={this.removeAlarm}
           decrementPage={this.decrementPage}
           incrementPage={this.incrementPage}
+          shouldRenderArrows={maxPages > 1}
         />
       </div>
     );
