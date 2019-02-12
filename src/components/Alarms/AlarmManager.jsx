@@ -15,7 +15,9 @@ export default class AlarmManager extends React.Component {
       minute: undefined,
       ampm: moment().format("a"),
       days: [],
-      alarms: []
+      alarms: [],
+      maxPages: 1,
+      page: 1
     };
     this.daysOfWeek = [
       { day: "Monday", abbrev: "M" },
@@ -37,7 +39,7 @@ export default class AlarmManager extends React.Component {
     fetch("/alarm")
       .then(res => res.json())
       .then(alarms => {
-        this.setState({ alarms });
+        this.setState({ alarms, maxPages: Math.ceil(alarms.length / 5) });
       })
       .catch(err => console.error(err));
   };
@@ -118,6 +120,41 @@ export default class AlarmManager extends React.Component {
     this.setState({ minute: minute >= 55 ? 0 : minute + 5 });
   };
 
+  alarmPage = () => {
+    const { alarms } = this.state;
+    const pages = Math.ceil(alarms.length / 5);
+    console.log(pages);
+    console.log();
+  };
+
+  retrieveAlarmsByPage = () => {
+    const { alarms, page } = this.state;
+    const start = (page - 1) * 5;
+    const end = page * 5;
+    if (alarms.length) {
+      return alarms.slice(start, end);
+    }
+    return alarms;
+  };
+
+  incrementPage = () => {
+    const { page, maxPages } = this.state;
+    if (page + 1 <= maxPages) {
+      this.setState({ page: page + 1 });
+    } else {
+      this.setState({ page: 1 });
+    }
+  };
+
+  decrementPage = () => {
+    const { page, maxPages } = this.state;
+    if (page - 1 >= 1) {
+      this.setState({ page: page - 1 });
+    } else {
+      this.setState({ page: maxPages });
+    }
+  };
+
   removeAlarm = id => {
     fetch("/alarm", {
       method: "DELETE",
@@ -134,7 +171,7 @@ export default class AlarmManager extends React.Component {
   };
 
   render() {
-    const { hour, minute, ampm, alarms, days } = this.state;
+    const { hour, minute, ampm, days } = this.state;
     return (
       <div className={globalStyles.container}>
         <h1 className={styles.unselectable} onClick={this.incrementHour}>
@@ -166,7 +203,12 @@ export default class AlarmManager extends React.Component {
         <h3 className={styles.unselectable}>
           <Link to="/">Back to Clock</Link>
         </h3>
-        <CurrentAlarms alarms={alarms} removeAlarm={this.removeAlarm} />
+        <CurrentAlarms
+          alarms={this.retrieveAlarmsByPage()}
+          removeAlarm={this.removeAlarm}
+          decrementPage={this.decrementPage}
+          incrementPage={this.incrementPage}
+        />
       </div>
     );
   }
